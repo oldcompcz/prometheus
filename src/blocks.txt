@@ -1,0 +1,17 @@
+; comment
+
+;test_bytedata:	start 0x0100 end 0x0200 type bytedata
+;test_worddata:	start 0x0200 end 0x0300 type worddata
+;test_code:	start 0x0300 end 0x0500 type code
+;test_pointers:	start 0x0400 end 0x0410 type pointers
+
+intro1_string:	start 24088 end 0x5e34 type bytedata
+intro2_string:	start 0x5e3a end 0x5e4c type bytedata
+intro3_string:	start 0x5e52 end 0x5e6e type bytedata
+intro4_string:	start 0x5e74 end 0x5e8f type bytedata
+intro5_string:	start 0x5e95 end 0x5e9d type bytedata
+intro_yes_string:	start 0x5ea8 end 0x5eab type bytedata
+intro_no_string:	start 0x5eb0 end 0x5eb3 type bytedata
+
+data_93d8:	start 0x93d8 end 0xa574 type bytedata
+

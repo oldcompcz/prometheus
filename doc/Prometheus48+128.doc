@@ -1,0 +1,332 @@
+{\rtf1\ansi\ansicpg1250\uc1 \deff0\deflang1033\deflangfe1029{\fonttbl{\f0\froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f2\fmodern\fcharset0\fprq1{\*\panose 02070309020205020404}Courier New;}
+{\f16\froman\fcharset238\fprq2 Times New Roman CE;}{\f17\froman\fcharset204\fprq2 Times New Roman Cyr;}{\f19\froman\fcharset161\fprq2 Times New Roman Greek;}{\f20\froman\fcharset162\fprq2 Times New Roman Tur;}
+{\f21\froman\fcharset186\fprq2 Times New Roman Baltic;}{\f28\fmodern\fcharset238\fprq1 Courier New CE;}{\f29\fmodern\fcharset204\fprq1 Courier New Cyr;}{\f31\fmodern\fcharset161\fprq1 Courier New Greek;}{\f32\fmodern\fcharset162\fprq1 Courier New Tur;}
+{\f33\fmodern\fcharset186\fprq1 Courier New Baltic;}}{\colortbl;\red0\green0\blue0;\red0\green0\blue255;\red0\green255\blue255;\red0\green255\blue0;\red255\green0\blue255;\red255\green0\blue0;\red255\green255\blue0;\red255\green255\blue255;
+\red0\green0\blue128;\red0\green128\blue128;\red0\green128\blue0;\red128\green0\blue128;\red128\green0\blue0;\red128\green128\blue0;\red128\green128\blue128;\red192\green192\blue192;}{\stylesheet{\nowidctlpar\widctlpar\adjustright \fs20\lang1029\cgrid 
+\snext0 Normal;}{\*\cs10 \additive Default Paragraph Font;}}{\info{\title Prometheus}{\author Vojtech Dolezal}{\operator Jirka}{\creatim\yr1999\mo5\dy28\hr23\min33}{\revtim\yr1999\mo11\dy17\hr17\min9}{\version4}{\edmins11}{\nofpages9}{\nofwords2713}
+{\nofchars15468}{\*\company wIN}{\nofcharsws0}{\vern73}}\paperw11904\paperh16832\margl1440\margr1440\margt1417\margb1417 \widowctrl\ftnbj\aenddoc\hyphhotz425\lytprtmet\hyphcaps0\viewkind4\viewscale100\pgbrdrhead\pgbrdrfoot \fet0\sectd 
+\linex0\headery709\footery709\colsx709\sectdefaultcl {\*\pnseclvl1\pnucrm\pnstart1\pnindent720\pnhang{\pntxta .}}{\*\pnseclvl2\pnucltr\pnstart1\pnindent720\pnhang{\pntxta .}}{\*\pnseclvl3\pndec\pnstart1\pnindent720\pnhang{\pntxta .}}{\*\pnseclvl4
+\pnlcltr\pnstart1\pnindent720\pnhang{\pntxta )}}{\*\pnseclvl5\pndec\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}{\*\pnseclvl6\pnlcltr\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}{\*\pnseclvl7\pnlcrm\pnstart1\pnindent720\pnhang{\pntxtb (}
+{\pntxta )}}{\*\pnseclvl8\pnlcltr\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}{\*\pnseclvl9\pnlcrm\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}\pard\plain \qc\nowidctlpar\widctlpar\adjustright \fs20\lang1029\cgrid {\b\fs80\ul Prometheus
+\par }{\b\fs40 Z80 Turbo assembler
+\par 
+\par }{\b Prometheus is not only assembler, it has powerfull excellent monitor, it's better to call it "developing and debugging system".}{\b\f2 
+\par }\pard \qj\nowidctlpar\widctlpar\adjustright {\b\f2 
+\par History:}{\f2 
+\par Prometheus was developed using GENS 3.1 and GENS 3E. Source was about 40 kB long, divided into two parts, plus about 5kB label table each part. Assembly time was 40 s.
+\par Then source was converted to first Prometheus version and assembler was developed on itself! After converting was source lenght 20 kB (with label table, it's integral part of source), assembly time was 3 s.
+\par 
+\par }{\b\f2 Versions:}{\f2 
+\par }{\b\i\f2\ul Prometheus 48}{\f2 
+\par }\pard \fi-737\li737\nowidctlpar\widctlpar\adjustright {\i\f2 Prometheus}{\f2 : 11kB assembler, 5kB monitor, relocable, independent on system variables (can be placed at 23296), so
+urce/assembled code ratio 3.5/1 (GENS 8/1), compilation 3kB/sec, supports tape, monitor can measure tacts taken by routine. Probably the best assembler for ZX 48 with tape!
+\par }{\i\f2 DISKPROM 48, DISKASSEM 48}{\f2 : relocable 48 version, supports tape or D40/80 disk (MDOS). DISKPROM is with monitor (16 kB), DISKASSEM without monitor (11kB). Warning, D40 needs system variables!
+\par }\pard \qj\nowidctlpar\widctlpar\adjustright {\f2 TR-DOS version of Prometheus 48 is available somewhere, too...
+\par }{\b\i\f2\ul Prometheus 128}{\f2 
+\par upto 64kB source, assembly is a bit slower than 48 version.
+\par }\pard \fi-737\li737\nowidctlpar\widctlpar\adjustright {\i\f2 SHT}{\f2  (short, 17500 bytes): relocable, supports D40 only, some functions were removed, texts were shortened...
+\par }{\i\f2 MDM}{\f2  (medium, 18589 bytes): relocable, supports tape and D40, good to create 48k progs, can't trace 128k prog.
+\par }{\i\f2 LNG}{\f2  (long, 19122 bytes): relocable, supports tape and D40, can do everything (assembly to pages, trace 128 progs, ...)
+\par }{\i\f2 Prometheus 128 LNG for MB-02+:}{\f2  Non relocable (two versions: at 24576 and at 45920), supports tape and M-02+ (BS DOS). Adapted by Jordan of Exodus/Reaction.
+\par }\pard \qj\nowidctlpar\widctlpar\adjustright {\f2 
+\par }{\b\f2 Installation:}{\f2 
+\par Relocable versions:
+\par Load Prometheus to any address. Then }{\b\f2 Instalation address:}{\f2 xxxxx appears (xxxx is actual start address). You can change it using number keys and delete.
+\par (48 kB only):
+\par On your screen are displayed several things, as }{\b\f2 Monitor:Yes}{\f2  text. You can change it using }{\b\f2 M}{\f2  key. To set colours use: }{\b\f2 P}{\f2  (paper), }{\b\f2 I}{\f2  (ink), }{\b\f2 B}{\f2  (bright), with }{\b\f2 CAPSSHIFT}{\f2 
+ for highlighted line. To change font press }{\b\f2 D}{\f2 . To set keyboard echo lenght, press }{\b\f2 X}{\f2  or }{\b\f2 CS+X}{\f2 . Press}{\b\f2  C}{\f2  to change texts (usually Prometheus displays instructions lowcased and label
+s and constants upcased; you can change it to all letters upcased or lowcased).
+\par After installation press }{\b\f2 Enter}{\f2 .
+\par }\pard \qc\nowidctlpar\widctlpar\adjustright {\f2 \page 
+\par }{\b\fs40 Assembler:}{\f2 
+\par }\pard \qj\nowidctlpar\widctlpar\adjustright {\b\f2 Editor:}{\f2 
+\par On screen you can see:
+\par Error message       Insert/Overwrite    Source end   U-top
+\par             Source text
+\par  highlighted line (in source text)
+\par             Source text
+\par    Edit zone - here you can edit the highlighted line
+\par 
+\par (Source end in 48 version is real end, in 128 0 means 1st byte of page 1, 65535 last byte of page 6. Source is stored (usually, you can change it) in pages 1, 3, 4, 6.)
+\par 
+\par }{\b\f2 Control keys:}{\f2 
+\par }{\b\f2 CS+1 (edit)}{\f2  - edit highlighted line.
+\par }{\b\f2 CS+2 (capslock)}{\f2  - caps lock (inverts function of capsshift, too).
+\par }{\b\f2 CS+3 (true video)}{\f2  - page down.
+\par }{\b\f2 CS+4 (inv video)}{\f2  - page up.
+\par }{\b\f2 CS+5 (left)}{\f2  - moves cursor in edit zone left.
+\par }{\b\f2 CS+6 (right)}{\f2  - moves cursor in edit zone right.
+\par }{\b\f2 CS+7 (up)}{\f2  - moves highlighted line up.
+\par }{\b\f2 CS+8 (down)}{\f2  - moves highlighted line down.
+\par }{\b\f2 CS+9 (graph)}{\f2  - delete line.
+\par }{\b\f2 CS+0 (delete)}{\f2  - backspace in edit zone.
+\par }{\b\f2 SS+Q}{\f2  - clears edit zone.
+\par }{\b\f2 SS+W}{\f2  - switches Insert/Overwrite.
+\par }{\b\f2 SS+H}{\f2  - switch HEX / DEC (in info line and symbol table).
+\par 
+\par }{\b\f2 Editor commands:}{\f2 
+\par You can enter a command only if the edit zone is empty. Then press symbolshift+key, a command appears, then you can type parameters.
+\par These two commands are executed after pressing command key:
+\par }{\b\f2 SS+E}{\f2  - go to text end.
+\par }{\b\f2 SS+K (+)}{\f2  - go to text begin.
+\par 
+\par Block commands:
+\par To select block press }{\b\f2 CS+SS}{\f2 .
+\par }{\b\f2 COPY (SS+C)}{\f2  - copy block.
+\par }{\b\f2 COPY m}{\f2  - move block (as copy and delete), 128 version only.
+\par }{\b\f2 DELETE (SS+D)}{\f2  - delete block.
+\par Search commands:
+\par }{\b\f2 FIND (SS+F)}{\f2 
+\par }{\b\f2 FIND S:XXX}{\f2  - find "XXX" from beginning.
+\par }{\b\f2 FIND s}{\f2  - find next from beginning.
+\par }{\b\f2 FIND b:XXX}{\f2  - find "XXX" in block from block begin.
+\par }{\b\f2 FIND:XXX}{\f2  - find "XXX" from highlighted line to end of text or block (if the last used FIND was with b parameter).
+\par }{\b\f2 FIND}{\f2  - find next fromhighlighted line to end of text or block.
+\par (Example: to skip at block begin type:"}{\b\f2 FIND b: }{\f2 " (one space).)
+\par }{\b\f2 REPLACE (SS+Z)}{\f2 
+\par }{\b\f2 REPLACE:YYY}{\f2  - replaces all "XXX" (found by last FIND) in highlighted line with "YYY", and finds next "XXX".
+\par }{\b\f2 REPLACE}{\f2  - replaces  \'e4ll "XXX" (found by last FIND) in highlighted line with "YYY" (used by last REPLACE), and finds next "XXX".
+\par \page I/O commands:
+\par }{\b\f2 CLEAR (SS+X)}{\f2 
+\par }{\b\f2 CLEAR y}{\f2  - clears source, only locked labels survive. Because it's dangerous function, this Y as YES is necessary for confirmation.
+\par }{\b\f2 CLEAR f}{\f2  - in 128 version only, fast clear. Clears all, it means locked labels too!
+\par }{\b\f2 U-TOP (SS+U)}{\f2  - in 48 version, end of place for source and compiled code. In 128 version, it's end of place for compiled code.
+\par }{\b\f2 S-BEGIN number (SS+I)}{\f2  - 128 only, set begin of source (0 is 1st byte of page 1, 65535 is last byte of page 6).
+\par }{\b\f2 S-TOP(SS+J)}{\f2  - 128 only, displays S-BEGIN and S-TOP.
+\par }{\b\f2 S-TOP number}{\f2  - 128 only, set end of place for source (0 is 1st byte of page 1, 65535 is last byte of page 6).
+\par }{\b\f2 SAVE:name (SS+S)}{\f2  - saves source and symbol table.
+\par }{\b\f2 SAVE}{\f2  - saves source and symbol table as last used name.
+\par }{\b\f2 SAVE b:name, SAVE b}{\f2  - saves block (with full symbol table).
+\par }{\b\f2 SAVE t, SAVE d}{\f2  - 128 only, selects disk or tape for all I/O operations.
+\par }{\b\f2 SAVE a}{\f2  - 128 only, D40 specific. Switches drives A: and B:.
+\par }{\b\f2 LOAD:name (SS+L)}{\f2  - load file. Warning, Prometheus performs only MERGE, not real LOAD; real LOAD can only 128 version, if no source is typed in! After merge (LOAD) is source line by line inserted (like from keyboard)}{\f2\fs16 
+ (you can display it using any key or edit some line using SPACE).
+\par }{\b\f2 LOAD:}{\f2  - loads first source (tape only).
+\par }{\b\f2 LOAD}{\f2  - loads file with last used name (SAVE or LOAD commands).
+\par }{\b\f2 LOAD:!}{\f2  - with D40 performs CATalogue of disk.
+\par }{\b\f2 VERIFY (SS+V)}{\f2  - verify on tape, uses last used name (after SAVE).
+\par }{\b\f2 GENS (SS+G)}{\f2  - syntax as LOAD command. Imports file from GENS assembler to Prometheus (GENS source format: two bytes line number, text (space for tabelation), code 13 as line end). Not availale in MB-02+ version.
+\par }{\b\f2 PATCH (SS+G)}{\f2  - performs CATalogue of disk (MB only).
+\par }{\b\f2 PATCH $0, PATCH @1, PATCH @1$0}{\f2  - sets path and performs CAT (MB only).
+\par 
+\par Other commands:
+\par }{\b\f2 PRINT (SS+P)}{\f2  - prints via #3.
+\par }{\b\f2 PRINT b}{\f2  - prints block, }{\b\f2 TABLE p}{\f2  - prints symbol table.
+\par }{\b\f2 MONITOR (SS+M)}{\f2  - go to monitor (if installed).
+\par }{\b\f2 MONITOR a}{\f2  - ASSEMBLY + MONITOR, assembles source first.
+\par }{\b\f2 BASIC (SS+B)}{\f2  - return to basic, if system variables are corrupted by your program, use next command.
+\par }{\b\f2 NEW (SS+N)}{\f2  - NEW emulation - clears memory upto RAMTOP and restores system variables.
+\par }{\b\f2 QUIT y (SS+Q)}{\f2  - reset (jp 0), as dangerous function needs Y parameter as confirmation (YES).
+\par }{\b\f2 CALC number (SS+Y)}{\f2  - calculates expression or label value (128 only).
+\par \page Assembly commands:
+\par }{\b\f2 ASSEMBLY (SS+A)}{\f2  - assembles.
+\par }{\b\f2 ASSEMBLY b}{\f2  - assembles block.
+\par }{\b\f2 RUN (SS+R)}{\f2  - assembles and runs code (if you remove some bugs, it automatically runs new version).
+\par }{\b\f2 TABLE (SS+T)}{\f2  - shows symbol table. After one screen waits for key - SPACE to cancel, any other key to next page.
+\par }{\b\f2 TABLE:text}{\f2  - 128 only, shows symbol table from the one beginning with "text" in alphabetical order (!) (example: labels are ABR, GAP, GUN, ZZOOM. TABLE:GB shows labels GUN, ZOOM).
+\par }{\b\f2 TABLE p}{\f2  - prints symbol table via #3.
+\par }{\b\f2 TABLE c}{\f2  - clear table. Removes unused labels from table, clears values of labels (saves locked labels, they aren't removed and their value is not cleared).
+\par }{\b\f2 TABLE l}{\f2  - locks all labels.
+\par }{\b\f2 TABLE u}{\f2 
+ - unlocks all labels. It's good for divided compilation - you can write one part of source (example:ORG 25000:OP equ 40000:START ld bc,OP:ret), compile it, lock labels and clear source (labels are still stored). Then you can write second part (example:OR
+G OP:CALL START:RET). Its sense was on 48kB Spectrum, when it was necessary to divide long source.
+\par 
+\par }{\b\i\f2 Error messages while editing:}{\f2 
+\par Bad mnemonic - nonexisting instruction.
+\par Bad operand - bad operand.
+\par Big number - larger than 65535.
+\par Syntax horror - something is wrong here in Denmark...
+\par Bad string - bad string in DEFB or DEFM instruction.
+\par Bad instruction - mnemonic is good, but this instruction cannot have these operands.
+\par Memory full - memory full (you surely have 48kB Spectrum).
+\par XXXX unknown - nondefined label used, for example in U-TOP or CALC commands...
+\par Source ERROR - corrupted file was loaded.
+\par 
+\par }{\b\i\f2 Error messages while assembling:}{\f2 
+\par Bad PUT (ORG) - you tried to overwrite assembler, source or protected memory place.
+\par XXXX unknown - nondefined label used.
+\par Already defined - the same name of label used more time.
+\par Big number - 8bit number (ld a,N), relative jump, (ix+N) overload.
+\par ENT ? - you tried to RUN source without entry point.
+\par 
+\par }{\b\f2 Assembler instructions:}{\f2 
+\par }{\i\f2 Expressions:}{\f2 
+\par +,-,*,/ as usually, ? is MOD, $ is address counter, # means HEX, % means BIN, "text" is usual text, 'text' is inverted text ("tex","t"+128). Prometheus computes from left to right!
+\par }{\i\f2 \page Z-80 instructions:}{\f2 
+\par Prometheus can recognise all "known" and some "secret" Z80 instructions. 
+\par In some instructions, working with address, you can write for example: ld a,(label. Then press enter and the character ")" appears. Warning - ld a,(hl is then ld a,(HL) as label, not register!
+\par The "secret" ones are:
+\par SLIA (shift left inverted arithmetic)
+\par slia b c d e h l (hl) a
+\par IX and IY halves
+\par inc hx lx hy ly
+\par dec hx lx hy ly
+\par ld hx lx hy ly,N
+\par ld register,hx lx hy ly
+\par ld hx,hx hx,lx lx,hx lx,lx
+\par ld hy,hy hy,ly ly,hy ly,ly
+\par add a,hx lx hy ly
+\par adc a,hx lx hy ly
+\par sub hx lx hy ly
+\par sbc a,hx lx hy ly
+\par and hx lx hy ly
+\par xor hx lx hy ly
+\par or hx lx hy ly
+\par cp hx lx hy ly
+\par 
+\par }{\i\f2 Assembler pseudoinstructions:}{\f2 
+\par Comment must begin with ";" at the begin of line (and takes all the line).
+\par \tab }{\b\f2 ORG}{\f2 \tab number - address where final code will work
+\par \tab }{\b\f2 PUT}{\f2 \tab number - address to store assembled code (example - screen located code: ORG 16384: PUT 60000. You'll then save code from 60000 and load to screen and run it).
+\par \tab }{\b\f2 PUT}{\f2 \tab number - if the number is 0, 1, 3, 4, 6 or 7, code'll be assembled to that page of 128kB memory. 128 only.
+\par Label\tab }{\b\f2 EQU}{\f2 \tab number - defines constant.
+\par \tab }{\b\f2 ENT}{\f2 \tab number - defines entry point for RUN (usually ENT $ directly at the place).
+\par \tab }{\b\f2 DEFB}{\f2 \tab number, number, number - byte values.
+\par \tab }{\b\f2 DEFW}{\f2 \tab number, number, number - word values (two bytes).
+\par \tab }{\b\f2 DEFM}{\f2 \tab text - "text" is normal text, 'text' is inverted (as "tex","t"+128).
+\par \tab }{\b\f2 DEFS}{\f2 \tab number - leaves space (in bytes).
+\par \page }{\b\f2 Internal source format:}{\f2 
+\par Prometheus assembles line after you press ENTER while editing (so it provides syntax control) and in "source" are stored instructions as their real values - so source is NOT tokenized, but pre-assembled!
+\par 
+\par First byte:
+\par Operation code of instruction or pseudoinstruction (pseudoinstructions have in second byte nonexisting combination of prefixes).
+\par Second byte = Information byte:
+\par bit 7 - prefix #CB (203)
+\par bit 6 - prefix #ED (237)
+\par bit 5 - prefix #DD (221)
+\par bit 4 - prefix #FD (251)
+\par bit 3 - label used in this instruction
+\par bit 2-0 - type:\tab 0 - without operand
+\par \tab \tab \tab 1 - 1 byte, -256..256
+\par \tab \tab \tab 2 - 2bytes, -65535..65535
+\par \tab \tab \tab 3 - 1 byte, -128..128
+\par \tab \tab \tab 4 - 1 byte, (ix+N)
+\par \tab \tab \tab 5 - (ix+N),N
+\par \tab \tab \tab 6 - rst p (p is stored in operation code)
+\par \tab \tab \tab 7 - noninstruction
+\par If bit 3=1 and bits 2-0 aren't only zero, third byte follows:
+\par Bit 3=1, bits 2-0 =0: follows number of label, at the end 192+lenght.
+\par Bit 3=0, bits 2-0 aren't only zero: follows all expression, labels as their numbers, at the end 192+lenght.
+\par Bit 3=1, bits 2-0 aren't only zero: follows two bytes of label number, then expression, labels as their numbers, at the end 192+lenght.
+\par Example:
+\par 2*LABEL+#23
+\par "2","*","128+H,L,"+","#","2","3",192+8
+\par Empty line has infobyte 48 or 56 (if label used), noninstructions have infobyte 55 or 63 (if label used). Opcode (first byte) of noninstructions:
+\par \tab \tab \tab 0 - empty line
+\par \tab \tab \tab 1 - comment
+\par \tab \tab \tab 2 - ent
+\par \tab \tab \tab 3 - equ
+\par \tab \tab \tab 4 - org
+\par \tab \tab \tab 5 - put
+\par \tab \tab \tab 6 - defb
+\par \tab \tab \tab 7 - defm
+\par \tab \tab \tab 8 - defs
+\par \tab \tab \tab 9 - defw
+\par ...it's very complicated.
+\par }{\b\f2 Symbols table format:}{\f2 
+\par It's simple:
+\par Two bytes: total labels (counter)
+\par 2 bytes*counter: relation to names table (bits 6 and 7:locked and defined label)
+\par Names table: two bytes value+'name' (inverted text)
+\par All is stored in alphabetical order.
+\par \page 
+\par }\pard \qc\nowidctlpar\widctlpar\adjustright {\b\fs40 Monitor:}{\f2 
+\par }\pard \qj\nowidctlpar\widctlpar\adjustright {\f2 Prometheus monitor is very powerfull tool, a bit simillar to DevastAce or VAST monitors.
+\par 
+\par }{\b\f2 Memory:}{\f2 
+\par }{\b\f2 Q}{\f2  - return to assembler
+\par }{\b\f2 M}{\f2  - set new actual address. Question }{\b\f2 Memory}{\f2  appears. You can enter any numbe, label or expression (simply "number"). To cancel press }{\b\f2 EDIT}{\f2 .
+\par }{\b\f2 A}{\f2  - 128 LNG only, switches memory pages (0,1,3,4,6,7).
+\par }{\b\f2 B}{\f2  - 128 LNG only, turns memory switching on / off.
+\par }{\b\f2 CS+6}{\f2  - go to next instruction.
+\par }{\b\f2 ENTER}{\f2  - one byte forward.}{\b\f2 
+\par CS+7}{\f2  - one byte back.
+\par }{\b\f2 CS+8}{\f2  - change depth - level down. Question }{\b\f2 Memory}{\f2  appears. You can go 10 levels down to program.
+\par }{\b\f2 CS+9}{\f2  - 128 only, change depth - level down. A value in actual instruction (for example CALL) is used.
+\par }{\b\f2 CS+5}{\f2  - change depth - level up. This returns you back to "surface".
+\par }{\b\f2 CS+0}{\f2  - clear screen.
+\par }{\b\f2 CS+2}{\f2  - clears only panels for dump and disassem.
+\par }{\b\f2 SS+4}{\f2  - disassembly to panel from actual address. Press }{\b\f2 EDIT}{\f2  to stop.
+\par }{\b\f2 V}{\f2  - disassembly to panel. Question }{\b\f2 First}{\f2  appears. Press }{\b\f2 EDIT}{\f2  to stop.
+\par }{\b\f2 SS+C}{\f2  - switch these modes of address display: number only / labels / label and label+1.
+\par }{\b\f2 C}{\f2  - display address number / labels only.
+\par }{\b\f2 SS+3}{\f2  - switch HEX / DEC.
+\par }{\b\f2 D}{\f2  - disassembly to printer via #3. Monitor asks for }{\b\f2 First}{\f2  and }{\b\f2 Last}{\f2 , the last will be NOT disassembled! Press CS+ENTER to stop.
+\par }{\b\f2 SS+D}{\f2  - disassembly to source text. Monitor asks for }{\b\f2 First}{\f2  and }{\b\f2 Last}{\f2 , the last will be NOT disassembled! Press CS+ENTER to stop or EDIT to cancel.
+\par }{\b\f2 O}{\f2  - text dump from actual address. Press }{\b\f2 EDIT}{\f2  to stop.
+\par }{\b\f2 SS+O}{\f2  - text dump. Monitor asks you for }{\b\f2 First}{\f2  address. Press }{\b\f2 EDIT}{\f2  to stop.
+\par }{\b\f2 L}{\f2  - dump from actual address. Press }{\b\f2 EDIT}{\f2  to stop.
+\par }{\b\f2 SS+L}{\f2  - dump. Monitor asks you for }{\b\f2 First}{\f2  address. Press }{\b\f2 EDIT}{\f2  to stop.
+\par }{\b\f2 G}{\f2  - find. Monitor asks you for 5 bytes (characters, numbers, expressions). For "any value" enter ":".
+\par }{\b\f2 N}{\f2  - find next.
+\par }{\b\f2 I}{\f2  - copy block. Monitor asks you for }{\b\f2 First}{\f2 , }{\b\f2 Last}{\f2  and target address }{\b\f2 To}{\f2 . READ/WRITE error means, that assembler, source or protected area is on target place.
+\par }{\b\f2 SS+I}{\f2  - copy block. Monitor asks you for }{\b\f2 First}{\f2 , }{\b\f2 Lenght}{\f2  and target address }{\b\f2 To}{\f2 . READ/WRITE error means, that assembler, source or protected area is on target place.
+\par }{\b\f2 P}{\f2  - fill block. Monitor asks you for }{\b\f2 First}{\f2 , }{\b\f2 Last}{\f2  and }{\b\f2 With}{\f2 . READ/WRITE error means, that assembler, source or protected area is on target place.
+\par }{\b\f2 SS+P}{\f2  - fill block. Monitor asks you for }{\b\f2 First}{\f2 , }{\b\f2 Lenght}{\f2  and }{\b\f2 With}{\f2 . READ/WRITE error means, that assembler, source or protected area is on target place.
+\par }{\b\f2 SPACE}{\f2  - edit one assembler line. You can write everything like in assembler (instructions, DEFB, DEFW, DEFM, EQU and define new labels, for example for disassembly). Press }{\b\f2 EDIT}{\f2 
+ to cancel. Bad PUT(ORG) error means, that assembler, source or protected area is on target place.
+\par }{\b\f2 E}{\f2  - edit more assembler lines. Press }{\b\f2 EDIT}{\f2  to cancel.
+\par \page }{\b\f2 I/O operations:
+\par S}{\f2  - save. Monitor asks you for }{\b\f2 First}{\f2  and }{\b\f2 Last}{\f2  byte and }{\b\f2 Leader}{\f2 . Leader can be value or }{\b\f2 :name}{\f2  (don't forget ":").
+\par }{\b\f2 SS+S}{\f2  - save. Monitor asks you for }{\b\f2 First}{\f2  byte, }{\b\f2 Lenght}{\f2  and }{\b\f2 Leader}{\f2 . Leader can be value or }{\b\f2 :name}{\f2 .
+\par }{\b\f2 J}{\f2  - load. Monitor asks you for }{\b\f2 First}{\f2  and }{\b\f2 Last}{\f2  byte and }{\b\f2 Leader}{\f2 . Leader can be value or }{\b\f2 :name}{\f2 .
+\par }{\b\f2 SS+J}{\f2  - load. Monitor asks you for }{\b\f2 First}{\f2  byte, }{\b\f2 Lenght}{\f2  and }{\b\f2 Leader}{\f2 . Leader can be value or }{\b\f2 :name}{\f2 .
+\par }{\b\f2 Y}{\f2  - read head from tape. Displays type, name, start, lenght and third parameter, and awaits a key. Press }{\b\f2 J}{\f2  to load this block or other key to cancel.
+\par 
+\par }{\b\f2 Tracing:}{\f2 
+\par }{\b\f2 SS+H}{\f2  - call. Monitor asks you for address }{\b\f2 Call}{\f2 , return is possible using ret.
+\par }{\b\f2 W}{\f2  - set actual address as starting for run with breakpoint.
+\par }{\b\f2 SS+U}{\f2  - set breakpoint to actual address and jump to address set using W function. Breakpoint takes 3 bytes.
+\par }{\b\f2 SS+Z}{\f2  - step. Provides instruction at actual address. CALL and RST simulation follows seting (see X function).
+\par }{\b\f2 T}{\f2  - slow tracing. Provides one instruction, refreshes panel and takes next instruction... Press }{\b\f2 BREAK}{\f2  to stop and }{\b\f2 CS+ENTER}{\f2  to turn display off.
+\par }{\b\f2 SS+T}{\f2  - fast tracing. Asks for stop address }{\b\f2 Last}{\f2 , provides instructions. Press }{\b\f2 BREAK}{\f2  to stop or }{\b\f2 CS+ENTER}{\f2  to display panel. Stops automatically on stop address.
+\par }{\b\f2 SS+M}{\f2  - switches EI / DI.
+\par }{\b\f2 SS+B}{\f2  - exchanges register set (EXX + AX AF,AF').
+\par }{\b\f2 SS+N}{\f2  - set registers. Question }{\b\f2 ld}{\f2  appears. enter register name, coma or space and new value.
+\par Registers in Monitor are:
+\par One byte: a,b,c,d,e,h,l,hx,lx,hy,ly,i,r
+\par two bytes: af,bc,de,hl,ix,iy,sp
+\par Tacts counter: t
+\par Memory pointers: x,y
+\par Flags: f (to change carry: ld f,c; to change sign: ld f,s; to change zero: ld f,z; to change parity: ld f,p).
+\par }{\b\f2 1}{\f2  - set DEFB area. Displays areas 0..4, first and last byte of each. Press number key (}{\b\f2 0, 1, 2, 3, 4}{\f2 ) to erase this area or }{\b\f2 I}{\f2  to define new DEFB area. Monitor asks you then for }{\b\f2 First}{\f2  and }{\b\f2 Last
+}{\f2  byte of area (Last is member of area!).
+\par }{\b\f2 2}{\f2  - set DEFW area. Displays areas 0..4, first and last byte of each. Press number key (}{\b\f2 0, 1, 2, 3, 4}{\f2 ) to erase this area or }{\b\f2 I}{\f2  to define new DEFW area. Monitor asks you then for }{\b\f2 First}{\f2  and }{\b\f2 Last
+}{\f2  byte of area (Last is member of area!).
+\par }{\b\f2 3}{\f2  - set READ protected area. Displays areas 0..4, first and last byte of each. Press number key (}{\b\f2 0, 1, 2, 3, 4}{\f2 ) to erase this area or }{\b\f2 I}{\f2  to define new READ protected area. Monitor asks you then for }{\b\f2 First}{
+\f2  and }{\b\f2 Last}{\f2  byte of area.
+\par }{\b\f2 4}{\f2  - set WRITE protected area. Displays areas 0..4, first and last byte of each. Press number key (}{\b\f2 0, 1, 2, 3, 4}{\f2 ) to erase this area or }{\b\f2 I}{\f2  to define new WRITE protected area. Monitor asks you then for }{\b\f2 First}
+{\f2  and }{\b\f2 Last}{\f2  byte of area.
+\par }{\b\f2 5}{\f2  - set RUN protected area. Displays areas 0..4, first and last byte of each. Press number key (}{\b\f2 0, 1, 2, 3, 4}{\f2 ) to erase this area or }{\b\f2 I}{\f2  to define new RUN protected area. Monitor asks you then for }{\b\f2 First}{
+\f2  and }{\b\f2 Last}{\f2  byte of area.\page }{\b\f2 6}{\f2  - set addresses for direct call (DEF mode, see X function). Displays addresses 0..9. Press number key (}{\b\f2 0, 1, 2, 3, 4, 5, 6, 7, 8, 9}{\f2 ) to erase this address or }{\b\f2 I}{\f2 
+ to define new address.
+\par }{\b\f2 X}{\f2  - change mode of tracing CALL and RST instructions. Modes are three: NON / DEF / ALL. NON means, that no CALL 'll be traced as one
+ instruction with all subroutine. DEF means, that calls to defined addresses 'll be traced as one instruction with subroutine. ALL means, that every CALL performs his subroutine as one instruction.
+\par }{\b\f2 SS+X}{\f2  - turn all these tests on / off.
+\par }{\b\f2 SS+W}{\f2  - edit panel.
+\par 
+\par }{\b\f2 Panel editor:}{\f2 
+\par Here can you design your own panel.
+\par }{\b\f2 CS+1 (EDIT}{\f2 ) - quit to Monitor.
+\par }{\b\f2 4}{\f2  - go to next item.
+\par }{\b\f2 3}{\f2  - go to previous item.
+\par }{\b\f2 5, 6, 7, 8}{\f2  - move item left, down, up, right.
+\par }{\b\f2 A}{\f2  to }{\b\f2 Z}{\f2  - set size of item (0..25). It turns registers display on/off, and sets size of dump panels.
+\par }{\b\f2 SS+D}{\f2  - enables or disables DEC.
+\par }{\b\f2 SS+H}{\f2  - enables or disables HEX.
+\par }{\b\f2 SS+B}{\f2  - enables or disables BIN.
+\par }{\b\f2 SS+C}{\f2  - enables or disables character dump.
+\par }{\b\f2 SS+T}{\f2  - switches memory dump bytes / words.
+\par }{\b\f2 SS+S}{\f2  - changes direction of dump - horizontal or vertical.
+\par 
+\par Item list:
+\par Edit zone  (one line)
+\par Dump panel
+\par Disassem panel
+\par Interrupt (EI / DI)
+\par One byte registers (a,b,c,d,e,h,l,i,r,hx,hl,hy,ly,f)
+\par Two bytes registers (af,bc,de,hl,sp,ix,iy)
+\par Tacts counter (T)
+\par Memory dump from pointer (X,Y)
+\par Memory dump from address in register (bc),(de),(hl),(sp),(ix),(iy)
+\par }}

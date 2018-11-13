@@ -1,0 +1,112 @@
+PROMETHEUS 128 LONG (MB02 version / HI mem) - 2008 (30.12.2008) modified by VELESOFT
+====================================================================================
+
+PROMETHEUS 128 for MB02+ interface - HI-MEM version (from memory 44854) with disc support (MB02+)
+
+INSTALLATION MANUAL:
+--------------------
+1) load install basic
+2) assembler PROMETHEUS is loaded and patched
+3) insert file name for save modified Prometheus (save "name" code 44854,19256)
+
+
+OTHER INFORMATIONS:
+-------------------
+- work without ZX rom
+- can trace program in allram mode (MB02/ZXCF/DIVIDE/+2A allram,etc...)
+- length of this MB02 PROMETHEUS 128 LONG code is (3 bytes + 1063 bytes patch + 18190 bytes main code)
+- SS+B use quit from PROMETHEUS. But if ZX ROM is not present in low 16kB, then program will crash.
+- DISC operations LOAD and SAVE can be used only if ZX rom is set
+
+
+MODIFICATIONS:
+--------------
+Prometheus is modified in basic loader.
+
+(BEGIN = starting adress of PROMETHEUS)
+BEGIN+12831 = CALL #28E is rewrite to CALL BEGIN-1063
+(from adress BEGIN-1063 is copy of original rom routine for keys testing)
+
+At adress BEGIN+13046 must be jump to new CHAR printing routine:
+(original code is: ld c,a + add hl,hl + add hl,hl)
+new code is:
+CALL BEGIN-1063+49
+NOP
+
+instruction at adress BEGIN+12730 set begin of CHAR table:
+BEGIN+12730 = LD HL,#204 is rewrite to LD HL,BEGIN-1063+78-1 (table begin-1)
+
+BEGIN+4674  = JP #1F56 is rewrite to JP BEGIN-1063+1051+2
+(at adress BEGIN+8834 is CALL PO,#1F56 - this instruction is without effect ????, not patched yet. Can by rewrited to CALL PO,BEGIN+1051+2 if prometheus will crash)
+
+BEGIN+3196  = CALL #1F54 is rewrite to CALL BEGIN-1063+1051
+BEGIN+3231  = CALL #1F54 is rewrite to CALL BEGIN-1063+1051
+BEGIN+9104  = CALL #1F54 is rewrite to CALL BEGIN-1063+1051
+
+BEGIN+7804  = CALL #22B0 is rewrite to CALL BEGIN-1063+1024
+BEGIN+10206 = CALL #22B0 is rewrite to CALL BEGIN-1063+1024
+BEGIN+12647 = CALL #22B0 is rewrite to CALL BEGIN-1063+1024
+
+From adress BEGIN-1063+256 is ZX FONT (768 bytes)
+
+After load patch to adress BEGIN-1063 (length of patch is 1063 bytes)write this instruction:
+BEGIN-1063+50 = LD DE,BEGIN-1063+256-15616 (new font adress)
+
+At adress BEGIN-1063-3 is writed instruction JP BEGIN for correct start
+
+BEGIN+5648  = LD BC,BEGIN-1063-3 (protect patch)
+BEGIN+9441  = LD DE,BEGIN-1063-3 (protect patch)
+
+REM: ( on adress BEGIN+13 is LD DE,BEGIN - crash if is modified )
+
+
+
+Patch contain:
+--------------
+- from ADR+0 is key test routine:
+
+              *OBSLUHA KLAVESNICE                                           
+              *vklada do _E hodnotu stisknute klavesy #00..#27              
+              *zaroven znaci do _D shiftovou funkci                         
+              *                                                             
+ 2E 2F               ld   L,#2F        ukazovatko na konec tabulky          
+                                       klicovych kodu +8                    
+ 11 FF FF            ld   DE,#FFFF     zadne tlacitko                       
+ 01 FE FE            ld   BC,#FEFE     _C I/O port klavesnice               
+                                       _B maska pro test s jednou nulou     
+ ED 78        NXTROW in   A,(C)        zkontroluje jednu petici klaves      
+ 2F                  cpl               jednickovy bit oznacuje stisk        
+ E6 1F               and  #1F          s klavesnici souvisi jen bit0..bit5  
+ 28 0E               jr   Z,NOKEY      zadny stisk                          
+ 67                  ld   H,A          hodnota z matice do _H               
+ 7D                  ld   A,L          pocatecni hodnota                    
+ 14           TEST3  inc  D            _D je #FF pri 1 az 2 stisk.klavesach 
+ C0                  ret  NZ           navrat pri vice nez 2 stisk.klavesach
+ D6 08        KEYNO  sub  8            _A ukazuje do tabulky klicovych kodu 
+ CB 3C               srl  H            hledani stisku klavesy               
+ 30 FA               jr   NC,KEYNO     smycka do nastaveni CARRY            
+ 53                  ld   D,E          pro 2 pripustne klavesy znovu #FF    
+ 5F                  ld   E,A          kod klavesy (#00..#27) do _E         
+ 20 F4               jr   NZ,TEST3     kontrola dalsi klavesy v rade        
+ 2D           NOKEY  dec  L            nasledujici petice klaves            
+ CB 00               rlc  B            0 v masce posunuta o misto doleva    
+ 38 E6               jr   C,NXTROW     dalsi rada klaves                    
+              *                                                             
+              *kdyz se 0 z _B objevi v CARRY, je rutina ukoncena            
+              *                                                             
+ 7A                  ld   A,D          test funkcnich klaves                
+ 3C                  inc  A            pri jedne klavese je zde #FF         
+ C8                  ret  Z            navrat pri jedine stlacene klavese   
+ FE 28               cp   #28          klavesa 'CAPS shift' ?               
+ C8                  ret  Z            ano                                  
+ FE 19               cp   #19          klavesa 'SYMBOL shift' ?             
+ C8                  ret  Z            ano                                  
+ 7B                  ld   A,E          zamena registru _E a _D              
+ 5A                  ld   E,D                                               
+ 57                  ld   D,A          k prezkouseni                        
+ FE 18               cp   #18          kombinace 'SYMBOL' & dalsi klavesa   
+ C9                  ret               nastavi ZERO
+
+
+- from ADR+49 is code for shift adress to new CHAR font
+- from ADR+78 is copy of KEY CODE table(137 bytes) from ZX rom(from adress #0204)

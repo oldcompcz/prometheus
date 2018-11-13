@@ -1,0 +1,826 @@
+<html><head> 
+
+<!-- #BeginTemplate "/Templates/popis neceho.dwt" --> 
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Prometheus - english</title>
+<!-- #EndEditable --> 
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1250">
+<style type="text/css">
+<!--
+a:link {  font-weight: bold; text-decoration: none; color: #000000}
+a:visited {  font-weight: bold; text-decoration: none; color: #000000}
+a:hover {  color: #9999FF; font-weight: bold}
+-->
+</style>
+
+<!-- Sunbelt Popup Killer - script has been inserted by SPF -->
+<script type="text/javascript">
+<!--
+var NoPopupsDone = 0;var CurrWindowOpen = window.open;var CurrWindowOpen2 = window.open;var orig_setTimeout = window.setTimeout;var orig_setInterval = window.setInterval;if ( window.showModelessDialog ) { var orig_showModelessDialog = window.showModelessDialog;} if ( window.showModalDialog ) { var orig_showModalDialog = window.showModalDialog;} 
+var cnt = 0;var popupType = "direct";var KPF_LOG_URL = "http://127.0.0.1:44501/pl.html?";var KPF_TIMEOUT = 100;var onUnloadFlag = false;var KPF_CompleteLoaded = false;
+function nullMethod() {}function nullWindow() {	 this.window = new Object(); this.document = new Object(); this.document.open=this.document.close=this.document.write=this.document.writeln=nullMethod; this.alert=this.back=this.blur=this.captureEvents=this.clearInterval=this.clearTimeout=this.close=this.confirm=this.dump=this.escape=this.focus=this.forward=this.GetAttention=this.getSelection=this.home=this.moveBy=this.moveTo=this.open=this.print=this.prompt=this.releaseEvents=this.resizeBy=this.resizeTo=this.scroll=this.scrollBy=this.scrollByLines=this.scrollByPages=this.scrollTo=this.setCursor=this.setInterval=this.setTimeout=this.sizeToContent=this.stop=this.unescape=this.updateCommands=nullMethod;}
+function destroyIframe(ifr){ if (ifr != document.getElementById("kpfLogFrame"))   { var x = ifr.parentNode.removeChild(ifr);    delete x;  };}
+function sendStream(s, idx, kpf_pt){ try {        var ifr = document.getElementById("kpfLogFrame");   var tmp = ifr.cloneNode(true);   tmp.id  = "ifr_" + idx;   var s2 = "srv=" + document.location + "&url=" + s + "&pty=" + kpf_pt;   tmp.src = KPF_LOG_URL + escape(s2);   document.body.appendChild(tmp); } catch (e) {   orig_setTimeout("sendStream('" + s + "', " + idx + ",'" + kpf_pt + "')", KPF_TIMEOUT); }}
+function sendUrl(url){ if (onUnloadFlag)   sendStream(url, cnt++, popupType); else  {  try {   orig_setTimeout("sendStream('" + url + "', cnt++,'" + popupType + "')", KPF_TIMEOUT);  }   catch (e)   {}	  }}
+function newOpen(url, name, atr) {wnd = new nullWindow();wnd.focus = nullWindow;wnd.opener = this.window;sendUrl(url);return(wnd); }
+function newOpen2(url, name, atr) { sendUrl(url); return(new nullWindow());}
+function stopPopups(kpf_pt) { popupType = kpf_pt; CurrWindowOpen = window.open; window.open = newOpen2; }
+function startPopups(kpf_pt) { window.open = CurrWindowOpen;  popupType = kpf_pt;}
+function my_setTimeout(one, two) { if (typeof(one) == "function") {    function myFun(){}    myFun=one;    function newFun() {     stopPopups('ontimer');      myFun();      startPopups('direct');    }	    try {      return orig_setTimeout(newFun,two);    }    catch (e)  {      try {	    return eval("newFun()");      }      catch(e) { }    }   }  else {    try {      return orig_setTimeout("stopPopups('ontimer');"+one+"; startPopups('direct');", two);    }    catch (e)  {      try {        return eval("stopPopups('ontimer');"+one+"; startPopups('direct');");      }      catch(e) { }    }  }}
+function my_setInterval(one, two) {  if (typeof(one) == "function") {    function myFun(){}    myFun=one;    function newFun() {      stopPopups('ontimer');      myFun();      startPopups('direct');    }	    try {      return orig_setInterval(newFun,two);    }    catch (e) { }  }  else {    try {      return orig_setInterval("stopPopups('ontimer');"+one+";startPopups('direct');", two);    }     catch (e) { }  }}
+function my_onload() { var my_retcode = true; stopPopups("onload"); if(orig_onload)  my_retcode = orig_onload(); startPopups("direct"); KPF_CompleteLoaded = true; return my_retcode; }
+function my_unload() {  var my_retcode = true; var cnt = 0; stopPopups("onunload"); onUnloadFlag = true; if(orig_onunload)   my_retcode = orig_onunload(); startPopups("direct"); return my_retcode;}
+function my_windowopen(url, name, atr){ if ( (! KPF_CompleteLoaded) || (document.all && event != null && event.type == "mouseover") )  {  if ( ! KPF_CompleteLoaded) {   popupType = "direct";  }  else {   popupType = "mouseover";  }  sendUrl(url);  popupType = "direct"; } else {   try {   return CurrWindowOpen2(url, name, atr);  }   catch (e)   {}  }}
+function my_showModelessDialog (url , arguments , features) { if (!NoPopupsDone) {   var wnd = new nullWindow();  popupType = "direct_dialog";  sendUrl(url);  popupType = "direct";  return wnd; } if (popupType!="direct" | (event && event.type == "mouseover") ) {   var curr_popup = popupType;  if (event && event.type == "mouseover") {   popupType = "mouseover";  }    popupType = popupType+"_dialog";  sendUrl(url);  popupType = curr_popup;  return ( new nullWindow() ); } else {   return ( orig_showModelessDialog(url , arguments , features) );  } }
+function my_showModalDialog (url , arguments , features) { if (!NoPopupsDone) {   popupType = "direct_dialog";  sendUrl(url);  popupType = "direct";  return ""; } if (popupType!="direct" | (event && event.type == "mouseover") ) {   var curr_popup = popupType;  if (event && event.type == "mouseover") {   popupType = "mouseover";  }    popupType = popupType+"_dialog";  sendUrl(url);  popupType = curr_popup;  return ""; } else {   return ( orig_showModalDialog(url , arguments , features) );  } }
+function nopopups() { if(!NoPopupsDone)   {	var oldReadyStateChange = null;		if( document.onreadystatechange )	{		oldReaduStateChange = document.onreadystatechange;		document.onreadystatechange = null;	}  	NoPopupsDone = 1;	orig_onload = window.onload;	orig_onunload = window.onunload;	window.onload = my_onload;	window.onunload = my_unload;	window.open = my_windowopen;
+	if( oldReadyStateChange )	{		document.onreadystatechange = oldReadyStateChange;	}  }
+}
+window.setTimeout = my_setTimeout;window.setInterval = my_setInterval;window.open = newOpen;if ( orig_showModelessDialog ) { window.showModelessDialog = my_showModelessDialog;}if ( orig_showModalDialog ) { window.showModalDialog = my_showModalDialog;}
+//-->
+</script>
+<!-- Sunbelt Popup Killer - end of the script inserted by SPF -->
+</head><body background="eng_prometheus_soubory/sysel_bkg3.gif" bgcolor="#ffcc99" text="#333333" vlink="#666666" link="#999999">
+<table border="0" width="100%">
+  <tbody><tr> 
+	<td valign="top" width="*"> 
+	  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+		<tbody><tr> 
+		  <td colspan="2" width="16" height="16"> 
+			<p><img src="eng_prometheus_soubory/roh1.gif" width="16" height="16"></p>
+		  </td>
+		  <td rowspan="2" bgcolor="#9999ff" height="20"> 
+			<div align="center"><b><font size="2"><!-- #BeginEditable "title" -->Description 
+			  <!-- #EndEditable --></font></b></div>
+		  </td>
+		  <td colspan="2" width="16" height="16"><img src="eng_prometheus_soubory/roh2.gif" width="16" height="16"></td>
+		</tr>
+		<tr> 
+		  <td colspan="2" bgcolor="#9999ff" height="4"></td>
+		  <td colspan="2" bgcolor="#9999ff" height="4"></td>
+		</tr>
+		<tr> 
+		  <td bgcolor="#9999ff" width="4"></td>
+		  <td background="eng_prometheus_soubory/grid1.gif" width="12"></td>
+		  <td background="eng_prometheus_soubory/grid1.gif"><!-- #BeginEditable "popis" --> 
+			<h1 align="center">Prometheus</h1>
+			<h2 align="center"> Z80 Turbo assembler </h2>
+			<h6 align="center">Prometheus is not only assembler, it has powerfull 
+			  excellent monitor, it's better to call it "developing and debugging 
+			  system".</h6>
+			<h4 align="center"> </h4>
+			<h4 align="center">History:</h4>
+			<p align="justify">Prometheus was developed using GENS 3.1 and GENS 
+			  3E. Source was about 40 kB long, divided into two parts, plus about 
+			  5kB label table each part. Assembly time was 40 s.</p>
+			<p align="justify">Then source was converted to first Prometheus version 
+			  and assembler was developed on itself! After converting was source 
+			  lenght 20 kB (with label table, it's integral part of source), assembly 
+			  time was 3 s.</p>
+			<h4 align="center">Versions:</h4>
+			<ul>
+			  <li><b><i>Prometheus 48<br>
+				<br>
+				</i></b></li>
+			  <ul>
+				<li><i>Prometheus</i>: 11kB assembler, 5kB monitor, relocable, 
+				  independent on system variables (can be placed at 23296), source/assembled 
+				  code ratio 3.5/1 (GENS 8/1), compilation 3kB/sec, supports tape, 
+				  monitor can measure tacts taken by routine. Probably the best 
+				  assembler for ZX 48 with tape!<br>
+				  <br>
+				</li>
+				<li><i>DISKPROM 48, DISKASSEM 48</i>: relocable 48 version, supports 
+				  tape or D40/80 disk (MDOS). DISKPROM is with monitor (16 kB), 
+				  DISKASSEM without monitor (11kB). Warning, D40 needs system 
+				  variables!<br>
+				  <br>
+				</li>
+				<li>TR-DOS version of Prometheus 48 is available somewhere, too...<br>
+				  <br>
+				</li>
+			  </ul>
+			  <li><b><i>Prometheus 128</i></b> <br>
+				<br>
+				<ul>
+				  <li>upto 64kB source, assembly is a bit slower than 48 version.<br>
+					<br>
+				  </li>
+				  <li><i>SHT</i> (short, 17500 bytes): relocable, supports D40 
+					only, some functions were removed, texts were shortened...</li>
+				  <li><i>MDM</i> (medium, 18589 bytes): relocable, supports tape 
+					and D40, good to create 48k progs, can't trace 128k prog.</li>
+				  <li><i>LNG</i> (long, 19122 bytes): relocable, supports tape 
+					and D40, can do everything (assembly to pages, trace 128 progs, 
+					...)<br>
+					<br>
+				  </li>
+				  <li> <i>Prometheus 128 LNG for MB-02+:</i> Non relocable (two 
+					versions: at 24576 and at 45920), supports tape and M-02+ 
+					(BS DOS). Adapted by Jordan of Exodus/Reaction.</li>
+				</ul>
+			</li></ul>
+			<h4 align="center">Installation:</h4>
+			<p align="justify">Relocable versions:</p>
+			<p align="justify">Load Prometheus to any address. Then <b>Instalation 
+			  address:</b>xxxxx appears (xxxx is actual start address). You can 
+			  change it using number keys and delete.</p>
+			<p align="justify">(48 kB only):</p>
+			<p align="justify">On your screen are displayed several things, as 
+			  <b>Monitor:Yes</b> text. You can change it using <b>M</b> key. To 
+			  set colours use: <b>P</b> (paper), <b>I</b> (ink), <b>B</b> (bright), 
+			  with <b>CAPSSHIFT</b> for highlighted line. To change font press 
+			  <b>D</b>. To set keyboard echo lenght, press <b>X</b> or <b>CS+X</b>. 
+			  Press<b> C</b> to change texts (usually Prometheus displays instructions 
+			  lowcased and labels and constants upcased; you can change it to 
+			  all letters upcased or lowcased).</p>
+			<p align="justify">After installation press <b>Enter</b>.</p>
+			<p align="center"> 
+			</p><p align="center"> </p>
+			<p align="center"> 
+			</p><p align="center">&nbsp; </p>
+			<h2 align="center">Assembler: </h2>
+			<h4 align="center">Editor:</h4>
+			<p align="justify">On screen you can see:</p>
+			<div align="center"> 
+			  <pre align="JUSTIFY">Error message   Insert/Overwrite   Source end   U-top
+Source text
+highlighted line (in source text)
+Source text
+Edit zone  -   here you can edit the highlighted line</pre>
+			</div>
+			<p align="justify"> 
+			</p><p align="justify"> </p>
+			<p align="justify">(Source end in 48 version is real end, in 128 0 
+			  means 1st byte of page 1, 65535 last byte of page 6. Source is stored 
+			  (usually, you can change it) in pages 1, 3, 4, 6.)</p>
+			<h4 align="center"> </h4>
+			<h4 align="center">Control keys:</h4>
+			<ul>
+			  <li><b>CS+1 (edit)</b> - edit highlighted line.</li>
+			  <li><b>CS+2 (capslock)</b> - caps lock (inverts function of capsshift, 
+				too).</li>
+			  <li><b>CS+3 (true video)</b> - page down.</li>
+			  <li><b>CS+4 (inv video)</b> - page up.</li>
+			  <li><b>CS+5 (left)</b> - moves cursor in edit zone left.</li>
+			  <li><b>CS+6 (right)</b> - moves cursor in edit zone right.</li>
+			  <li><b>CS+7 (up)</b> - moves highlighted line up.</li>
+			  <li><b>CS+8 (down)</b> - moves highlighted line down.</li>
+			  <li><b>CS+9 (graph)</b> - delete line.</li>
+			  <li><b>CS+0 (delete)</b> - backspace in edit zone.</li>
+			  <li><b>SS+Q</b> - clears edit zone.</li>
+			  <li><b>SS+W</b> - switches Insert/Overwrite.</li>
+			  <li><b>SS+H</b> - switch HEX / DEC (in info line and symbol table).</li>
+			</ul>
+			<h4 align="center">Editor commands:</h4>
+			<p align="justify">You can enter a command only if the edit zone is 
+			  empty. Then press symbolshift+key, a command appears, then you can 
+			  type parameters.</p>
+			<p align="justify">These two commands are executed after pressing 
+			  command key:</p>
+			<ul>
+			  <li><b>SS+E</b> - go to text end.</li>
+			  <li><b>SS+K (+)</b> - go to text begin.</li>
+			</ul>
+			<p align="justify"> 
+			</p><p align="justify"> </p>
+			<p align="justify">Block commands:</p>
+			<ul>
+			  <li>To select block press <b>CS+SS</b>.</li>
+			  <li><b>COPY (SS+C)</b> - copy block.</li>
+			  <li><b>COPY m</b> - move block (as copy and delete), 128 version 
+				only.</li>
+			  <li><b>DELETE (SS+D)</b> - delete block.</li>
+			</ul>
+			<p align="justify">Search commands:</p>
+			<ul>
+			  <li><b>FIND (SS+F)</b></li>
+			  <li><b>FIND S:XXX</b> - find "XXX" from beginning.</li>
+			  <li><b>FIND s</b> - find next from beginning.</li>
+			  <li><b>FIND b:XXX</b> - find "XXX" in block from block begin.</li>
+			  <li><b>FIND:XXX</b> - find "XXX" from highlighted line to end of 
+				text or block (if the last used FIND was with b parameter).</li>
+			  <li><b>FIND</b> - find next fromhighlighted line to end of text 
+				or block.<br>
+				<br>
+				(Example: to skip at block begin type:"<b>FIND b: </b>" (one space).)<br>
+				<br>
+			  </li>
+			  <li><b>REPLACE (SS+Z)</b></li>
+			  <li><b>REPLACE:YYY</b> - replaces all "XXX" (found by last FIND) 
+				in highlighted line with "YYY", and finds next "XXX".</li>
+			  <li><b>REPLACE</b> - replaces äll "XXX" (found by last FIND) in 
+				highlighted line with "YYY" (used by last REPLACE), and finds 
+				next "XXX".</li>
+			</ul>
+			<p align="justify"> 
+			</p><p align="justify"> </p>
+			<p align="justify">I/O commands:</p>
+			<ul>
+			  <li><b>CLEAR (SS+X)</b></li>
+			  <li><b>CLEAR y</b> - clears source, only locked labels survive. 
+				Because it's dangerous function, this Y as YES is necessary for 
+				confirmation.</li>
+			  <li><b>CLEAR f</b> - in 128 version only, fast clear. Clears all, 
+				it means locked labels too!</li>
+			  <li><b>U-TOP (SS+U)</b> - in 48 version, end of place for source 
+				and compiled code. In 128 version, it's end of place for compiled 
+				code.</li>
+			  <li><b>S-BEGIN number (SS+I)</b> - 128 only, set begin of source 
+				(0 is 1st byte of page 1, 65535 is last byte of page 6).</li>
+			  <li><b>S-TOP(SS+J)</b> - 128 only, displays S-BEGIN and S-TOP.</li>
+			  <li><b>S-TOP number</b> - 128 only, set end of place for source 
+				(0 is 1st byte of page 1, 65535 is last byte of page 6).<br>
+				<br>
+			  </li>
+			  <li><b>SAVE:name (SS+S)</b> - saves source and symbol table.</li>
+			  <li><b>SAVE</b> - saves source and symbol table as last used name.</li>
+			  <li><b>SAVE b:name, SAVE b</b> - saves block (with full symbol table).</li>
+			  <li><b>SAVE t, SAVE d</b> - 128 only, selects disk or tape for all 
+				I/O operations.</li>
+			  <li><b>SAVE a</b> - 128 only, D40 specific. Switches drives A: and 
+				B:.<br>
+				<br>
+			  </li>
+			  <li> <b>LOAD:name (SS+L)</b> - load file. Warning, Prometheus performs 
+				only MERGE, not real LOAD; real LOAD can only 128 version, if 
+				no source is typed in! After merge (LOAD) is source line by line 
+				inserted (like from keyboard) (you can display it using any key 
+				or edit some line using SPACE).</li>
+			  <li><b>LOAD:</b> - loads first source (tape only).</li>
+			  <li><b>LOAD</b> - loads file with last used name (SAVE or LOAD commands).</li>
+			  <li><b>LOAD:!</b> - with D40 performs CATalogue of disk.<br>
+				<br>
+			  </li>
+			  <li><b>VERIFY (SS+V)</b> - verify on tape, uses last used name (after 
+				SAVE).<br>
+				<br>
+			  </li>
+			  <li><b>GENS (SS+G)</b> - syntax as LOAD command. Imports file from 
+				GENS assembler to Prometheus (GENS source format: two bytes line 
+				number, text (space for tabelation), code 13 as line end). Not 
+				availale in MB-02+ version. <br>
+				<br>
+			  </li>
+			  <li><b>PATCH (SS+G)</b> - performs CATalogue of disk (MB only).</li>
+			  <li><b>PATCH $0, PATCH @1, PATCH @1$0</b> - sets path and performs 
+				CAT (MB only).</li>
+			</ul>
+			<p align="justify"> 
+			</p><p align="justify"> </p>
+			<p align="justify">Other commands:</p>
+			<ul>
+			  <li><b>PRINT (SS+P)</b> - prints via #3.</li>
+			  <li><b>PRINT b</b> - prints block, <b>TABLE p</b> - prints symbol 
+				table.<br>
+				<br>
+			  </li>
+			  <li><b>MONITOR (SS+M)</b> - go to monitor (if installed).</li>
+			  <li><b>MONITOR a</b> - ASSEMBLY + MONITOR, assembles source first.<br>
+				<br>
+			  </li>
+			  <li> <b>BASIC (SS+B)</b> - return to basic, if system variables 
+				are corrupted by your program, use next command.<br>
+				<br>
+			  </li>
+			  <li><b>NEW (SS+N)</b> - NEW emulation - clears memory upto RAMTOP 
+				and restores system variables.<br>
+				<br>
+			  </li>
+			  <li><b>QUIT y (SS+Q)</b> - reset (jp 0), as dangerous function needs 
+				Y parameter as confirmation (YES).<br>
+				<br>
+			  </li>
+			  <li><b>CALC number (SS+Y)</b> - calculates expression or label value 
+				(128 only).</li>
+			</ul>
+			<p align="justify"> 
+			</p><p align="justify"> </p>
+			<p align="justify">Assembly commands:</p>
+			<ul>
+			  <li><b>ASSEMBLY (SS+A)</b> - assembles.</li>
+			  <li><b>ASSEMBLY b</b> - assembles block.<br>
+				<br>
+			  </li>
+			  <li><b>RUN (SS+R)</b> - assembles and runs code (if you remove some 
+				bugs, it automatically runs new version).<br>
+				<br>
+			  </li>
+			  <li><b>TABLE (SS+T)</b> - shows symbol table. After one screen waits 
+				for key - SPACE to cancel, any other key to next page.</li>
+			  <li><b>TABLE:text</b> - 128 only, shows symbol table from the one 
+				beginning with "text" in alphabetical order (!) (example: labels 
+				are ABR, GAP, GUN, ZZOOM. TABLE:GB shows labels GUN, ZOOM).</li>
+			  <li><b>TABLE p</b> - prints symbol table via #3.</li>
+			  <li><b>TABLE c</b> - clear table. Removes unused labels from table, 
+				clears values of labels (saves locked labels, they aren't removed 
+				and their value is not cleared).</li>
+			  <li><b>TABLE l</b> - locks all labels.</li>
+			  <li><b>TABLE u</b> - unlocks all labels. It's good for divided compilation 
+				- you can write one part of source (example:ORG 25000:OP equ 40000:START 
+				ld bc,OP:ret), compile it, lock labels and clear source (labels 
+				are still stored). Then you can write second part (example:ORG 
+				OP:CALL START:RET). Its sense was on 48kB Spectrum, when it was 
+				necessary to divide long source.</li>
+			</ul>
+			<h4 align="center">Error messages while editing:</h4>
+			<p align="justify">Bad mnemonic - nonexisting instruction.<br>
+			  Bad operand - bad operand.<br>
+			  Big number - larger than 65535.<br>
+			  Syntax horror - something is wrong here in Denmark...<br>
+			  Bad string - bad string in DEFB or DEFM instruction.<br>
+			  Bad instruction - mnemonic is good, but this instruction cannot 
+			  have these operands.<br>
+			  Memory full - memory full (you surely have 48kB Spectrum).<br>
+			  XXXX unknown - nondefined label used, for example in U-TOP or CALC 
+			  commands...<br>
+			  Source ERROR - corrupted file was loaded.</p>
+			<h4 align="center"> </h4>
+			<h4 align="center">Error messages while assembling:</h4>
+			<p align="justify">Bad PUT (ORG) - you tried to overwrite assembler, 
+			  source or protected memory place.<br>
+			  XXXX unknown - nondefined label used.<br>
+			  Already defined - the same name of label used more time.<br>
+			  Big number - 8bit number (ld a,N), relative jump, (ix+N) overload.<br>
+			  ENT ? - you tried to RUN source without entry point.</p>
+			<h4 align="center"> </h4>
+			<h4 align="center">Assembler instructions:</h4>
+			<p align="justify"><i>Expressions:</i></p>
+			<p align="justify">+,-,*,/ as usually, ? is MOD, $ is address counter, 
+			  # means HEX, % means BIN, "text" is usual text, 'text' is inverted 
+			  text ("tex","t"+128). Prometheus computes from left to right!</p>
+			<p align="justify"> 
+			</p><p align="justify"> </p>
+			<p align="justify"><i>Z-80 instructions:</i></p>
+			<p align="justify">Prometheus can recognise all "known" and some "secret" 
+			  Z80 instructions. </p>
+			<p align="justify">In some instructions, working with address, you 
+			  can write for example: ld a,(label. Then press enter and the character 
+			  ")" appears. Warning - ld a,(hl is then ld a,(HL) as label, not 
+			  register!</p>
+			<p align="justify">The "secret" ones are:</p>
+			<p align="justify">SLIA (shift left inverted arithmetic)</p>
+			<table align="center" border="0" cellpadding="0" cellspacing="0" width="90%">
+			  <tbody><tr> 
+				<td width="20%"> 
+				  <div align="center"><b>slia</b></div>
+				</td>
+				<td width="20%">slia b</td>
+				<td width="20%">slia c</td>
+				<td width="20%">slia d</td>
+				<td>slia e</td>
+			  </tr>
+			  <tr> 
+				<td width="20%">&nbsp; </td>
+				<td width="20%">slia h</td>
+				<td width="20%">slia l</td>
+				<td width="20%">slia (hl)</td>
+				<td>slia a</td>
+			  </tr>
+			</tbody></table>
+			<p align="justify">IX and IY halves</p>
+			<table align="center" border="0" cellpadding="0" cellspacing="0" width="90%">
+			  <tbody><tr> 
+				<td width="20%"> 
+				  <div align="center"><b>inc</b></div>
+				</td>
+				<td width="20%">inc hx</td>
+				<td width="20%">inc lx</td>
+				<td width="20%">inc hy</td>
+				<td>inc ly</td>
+			  </tr>
+			  <tr> 
+				<td width="20%"> 
+				  <div align="center"><b>dec</b></div>
+				</td>
+				<td width="20%">dec hx</td>
+				<td width="20%">dec lx</td>
+				<td width="20%">dec hy</td>
+				<td>dec ly</td>
+			  </tr>
+			  <tr> 
+				<td width="20%"> 
+				  <div align="center"><b>ld</b></div>
+				</td>
+				<td width="20%">ld hx,N</td>
+				<td width="20%">ld lx,N</td>
+				<td width="20%">ld hy,N</td>
+				<td>ld ly,N</td>
+			  </tr>
+			  <tr> 
+				<td width="20%">&nbsp; </td>
+				<td width="20%">ld b,hx</td>
+				<td width="20%">ld b,lx</td>
+				<td width="20%">ld b,hy</td>
+				<td>ld b,ly</td>
+			  </tr>
+			  <tr> 
+				<td width="20%">&nbsp; </td>
+				<td width="20%">ld c,hx</td>
+				<td width="20%">ld c,lx</td>
+				<td width="20%">ld c,hy</td>
+				<td>ld c,ly</td>
+			  </tr>
+			  <tr> 
+				<td width="20%">&nbsp; </td>
+				<td width="20%">ld d,hx</td>
+				<td width="20%">ld d,lx</td>
+				<td width="20%">ld d,hy</td>
+				<td>ld d,ly</td>
+			  </tr>
+			  <tr> 
+				<td width="20%">&nbsp; </td>
+				<td width="20%">ld e,hx</td>
+				<td width="20%">ld e,lx</td>
+				<td width="20%">ld e,hy</td>
+				<td>ld e,ly</td>
+			  </tr>
+			  <tr> 
+				<td width="20%">&nbsp; </td>
+				<td width="20%">ld hx,hx</td>
+				<td width="20%">ld hx,lx</td>
+				<td width="20%">ld hx,hy</td>
+				<td>ld hx,ly</td>
+			  </tr>
+			  <tr> 
+				<td width="20%">&nbsp; </td>
+				<td width="20%">ld lx,hx</td>
+				<td width="20%">ld lx,lx</td>
+				<td width="20%">ld lx,hy</td>
+				<td>ld lx,ly</td>
+			  </tr>
+			  <tr> 
+				<td width="20%">&nbsp; </td>
+				<td width="20%">ld a,hx</td>
+				<td width="20%">ld a,lx</td>
+				<td width="20%">ld a,hy</td>
+				<td>ld a,ly</td>
+			  </tr>
+			  <tr> 
+				<td width="20%"> 
+				  <div align="center"><b>add</b></div>
+				</td>
+				<td width="20%">add a,hx</td>
+				<td width="20%">add a,lx</td>
+				<td width="20%">add a,hy</td>
+				<td>add a,ly</td>
+			  </tr>
+			  <tr> 
+				<td width="20%"> 
+				  <div align="center"><b>adc</b></div>
+				</td>
+				<td width="20%">adc a,hx</td>
+				<td width="20%">adc a,lx</td>
+				<td width="20%">adc a,hy</td>
+				<td>adc a,ly</td>
+			  </tr>
+			  <tr> 
+				<td width="20%"> 
+				  <div align="center"><b>sub</b></div>
+				</td>
+				<td width="20%">sub hx</td>
+				<td width="20%">sub lx</td>
+				<td width="20%">sub hy</td>
+				<td>sub ly</td>
+			  </tr>
+			  <tr> 
+				<td width="20%"> 
+				  <div align="center"><b>sbc</b></div>
+				</td>
+				<td width="20%">sbc a,hx</td>
+				<td width="20%">sbc a,lx</td>
+				<td width="20%">sbc a,hy</td>
+				<td>sbc a,ly</td>
+			  </tr>
+			  <tr> 
+				<td width="20%"> 
+				  <div align="center"><b>and</b></div>
+				</td>
+				<td width="20%">and hx</td>
+				<td width="20%">and lx</td>
+				<td width="20%">and hy</td>
+				<td>and ly</td>
+			  </tr>
+			  <tr> 
+				<td width="20%"> 
+				  <div align="center"><b>xor</b></div>
+				</td>
+				<td width="20%">xor hx</td>
+				<td width="20%">xor lx</td>
+				<td width="20%">xor hy</td>
+				<td>xor ly</td>
+			  </tr>
+			  <tr> 
+				<td width="20%"> 
+				  <div align="center"><b>or</b></div>
+				</td>
+				<td width="20%">or hx</td>
+				<td width="20%">or lx</td>
+				<td width="20%">or hy</td>
+				<td>or ly</td>
+			  </tr>
+			  <tr> 
+				<td width="20%"> 
+				  <div align="center"><b>cp</b></div>
+				</td>
+				<td width="20%">cp hx</td>
+				<td width="20%">cp lx</td>
+				<td width="20%">cp hy</td>
+				<td>cp ly</td>
+			  </tr>
+			</tbody></table>
+			<p><i>Assembler pseudoinstructions:</i></p>
+			<ul>
+			  <li>Comment must begin with ";" at the begin of line (and takes 
+				all the line).</li>
+			  <li><b>ORG</b>	number - address where final code will work</li>
+			  <li><b>PUT</b>	number - address to store assembled code (example 
+				- screen located code: ORG 16384: PUT 60000. You'll then save 
+				code from 60000 and load to screen and run it).</li>
+			  <li><b>PUT</b>	number - if the number is 0, 1, 3, 4, 6 or 7, 
+				code'll be assembled to that page of 128kB memory. 128 only.</li>
+			  <li>Label	<b>EQU</b>	number - defines constant.</li>
+			  <li><b>ENT</b>	number - defines entry point for RUN (usually 
+				ENT $ directly at the place).</li>
+			  <li><b>DEFB</b>	number, number, number - byte values.</li>
+			  <li><b>DEFW</b>	number, number, number - word values (two bytes).</li>
+			  <li><b>DEFM</b>	text - "text" is normal text, 'text' is inverted 
+				(as "tex","t"+128).</li>
+			  <li><b>DEFS</b>	number - leaves space (in bytes).</li>
+			</ul>
+			<h4 align="center">Internal source format:</h4>
+			<p align="justify">Prometheus assembles line after you press ENTER 
+			  while editing (so it provides syntax control) and in "source" are 
+			  stored instructions as their real values - so source is NOT tokenized, 
+			  but pre-assembled!</p>
+			<p align="justify"> 
+			</p><p align="justify"> </p>
+			<p align="justify">First byte:</p>
+			<p align="justify">Operation code of instruction or pseudoinstruction 
+			  (pseudoinstructions have in second byte nonexisting combination 
+			  of prefixes).</p>
+			<p align="justify">Second byte = Information byte:</p>
+			<p align="justify">bit 7 - prefix #CB (203)<br>
+			  bit 6 - prefix #ED (237)<br>
+			  bit 5 - prefix #DD (221)<br>
+			  bit 4 - prefix #FD (251)<br>
+			  bit 3 - label used in this instruction<br>
+			  bit 2-0 - type:</p>
+			<blockquote> 
+			  <p>0 - without operand<br>
+				1 - 1 byte, -256..256<br>
+				2 - 2bytes, -65535..65535<br>
+				3 - 1 byte, -128..128<br>
+				4 - 1 byte, (ix+N)<br>
+				5 - (ix+N),N<br>
+				6 - rst p (p is stored in operation code)<br>
+				7 - noninstruction</p>
+			</blockquote>
+			<p align="justify">If bit 3=1 and bits 2-0 aren't only zero, third 
+			  byte follows:</p>
+			<ul>
+			  <li>Bit 3=1, bits 2-0 =0: follows number of label, at the end 192+lenght.</li>
+			  <li>Bit 3=0, bits 2-0 aren't only zero: follows all expression, 
+				labels as their numbers, at the end 192+lenght.</li>
+			  <li>Bit 3=1, bits 2-0 aren't only zero: follows two bytes of label 
+				number, then expression, labels as their numbers, at the end 192+lenght.</li>
+			</ul>
+			<p align="justify">Example:</p>
+			<p align="justify">2*LABEL+#23</p>
+			<p align="justify">"2","*","128+H,L,"+","#","2","3",192+8</p>
+			<p align="justify">Empty line has infobyte 48 or 56 (if label used), 
+			  noninstructions have infobyte 55 or 63 (if label used). Opcode (first 
+			  byte) of noninstructions:</p>
+			<p align="justify">			0 - empty line<br>
+			  1 - comment<br>
+			  2 - ent<br>
+			  3 - equ<br>
+			  4 - org<br>
+			  5 - put<br>
+			  6 - defb<br>
+			  7 - defm<br>
+			  8 - defs<br>
+			  9 - defw</p>
+			<p align="justify">...it's very complicated.</p>
+			<h4 align="center">Symbols table format:</h4>
+			<p align="justify">It's simple:</p>
+			<p align="justify">Two bytes: total labels (counter)</p>
+			<p align="justify">2 bytes*counter: relation to names table (bits 
+			  6 and 7:locked and defined label)</p>
+			<p align="justify">Names table: two bytes value+'name' (inverted text)</p>
+			<p align="justify">All is stored in alphabetical order.</p>
+			<p align="justify"> 
+			</p><p align="justify"> </p>
+			<p align="justify"> 
+			</p><p align="justify">&nbsp; </p>
+			<h2 align="center">Monitor: </h2>
+			<p align="justify">Prometheus monitor is very powerfull tool, a bit 
+			  simillar to DevastAce or VAST monitors.</p>
+			<p align="justify"> 
+			</p><p align="justify"> </p>
+			<h4 align="center">Memory:</h4>
+			<ul>
+			  <li><b>Q</b> - return to assembler</li>
+			  <li><b>M</b> - set new actual address. Question <b>Memory</b> appears. 
+				You can enter any numbe, label or expression (simply "number"). 
+				To cancel press <b>EDIT</b>.</li>
+			  <li><b>A</b> - 128 LNG only, switches memory pages (0,1,3,4,6,7).</li>
+			  <li><b>B</b> - 128 LNG only, turns memory switching on / off.</li>
+			  <li><b>CS+6</b> - go to next instruction.</li>
+			  <li><b>ENTER</b> - one byte forward.</li>
+			  <li><b>CS+7</b> - one byte back.</li>
+			  <li><b>CS+8</b> - change depth - level down. Question <b>Memory</b> 
+				appears. You can go 10 levels down to program.</li>
+			  <li><b>CS+9</b> - 128 only, change depth - level down. A value in 
+				actual instruction (for example CALL) is used.</li>
+			  <li><b>CS+5</b> - change depth - level up. This returns you back 
+				to "surface".</li>
+			  <li><b>CS+0</b> - clear screen.</li>
+			  <li><b>CS+2</b> - clears only panels for dump and disassem.</li>
+			  <li><b>SS+4</b> - disassembly to panel from actual address. Press 
+				<b>EDIT</b> to stop.</li>
+			  <li><b>V</b> - disassembly to panel. Question <b>First</b> appears. 
+				Press <b>EDIT</b> to stop.</li>
+			  <li><b>SS+C</b> - switch these modes of address display: number 
+				only / labels / label and label+1.</li>
+			  <li><b>C</b> - display address number / labels only.</li>
+			  <li><b>SS+3</b> - switch HEX / DEC.</li>
+			  <li><b>D</b> - disassembly to printer via #3. Monitor asks for <b>First</b> 
+				and <b>Last</b>, the last will be NOT disassembled! Press CS+ENTER 
+				to stop.</li>
+			  <li><b>SS+D</b> - disassembly to source text. Monitor asks for <b>First</b> 
+				and <b>Last</b>, the last will be NOT disassembled! Press CS+ENTER 
+				to stop or EDIT to cancel.</li>
+			  <li><b>O</b> - text dump from actual address. Press <b>EDIT</b> 
+				to stop.</li>
+			  <li><b>SS+O</b> - text dump. Monitor asks you for <b>First</b> address. 
+				Press <b>EDIT</b> to stop.</li>
+			  <li><b>L</b> - dump from actual address. Press <b>EDIT</b> to stop.</li>
+			  <li><b>SS+L</b> - dump. Monitor asks you for <b>First</b> address. 
+				Press <b>EDIT</b> to stop.</li>
+			  <li><b>G</b> - find. Monitor asks you for 5 bytes (characters, numbers, 
+				expressions). For "any value" enter ":".</li>
+			  <li><b>N</b> - find next.</li>
+			  <li><b>I</b> - copy block. Monitor asks you for <b>First</b>, <b>Last</b> 
+				and target address <b>To</b>. READ/WRITE error means, that assembler, 
+				source or protected area is on target place.</li>
+			  <li><b>SS+I</b> - copy block. Monitor asks you for <b>First</b>, 
+				<b>Lenght</b> and target address <b>To</b>. READ/WRITE error means, 
+				that assembler, source or protected area is on target place.</li>
+			  <li><b>P</b> - fill block. Monitor asks you for <b>First</b>, <b>Last</b> 
+				and <b>With</b>. READ/WRITE error means, that assembler, source 
+				or protected area is on target place.</li>
+			  <li><b>SS+P</b> - fill block. Monitor asks you for <b>First</b>, 
+				<b>Lenght</b> and <b>With</b>. READ/WRITE error means, that assembler, 
+				source or protected area is on target place.</li>
+			  <li><b>SPACE</b> - edit one assembler line. You can write everything 
+				like in assembler (instructions, DEFB, DEFW, DEFM, EQU and define 
+				new labels, for example for disassembly). Press <b>EDIT</b> to 
+				cancel. Bad PUT(ORG) error means, that assembler, source or protected 
+				area is on target place.</li>
+			  <li><b>E</b> - edit more assembler lines. Press <b>EDIT</b> to cancel.</li>
+			</ul>
+			<h4 align="center">I/O operations:</h4>
+			<ul>
+			  <li><b>S</b> - save. Monitor asks you for <b>First</b> and <b>Last</b> 
+				byte and <b>Leader</b>. Leader can be value or <b>:name</b> (don't 
+				forget ":").</li>
+			  <li><b>SS+S</b> - save. Monitor asks you for <b>First</b> byte, 
+				<b>Lenght</b> and <b>Leader</b>. Leader can be value or <b>:name</b>.</li>
+			  <li><b>J</b> - load. Monitor asks you for <b>First</b> and <b>Last</b> 
+				byte and <b>Leader</b>. Leader can be value or <b>:name</b>.</li>
+			  <li><b>SS+J</b> - load. Monitor asks you for <b>First</b> byte, 
+				<b>Lenght</b> and <b>Leader</b>. Leader can be value or <b>:name</b>.</li>
+			  <li><b>Y</b> - read head from tape. Displays type, name, start, 
+				lenght and third parameter, and awaits a key. Press <b>J</b> to 
+				load this block or other key to cancel.</li>
+			</ul>
+			<h4 align="center">Tracing:</h4>
+			<ul>
+			  <li><b>SS+H</b> - call. Monitor asks you for address <b>Call</b>, 
+				return is possible using ret.</li>
+			  <li><b>W</b> - set actual address as starting for run with breakpoint.</li>
+			  <li><b>SS+U</b> - set breakpoint to actual address and jump to address 
+				set using W function. Breakpoint takes 3 bytes.</li>
+			  <li><b>SS+Z</b> - step. Provides instruction at actual address. 
+				CALL and RST simulation follows seting (see X function).</li>
+			  <li><b>T</b> - slow tracing. Provides one instruction, refreshes 
+				panel and takes next instruction... Press <b>BREAK</b> to stop 
+				and <b>CS+ENTER</b> to turn display off.</li>
+			  <li><b>SS+T</b> - fast tracing. Asks for stop address <b>Last</b>, 
+				provides instructions. Press <b>BREAK</b> to stop or <b>CS+ENTER</b> 
+				to display panel. Stops automatically on stop address.</li>
+			  <li><b>SS+M</b> - switches EI / DI.</li>
+			  <li><b>SS+B</b> - exchanges register set (EXX + AX AF,AF').</li>
+			  <li><b>SS+N</b> - set registers. Question <b>ld</b> appears. enter 
+				register name, coma or space and new value.<br>
+				<br>
+				Registers in Monitor are:</li>
+			  <ul>
+				<li>One byte: a,b,c,d,e,h,l,hx,lx,hy,ly,i,r</li>
+				<li>two bytes: af,bc,de,hl,ix,iy,sp</li>
+				<li>Tacts counter: t</li>
+				<li>Memory pointers: x,y</li>
+				<li>Flags: f (to change carry: ld f,c; to change sign: ld f,s; 
+				  to change zero: ld f,z; to change parity: ld f,p).<br>
+				  <br>
+				</li>
+			  </ul>
+			  <li><b>1</b> - set DEFB area. Displays areas 0..4, first and last 
+				byte of each. Press number key (<b>0, 1, 2, 3, 4</b>) to erase 
+				this area or <b>I</b> to define new DEFB area. Monitor asks you 
+				then for <b>First</b> and <b>Last</b> byte of area (Last is member 
+				of area!).</li>
+			  <li><b>2</b> - set DEFW area. Displays areas 0..4, first and last 
+				byte of each. Press number key (<b>0, 1, 2, 3, 4</b>) to erase 
+				this area or <b>I</b> to define new DEFW area. Monitor asks you 
+				then for <b>First</b> and <b>Last</b> byte of area (Last is member 
+				of area!).</li>
+			  <li><b>3</b> - set READ protected area. Displays areas 0..4, first 
+				and last byte of each. Press number key (<b>0, 1, 2, 3, 4</b>) 
+				to erase this area or <b>I</b> to define new READ protected area. 
+				Monitor asks you then for <b>First</b> and <b>Last</b> byte of 
+				area.</li>
+			  <li><b>4</b> - set WRITE protected area. Displays areas 0..4, first 
+				and last byte of each. Press number key (<b>0, 1, 2, 3, 4</b>) 
+				to erase this area or <b>I</b> to define new WRITE protected area. 
+				Monitor asks you then for <b>First</b> and <b>Last</b> byte of 
+				area.</li>
+			  <li><b>5</b> - set RUN protected area. Displays areas 0..4, first 
+				and last byte of each. Press number key (<b>0, 1, 2, 3, 4</b>) 
+				to erase this area or <b>I</b> to define new RUN protected area. 
+				Monitor asks you then for <b>First</b> and <b>Last</b> byte of 
+				area.</li>
+			  <li><b>6</b> - set addresses for direct call (DEF mode, see X function). 
+				Displays addresses 0..9. Press number key (<b>0, 1, 2, 3, 4, 5, 
+				6, 7, 8, 9</b>) to erase this address or <b>I</b> to define new 
+				address. </li>
+			  <li><b>X</b> - change mode of tracing CALL and RST instructions. 
+				Modes are three: NON / DEF / ALL. NON means, that no CALL 'll 
+				be traced as one instruction with all subroutine. DEF means, that 
+				calls to defined addresses 'll be traced as one instruction with 
+				subroutine. ALL means, that every CALL performs his subroutine 
+				as one instruction.</li>
+			  <li><b>SS+X</b> - turn all these tests on / off.</li>
+			  <li><b>SS+W</b> - edit panel.</li>
+			</ul>
+			<h4 align="center">Panel editor:</h4>
+			<p align="justify">Here can you design your own panel.</p>
+			<ul>
+			  <li><b>CS+1 (EDIT</b>) - quit to Monitor.</li>
+			  <li><b>4</b> - go to next item.</li>
+			  <li><b>3</b> - go to previous item.</li>
+			  <li><b>5, 6, 7, 8</b> - move item left, down, up, right.</li>
+			  <li><b>A</b> to <b>Z</b> - set size of item (0..25). It turns registers 
+				display on/off, and sets size of dump panels.</li>
+			  <li><b>SS+D</b> - enables or disables DEC.</li>
+			  <li><b>SS+H</b> - enables or disables HEX.</li>
+			  <li><b>SS+B</b> - enables or disables BIN.</li>
+			  <li><b>SS+C</b> - enables or disables character dump.</li>
+			  <li><b>SS+T</b> - switches memory dump bytes / words.</li>
+			  <li><b>SS+S</b> - changes direction of dump - horizontal or vertical.</li>
+			</ul>
+			<p align="justify"> 
+			</p><p align="justify"> </p>
+			<p align="justify">Item list:</p>
+			<ul>
+			  <li>Edit zone (one line)</li>
+			  <li>Dump panel</li>
+			  <li>Disassem panel</li>
+			  <li>Interrupt (EI / DI)</li>
+			  <li>One byte registers (a,b,c,d,e,h,l,i,r,hx,hl,hy,ly,f)</li>
+			  <li>Two bytes registers (af,bc,de,hl,sp,ix,iy)</li>
+			  <li>Tacts counter (T)</li>
+			  <li>Memory dump from pointer (X,Y)</li>
+			  <li>Memory dump from address in register (bc),(de),(hl),(sp),(ix),(iy)</li>
+			</ul>
+			<hr>
+			<div align="right">+Gama </div>
+			<!-- #EndEditable --> </td>
+		  <td background="eng_prometheus_soubory/grid1.gif" width="12"></td>
+		  <td bgcolor="#9999ff" width="4"></td>
+		</tr>
+		<tr> 
+		  <td rowspan="2" colspan="2" width="16" height="16"><img src="eng_prometheus_soubory/roh9.gif" width="16" height="16"></td>
+		  <td background="eng_prometheus_soubory/grid1.gif" height="12"></td>
+		  <td rowspan="2" colspan="2" width="16" height="16"><img src="eng_prometheus_soubory/roh10.gif" width="16" height="16"></td>
+		</tr>
+		<tr> 
+		  <td bgcolor="#9999ff" height="4"></td>
+		</tr>
+	  </tbody></table>
+	</td>
+  </tr>
+</tbody></table>
+<!-- #EndTemplate -->
+<!-- Sunbelt Popup Killer - script has been appended by SPF -->
+<img id="kpfLogFrame" src="eng_prometheus_soubory/pl.htm" onload="destroyIframe(this)" style="display: none;">
+
+<script type="text/javascript">
+<!--
+	nopopups();
+//-->
+</script>
+<!-- Sunbelt Popup Killer - end of the script appended by SPF-->
+</body></html>
