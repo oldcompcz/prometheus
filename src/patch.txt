@@ -6,17 +6,202 @@ start:
 	ret
 	;defb 0edh,0b0h,0c9h
 -
-;5e18 ;5e32 =
-	defb "Spectrum Z80 Turbo Assemble"
+;5e18 ;5e33 =
+	defb "Spectrum Z80 Turbo Assemble",0xf2 ;"r"+0x80	;0x5e18
 -
-;5e3a ;5e4a =
-	defb "(C) 1990 UNIVERSU"
+;5e3a ;5e4b =
+	defb "(C) 1990 UNIVERSU",0xcd ;"M"+0x80	;5e3a
 -
-;5e52 ;5e6c =
-	defb "Press ENTER to run Assemble"
+;5e52 ;5e6d =
+	defb "Press ENTER to run Assemble",0xf2 ;"r"+0x80	;5e52
 -
-;5e74 ;5e8d =
-	defb "Instalation address:00000_"
+;5e74 ;5e8e =
+	defb "Instalation address:00000_",0xa0 ;" "+0x80	;5e74
 -
-;5e95 ;5e9b =
-	defb "Monitor"
+;5e95 ;5e9c =
+	defb "Monitor",0xba ;":"+0x80	;5e95
+-
+;5ea8 ;5eaa =
+	defb "Ye",0xf3 ;"s"+0x80	;5ea8
+-
+;5eb0 ;5eb2 =
+	defb "No",0xa0 ;" "+0x80	;5eb0
+-
+;94d6 ;94e1 =
+	defb "Bad mnemoni",0xe3 ;"c"+0x80	;94d6
+-
+;94e2 ;94ec =
+	defb "Bad operan",0xe4 ;"d"+0x80	;94e2
+-
+;94ed ;94f6 =
+	defb "Big numbe",0xf2 ;"r"+0x80	;94ed
+-
+;94f7 ;9503 =
+	defb "Syntax horro",0xf2 ;"r"+0x80	;94f7
+-
+;9504 ;950d =
+	defb "Bad strin",0xe7 ;"g"+0x80	;9504
+-
+;950e ;951c =
+	defb "Bad instructio",0xee ;"n"+0x80	;950e
+-
+;951d ;9527 =
+	defb "Memory ful",0xec ;"l"+0x80	;951d
+-
+;9528 ;9534 =
+	defb "Bad PUT (ORG",0xa9 ;")"+0x80	;9528
+-
+;9535 ;953c =
+	defb " unknow",0xee ;"n"+0x80	;9535
+-
+;953d ;9547 =
+	defb "Wait pleas",0xe5 ;"e"+0x80	;953d
+-
+;9548 ;9558 =
+	defb "Assembly complet",0xe5 ;"e"+0x80	;9548
+-
+;9559 ;9562 =
+	defb "Start tap",0xe5 ;"e"+0x80	;9559
+-
+;9563 ;956c =
+	defb "Tape erro",0xf2 ;"r"+0x80	;9563
+-
+;956d ;9573 =
+	defb "Any ke",0xf9 ;"y"+0x80	;956d
+-
+;9574 ;9583 =
+	defb "(C) 90 UNIVERSU",0xcd ;"M"+0x80	;9574
+-
+;9584 ;958f =
+	defb "Source ERRO",0xd2 ;"R"+0x80	;9584
+-
+;9590 ;9595 =
+	defb "Found",0xba ;":"+0x80	;9590
+-
+;9596 ;95a4 =
+	defb "Already define",0xe4 ;"d"+0x80	;9596
+-
+;95a5 ;95a9 =
+	defb "ENT ",0xbf ;"?"+0x80	;95a5
+-
+;95f9 ;96e7 =
+	defb "c", 0xF0	;cp	;95f9
+	defb "d", 0xE9	;di
+	defb "e", 0xE9	;ei
+	defb "e", 0xF8	;ex
+	defb "i", 0xED	;im
+	defb "i", 0xEE	;in
+	defb "j", 0xF0	;jp
+	defb "j", 0xF2	;jr
+	defb "l", 0xE4	;ld
+	defb "o", 0xF2	;or
+	defb "r", 0xEC	;rl
+	defb "r", 0xF2	;rr
+	defb "ad", 0xE3	;adc
+	defb "ad", 0xE4	;add
+	defb "an", 0xE4	;and
+	defb "bi", 0xF4	;bit
+	defb "cc", 0xE6	;ccf
+	defb "cp", 0xE4	;cpd
+	defb "cp", 0xE9	;cpi
+	defb "cp", 0xEC	;cpl
+	defb "da", 0xE1	;daa
+	defb "de", 0xE3	;dec
+	defb "en", 0xF4	;ent
+	defb "eq", 0xF5	;equ
+	defb "ex", 0xF8	;exx
+	defb "in", 0xE3	;inc
+	defb "in", 0xE4	;ind
+	defb "in", 0xE9	;ini
+	defb "ld", 0xE4	;ldd
+	defb "ld", 0xE9	;ldi
+	defb "ne", 0xE7	;neg
+	defb "no", 0xF0	;nop
+	defb "or", 0xE7	;org
+	defb "ou", 0xF4	;out
+	defb "po", 0xF0	;pop
+	defb "pu", 0xF4	;put
+	defb "re", 0xF3	;res
+	defb "re", 0xF4	;ret
+	defb "rl", 0xE1	;rla
+	defb "rl", 0xE3	;rlc
+	defb "rl", 0xE4	;rld
+	defb "rr", 0xE1	;rra
+	defb "rr", 0xE3	;rrc
+	defb "rr", 0xE4	;rrd
+	defb "rs", 0xF4	;rst
+	defb "sb", 0xE3	;sbc
+	defb "sc", 0xE6	;scf
+	defb "se", 0xF4	;set
+	defb "sl", 0xE1	;sla
+	defb "sr", 0xE1	;sra
+	defb "sr", 0xEC	;srl
+	defb "su", 0xE2	;sub
+	defb "xo", 0xF2	;xor
+	defb "cal", 0xEC	;call
+	defb "cpd", 0xF2	;cpdr
+	defb "cpi", 0xF2	;cpir
+	defb "def", 0xE2	;defb
+	defb "def", 0xED	;defm
+	defb "def", 0xF3	;defs
+	defb "def", 0xF7	;defw
+	defb "djn", 0xFA	;djnz
+	defb "hal", 0xF4	;halt
+	defb "ind", 0xF2	;indr
+	defb "ini", 0xF2	;inir
+	defb "ldd", 0xF2	;lddr
+	defb "ldi", 0xF2	;ldir
+	defb "otd", 0xF2	;otdr
+	defb "oti", 0xF2	;otir
+	defb "out", 0xE4	;outd
+	defb "out", 0xE9	;outi
+	defb "pus", 0xE8	;push
+	defb "ret", 0xE9	;reti
+	defb "ret", 0xEE	;retn
+	defb "rlc", 0xE1	;rlca
+	defb "rrc", 0xE1	;rrca
+	defb "sli", 0xE1	;slia
+-
+;9728 ;9763 =
+	defb "a", 0xE6	;af	;9728
+	defb "b", 0xE3	;bc
+	defb "d", 0xE5	;de
+	defb "h", 0xEC	;hl
+	defb "h", 0xF8	;hx
+	defb "h", 0xF9	;hy
+	defb "i", 0xF8	;ix
+	defb "i", 0xF9	;iy
+	defb "l", 0xF8	;lx
+	defb "l", 0xF9	;ly
+	defb "n", 0xE3	;nc
+	defb "n", 0xFA	;nz
+	defb "p", 0xE5	;pe
+	defb "p", 0xEF	;po
+	defb "s", 0xF0	;sp
+	defb "(c", 0xA9	;(c)
+	defb "af", 0xA7	;af'
+	defb "(bc", 0xA9	;(bc)
+	defb "(de", 0xA9	;(de)
+	defb "(hl", 0xA9	;(hl)
+	defb "(ix", 0xA9	;(ix)
+	defb "(iy", 0xA9	;(iy)
+	defb "(sp", 0xA9	;(sp)
+-
+;9786 ;97d6 =
+	defb "BASI", 0xC3	;BASIC
+	defb "COP", 0xD9	;COPY
+	defb "DELET", 0xC5	;DELETE
+	defb "FIN", 0xC4	;FIND
+	defb "GEN", 0xD3	;GENS
+	defb "LOA", 0xC4	;LOAD
+	defb "MONITO", 0xD2	;MONITOR
+	defb "NE", 0xD7	;NEW
+	defb "PRIN", 0xD4	;PRINT
+	defb "QUI", 0xD4	;QUIT
+	defb "RU", 0xCE	;RUN
+	defb "SAV", 0xC5	;SAVE
+	defb "TABL", 0xC5	;TABLE
+	defb "U-TO", 0xD0	;U-TOP
+	defb "VERIF", 0xD9	;VERIFY
+	defb "CLEA", 0xD2	;CLEAR
+	defb "REPLAC", 0xC5	;REPLACE
