@@ -3,6 +3,7 @@
 
     org     05dc0h
 
+start:
     di                         ;5dc0    f3      .                  (flow from: 34bb 52ad)   5dc0 jp 7cc9 
     ld hl,04000h               ;5dc1    21 00 40    ! . @          (flow from: 5dc0)   5dc1 ld hl,4000 
     ld de,04001h               ;5dc4    11 01 40    . . @          (flow from: 5dc1)   5dc4 ld de,4001 
@@ -43,33 +44,7 @@
 
 ; BLOCK 'intro1_string' (start 0x5e18 end 0x5e34)
 intro1_string_start:
-    defb 053h                  ;5e18    53      S 
-    defb 070h                  ;5e19    70      p 
-    defb 065h                  ;5e1a    65      e 
-    defb 063h                  ;5e1b    63      c 
-    defb 074h                  ;5e1c    74      t 
-    defb 072h                  ;5e1d    72      r 
-    defb 075h                  ;5e1e    75      u 
-    defb 06dh                  ;5e1f    6d      m 
-    defb 020h                  ;5e20    20        
-    defb 05ah                  ;5e21    5a      Z 
-    defb 038h                  ;5e22    38      8 
-    defb 030h                  ;5e23    30      0 
-    defb 020h                  ;5e24    20        
-    defb 054h                  ;5e25    54      T 
-    defb 075h                  ;5e26    75      u 
-    defb 072h                  ;5e27    72      r 
-    defb 062h                  ;5e28    62      b 
-    defb 06fh                  ;5e29    6f      o 
-    defb 020h                  ;5e2a    20        
-    defb 041h                  ;5e2b    41      A 
-    defb 073h                  ;5e2c    73      s 
-    defb 073h                  ;5e2d    73      s 
-    defb 065h                  ;5e2e    65      e 
-    defb 06dh                  ;5e2f    6d      m 
-    defb 062h                  ;5e30    62      b 
-    defb 06ch                  ;5e31    6c      l 
-    defb 065h                  ;5e32    65      e 
+    defb "Spectrum Z80 Turbo Assemble"
     defb 0f2h                  ;5e33    f2      . 
 intro1_string_end:
     ld hl,040c7h               ;5e34    21 c7 40    ! . @          (ghost flow from: 531b)   504d ld hl,40c7 
@@ -77,23 +52,7 @@ intro1_string_end:
 
 ; BLOCK 'intro2_string' (start 0x5e3a end 0x5e4c)
 intro2_string_start:
-    defb 028h                  ;5e3a    28      ( 
-    defb 043h                  ;5e3b    43      C 
-    defb 029h                  ;5e3c    29      ) 
-    defb 020h                  ;5e3d    20        
-    defb 031h                  ;5e3e    31      1 
-    defb 039h                  ;5e3f    39      9 
-    defb 039h                  ;5e40    39      9 
-    defb 030h                  ;5e41    30      0 
-    defb 020h                  ;5e42    20        
-    defb 055h                  ;5e43    55      U 
-    defb 04eh                  ;5e44    4e      N 
-    defb 049h                  ;5e45    49      I 
-    defb 056h                  ;5e46    56      V 
-    defb 045h                  ;5e47    45      E 
-    defb 052h                  ;5e48    52      R 
-    defb 053h                  ;5e49    53      S 
-    defb 055h                  ;5e4a    55      U 
+    defb "(C) 1990 UNIVERSU"
     defb 0cdh                  ;5e4b    cd      . 
 intro2_string_end:
     ld hl,048e2h               ;5e4c    21 e2 48    ! . H          (ghost flow from: 531b)   5065 ld hl,48e2 
@@ -101,33 +60,7 @@ intro2_string_end:
 
 ; BLOCK 'intro3_string' (start 0x5e52 end 0x5e6e)
 intro3_string_start:
-    defb 050h                  ;5e52    50      P 
-    defb 072h                  ;5e53    72      r 
-    defb 065h                  ;5e54    65      e 
-    defb 073h                  ;5e55    73      s 
-    defb 073h                  ;5e56    73      s 
-    defb 020h                  ;5e57    20        
-    defb 045h                  ;5e58    45      E 
-    defb 04eh                  ;5e59    4e      N 
-    defb 054h                  ;5e5a    54      T 
-    defb 045h                  ;5e5b    45      E 
-    defb 052h                  ;5e5c    52      R 
-    defb 020h                  ;5e5d    20        
-    defb 074h                  ;5e5e    74      t 
-    defb 06fh                  ;5e5f    6f      o 
-    defb 020h                  ;5e60    20        
-    defb 072h                  ;5e61    72      r 
-    defb 075h                  ;5e62    75      u 
-    defb 06eh                  ;5e63    6e      n 
-    defb 020h                  ;5e64    20        
-    defb 041h                  ;5e65    41      A 
-    defb 073h                  ;5e66    73      s 
-    defb 073h                  ;5e67    73      s 
-    defb 065h                  ;5e68    65      e 
-    defb 06dh                  ;5e69    6d      m 
-    defb 062h                  ;5e6a    62      b 
-    defb 06ch                  ;5e6b    6c      l 
-    defb 065h                  ;5e6c    65      e 
+    defb "Press ENTER to run Assemble"
     defb 0f2h                  ;5e6d    f2      . 
 intro3_string_end:
     ld hl,04883h               ;5e6e    21 83 48    ! . H          (ghost flow from: 531b)   5087 ld hl,4883 
@@ -135,32 +68,7 @@ intro3_string_end:
 
 ; BLOCK 'intro4_string' (start 0x5e74 end 0x5e8f)
 intro4_string_start:
-    defb 049h                  ;5e74    49      I 
-    defb 06eh                  ;5e75    6e      n 
-    defb 073h                  ;5e76    73      s 
-    defb 074h                  ;5e77    74      t 
-    defb 061h                  ;5e78    61      a 
-    defb 06ch                  ;5e79    6c      l 
-    defb 061h                  ;5e7a    61      a 
-    defb 074h                  ;5e7b    74      t 
-    defb 069h                  ;5e7c    69      i 
-    defb 06fh                  ;5e7d    6f      o 
-    defb 06eh                  ;5e7e    6e      n 
-    defb 020h                  ;5e7f    20        
-    defb 061h                  ;5e80    61      a 
-    defb 064h                  ;5e81    64      d 
-    defb 064h                  ;5e82    64      d 
-    defb 072h                  ;5e83    72      r 
-    defb 065h                  ;5e84    65      e 
-    defb 073h                  ;5e85    73      s 
-    defb 073h                  ;5e86    73      s 
-    defb 03ah                  ;5e87    3a      : 
-    defb 030h                  ;5e88    30      0 
-    defb 030h                  ;5e89    30      0 
-    defb 030h                  ;5e8a    30      0 
-    defb 030h                  ;5e8b    30      0 
-    defb 030h                  ;5e8c    30      0 
-    defb 05fh                  ;5e8d    5f      _ 
+    defb "Instalation address:00000_"
     defb 0a0h                  ;5e8e    a0      . 
 intro4_string_end:
     ld hl,0484bh               ;5e8f    21 4b 48    ! K H          (ghost flow from: 531b)   50a8 ld hl,484b 
@@ -168,13 +76,7 @@ intro4_string_end:
 
 ; BLOCK 'intro5_string' (start 0x5e95 end 0x5e9d)
 intro5_string_start:
-    defb 04dh                  ;5e95    4d      M 
-    defb 06fh                  ;5e96    6f      o 
-    defb 06eh                  ;5e97    6e      n 
-    defb 069h                  ;5e98    69      i 
-    defb 074h                  ;5e99    74      t 
-    defb 06fh                  ;5e9a    6f      o 
-    defb 072h                  ;5e9b    72      r 
+    defb "Monitor"
     defb 0bah                  ;5e9c    ba      . 
 intro5_string_end:
     ld a,04dh                  ;5e9d    3e 4d   > M                (ghost flow from: 531b)   50b6 ld a,4d 
@@ -8824,7 +8726,9 @@ l93a2h:
     call 02ba9h                ;93d0    cd a9 2b    . . +          (flow from: 8a99)   8a9c call 8969 
     pop de                     ;93d3    d1      .                  (flow from: 8975)   8a9f pop de 
     pop hl                     ;93d4    e1      .                  (flow from: 8a9f)   8aa0 pop hl 
-    defb 0edh,0b0h,0c9h                                        ;93d5    ed b0 c9    . . .                                              (flow from: 8aa0 8aa1)   8aa1 ldir 
+    ldir
+    ret
+                               ;defb 0edh,0b0h,0c9h
 
 ; BLOCK 'data_93d8' (start 0x93d8 end 0xa574)
 data_93d8_start:

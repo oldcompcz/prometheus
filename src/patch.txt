@@ -1,0 +1,22 @@
+;5dc0 <
+start:
+-
+;93d5 =
+	ldir
+	ret
+	;defb 0edh,0b0h,0c9h
+-
+;5e18 ;5e32 =
+	defb "Spectrum Z80 Turbo Assemble"
+-
+;5e3a ;5e4a =
+	defb "(C) 1990 UNIVERSU"
+-
+;5e52 ;5e6c =
+	defb "Press ENTER to run Assemble"
+-
+;5e74 ;5e8d =
+	defb "Instalation address:00000_"
+-
+;5e95 ;5e9b =
+	defb "Monitor"
