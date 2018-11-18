@@ -6834,10 +6834,12 @@ l8628h:
     call v_sub_7800h-BA1       ;862b cd 40 1a  . @ .               (flow from: 85db)   7cf7 call 7800 
     call v_sub_8639h-BA1       ;862e cd 79 28  . y (               (flow from: 7804)   7cfa call 8639 
     push af                    ;8631 f5  .                         (flow from: 86a0 86ad)   7cfd push af 
+l08632h:
+                               ; value of the argument is modified directly in the code at address 8639
     ld a,00fh                  ;8632 3e 0f  > .                    (flow from: 7cfd)   7cfe ld a,0f 
     call v_l89f4h-BA1          ;8634 cd 34 2c  . 4 ,               (flow from: 7cfe)   7d00 call 89f4 
     ld a,00fh                  ;8637 3e 0f  > .                    (flow from: 8a1d)   7d03 ld a,0f 
-    ld (01f3fh),a              ;8639 32 3f 1f  2 ? .               (flow from: 7d03)   7d05 ld (7cff),a 
+    ld (l08632h+1-BA1),a                                       ;8639 32 3f 1f  2 ? .                                                   (flow from: 7d03)   7d05 ld (7cff),a                                (flow from: 7d03)   7d05 ld (7cff),a 
     pop af                     ;863c f1  .                         (flow from: 7d05)   7d08 pop af 
     cp 015h                    ;863d fe 15  . .                    (flow from: 7d08)   7d09 cp 15 
     jr z,l8603h                ;863f 28 c2  ( .                    (flow from: 7d09)   7d0b jr z,7ccf 

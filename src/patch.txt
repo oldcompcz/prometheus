@@ -6096,3 +6096,10 @@ s/01b94h/v_l7953h+1-BA1
 s/00d2eh/v_l6aedh+1-BA1
 -
 s/00cd1h/06a91h-BA
+-
+;8632 <
+l08632h:
+	; value of the argument is modified directly in the code at address 8639
+-
+;8639 =
+    ld (l08632h+1-BA1),a              ;8639 32 3f 1f  2 ? .               (flow from: 7d03)   7d05 ld (7cff),a 
