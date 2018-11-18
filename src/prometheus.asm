@@ -1413,12 +1413,10 @@ logo_image_start:
     defb 0feh, 02ah, 05ch, 07fh, 07fh, 03fh, 03fh, 01fh, 007h, 015h, 02eh, 07fh, 0ffh, 0feh, 0feh, 0fch
     defb 0f0h, 02ah, 00dh, 000h, 07fh, 0ffh, 0ffh, 0ffh, 07fh, 0a8h, 0deh, 07eh, 0feh, 0feh, 0fch, 0fch
     defb 0f0h
-
-; BLOCK 'data_66f4' (start 0x66f4 end 0x6898)
 v_l5dc0h:
-    defb 0c3h                  ;66f4 c3  . 
-    defb 009h                  ;66f5 09  . 
-    defb 01fh                  ;66f6 1f  . 
+    jp v_l7cc9h-BA1            ;66f4 c3 09 1f  . . . 
+
+; BLOCK 'data_66f7' (start 0x66f7 end 0x6898)
 v_l5dc3h:
     defb 0e0h                  ;66f7 e0  . 
     defb 050h                  ;66f8 50  P 

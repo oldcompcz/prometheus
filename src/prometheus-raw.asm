@@ -1821,12 +1821,10 @@ logo_image_start:
 	defb 0fch		;66f2	fc 	. 
 	defb 0f0h		;66f3	f0 	. 
 logo_image_end:
+	jp 01f09h		;66f4	c3 09 1f 	. . . 
 
-; BLOCK 'data_66f4' (start 0x66f4 end 0x6898)
-data_66f4_start:
-	defb 0c3h		;66f4	c3 	. 
-	defb 009h		;66f5	09 	. 
-	defb 01fh		;66f6	1f 	. 
+; BLOCK 'data_66f7' (start 0x66f7 end 0x6898)
+data_66f7_start:
 	defb 0e0h		;66f7	e0 	. 
 	defb 050h		;66f8	50 	P 
 	defb 0c5h		;66f9	c5 	. 
@@ -2245,7 +2243,7 @@ sub_6821h:
 	defb 000h		;6895	00 	. 
 	defb 000h		;6896	00 	. 
 	defb 000h		;6897	00 	. 
-data_66f4_end:
+data_66f7_end:
 	call 00e8ah		;6898	cd 8a 0e 	. . . 
 	xor a			;689b	af 	. 
 	in a,(0feh)		;689c	db fe 	. . 
