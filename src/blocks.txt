@@ -19,5 +19,8 @@ data_66f7:	start 0x66f7 end 0x6898 type bytedata
 
 logo_image:	start 0x65B3 end 0x66f4 type bytedata
 
+data_8a15:	start 0x8a15 end 0x8a1b type bytedata
+data_78cf:	start 0x78cf end 0x7a7c type bytedata
+
 
 

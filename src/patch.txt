@@ -254,6 +254,9 @@ start:
 ;8265 =
     ld de,v_l5dc0h-BA1         ;8265 11 00 00  . . . 
 -
+;8a15 ;8a1a =
+	defb "Symbo",0xec ;"l"+0x80	;8a15
+-
 ;66f4 <
 v_l5dc0h:
 -
@@ -6126,3 +6129,8 @@ l08632h:
 -
 ;8639 =
     ld (l08632h+1-BA1),a              ;8639 32 3f 1f  2 ? .               (flow from: 7d03)   7d05 ld (7cff),a 
+-
+;8a1b <
+v_sub_080e7h:
+-
+s/02327h/v_sub_080e7h-BA1
