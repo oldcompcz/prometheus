@@ -282,7 +282,6 @@ l5fbah:
     call 052aeh                ;5ff8 cd ae 52  . . R               (ghost flow from: 52e5)   5211 call 52ae 
     and 007h                   ;5ffb e6 07  . .                    (ghost flow from: 52b3)   5214 and 07 
     call 052aeh                ;5ffd cd ae 52  . . R               (ghost flow from: 5214)   5216 call 52ae 
-sub_6000h:
     call 052aeh                ;6000 cd ae 52  . . R               (ghost flow from: 52b3)   5219 call 52ae 
     ld a,(050f3h)              ;6003 3a f3 50  : . P               (ghost flow from: 52b3)   521c ld a,(50f3) 
     call 052aeh                ;6006 cd ae 52  . . R               (ghost flow from: 521c)   521f call 52ae 
@@ -1382,7 +1381,7 @@ sub_6552h:
     ld a,(bc)                  ;65a3 0a  . 
     rlc (hl)                   ;65a4 cb 06  . . 
     ld b,008h                  ;65a6 06 08  . . 
-    djnz l65b3h                ;65a8 10 09  . . 
+    djnz logo_image_start      ;65a8 10 09  . . 
 l65aah:
     ld b,011h                  ;65aa 06 11  . . 
     ex af,af'                  ;65ac 08  . 
@@ -1390,257 +1389,30 @@ l65aah:
     ld b,00dh                  ;65ae 06 0d  . . 
     inc b                      ;65b0 04  . 
     rlc a                      ;65b1 cb 07  . . 
-l65b3h:
-    nop                        ;65b3 00  . 
-    nop                        ;65b4 00  . 
-    ld a,a                     ;65b5 7f   
-    rst 38h                    ;65b6 ff  . 
-    rst 38h                    ;65b7 ff  . 
-    rst 38h                    ;65b8 ff  . 
-    call m,0a8dch              ;65b9 fc dc a8  . . . 
-    nop                        ;65bc 00  . 
-    ret po                     ;65bd e0  . 
-    ret m                      ;65be f8  . 
-    call m,0fefch              ;65bf fc fc fe  . . . 
-    halt                       ;65c2 76  v 
-    xor d                      ;65c3 aa  . 
-    nop                        ;65c4 00  . 
-    ld a,a                     ;65c5 7f   
-    rst 38h                    ;65c6 ff  . 
-    rst 38h                    ;65c7 ff  . 
-    rst 38h                    ;65c8 ff  . 
-    call m,0a8dch              ;65c9 fc dc a8  . . . 
-    nop                        ;65cc 00  . 
-    ret po                     ;65cd e0  . 
-    ret m                      ;65ce f8  . 
-    call m,0fefch              ;65cf fc fc fe  . . . 
-    halt                       ;65d2 76  v 
-    xor d                      ;65d3 aa  . 
-    nop                        ;65d4 00  . 
-    rrca                       ;65d5 0f  . 
-    ccf                        ;65d6 3f  ? 
-    ld a,a                     ;65d7 7f   
-    ld a,a                     ;65d8 7f   
-    cp 0dch                    ;65d9 fe dc  . . 
-    xor b                      ;65db a8  . 
-    nop                        ;65dc 00  . 
-    ret po                     ;65dd e0  . 
-    ret m                      ;65de f8  . 
-    call m,0fefch              ;65df fc fc fe  . . . 
-    ld l,(hl)                  ;65e2 6e  n 
-    ld d,h                     ;65e3 54  T 
-    nop                        ;65e4 00  . 
-    ld h,b                     ;65e5 60  ` 
-    ret p                      ;65e6 f0  . 
-    ret m                      ;65e7 f8  . 
-    call m,sub_77feh           ;65e8 fc fe 77  . . w 
-    xor d                      ;65eb aa  . 
-    nop                        ;65ec 00  . 
-    inc c                      ;65ed 0c  . 
-    ld e,03eh                  ;65ee 1e 3e  . > 
-    ld a,(hl)                  ;65f0 7e  ~ 
-    cp 076h                    ;65f1 fe 76  . v 
-    xor d                      ;65f3 aa  . 
-    nop                        ;65f4 00  . 
-    ld a,a                     ;65f5 7f   
-    rst 38h                    ;65f6 ff  . 
-    rst 38h                    ;65f7 ff  . 
-    rst 38h                    ;65f8 ff  . 
-    call m,0aa77h              ;65f9 fc 77 aa  . w . 
-    nop                        ;65fc 00  . 
-    call m,0fefeh              ;65fd fc fe fe  . . . 
-    call m,sub_6000h           ;6600 fc 00 60  . . ` 
-    or b                       ;6603 b0  . 
-    nop                        ;6604 00  . 
-    ld a,a                     ;6605 7f   
-    rst 38h                    ;6606 ff  . 
-    rst 38h                    ;6607 ff  . 
-    ld a,a                     ;6608 7f   
-    rlca                       ;6609 07  . 
-    inc bc                     ;660a 03  . 
-    dec b                      ;660b 05  . 
-    nop                        ;660c 00  . 
-    cp 0ffh                    ;660d fe ff  . . 
-    rst 38h                    ;660f ff  . 
-    cp 0e0h                    ;6610 fe e0  . . 
-    and b                      ;6612 a0  . 
-    ld b,b                     ;6613 40  @ 
-    nop                        ;6614 00  . 
-    inc a                      ;6615 3c  < 
-    ld a,(hl)                  ;6616 7e  ~ 
-    ld a,(hl)                  ;6617 7e  ~ 
-    ld a,(hl)                  ;6618 7e  ~ 
-    ld a,(hl)                  ;6619 7e  ~ 
-    dec sp                     ;661a 3b                        ; 
-    ld d,l                     ;661b 55  U 
-    nop                        ;661c 00  . 
-    ld e,03fh                  ;661d 1e 3f  . ? 
-    ccf                        ;661f 3f  ? 
-    ccf                        ;6620 3f  ? 
-    ccf                        ;6621 3f  ? 
-    cp e                       ;6622 bb  . 
-    ld d,l                     ;6623 55  U 
-    nop                        ;6624 00  . 
-    ccf                        ;6625 3f  ? 
-    ld a,a                     ;6626 7f   
-    ld a,a                     ;6627 7f   
-    ld a,a                     ;6628 7f   
-    ld a,(hl)                  ;6629 7e  ~ 
-    dec sp                     ;662a 3b                        ; 
-    ld d,l                     ;662b 55  U 
-    nop                        ;662c 00  . 
-    cp 0ffh                    ;662d fe ff  . . 
-    rst 38h                    ;662f ff  . 
-    cp 000h                    ;6630 fe 00  . . 
-    cp b                       ;6632 b8  . 
-    ld d,h                     ;6633 54  T 
-    nop                        ;6634 00  . 
-    inc a                      ;6635 3c  < 
-    ld a,(hl)                  ;6636 7e  ~ 
-    ld a,(hl)                  ;6637 7e  ~ 
-    ld a,(hl)                  ;6638 7e  ~ 
-    ld a,(hl)                  ;6639 7e  ~ 
-    ld a,(00054h)              ;663a 3a 54 00  : T . 
-    ld e,03fh                  ;663d 1e 3f  . ? 
-    ccf                        ;663f 3f  ? 
-    ccf                        ;6640 3f  ? 
-    ccf                        ;6641 3f  ? 
-    dec e                      ;6642 1d  . 
-    ld hl,(00f00h)             ;6643 2a 00 0f  * . . 
-    ccf                        ;6646 3f  ? 
-    ccf                        ;6647 3f  ? 
-    ld a,a                     ;6648 7f   
-    ld a,(hl)                  ;6649 7e  ~ 
-    ld a,e                     ;664a 7b  { 
-    dec d                      ;664b 15  . 
-    nop                        ;664c 00  . 
-    ret m                      ;664d f8  . 
-    call m,0f8fch              ;664e fc fc f8  . . . 
-    nop                        ;6651 00  . 
-    xor b                      ;6652 a8  . 
-    ld d,h                     ;6653 54  T 
-    ld d,l                     ;6654 55  U 
-    cp e                       ;6655 bb  . 
-    rst 38h                    ;6656 ff  . 
-    rst 38h                    ;6657 ff  . 
-    call m,0fcfch              ;6658 fc fc fc  . . . 
-    ld a,b                     ;665b 78  x 
-    ld d,h                     ;665c 54  T 
-    cp h                       ;665d bc  . 
-    ret m                      ;665e f8  . 
-    ret po                     ;665f e0  . 
-    nop                        ;6660 00  . 
-    nop                        ;6661 00  . 
-    nop                        ;6662 00  . 
-    nop                        ;6663 00  . 
-    ld d,l                     ;6664 55  U 
-    cp e                       ;6665 bb  . 
-    rst 38h                    ;6666 ff  . 
-    rst 38h                    ;6667 ff  . 
-    rst 38h                    ;6668 ff  . 
-    call m,sub_78fch           ;6669 fc fc 78  . . x 
-    ld d,h                     ;666c 54  T 
-    cp h                       ;666d bc  . 
-    ret m                      ;666e f8  . 
-    ret p                      ;666f f0  . 
-    ret m                      ;6670 f8  . 
-    call m,03c7eh              ;6671 fc 7e 3c  . ~ < 
-    ld d,h                     ;6674 54  T 
-    call pe,0fefch             ;6675 ec fc fe  . . . 
-    ld a,a                     ;6678 7f   
-    ld a,a                     ;6679 7f   
-    ccf                        ;667a 3f  ? 
-    rrca                       ;667b 0f  . 
-    ld hl,(l7e76h)             ;667c 2a 76 7e  * v ~ 
-    cp 0fch                    ;667f fe fc  . . 
-    call m,0e0f8h              ;6681 fc f8 e0  . . . 
-    ld d,l                     ;6684 55  U 
-    cp e                       ;6685 bb  . 
-    defb 0fdh,0fch,0fch        ;illegal sequence               ;6686 fd fc fc  . . . 
-    call m,sub_78fch           ;6689 fc fc 78  . . x 
-    ld d,h                     ;668c 54  T 
-    cp d                       ;668d ba  . 
-    ld a,(hl)                  ;668e 7e  ~ 
-    ld a,(hl)                  ;668f 7e  ~ 
-    ld a,(hl)                  ;6690 7e  ~ 
-    ld a,(hl)                  ;6691 7e  ~ 
-    ld a,(hl)                  ;6692 7e  ~ 
-    inc a                      ;6693 3c  < 
-    ld d,l                     ;6694 55  U 
-    cp e                       ;6695 bb  . 
-    call m,0fffch              ;6696 fc fc ff  . . . 
-    rst 38h                    ;6699 ff  . 
-    rst 38h                    ;669a ff  . 
-    ld a,a                     ;669b 7f   
-    ld d,b                     ;669c 50  P 
-    and b                      ;669d a0  . 
-    nop                        ;669e 00  . 
-    nop                        ;669f 00  . 
-    call m,0fefeh              ;66a0 fc fe fe  . . . 
-    call m,00502h              ;66a3 fc 02 05  . . . 
-    rlca                       ;66a6 07  . 
-    rlca                       ;66a7 07  . 
-    rlca                       ;66a8 07  . 
-    rlca                       ;66a9 07  . 
-    rlca                       ;66aa 07  . 
-    inc bc                     ;66ab 03  . 
-    and b                      ;66ac a0  . 
-    ret nz                     ;66ad c0  . 
-    ret po                     ;66ae e0  . 
-    ret po                     ;66af e0  . 
-    ret po                     ;66b0 e0  . 
-    ret po                     ;66b1 e0  . 
-    ret po                     ;66b2 e0  . 
-    ret nz                     ;66b3 c0  . 
-    ld hl,(07e5dh)             ;66b4 2a 5d 7e  * ] ~ 
-    ld a,(hl)                  ;66b7 7e  ~ 
-    ld a,(hl)                  ;66b8 7e  ~ 
-    ld a,(hl)                  ;66b9 7e  ~ 
-    ld a,(hl)                  ;66ba 7e  ~ 
-    inc a                      ;66bb 3c  < 
-    xor d                      ;66bc aa  . 
-    defb 0ddh,03fh,03fh        ;illegal sequence               ;66bd dd 3f 3f  . ? ? 
-    ccf                        ;66c0 3f  ? 
-    ccf                        ;66c1 3f  ? 
-    ccf                        ;66c2 3f  ? 
-    ld e,02ah                  ;66c3 1e 2a  . * 
-    ld e,l                     ;66c5 5d  ] 
-    ld a,(hl)                  ;66c6 7e  ~ 
-    ld a,(hl)                  ;66c7 7e  ~ 
-    ld a,a                     ;66c8 7f   
-    ld a,a                     ;66c9 7f   
-    ld a,a                     ;66ca 7f   
-    ccf                        ;66cb 3f  ? 
-    xor h                      ;66cc ac  . 
-    ret c                      ;66cd d8  . 
-    nop                        ;66ce 00  . 
-    nop                        ;66cf 00  . 
-    cp 0ffh                    ;66d0 fe ff  . . 
-    rst 38h                    ;66d2 ff  . 
-    cp 02ah                    ;66d3 fe 2a  . * 
-    ld e,h                     ;66d5 5c  \ 
-    ld a,a                     ;66d6 7f   
-    ld a,a                     ;66d7 7f   
-    ccf                        ;66d8 3f  ? 
-    ccf                        ;66d9 3f  ? 
-    rra                        ;66da 1f  . 
-    rlca                       ;66db 07  . 
-    dec d                      ;66dc 15  . 
-    ld l,07fh                  ;66dd 2e 7f  .  
-    rst 38h                    ;66df ff  . 
-    cp 0feh                    ;66e0 fe fe  . . 
-    call m,02af0h              ;66e2 fc f0 2a  . . * 
-    dec c                      ;66e5 0d  . 
-    nop                        ;66e6 00  . 
-    ld a,a                     ;66e7 7f   
-    rst 38h                    ;66e8 ff  . 
-    rst 38h                    ;66e9 ff  . 
-    rst 38h                    ;66ea ff  . 
-    ld a,a                     ;66eb 7f   
-    xor b                      ;66ec a8  . 
-    sbc a,07eh                 ;66ed de 7e  . ~ 
-    cp 0feh                    ;66ef fe fe  . . 
-    call m,0f0fch              ;66f1 fc fc f0  . . . 
+
+; BLOCK 'logo_image' (start 0x65b3 end 0x66f4)
+logo_image_start:
+    defb 000h, 000h, 07fh, 0ffh, 0ffh, 0ffh, 0fch, 0dch, 0a8h, 000h, 0e0h, 0f8h, 0fch, 0fch, 0feh, 076h
+    defb 0aah, 000h, 07fh, 0ffh, 0ffh, 0ffh, 0fch, 0dch, 0a8h, 000h, 0e0h, 0f8h, 0fch, 0fch, 0feh, 076h
+    defb 0aah, 000h, 00fh, 03fh, 07fh, 07fh, 0feh, 0dch, 0a8h, 000h, 0e0h, 0f8h, 0fch, 0fch, 0feh, 06eh
+    defb 054h, 000h, 060h, 0f0h, 0f8h, 0fch, 0feh, 077h, 0aah, 000h, 00ch, 01eh, 03eh, 07eh, 0feh, 076h
+    defb 0aah, 000h, 07fh, 0ffh, 0ffh, 0ffh, 0fch, 077h, 0aah, 000h, 0fch, 0feh, 0feh, 0fch, 000h, 060h
+    defb 0b0h, 000h, 07fh, 0ffh, 0ffh, 07fh, 007h, 003h, 005h, 000h, 0feh, 0ffh, 0ffh, 0feh, 0e0h, 0a0h
+    defb 040h, 000h, 03ch, 07eh, 07eh, 07eh, 07eh, 03bh, 055h, 000h, 01eh, 03fh, 03fh, 03fh, 03fh, 0bbh
+    defb 055h, 000h, 03fh, 07fh, 07fh, 07fh, 07eh, 03bh, 055h, 000h, 0feh, 0ffh, 0ffh, 0feh, 000h, 0b8h
+    defb 054h, 000h, 03ch, 07eh, 07eh, 07eh, 07eh, 03ah, 054h, 000h, 01eh, 03fh, 03fh, 03fh, 03fh, 01dh
+    defb 02ah, 000h, 00fh, 03fh, 03fh, 07fh, 07eh, 07bh, 015h, 000h, 0f8h, 0fch, 0fch, 0f8h, 000h, 0a8h
+    defb 054h, 055h, 0bbh, 0ffh, 0ffh, 0fch, 0fch, 0fch, 078h, 054h, 0bch, 0f8h, 0e0h, 000h, 000h, 000h
+    defb 000h, 055h, 0bbh, 0ffh, 0ffh, 0ffh, 0fch, 0fch, 078h, 054h, 0bch, 0f8h, 0f0h, 0f8h, 0fch, 07eh
+    defb 03ch, 054h, 0ech, 0fch, 0feh, 07fh, 07fh, 03fh, 00fh, 02ah, 076h, 07eh, 0feh, 0fch, 0fch, 0f8h
+    defb 0e0h, 055h, 0bbh, 0fdh, 0fch, 0fch, 0fch, 0fch, 078h, 054h, 0bah, 07eh, 07eh, 07eh, 07eh, 07eh
+    defb 03ch, 055h, 0bbh, 0fch, 0fch, 0ffh, 0ffh, 0ffh, 07fh, 050h, 0a0h, 000h, 000h, 0fch, 0feh, 0feh
+    defb 0fch, 002h, 005h, 007h, 007h, 007h, 007h, 007h, 003h, 0a0h, 0c0h, 0e0h, 0e0h, 0e0h, 0e0h, 0e0h
+    defb 0c0h, 02ah, 05dh, 07eh, 07eh, 07eh, 07eh, 07eh, 03ch, 0aah, 0ddh, 03fh, 03fh, 03fh, 03fh, 03fh
+    defb 01eh, 02ah, 05dh, 07eh, 07eh, 07fh, 07fh, 07fh, 03fh, 0ach, 0d8h, 000h, 000h, 0feh, 0ffh, 0ffh
+    defb 0feh, 02ah, 05ch, 07fh, 07fh, 03fh, 03fh, 01fh, 007h, 015h, 02eh, 07fh, 0ffh, 0feh, 0feh, 0fch
+    defb 0f0h, 02ah, 00dh, 000h, 07fh, 0ffh, 0ffh, 0ffh, 07fh, 0a8h, 0deh, 07eh, 0feh, 0feh, 0fch, 0fch
+    defb 0f0h
 
 ; BLOCK 'data_66f4' (start 0x66f4 end 0x6898)
 v_l5dc0h:
@@ -4492,7 +4264,6 @@ l77f8h:
     and c                      ;77fa a1  . 
     jr nz,l7801h               ;77fb 20 04    . 
     inc hl                     ;77fd 23  # 
-sub_77feh:
     ld a,(hl)                  ;77fe 7e  ~ 
     jr l7803h                  ;77ff 18 02  . . 
 l7801h:
@@ -4680,7 +4451,6 @@ v_l6fb9h:
     dec c                      ;78f9 0d  . 
     rst 8                      ;78fa cf  . 
     pop bc                     ;78fb c1  . 
-sub_78fch:
     dec c                      ;78fc 0d  . 
 v_l6fc9h:
     rst 0                      ;78fd c7  . 
@@ -5619,7 +5389,6 @@ l7e5bh:
     add hl,de                  ;7e70 19  . 
     ld (017d0h),de             ;7e71 ed 53 d0 17  . S . . 
     ld d,h                     ;7e75 54  T 
-l7e76h:
     ld e,l                     ;7e76 5d  ] 
     inc de                     ;7e77 13  . 
     inc de                     ;7e78 13  . 
