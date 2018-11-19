@@ -2,6 +2,7 @@
 
 BA: 		equ 24000
 BA1: 		equ 24000+2356
+VR: 		equ 0xde7
 
 ; ROM routines
 
@@ -52,7 +53,8 @@ start:
 	defb "Press ENTER to run Assemble",0xf2 ;"r"+0x80	;5e52
 -
 ;5e74 ;5e8e =
-	defb "Instalation address:00000_",0xa0 ;" "+0x80	;5e74
+	defb "Instalation address:"
+	defb "00000_",0xa0 ;" "+0x80	;5e88
 -
 ;5e95 ;5e9c =
 	defb "Monitor",0xba ;":"+0x80	;5e95
@@ -6134,3 +6136,43 @@ l08632h:
 v_sub_080e7h:
 -
 s/02327h/v_sub_080e7h-BA1
+-
+s/05000h/vr_l05000h-VR
+-
+;5de7 <
+vr_l05000h:
+-
+s/05342h/vr_sub_05342h-VR
+-
+;6129 <
+vr_sub_05342h:
+-
+s/052aeh/vr_sub_052aeh-VR
+-
+;6095 <
+vr_sub_052aeh:
+-
+s/052afh/vr_sub_052afh-VR
+-
+;6096 <
+vr_sub_052afh:
+-
+s/052b4h/vr_sub_052b4h-VR
+-
+;609b <
+vr_sub_052b4h:
+-
+s/052dch/vr_sub_052dch-VR
+-
+;60c3 <
+vr_sub_052dch:
+-
+s/052e6h/vr_sub_052e6h-VR
+-
+;60cd <
+vr_sub_052e6h:
+-
+s/050a1h/vr_l050a1h-VR
+-
+;5e88 <
+vr_l050a1h:

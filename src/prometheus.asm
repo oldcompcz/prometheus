@@ -6,6 +6,7 @@
 
 BA:      equ 24000
 BA1:     equ 24000+2356
+VR:      equ 0xde7
 
 ; ROM routines
 
@@ -35,45 +36,48 @@ start:
     add hl,bc                  ;5dde 09  .                         (flow from: 5ddb)  5dde add hl,bc 
     ld bc,007cdh               ;5ddf 01 cd 07  . . .               (flow from: 5dde)  5ddf ld bc,07cd 
     ldir                       ;5de2 ed b0  . .                    (flow from: 5ddf 5de2)  5de2 ldir 
-    jp 05000h                  ;5de4 c3 00 50  . . P               (flow from: 5de2)  5de4 jp 5000 
+    jp vr_l05000h-VR           ;5de4 c3 00 50  . . P               (flow from: 5de2)  5de4 jp 5000 
+vr_l05000h:
     ld de,04026h               ;5de7 11 26 40  . & @               (ghost flow from: 5de4)   5000 ld de,4026 
-    call 05342h                ;5dea cd 42 53  . B S               (ghost flow from: 5000)   5003 call 5342 
+    call vr_sub_05342h-VR      ;5dea cd 42 53  . B S               (ghost flow from: 5000)   5003 call 5342 
     ld e,046h                  ;5ded 1e 46  . F                    (ghost flow from: 5352)   5006 ld e,46 
-    call 05342h                ;5def cd 42 53  . B S               (ghost flow from: 5006)   5008 call 5342 
+    call vr_sub_05342h-VR      ;5def cd 42 53  . B S               (ghost flow from: 5006)   5008 call 5342 
     ex (sp),hl                 ;5df2 e3  .                         (ghost flow from: 5352)   500b ex (sp),hl 
-    ld bc,050a1h               ;5df3 01 a1 50  . . P               (ghost flow from: 500b)   500c ld bc,50a1 
+    ld bc,vr_l050a1h-VR        ;5df3 01 a1 50  . . P               (ghost flow from: 500b)   500c ld bc,50a1 
     ld de,02710h               ;5df6 11 10 27  . . '               (ghost flow from: 500c)   500f ld de,2710 
-    call 052b4h                ;5df9 cd b4 52  . . R               (ghost flow from: 500f)   5012 call 52b4 
+    call vr_sub_052b4h-VR      ;5df9 cd b4 52  . . R               (ghost flow from: 500f)   5012 call 52b4 
     ld de,003e8h               ;5dfc 11 e8 03  . . .               (ghost flow from: 52bf)   5015 ld de,03e8 
-    call 052b4h                ;5dff cd b4 52  . . R               (ghost flow from: 5015)   5018 call 52b4 
+    call vr_sub_052b4h-VR      ;5dff cd b4 52  . . R               (ghost flow from: 5015)   5018 call 52b4 
     ld de,00064h               ;5e02 11 64 00  . d .               (ghost flow from: 52bf)   501b ld de,0064 
-    call 052b4h                ;5e05 cd b4 52  . . R               (ghost flow from: 501b)   501e call 52b4 
+    call vr_sub_052b4h-VR      ;5e05 cd b4 52  . . R               (ghost flow from: 501b)   501e call 52b4 
     ld e,00ah                  ;5e08 1e 0a  . .                    (ghost flow from: 52bf)   5021 ld e,0a 
-    call 052b4h                ;5e0a cd b4 52  . . R               (ghost flow from: 5021)   5023 call 52b4 
+    call vr_sub_052b4h-VR      ;5e0a cd b4 52  . . R               (ghost flow from: 5021)   5023 call 52b4 
     ld e,001h                  ;5e0d 1e 01  . .                    (ghost flow from: 52bf)   5026 ld e,01 
-    call 052b4h                ;5e0f cd b4 52  . . R               (ghost flow from: 5026)   5028 call 52b4 
+    call vr_sub_052b4h-VR      ;5e0f cd b4 52  . . R               (ghost flow from: 5026)   5028 call 52b4 
     ld hl,04082h               ;5e12 21 82 40  ! . @               (ghost flow from: 52bf)   502b ld hl,4082 
-    call 052e6h                ;5e15 cd e6 52  . . R               (ghost flow from: 502b)   502e call 52e6 
+    call vr_sub_052e6h-VR      ;5e15 cd e6 52  . . R               (ghost flow from: 502b)   502e call 52e6 
 
 ; BLOCK 'intro1_string' (start 0x5e18 end 0x5e34)
     defb "Spectrum Z80 Turbo Assemble",0xf2                    ;"r"+0x80                       ;0x5e18
     ld hl,040c7h               ;5e34 21 c7 40  ! . @               (ghost flow from: 531b)   504d ld hl,40c7 
-    call 052e6h                ;5e37 cd e6 52  . . R               (ghost flow from: 504d)   5050 call 52e6 
+    call vr_sub_052e6h-VR      ;5e37 cd e6 52  . . R               (ghost flow from: 504d)   5050 call 52e6 
 
 ; BLOCK 'intro2_string' (start 0x5e3a end 0x5e4c)
     defb "(C) 1990 UNIVERSU",0xcd                              ;"M"+0x80                       ;5e3a
     ld hl,048e2h               ;5e4c 21 e2 48  ! . H               (ghost flow from: 531b)   5065 ld hl,48e2 
-    call 052e6h                ;5e4f cd e6 52  . . R               (ghost flow from: 5065)   5068 call 52e6 
+    call vr_sub_052e6h-VR      ;5e4f cd e6 52  . . R               (ghost flow from: 5065)   5068 call 52e6 
 
 ; BLOCK 'intro3_string' (start 0x5e52 end 0x5e6e)
     defb "Press ENTER to run Assemble",0xf2                    ;"r"+0x80                       ;5e52
     ld hl,04883h               ;5e6e 21 83 48  ! . H               (ghost flow from: 531b)   5087 ld hl,4883 
-    call 052e6h                ;5e71 cd e6 52  . . R               (ghost flow from: 5087)   508a call 52e6 
+    call vr_sub_052e6h-VR      ;5e71 cd e6 52  . . R               (ghost flow from: 5087)   508a call 52e6 
 
 ; BLOCK 'intro4_string' (start 0x5e74 end 0x5e8f)
-    defb "Instalation address:00000_",0xa0                     ;" "+0x80                       ;5e74
+    defb "Instalation address:"
+vr_l050a1h:
+    defb "00000_",0xa0         ;" "+0x80                       ;5e88
     ld hl,0484bh               ;5e8f 21 4b 48  ! K H               (ghost flow from: 531b)   50a8 ld hl,484b 
-    call 052e6h                ;5e92 cd e6 52  . . R               (ghost flow from: 50a8)   50ab call 52e6 
+    call vr_sub_052e6h-VR      ;5e92 cd e6 52  . . R               (ghost flow from: 50a8)   50ab call 52e6 
 
 ; BLOCK 'intro5_string' (start 0x5e95 end 0x5e9d)
     defb "Monitor",0xba        ;":"+0x80                       ;5e95
@@ -81,13 +85,13 @@ start:
     or a                       ;5e9f b7  .                         (ghost flow from: 50b6)   50b8 or a 
     ld hl,04853h               ;5ea0 21 53 48  ! S H               (ghost flow from: 50b8)   50b9 ld hl,4853 
     jr z,l5eadh                ;5ea3 28 08  ( .                    (ghost flow from: 50b9)   50bc jr z,50c6 
-    call 052e6h                ;5ea5 cd e6 52  . . R               (ghost flow from: 50bc)   50be call 52e6 
+    call vr_sub_052e6h-VR      ;5ea5 cd e6 52  . . R               (ghost flow from: 50bc)   50be call 52e6 
 
 ; BLOCK 'intro_yes_string' (start 0x5ea8 end 0x5eab)
     defb "Ye",0xf3             ;"s"+0x80                       ;5ea8
     jr intro_no_string_end     ;5eab 18 06  . .                    (ghost flow from: 531b)   50c4 jr 50cc 
 l5eadh:
-    call 052e6h                ;5ead cd e6 52  . . R 
+    call vr_sub_052e6h-VR      ;5ead cd e6 52  . . R 
 
 ; BLOCK 'intro_no_string' (start 0x5eb0 end 0x5eb3)
     defb "No",0xa0             ;" "+0x80                       ;5eb0
@@ -113,7 +117,7 @@ intro_no_string_end:
     ld (hl),030h               ;5ed9 36 30  6 0                    (ghost flow from: 50f0)   50f2 ld (hl),30 
     ld bc,00020h               ;5edb 01 20 00  .   .               (ghost flow from: 50f2)   50f4 ld bc,0020 
     ldir                       ;5ede ed b0  . .                    (ghost flow from: 50f4 50f7)   50f7 ldir 
-    call 052dch                ;5ee0 cd dc 52  . . R               (ghost flow from: 50f7)   50f9 call 52dc 
+    call vr_sub_052dch-VR      ;5ee0 cd dc 52  . . R               (ghost flow from: 50f7)   50f9 call 52dc 
     ld b,001h                  ;5ee3 06 01  . .                    (ghost flow from: 52e5)   50fc ld b,01 
     ld (hl),a                  ;5ee5 77  w                         (ghost flow from: 50fc)   50fe ld (hl),a 
     ldir                       ;5ee6 ed b0  . .                    (ghost flow from: 50fe 50ff)   50ff ldir 
@@ -260,36 +264,36 @@ l5fbah:
     push hl                    ;5fbf e5  .                         (ghost flow from: 51d7)   51d8 push hl 
     ld (05227h),sp             ;5fc0 ed 73 27 52  . s ' R          (ghost flow from: 51d8)   51d9 ld (5227),sp 
     ld sp,052c0h               ;5fc4 31 c0 52  1 . R               (ghost flow from: 51d9)   51dd ld sp,52c0 
-    call 052afh                ;5fc7 cd af 52  . . R               (ghost flow from: 51dd)   51e0 call 52af 
+    call vr_sub_052afh-VR      ;5fc7 cd af 52  . . R               (ghost flow from: 51dd)   51e0 call 52af 
     ld a,(05309h)              ;5fca 3a 09 53  : . S               (ghost flow from: 52b3)   51e3 ld a,(5309) 
-    call 052aeh                ;5fcd cd ae 52  . . R               (ghost flow from: 51e3)   51e6 call 52ae 
+    call vr_sub_052aeh-VR      ;5fcd cd ae 52  . . R               (ghost flow from: 51e3)   51e6 call 52ae 
     ld de,(052fah)             ;5fd0 ed 5b fa 52  . [ . R          (ghost flow from: 52b3)   51e9 ld de,(52fa) 
     ld (hl),e                  ;5fd4 73  s                         (ghost flow from: 51e9)   51ed ld (hl),e 
     inc hl                     ;5fd5 23  #                         (ghost flow from: 51ed)   51ee inc hl 
     ld (hl),d                  ;5fd6 72  r                         (ghost flow from: 51ee)   51ef ld (hl),d 
     dec hl                     ;5fd7 2b  +                         (ghost flow from: 51ef)   51f0 dec hl 
-    call 052afh                ;5fd8 cd af 52  . . R               (ghost flow from: 51f0)   51f1 call 52af 
+    call vr_sub_052afh-VR      ;5fd8 cd af 52  . . R               (ghost flow from: 51f0)   51f1 call 52af 
     ld a,(05102h)              ;5fdb 3a 02 51  : . Q               (ghost flow from: 52b3)   51f4 ld a,(5102) 
-    call 052aeh                ;5fde cd ae 52  . . R               (ghost flow from: 51f4)   51f7 call 52ae 
+    call vr_sub_052aeh-VR      ;5fde cd ae 52  . . R               (ghost flow from: 51f4)   51f7 call 52ae 
     ld a,(050eeh)              ;5fe1 3a ee 50  : . P               (ghost flow from: 52b3)   51fa ld a,(50ee) 
-    call 052aeh                ;5fe4 cd ae 52  . . R               (ghost flow from: 51fa)   51fd call 52ae 
-    call 052aeh                ;5fe7 cd ae 52  . . R               (ghost flow from: 52b3)   5200 call 52ae 
-    call 052aeh                ;5fea cd ae 52  . . R               (ghost flow from: 52b3)   5203 call 52ae 
+    call vr_sub_052aeh-VR      ;5fe4 cd ae 52  . . R               (ghost flow from: 51fa)   51fd call 52ae 
+    call vr_sub_052aeh-VR      ;5fe7 cd ae 52  . . R               (ghost flow from: 52b3)   5200 call 52ae 
+    call vr_sub_052aeh-VR      ;5fea cd ae 52  . . R               (ghost flow from: 52b3)   5203 call 52ae 
     xor 001h                   ;5fed ee 01  . .                    (ghost flow from: 52b3)   5206 xor 01 
-    call 052aeh                ;5fef cd ae 52  . . R               (ghost flow from: 5206)   5208 call 52ae 
-    call 052aeh                ;5ff2 cd ae 52  . . R               (ghost flow from: 52b3)   520b call 52ae 
-    call 052dch                ;5ff5 cd dc 52  . . R               (ghost flow from: 52b3)   520e call 52dc 
-    call 052aeh                ;5ff8 cd ae 52  . . R               (ghost flow from: 52e5)   5211 call 52ae 
+    call vr_sub_052aeh-VR      ;5fef cd ae 52  . . R               (ghost flow from: 5206)   5208 call 52ae 
+    call vr_sub_052aeh-VR      ;5ff2 cd ae 52  . . R               (ghost flow from: 52b3)   520b call 52ae 
+    call vr_sub_052dch-VR      ;5ff5 cd dc 52  . . R               (ghost flow from: 52b3)   520e call 52dc 
+    call vr_sub_052aeh-VR      ;5ff8 cd ae 52  . . R               (ghost flow from: 52e5)   5211 call 52ae 
     and 007h                   ;5ffb e6 07  . .                    (ghost flow from: 52b3)   5214 and 07 
-    call 052aeh                ;5ffd cd ae 52  . . R               (ghost flow from: 5214)   5216 call 52ae 
-    call 052aeh                ;6000 cd ae 52  . . R               (ghost flow from: 52b3)   5219 call 52ae 
+    call vr_sub_052aeh-VR      ;5ffd cd ae 52  . . R               (ghost flow from: 5214)   5216 call 52ae 
+    call vr_sub_052aeh-VR      ;6000 cd ae 52  . . R               (ghost flow from: 52b3)   5219 call 52ae 
     ld a,(050f3h)              ;6003 3a f3 50  : . P               (ghost flow from: 52b3)   521c ld a,(50f3) 
-    call 052aeh                ;6006 cd ae 52  . . R               (ghost flow from: 521c)   521f call 52ae 
-    call 052aeh                ;6009 cd ae 52  . . R               (ghost flow from: 52b3)   5222 call 52ae 
+    call vr_sub_052aeh-VR      ;6006 cd ae 52  . . R               (ghost flow from: 521c)   521f call 52ae 
+    call vr_sub_052aeh-VR      ;6009 cd ae 52  . . R               (ghost flow from: 52b3)   5222 call 52ae 
     ld (hl),a                  ;600c 77  w                         (ghost flow from: 52b3)   5225 ld (hl),a 
     ld sp,00000h               ;600d 31 00 00  1 . .               (ghost flow from: 5225)   5226 ld sp,401e 
     ld hl,00000h               ;6010 21 00 00  ! . .               (ghost flow from: 5226)   5229 ld hl,0000 
-    ld de,050a1h               ;6013 11 a1 50  . . P               (ghost flow from: 5229)   522c ld de,50a1 
+    ld de,vr_l050a1h-VR        ;6013 11 a1 50  . . P               (ghost flow from: 5229)   522c ld de,50a1 
 l6016h:
     ld a,(de)                  ;6016 1a  .                         (ghost flow from: 522c 5241)   522f ld a,(de) 
     inc de                     ;6017 13  .                         (ghost flow from: 522f)   5230 inc de 
@@ -385,13 +389,16 @@ l608eh:
     ld sp,hl                   ;6092 f9  .                         (ghost flow from: 52aa)   52ab ld sp,hl 
     push bc                    ;6093 c5  .                         (ghost flow from: 52ab)   52ac push bc 
     ret                        ;6094 c9  .                         (ghost flow from: 52ac)   52ad ret 
+vr_sub_052aeh:
     ld (hl),a                  ;6095 77  w                         (ghost flow from: 51e6 51f7 51fd 5200 5203 5208 520b 5211 5216 5219 521f 5222)   52ae ld (hl),a 
+vr_sub_052afh:
     pop bc                     ;6096 c1  .                         (ghost flow from: 51e0 51f1 52ae)   52af pop bc 
     pop de                     ;6097 d1  .                         (ghost flow from: 52af)   52b0 pop de 
     add hl,de                  ;6098 19  .                         (ghost flow from: 52b0)   52b1 add hl,de 
     push bc                    ;6099 c5  .                         (ghost flow from: 52b1)   52b2 push bc 
 l609ah:
     ret                        ;609a c9  .                         (ghost flow from: 52b2)   52b3 ret 
+vr_sub_052b4h:
     ld a,02fh                  ;609b 3e 2f  > /                    (ghost flow from: 5012 5018 501e 5023 5028)   52b4 ld a,2f 
 l609dh:
     inc a                      ;609d 3c  <                         (ghost flow from: 52b4 52ba)   52b6 inc a 
@@ -422,6 +429,7 @@ l609dh:
     rst 30h                    ;60c0 f7  . 
     ld e,l                     ;60c1 5d  ] 
     ret m                      ;60c2 f8  . 
+vr_sub_052dch:
     and 0f8h                   ;60c3 e6 f8  . .                    (ghost flow from: 50f9 520e)   52dc and f8 
     ld b,a                     ;60c5 47  G                         (ghost flow from: 52dc)   52de ld b,a 
 l60c6h:
@@ -431,6 +439,7 @@ l60c6h:
     and 007h                   ;60c9 e6 07  . .                    (ghost flow from: 52e1)   52e2 and 07 
     or b                       ;60cb b0  .                         (ghost flow from: 52e2)   52e4 or b 
     ret                        ;60cc c9  .                         (ghost flow from: 52e4)   52e5 ret 
+vr_sub_052e6h:
     ld (05303h),hl             ;60cd 22 03 53  " . S               (ghost flow from: 502e 5050 5068 508a 50ab 50be)   52e6 ld (5303),hl 
     pop hl                     ;60d0 e1  .                         (ghost flow from: 52e6)   52e9 pop hl 
 l60d1h:
@@ -505,6 +514,7 @@ l6115h:
     jr nz,l610fh               ;6124 20 e9    .                    (ghost flow from: 533c)   533d jr nz,5328 
     inc hl                     ;6126 23  #                         (ghost flow from: 533d)   533f inc hl 
     jr l6103h                  ;6127 18 da  . .                    (ghost flow from: 533f)   5340 jr 531c 
+vr_sub_05342h:
     ld c,014h                  ;6129 0e 14  . .                    (ghost flow from: 5003 5008)   5342 ld c,14 
 l612bh:
     ld b,008h                  ;612b 06 08  . .                    (ghost flow from: 5342 5350)   5344 ld b,08 
