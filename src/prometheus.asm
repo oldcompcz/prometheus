@@ -7,6 +7,7 @@
 BA:      equ 24000
 BA1:     equ 24000+2356
 VR:      equ 0xde7
+ATTRIBUTES_ADDRESS:      equ 0x5800
 
 ; ROM routines
 
@@ -54,6 +55,7 @@ vr_l05000h:
     call vr_sub_052b4h-VR      ;5e0a cd b4 52  . . R               (ghost flow from: 5021)   5023 call 52b4 
     ld e,001h                  ;5e0d 1e 01  . .                    (ghost flow from: 52bf)   5026 ld e,01 
     call vr_sub_052b4h-VR      ;5e0f cd b4 52  . . R               (ghost flow from: 5026)   5028 call 52b4 
+vr_l0502bh:
     ld hl,04082h               ;5e12 21 82 40  ! . @               (ghost flow from: 52bf)   502b ld hl,4082 
     call vr_sub_052e6h-VR      ;5e15 cd e6 52  . . R               (ghost flow from: 502b)   502e call 52e6 
 
@@ -96,8 +98,8 @@ l5eadh:
 ; BLOCK 'intro_no_string' (start 0x5eb0 end 0x5eb3)
     defb "No",0xa0             ;" "+0x80                       ;5eb0
 intro_no_string_end:
-    ld hl,05800h               ;5eb3 21 00 58  ! . X               (ghost flow from: 50c4)   50cc ld hl,5800 
-    ld de,05801h               ;5eb6 11 01 58  . . X               (ghost flow from: 50cc)   50cf ld de,5801 
+    ld hl,ATTRIBUTES_ADDRESS   ;5eb3 21 00 58  ! . X               (ghost flow from: 50c4)   50cc ld hl,5800 
+    ld de,ATTRIBUTES_ADDRESS+1                                 ;5eb6 11 01 58  . . X                                                   (ghost flow from: 50cc)   50cf ld de,5801 
     ld bc,00020h               ;5eb9 01 20 00  .   .               (ghost flow from: 50cf)   50d2 ld bc,0020 
     ld (hl),l                  ;5ebc 75  u                         (ghost flow from: 50d2)   50d5 ld (hl),l 
     ldir                       ;5ebd ed b0  . .                    (ghost flow from: 50d5 50d6)   50d6 ldir 
@@ -111,6 +113,7 @@ intro_no_string_end:
     ld (hl),007h               ;5ecd 36 07  6 .                    (ghost flow from: 50e4)   50e6 ld (hl),07 
     ldir                       ;5ecf ed b0  . .                    (ghost flow from: 50e6 50e8)   50e8 ldir 
     ld bc,000e0h               ;5ed1 01 e0 00  . . .               (ghost flow from: 50e8)   50ea ld bc,00e0 
+vr_l050edh:
     ld (hl),038h               ;5ed4 36 38  6 8                    (ghost flow from: 50ea)   50ed ld (hl),38 
     ld a,(hl)                  ;5ed6 7e  ~                         (ghost flow from: 50ed)   50ef ld a,(hl) 
     ldir                       ;5ed7 ed b0  . .                    (ghost flow from: 50ef 50f0)   50f0 ldir 
@@ -123,7 +126,7 @@ intro_no_string_end:
     ldir                       ;5ee6 ed b0  . .                    (ghost flow from: 50fe 50ff)   50ff ldir 
     ld e,00ah                  ;5ee8 1e 0a  . .                    (ghost flow from: 50ff)   5101 ld e,0a 
     ld hl,0012ch               ;5eea 21 2c 01  ! , .               (ghost flow from: 5101)   5103 ld hl,012c 
-    ld a,(050eeh)              ;5eed 3a ee 50  : . P               (ghost flow from: 5103)   5106 ld a,(50ee) 
+    ld a,(vr_l050edh+1-VR)     ;5eed 3a ee 50  : . P               (ghost flow from: 5103)   5106 ld a,(50ee) 
     rrca                       ;5ef0 0f  .                         (ghost flow from: 5106)   5109 rrca 
     rrca                       ;5ef1 0f  .                         (ghost flow from: 5109)   510a rrca 
     rrca                       ;5ef2 0f  .                         (ghost flow from: 510a)   510b rrca 
@@ -153,10 +156,10 @@ l5f06h:
     jr z,l5f16h                ;5f12 28 02  ( .                    (ghost flow from: 512a)   512b jr z,512f 
     add a,080h                 ;5f14 c6 80  . . 
 l5f16h:
-    ld hl,0502bh               ;5f16 21 2b 50  ! + P               (ghost flow from: 512b)   512f ld hl,502b 
+    ld hl,vr_l0502bh-VR        ;5f16 21 2b 50  ! + P               (ghost flow from: 512b)   512f ld hl,502b 
     push hl                    ;5f19 e5  .                         (ghost flow from: 512f)   5132 push hl 
     cp 049h                    ;5f1a fe 49  . I                    (ghost flow from: 5132)   5133 cp 49 
-    ld hl,050eeh               ;5f1c 21 ee 50  ! . P               (ghost flow from: 5133)   5135 ld hl,50ee 
+    ld hl,vr_l050edh+1-VR      ;5f1c 21 ee 50  ! . P               (ghost flow from: 5133)   5135 ld hl,50ee 
 l5f1fh:
     ld de,00107h               ;5f1f 11 07 01  . . .               (ghost flow from: 5135)   5138 ld de,0107 
     jr nz,l5f2eh               ;5f22 20 0a    .                    (ghost flow from: 5138)   513b jr nz,5147 
@@ -189,7 +192,7 @@ l5f37h:
     jr z,l5f37h                ;5f49 28 ec  ( .                    (ghost flow from: 5160)   5162 jr z,5150 
     cp 044h                    ;5f4b fe 44  . D                    (ghost flow from: 5162)   5164 cp 44 
     jr nz,l5f57h               ;5f4d 20 08    .                    (ghost flow from: 5164)   5166 jr nz,5170 
-    ld hl,05309h               ;5f4f 21 09 53  ! . S 
+    ld hl,vr_l05309h-VR        ;5f4f 21 09 53  ! . S 
     ld a,00fh                  ;5f52 3e 0f  > . 
 l5f54h:
     xor (hl)                   ;5f54 ae  . 
@@ -208,13 +211,14 @@ l5f57h:
     jr z,l5f24h                ;5f6c 28 b6  ( .                    (ghost flow from: 5183)   5185 jr z,513d 
     cp 043h                    ;5f6e fe 43  . C                    (ghost flow from: 5185)   5187 cp 43 
     jr nz,l5f93h               ;5f70 20 21    !                    (ghost flow from: 5187)   5189 jr nz,51ac 
+vr_l0518bh:
     ld a,000h                  ;5f72 3e 00  > . 
     inc a                      ;5f74 3c  < 
     cp 003h                    ;5f75 fe 03  . . 
     jr nz,l5f7ah               ;5f77 20 01    . 
     xor a                      ;5f79 af  . 
 l5f7ah:
-    ld (0518ch),a              ;5f7a 32 8c 51  2 . Q 
+    ld (vr_l0518bh+1-VR),a     ;5f7a 32 8c 51  2 . Q 
     add a,a                    ;5f7d 87  . 
     ld hl,051a6h               ;5f7e 21 a6 51  ! . Q 
     ld b,000h                  ;5f81 06 00  . . 
@@ -265,7 +269,7 @@ l5fbah:
     ld (05227h),sp             ;5fc0 ed 73 27 52  . s ' R          (ghost flow from: 51d8)   51d9 ld (5227),sp 
     ld sp,052c0h               ;5fc4 31 c0 52  1 . R               (ghost flow from: 51d9)   51dd ld sp,52c0 
     call vr_sub_052afh-VR      ;5fc7 cd af 52  . . R               (ghost flow from: 51dd)   51e0 call 52af 
-    ld a,(05309h)              ;5fca 3a 09 53  : . S               (ghost flow from: 52b3)   51e3 ld a,(5309) 
+    ld a,(vr_l05309h-VR)       ;5fca 3a 09 53  : . S               (ghost flow from: 52b3)   51e3 ld a,(5309) 
     call vr_sub_052aeh-VR      ;5fcd cd ae 52  . . R               (ghost flow from: 51e3)   51e6 call 52ae 
     ld de,(052fah)             ;5fd0 ed 5b fa 52  . [ . R          (ghost flow from: 52b3)   51e9 ld de,(52fa) 
     ld (hl),e                  ;5fd4 73  s                         (ghost flow from: 51e9)   51ed ld (hl),e 
@@ -275,7 +279,7 @@ l5fbah:
     call vr_sub_052afh-VR      ;5fd8 cd af 52  . . R               (ghost flow from: 51f0)   51f1 call 52af 
     ld a,(05102h)              ;5fdb 3a 02 51  : . Q               (ghost flow from: 52b3)   51f4 ld a,(5102) 
     call vr_sub_052aeh-VR      ;5fde cd ae 52  . . R               (ghost flow from: 51f4)   51f7 call 52ae 
-    ld a,(050eeh)              ;5fe1 3a ee 50  : . P               (ghost flow from: 52b3)   51fa ld a,(50ee) 
+    ld a,(vr_l050edh+1-VR)     ;5fe1 3a ee 50  : . P               (ghost flow from: 52b3)   51fa ld a,(50ee) 
     call vr_sub_052aeh-VR      ;5fe4 cd ae 52  . . R               (ghost flow from: 51fa)   51fd call 52ae 
     call vr_sub_052aeh-VR      ;5fe7 cd ae 52  . . R               (ghost flow from: 52b3)   5200 call 52ae 
     call vr_sub_052aeh-VR      ;5fea cd ae 52  . . R               (ghost flow from: 52b3)   5203 call 52ae 
@@ -361,8 +365,8 @@ l6062h:
     push bc                    ;6066 c5  .                         (ghost flow from: 527e)   527f push bc 
     push af                    ;6067 f5  .                         (ghost flow from: 527f)   5280 push af 
     jr nc,l6077h               ;6068 30 0d  0 .                    (ghost flow from: 5280)   5281 jr nc,5290 
-    ld hl,05353h               ;606a 21 53 53  ! S S               (ghost flow from: 5281)   5283 ld hl,5353 
-    call 0531ch                ;606d cd 1c 53  . . S               (ghost flow from: 5283)   5286 call 531c 
+    ld hl,vr_l05353h-VR        ;606a 21 53 53  ! S S               (ghost flow from: 5281)   5283 ld hl,5353 
+    call vr_sub_0531ch-VR      ;606d cd 1c 53  . . S               (ghost flow from: 5283)   5286 call 531c 
     ld hl,001c8h               ;6070 21 c8 01  ! . .               (ghost flow from: 531e)   5289 ld hl,01c8 
     add hl,de                  ;6073 19  .                         (ghost flow from: 5289)   528c add hl,de 
     ex de,hl                   ;6074 eb  .                         (ghost flow from: 528c)   528d ex de,hl 
@@ -373,8 +377,8 @@ l6077h:
     ld b,h                     ;607b 44  D 
     ld c,l                     ;607c 4d  M 
 l607dh:
-    ld hl,05547h               ;607d 21 47 55  ! G U               (ghost flow from: 528e)   5296 ld hl,5547 
-    call 0531ch                ;6080 cd 1c 53  . . S               (ghost flow from: 5296)   5299 call 531c 
+    ld hl,vr_l05547h-VR        ;607d 21 47 55  ! G U               (ghost flow from: 528e)   5296 ld hl,5547 
+    call vr_sub_0531ch-VR      ;6080 cd 1c 53  . . S               (ghost flow from: 5296)   5299 call 531c 
     ld hl,0f136h               ;6083 21 36 f1  ! 6 .               (ghost flow from: 531e)   529c ld hl,f136 
     add hl,de                  ;6086 19  .                         (ghost flow from: 529c)   529f add hl,de 
     pop af                     ;6087 f1  .                         (ghost flow from: 529f)   52a0 pop af 
@@ -465,6 +469,7 @@ l60e3h:
     ld b,008h                  ;60ed 06 08  . .                    (ghost flow from: 5305)   5306 ld b,08 
 l60efh:
     ld a,(hl)                  ;60ef 7e  ~                         (ghost flow from: 5306 530e)   5308 ld a,(hl) 
+vr_l05309h:
     nop                        ;60f0 00  .                         (ghost flow from: 5308)   5309 nop 
     or (hl)                    ;60f1 b6  .                         (ghost flow from: 5309)   530a or (hl) 
     ld (de),a                  ;60f2 12  .                         (ghost flow from: 530a)   530b ld (de),a 
@@ -481,6 +486,7 @@ l60efh:
     jr nc,l60d1h               ;6100 30 cf  0 .                    (ghost flow from: 5318)   5319 jr nc,52ea 
     jp (hl)                    ;6102 e9  .                         (ghost flow from: 5319)   531b jp hl 
 l6103h:
+vr_sub_0531ch:
     ld a,(hl)                  ;6103 7e  ~                         (ghost flow from: 5286 5299 5340)   531c ld a,(hl) 
     or a                       ;6104 b7  .                         (ghost flow from: 531c)   531d or a 
     ret z                      ;6105 c8  .                         (ghost flow from: 531d)   531e ret z 
@@ -530,873 +536,1158 @@ l612eh:
     dec c                      ;6136 0d  .                         (ghost flow from: 534e)   534f dec c 
     jr nz,l612bh               ;6137 20 f2    .                    (ghost flow from: 534f)   5350 jr nz,5344 
     ret                        ;6139 c9  .                         (ghost flow from: 5350)   5352 ret 
-    ld bc,0cf23h               ;613a 01 23 cf  . # . 
-    dec e                      ;613d 1d  . 
-    or (hl)                    ;613e b6  . 
-    ld a,(bc)                  ;613f 0a  . 
-    rlca                       ;6140 07  . 
-    rlc e                      ;6141 cb 03  . . 
-    ld b,00ah                  ;6143 06 0a  . . 
-    dec bc                     ;6145 0b  . 
-    dec b                      ;6146 05  . 
-    rrc c                      ;6147 cb 09  . . 
-    inc b                      ;6149 04  . 
-    rlc h                      ;614a cb 04  . . 
-    rlca                       ;614c 07  . 
-    call v_l63c5h-BA1          ;614d cd 05 06  . . . 
-    inc bc                     ;6150 03  . 
-    dec b                      ;6151 05  . 
-    dec bc                     ;6152 0b  . 
-    call z,00802h              ;6153 cc 02 08  . . . 
-    inc b                      ;6156 04  . 
-    ex af,af'                  ;6157 08  . 
-    add hl,bc                  ;6158 09  . 
-    ret nc                     ;6159 d0  . 
-    ld (bc),a                  ;615a 02  . 
-    inc c                      ;615b 0c  . 
-    dec b                      ;615c 05  . 
-    inc b                      ;615d 04  . 
-    rlc d                      ;615e cb 02  . . 
-    ld b,008h                  ;6160 06 08  . . 
-    ld d,e                     ;6162 53  S 
-    ex af,af'                  ;6163 08  . 
-    inc bc                     ;6164 03  . 
-    dec c                      ;6165 0d  . 
-    inc bc                     ;6166 03  . 
-    call z,00602h              ;6167 cc 02 06  . . . 
-    rlc l                      ;616a cb 05  . . 
-    ld b,0cbh                  ;616c 06 cb  . . 
-    ld (bc),a                  ;616e 02  . 
-    dec b                      ;616f 05  . 
-    rlc (hl)                   ;6170 cb 06  . . 
-    dec b                      ;6172 05  . 
-    ld a,(bc)                  ;6173 0a  . 
-    inc bc                     ;6174 03  . 
-    dec c                      ;6175 0d  . 
-    dec b                      ;6176 05  . 
-    rlc e                      ;6177 cb 03  . . 
-    dec b                      ;6179 05  . 
-    rlc d                      ;617a cb 02  . . 
-    ld de,00e05h               ;617c 11 05 0e  . . . 
-    inc bc                     ;617f 03  . 
-    ld de,0cb04h               ;6180 11 04 cb  . . . 
-    inc bc                     ;6183 03  . 
-    ld de,003cdh               ;6184 11 cd 03  . . . 
-    add hl,bc                  ;6187 09  . 
-    rlca                       ;6188 07  . 
-    inc b                      ;6189 04  . 
-    inc c                      ;618a 0c  . 
-    rlc d                      ;618b cb 02  . . 
-    dec b                      ;618d 05  . 
-    inc d                      ;618e 14  . 
-    dec b                      ;618f 05  . 
-    rlc d                      ;6190 cb 02  . . 
-    call z,v_sub_60c3h-BA1     ;6192 cc 03 03  . . . 
-    inc b                      ;6195 04  . 
-    ld de,002cdh               ;6196 11 cd 02  . . . 
-    rlc d                      ;6199 cb 02  . . 
-    inc e                      ;619b 1c  . 
-    inc b                      ;619c 04  . 
-    inc bc                     ;619d 03  . 
-    inc b                      ;619e 04  . 
-    rlc h                      ;619f cb 04  . . 
-    ld a,(bc)                  ;61a1 0a  . 
-    add hl,bc                  ;61a2 09  . 
-    inc bc                     ;61a3 03  . 
-    dec c                      ;61a4 0d  . 
-    rlc h                      ;61a5 cb 04  . . 
-    inc b                      ;61a7 04  . 
-    inc bc                     ;61a8 03  . 
-    ld b,003h                  ;61a9 06 03  . . 
-    dec b                      ;61ab 05  . 
-    add hl,bc                  ;61ac 09  . 
-    inc bc                     ;61ad 03  . 
-    ld c,003h                  ;61ae 0e 03  . . 
-    dec b                      ;61b0 05  . 
-    inc bc                     ;61b1 03  . 
-    inc b                      ;61b2 04  . 
-    inc bc                     ;61b3 03  . 
-    dec b                      ;61b4 05  . 
-    inc bc                     ;61b5 03  . 
-    ex af,af'                  ;61b6 08  . 
-    rlc d                      ;61b7 cb 02  . . 
-    rst 8                      ;61b9 cf  . 
-    ld (bc),a                  ;61ba 02  . 
-    dec b                      ;61bb 05  . 
-    inc bc                     ;61bc 03  . 
-    inc b                      ;61bd 04  . 
-    rlc d                      ;61be cb 02  . . 
-    dec b                      ;61c0 05  . 
-    rlc d                      ;61c1 cb 02  . . 
-    dec b                      ;61c3 05  . 
-    inc bc                     ;61c4 03  . 
-    inc c                      ;61c5 0c  . 
-    dec c                      ;61c6 0d  . 
-    rlca                       ;61c7 07  . 
-    add hl,bc                  ;61c8 09  . 
-    rlc d                      ;61c9 cb 02  . . 
-    call v_l6ac2h-BA1          ;61cb cd 02 0d  . . . 
-    inc c                      ;61ce 0c  . 
-    inc bc                     ;61cf 03  . 
-    dec b                      ;61d0 05  . 
-    rlc d                      ;61d1 cb 02  . . 
-    dec d                      ;61d3 15  . 
-    call z,01003h              ;61d4 cc 03 10  . . . 
-    dec c                      ;61d7 0d  . 
-    dec b                      ;61d8 05  . 
-    dec c                      ;61d9 0d  . 
-    call 0cc02h                ;61da cd 02 cc  . . . 
-    inc bc                     ;61dd 03  . 
-    ld a,(bc)                  ;61de 0a  . 
-    dec b                      ;61df 05  . 
-    jr $+6                     ;61e0 18 04  . . 
-    dec c                      ;61e2 0d  . 
-    dec b                      ;61e3 05  . 
-    rrca                       ;61e4 0f  . 
-    call 00c02h                ;61e5 cd 02 0c  . . . 
-    dec c                      ;61e8 0d  . 
-    dec b                      ;61e9 05  . 
-    djnz l61ffh                ;61ea 10 13  . . 
-    rla                        ;61ec 17  . 
-    inc bc                     ;61ed 03  . 
-    ex af,af'                  ;61ee 08  . 
-    ld c,005h                  ;61ef 0e 05  . . 
-    inc e                      ;61f1 1c  . 
-    jp z,01e04h                ;61f2 ca 04 1e  . . . 
-    djnz $+7                   ;61f5 10 05  . . 
-    ld b,0cbh                  ;61f7 06 cb  . . 
-    ld (bc),a                  ;61f9 02  . 
-    inc b                      ;61fa 04  . 
-    ld b,003h                  ;61fb 06 03  . . 
-    ld b,0cbh                  ;61fd 06 cb  . . 
-l61ffh:
-    ld (bc),a                  ;61ff 02  . 
-    ld a,(bc)                  ;6200 0a  . 
-    inc bc                     ;6201 03  . 
-    dec bc                     ;6202 0b  . 
-    ld a,(bc)                  ;6203 0a  . 
-    ld c,003h                  ;6204 0e 03  . . 
-    ld b,017h                  ;6206 06 17  . . 
-    ld (de),a                  ;6208 12  . 
-    ld hl,0cb1fh               ;6209 21 1f cb  ! . . 
-    ld (bc),a                  ;620c 02  . 
-    inc b                      ;620d 04  . 
-    inc bc                     ;620e 03  . 
-    ld b,003h                  ;620f 06 03  . . 
-    ld b,003h                  ;6211 06 03  . . 
-    dec b                      ;6213 05  . 
-    sub 002h                   ;6214 d6 02  . . 
-    inc b                      ;6216 04  . 
-    inc bc                     ;6217 03  . 
-    ld b,00dh                  ;6218 06 0d  . . 
-    ld a,(bc)                  ;621a 0a  . 
-    inc b                      ;621b 04  . 
-    inc de                     ;621c 13  . 
-    rlca                       ;621d 07  . 
-    ex af,af'                  ;621e 08  . 
-    inc bc                     ;621f 03  . 
-    call z,00c02h              ;6220 cc 02 0c  . . . 
-    rlc (hl)                   ;6223 cb 06  . . 
-    add hl,bc                  ;6225 09  . 
-    rlca                       ;6226 07  . 
-    ex af,af'                  ;6227 08  . 
-    dec b                      ;6228 05  . 
-    rlc d                      ;6229 cb 02  . . 
-    dec b                      ;622b 05  . 
-    ex af,af'                  ;622c 08  . 
-    dec b                      ;622d 05  . 
-    dec c                      ;622e 0d  . 
-    rlc d                      ;622f cb 02  . . 
-    ld b,003h                  ;6231 06 03  . . 
-    rlca                       ;6233 07  . 
-    dec b                      ;6234 05  . 
-    rlc (hl)                   ;6235 cb 06  . . 
-    call z,0cb02h              ;6237 cc 02 cb  . . . 
-    ld (bc),a                  ;623a 02  . 
-    call z,0cb02h              ;623b cc 02 cb  . . . 
-    ld (bc),a                  ;623e 02  . 
-    ld b,004h                  ;623f 06 04  . . 
-    inc bc                     ;6241 03  . 
-    dec b                      ;6242 05  . 
-    inc bc                     ;6243 03  . 
-    inc b                      ;6244 04  . 
-    rlc l                      ;6245 cb 05  . . 
-    inc b                      ;6247 04  . 
-    rlc d                      ;6248 cb 02  . . 
-    add hl,bc                  ;624a 09  . 
-    inc bc                     ;624b 03  . 
-    inc b                      ;624c 04  . 
-    call 00402h                ;624d cd 02 04  . . . 
-    inc bc                     ;6250 03  . 
-    inc b                      ;6251 04  . 
-    ld a,(bc)                  ;6252 0a  . 
-    inc b                      ;6253 04  . 
-    inc bc                     ;6254 03  . 
-    add hl,de                  ;6255 19  . 
-    inc bc                     ;6256 03  . 
-    inc b                      ;6257 04  . 
-    inc bc                     ;6258 03  . 
-    ld c,012h                  ;6259 0e 12  . . 
-    inc bc                     ;625b 03  . 
-    ld c,026h                  ;625c 0e 26  . & 
-    inc bc                     ;625e 03  . 
-    dec bc                     ;625f 0b  . 
-    call z,00702h              ;6260 cc 02 07  . . . 
-    dec b                      ;6263 05  . 
-    inc c                      ;6264 0c  . 
-    ld b,014h                  ;6265 06 14  . . 
-    inc b                      ;6267 04  . 
-    inc bc                     ;6268 03  . 
-    rla                        ;6269 17  . 
-    inc b                      ;626a 04  . 
-    rlc d                      ;626b cb 02  . . 
-    call z,00602h              ;626d cc 02 06  . . . 
-    dec c                      ;6270 0d  . 
-    call 01002h                ;6271 cd 02 10  . . . 
-    call 0cc03h                ;6274 cd 03 cc  . . . 
-    ld (bc),a                  ;6277 02  . 
-    inc bc                     ;6278 03  . 
-    inc b                      ;6279 04  . 
-    inc bc                     ;627a 03  . 
-    add hl,bc                  ;627b 09  . 
-    ex af,af'                  ;627c 08  . 
-    rlca                       ;627d 07  . 
-    rlc d                      ;627e cb 02  . . 
-    dec bc                     ;6280 0b  . 
-    inc bc                     ;6281 03  . 
-    ld de,01107h               ;6282 11 07 11  . . . 
-    inc b                      ;6285 04  . 
-    inc bc                     ;6286 03  . 
-    daa                        ;6287 27  ' 
-    ex af,af'                  ;6288 08  . 
-    inc bc                     ;6289 03  . 
-    dec b                      ;628a 05  . 
-    rlc d                      ;628b cb 02  . . 
-    dec b                      ;628d 05  . 
-    inc bc                     ;628e 03  . 
-    ld b,004h                  ;628f 06 04  . . 
-    rlc e                      ;6291 cb 03  . . 
-    inc b                      ;6293 04  . 
-    inc bc                     ;6294 03  . 
-    ld b,003h                  ;6295 06 03  . . 
-    inc b                      ;6297 04  . 
-    rlc d                      ;6298 cb 02  . . 
-    ex af,af'                  ;629a 08  . 
-    inc b                      ;629b 04  . 
-    ld b,003h                  ;629c 06 03  . . 
-    dec h                      ;629e 25  % 
-    inc bc                     ;629f 03  . 
-    inc b                      ;62a0 04  . 
-    rlc d                      ;62a1 cb 02  . . 
-    dec bc                     ;62a3 0b  . 
-    call z,00503h              ;62a4 cc 03 05  . . . 
-    inc c                      ;62a7 0c  . 
-    inc b                      ;62a8 04  . 
-    ld (de),a                  ;62a9 12  . 
-    inc d                      ;62aa 14  . 
-    ex af,af'                  ;62ab 08  . 
-    call z,00302h              ;62ac cc 02 03  . . . 
-    dec b                      ;62af 05  . 
-    inc bc                     ;62b0 03  . 
-    ld b,008h                  ;62b1 06 08  . . 
-    rrca                       ;62b3 0f  . 
-    dec b                      ;62b4 05  . 
-    ld a,(de)                  ;62b5 1a  . 
-    dec b                      ;62b6 05  . 
-    rlca                       ;62b7 07  . 
-    jr nz,l62bfh               ;62b8 20 05    . 
-    add hl,bc                  ;62ba 09  . 
-    rlca                       ;62bb 07  . 
-    ld b,005h                  ;62bc 06 05  . . 
-    ld a,(bc)                  ;62be 0a  . 
-l62bfh:
-    ex af,af'                  ;62bf 08  . 
-    inc bc                     ;62c0 03  . 
-    call z,00302h              ;62c1 cc 02 03  . . . 
-    ld b,005h                  ;62c4 06 05  . . 
-    ex af,af'                  ;62c6 08  . 
-    dec bc                     ;62c7 0b  . 
-    ld de,00a15h               ;62c8 11 15 0a  . . . 
-    adc a,a                    ;62cb 8f  . 
-    inc b                      ;62cc 04  . 
-    ex af,af'                  ;62cd 08  . 
-    inc b                      ;62ce 04  . 
-    ld c,003h                  ;62cf 0e 03  . . 
-    dec bc                     ;62d1 0b  . 
-    dec b                      ;62d2 05  . 
-    ld b,008h                  ;62d3 06 08  . . 
-    inc b                      ;62d5 04  . 
-    inc l                      ;62d6 2c  , 
-    ex af,af'                  ;62d7 08  . 
-    inc b                      ;62d8 04  . 
-    ld a,(de)                  ;62d9 1a  . 
-    inc b                      ;62da 04  . 
-    rlca                       ;62db 07  . 
-    dec b                      ;62dc 05  . 
-    add hl,bc                  ;62dd 09  . 
-    inc bc                     ;62de 03  . 
-    ld b,007h                  ;62df 06 07  . . 
-    inc bc                     ;62e1 03  . 
-    add hl,bc                  ;62e2 09  . 
-    rla                        ;62e3 17  . 
-    ld hl,(00308h)             ;62e4 2a 08 03  * . . 
-    dec b                      ;62e7 05  . 
-    inc bc                     ;62e8 03  . 
-    rlca                       ;62e9 07  . 
-    dec e                      ;62ea 1d  . 
-    ld a,(de)                  ;62eb 1a  . 
-    dec c                      ;62ec 0d  . 
-    rlca                       ;62ed 07  . 
-    dec l                      ;62ee 2d  - 
-    ld hl,(00804h)             ;62ef 2a 04 08  * . . 
-    dec b                      ;62f2 05  . 
-    inc b                      ;62f3 04  . 
-    ld c,0cdh                  ;62f4 0e cd  . . 
-    ld (bc),a                  ;62f6 02  . 
-    inc c                      ;62f7 0c  . 
-    inc bc                     ;62f8 03  . 
-    ld hl,00905h               ;62f9 21 05 09  ! . . 
-    inc bc                     ;62fc 03  . 
-    jr l6313h                  ;62fd 18 14  . . 
-    dec c                      ;62ff 0d  . 
-    dec d                      ;6300 15  . 
-    inc bc                     ;6301 03  . 
-    inc b                      ;6302 04  . 
-    ld a,(bc)                  ;6303 0a  . 
-    ld d,00dh                  ;6304 16 0d  . . 
-    inc bc                     ;6306 03  . 
-    pop de                     ;6307 d1  . 
-    ld (bc),a                  ;6308 02  . 
-    inc bc                     ;6309 03  . 
-    rrca                       ;630a 0f  . 
-    dec d                      ;630b 15  . 
-    inc b                      ;630c 04  . 
-    dec b                      ;630d 05  . 
-    inc bc                     ;630e 03  . 
-    inc b                      ;630f 04  . 
-    inc bc                     ;6310 03  . 
-    inc b                      ;6311 04  . 
-    dec b                      ;6312 05  . 
-l6313h:
-    ld de,v_l7cc6h-BA1         ;6313 11 06 1f  . . . 
-    call 00302h                ;6316 cd 02 03  . . . 
-    dec b                      ;6319 05  . 
-    inc bc                     ;631a 03  . 
-    dec b                      ;631b 05  . 
-    add hl,bc                  ;631c 09  . 
-    dec b                      ;631d 05  . 
-    rlc d                      ;631e cb 02  . . 
-    ld b,007h                  ;6320 06 07  . . 
-    inc c                      ;6322 0c  . 
-    rlca                       ;6323 07  . 
-    dec b                      ;6324 05  . 
-    djnz l632ch                ;6325 10 05  . . 
-    ld a,(bc)                  ;6327 0a  . 
-    ld b,003h                  ;6328 06 03  . . 
-    ld b,007h                  ;632a 06 07  . . 
-l632ch:
-    nop                        ;632c 00  . 
-    nop                        ;632d 00  . 
-    ld bc,00dcah               ;632e 01 ca 0d  . . . 
-    ld b,0cah                  ;6331 06 ca  . . 
-    ld a,(bc)                  ;6333 0a  . 
-    rlc d                      ;6334 cb 02  . . 
-    inc b                      ;6336 04  . 
-    inc bc                     ;6337 03  . 
-    dec b                      ;6338 05  . 
-    ex af,af'                  ;6339 08  . 
-    inc bc                     ;633a 03  . 
-    inc b                      ;633b 04  . 
-    inc bc                     ;633c 03  . 
-    ld b,00ah                  ;633d 06 0a  . . 
-    dec b                      ;633f 05  . 
-    inc bc                     ;6340 03  . 
-    rst 8                      ;6341 cf  . 
-    ld (bc),a                  ;6342 02  . 
-    call 00a02h                ;6343 cd 02 0a  . . . 
-    dec b                      ;6346 05  . 
-    ld b,008h                  ;6347 06 08  . . 
-    add hl,bc                  ;6349 09  . 
-    rlca                       ;634a 07  . 
-    dec b                      ;634b 05  . 
-    ret nc                     ;634c d0  . 
-    ld (bc),a                  ;634d 02  . 
-    add hl,bc                  ;634e 09  . 
-    rlc d                      ;634f cb 02  . . 
-    pop de                     ;6351 d1  . 
-    ld (bc),a                  ;6352 02  . 
-    rlc d                      ;6353 cb 02  . . 
-    call z,0cb02h              ;6355 cc 02 cb  . . . 
-    inc bc                     ;6358 03  . 
-    inc c                      ;6359 0c  . 
-    adc a,003h                 ;635a ce 03  . . 
-    inc b                      ;635c 04  . 
-    add hl,bc                  ;635d 09  . 
-    rst 8                      ;635e cf  . 
-    ld (bc),a                  ;635f 02  . 
-    add hl,bc                  ;6360 09  . 
-    rrc b                      ;6361 cb 08  . . 
-    dec b                      ;6363 05  . 
-    ld b,004h                  ;6364 06 04  . . 
-    rlc d                      ;6366 cb 02  . . 
-    rlca                       ;6368 07  . 
-    dec bc                     ;6369 0b  . 
-    rrc c                      ;636a cb 09  . . 
-    inc c                      ;636c 0c  . 
-    dec b                      ;636d 05  . 
-    rlc d                      ;636e cb 02  . . 
-    ld a,(bc)                  ;6370 0a  . 
-    ld (de),a                  ;6371 12  . 
-    ex af,af'                  ;6372 08  . 
-    rlc e                      ;6373 cb 03  . . 
-    dec b                      ;6375 05  . 
-    inc c                      ;6376 0c  . 
-    ex af,af'                  ;6377 08  . 
-    ld c,005h                  ;6378 0e 05  . . 
-    rlc (hl)                   ;637a cb 06  . . 
-    call z,00902h              ;637c cc 02 09  . . . 
-    ld c,c                     ;637f 49  I 
-    add hl,bc                  ;6380 09  . 
-    dec bc                     ;6381 0b  . 
-    inc c                      ;6382 0c  . 
-    inc e                      ;6383 1c  . 
-    dec bc                     ;6384 0b  . 
-    rst 10h                    ;6385 d7  . 
-    ld (bc),a                  ;6386 02  . 
-    inc c                      ;6387 0c  . 
-    rlc d                      ;6388 cb 02  . . 
-    ld b,00bh                  ;638a 06 0b  . . 
-    ld b,008h                  ;638c 06 08  . . 
-    dec b                      ;638e 05  . 
-    rla                        ;638f 17  . 
-    add hl,bc                  ;6390 09  . 
-    dec bc                     ;6391 0b  . 
-    inc c                      ;6392 0c  . 
-    dec b                      ;6393 05  . 
-    inc b                      ;6394 04  . 
-    dec b                      ;6395 05  . 
-    ex af,af'                  ;6396 08  . 
-    rlca                       ;6397 07  . 
-    add hl,bc                  ;6398 09  . 
-    ex af,af'                  ;6399 08  . 
-    inc bc                     ;639a 03  . 
-    inc de                     ;639b 13  . 
-    inc b                      ;639c 04  . 
-    rlc l                      ;639d cb 05  . . 
-    dec b                      ;639f 05  . 
-    rlc d                      ;63a0 cb 02  . . 
-    inc c                      ;63a2 0c  . 
-    add hl,bc                  ;63a3 09  . 
-    dec b                      ;63a4 05  . 
-    jp nc,00402h               ;63a5 d2 02 04  . . . 
-    ld d,00ch                  ;63a8 16 0c  . . 
-    ex af,af'                  ;63aa 08  . 
-    inc bc                     ;63ab 03  . 
-    add hl,bc                  ;63ac 09  . 
-    ld b,0cbh                  ;63ad 06 cb  . . 
-    inc bc                     ;63af 03  . 
-    rrca                       ;63b0 0f  . 
-    dec b                      ;63b1 05  . 
-    dec bc                     ;63b2 0b  . 
-    ld c,007h                  ;63b3 0e 07  . . 
-    inc b                      ;63b5 04  . 
-    ld a,(bc)                  ;63b6 0a  . 
-    inc bc                     ;63b7 03  . 
-    in a,(002h)                ;63b8 db 02  . . 
-    ld de,00926h               ;63ba 11 26 09  . & . 
-    dec b                      ;63bd 05  . 
-    inc bc                     ;63be 03  . 
-    ld c,007h                  ;63bf 0e 07  . . 
-    dec b                      ;63c1 05  . 
-    inc b                      ;63c2 04  . 
-    dec b                      ;63c3 05  . 
-    rlca                       ;63c4 07  . 
-    ld b,004h                  ;63c5 06 04  . . 
-    rlca                       ;63c7 07  . 
-    inc b                      ;63c8 04  . 
-    djnz $+7                   ;63c9 10 05  . . 
-    inc hl                     ;63cb 23  # 
-    ld hl,00504h               ;63cc 21 04 05  ! . . 
-    ld e,003h                  ;63cf 1e 03  . . 
-    ld c,0cch                  ;63d1 0e cc  . . 
-    ld (bc),a                  ;63d3 02  . 
-    dec c                      ;63d4 0d  . 
-    dec b                      ;63d5 05  . 
-    ld b,0cbh                  ;63d6 06 cb  . . 
-    inc b                      ;63d8 04  . 
-    ld a,(bc)                  ;63d9 0a  . 
-    inc bc                     ;63da 03  . 
-    ld de,00503h               ;63db 11 03 05  . . . 
-    rlc d                      ;63de cb 02  . . 
-    rlca                       ;63e0 07  . 
-    inc bc                     ;63e1 03  . 
-    ex af,af'                  ;63e2 08  . 
-    rlc d                      ;63e3 cb 02  . . 
-    inc b                      ;63e5 04  . 
-    inc bc                     ;63e6 03  . 
-    ld a,(bc)                  ;63e7 0a  . 
-    rlc d                      ;63e8 cb 02  . . 
-    inc b                      ;63ea 04  . 
-    rlc d                      ;63eb cb 02  . . 
-    dec b                      ;63ed 05  . 
-    inc bc                     ;63ee 03  . 
-    inc e                      ;63ef 1c  . 
-    ld c,0cbh                  ;63f0 0e cb  . . 
-    inc bc                     ;63f2 03  . 
-    inc b                      ;63f3 04  . 
-    ld a,(bc)                  ;63f4 0a  . 
-    inc bc                     ;63f5 03  . 
-    inc b                      ;63f6 04  . 
-    inc bc                     ;63f7 03  . 
-    ld a,(bc)                  ;63f8 0a  . 
-    inc b                      ;63f9 04  . 
-    rlca                       ;63fa 07  . 
-    ex af,af'                  ;63fb 08  . 
-    dec b                      ;63fc 05  . 
-    rlca                       ;63fd 07  . 
-    ret nc                     ;63fe d0  . 
-    ld (bc),a                  ;63ff 02  . 
-    call 0cb02h                ;6400 cd 02 cb  . . . 
-    inc bc                     ;6403 03  . 
-    inc b                      ;6404 04  . 
-    rlc e                      ;6405 cb 03  . . 
-    dec b                      ;6407 05  . 
-    inc b                      ;6408 04  . 
-    inc bc                     ;6409 03  . 
-    ld a,(bc)                  ;640a 0a  . 
-    dec b                      ;640b 05  . 
-    dec bc                     ;640c 0b  . 
-    rlc d                      ;640d cb 02  . . 
-    ld b,005h                  ;640f 06 05  . . 
-    ld b,008h                  ;6411 06 08  . . 
-    rlc d                      ;6413 cb 02  . . 
-    ex af,af'                  ;6415 08  . 
-    ld b,003h                  ;6416 06 03  . . 
-    ld b,0cbh                  ;6418 06 cb  . . 
-    ld (bc),a                  ;641a 02  . 
-    ld a,(bc)                  ;641b 0a  . 
-    dec b                      ;641c 05  . 
-    rrca                       ;641d 0f  . 
-    ld c,009h                  ;641e 0e 09  . . 
-    rlc e                      ;6420 cb 03  . . 
-    jr l6427h                  ;6422 18 03  . . 
-    rrca                       ;6424 0f  . 
-    rst 8                      ;6425 cf  . 
-    inc bc                     ;6426 03  . 
-l6427h:
-    ld b,003h                  ;6427 06 03  . . 
-    add hl,bc                  ;6429 09  . 
-    push de                    ;642a d5  . 
-    ld (bc),a                  ;642b 02  . 
-    ld (de),a                  ;642c 12  . 
-    rlca                       ;642d 07  . 
-    inc c                      ;642e 0c  . 
-    add hl,bc                  ;642f 09  . 
-    add hl,hl                  ;6430 29  ) 
-    dec b                      ;6431 05  . 
-    ld c,00dh                  ;6432 0e 0d  . . 
-    inc b                      ;6434 04  . 
-    dec c                      ;6435 0d  . 
-    inc bc                     ;6436 03  . 
-    dec b                      ;6437 05  . 
-    add hl,de                  ;6438 19  . 
-    jr z,$+10                  ;6439 28 08  ( . 
-    ld c,0cch                  ;643b 0e cc  . . 
-    ld (bc),a                  ;643d 02  . 
-    add hl,bc                  ;643e 09  . 
-    out (002h),a               ;643f d3 02  . . 
-    inc b                      ;6441 04  . 
-    rlc e                      ;6442 cb 03  . . 
-    add hl,bc                  ;6444 09  . 
-    ex af,af'                  ;6445 08  . 
-    inc bc                     ;6446 03  . 
-    ld b,d                     ;6447 42  B 
-    rlca                       ;6448 07  . 
-    pop de                     ;6449 d1  . 
-    ld (bc),a                  ;644a 02  . 
-    dec b                      ;644b 05  . 
-    rra                        ;644c 1f  . 
-    ex af,af'                  ;644d 08  . 
-    ld b,00ch                  ;644e 06 0c  . . 
-    dec b                      ;6450 05  . 
-    add hl,hl                  ;6451 29  ) 
-    ld d,b                     ;6452 50  P 
-    inc b                      ;6453 04  . 
-    ld a,(0cb07h)              ;6454 3a 07 cb  : . . 
-    inc bc                     ;6457 03  . 
-    dec b                      ;6458 05  . 
-    ld c,007h                  ;6459 0e 07  . . 
-    inc de                     ;645b 13  . 
-l645ch:
-    djnz l646bh                ;645c 10 0d  . . 
-    djnz l6463h                ;645e 10 03  . . 
-    ld a,(bc)                  ;6460 0a  . 
-    dec b                      ;6461 05  . 
-    dec e                      ;6462 1d  . 
-l6463h:
-    add hl,bc                  ;6463 09  . 
-    ex af,af'                  ;6464 08  . 
-    inc bc                     ;6465 03  . 
-    ld b,003h                  ;6466 06 03  . . 
-    rlca                       ;6468 07  . 
-    jr z,l6476h                ;6469 28 0b  ( . 
-l646bh:
-    inc bc                     ;646b 03  . 
-    ex af,af'                  ;646c 08  . 
-    inc bc                     ;646d 03  . 
-    adc a,002h                 ;646e ce 02  . . 
-    add hl,bc                  ;6470 09  . 
-    dec b                      ;6471 05  . 
-    inc bc                     ;6472 03  . 
-    ld b,003h                  ;6473 06 03  . . 
-    ex af,af'                  ;6475 08  . 
-l6476h:
-    rlc h                      ;6476 cb 04  . . 
-    ld b,005h                  ;6478 06 05  . . 
-    dec c                      ;647a 0d  . 
-    inc bc                     ;647b 03  . 
-    rlca                       ;647c 07  . 
-    inc b                      ;647d 04  . 
-    dec b                      ;647e 05  . 
-    add hl,bc                  ;647f 09  . 
-    dec b                      ;6480 05  . 
-    out (002h),a               ;6481 d3 02  . . 
-    ex af,af'                  ;6483 08  . 
-    inc c                      ;6484 0c  . 
-    dec b                      ;6485 05  . 
-    inc bc                     ;6486 03  . 
-    dec b                      ;6487 05  . 
-    dec c                      ;6488 0d  . 
-    dec bc                     ;6489 0b  . 
-    ex af,af'                  ;648a 08  . 
-    inc c                      ;648b 0c  . 
-    dec b                      ;648c 05  . 
-    inc bc                     ;648d 03  . 
-    dec b                      ;648e 05  . 
-    djnz l645ch                ;648f 10 cb  . . 
-    ld (bc),a                  ;6491 02  . 
-    dec b                      ;6492 05  . 
-    inc bc                     ;6493 03  . 
-    add hl,bc                  ;6494 09  . 
-    rlc e                      ;6495 cb 03  . . 
-l6497h:
-    dec b                      ;6497 05  . 
-    dec bc                     ;6498 0b  . 
-    rlc d                      ;6499 cb 02  . . 
-    dec bc                     ;649b 0b  . 
-    inc bc                     ;649c 03  . 
-    ld b,00ah                  ;649d 06 0a  . . 
-    inc bc                     ;649f 03  . 
-    inc b                      ;64a0 04  . 
-    inc bc                     ;64a1 03  . 
-    ld b,004h                  ;64a2 06 04  . . 
-    ex af,af'                  ;64a4 08  . 
-    inc bc                     ;64a5 03  . 
-    ld b,005h                  ;64a6 06 05  . . 
-    inc b                      ;64a8 04  . 
-    rlc d                      ;64a9 cb 02  . . 
-    dec a                      ;64ab 3d  = 
-l64ach:
-    rrca                       ;64ac 0f  . 
-    ld e,025h                  ;64ad 1e 25  . % 
-    rrca                       ;64af 0f  . 
-    inc bc                     ;64b0 03  . 
-    ex af,af'                  ;64b1 08  . 
-    add hl,bc                  ;64b2 09  . 
-    rlc d                      ;64b3 cb 02  . . 
-    dec b                      ;64b5 05  . 
-    rlc d                      ;64b6 cb 02  . . 
-    dec b                      ;64b8 05  . 
-    ld b,003h                  ;64b9 06 03  . . 
-    dec b                      ;64bb 05  . 
-    rlc d                      ;64bc cb 02  . . 
-    ex af,af'                  ;64be 08  . 
-    rlc d                      ;64bf cb 02  . . 
-    inc b                      ;64c1 04  . 
-    rlc d                      ;64c2 cb 02  . . 
-    add hl,bc                  ;64c4 09  . 
-    inc bc                     ;64c5 03  . 
-    inc b                      ;64c6 04  . 
-    ex af,af'                  ;64c7 08  . 
-    inc c                      ;64c8 0c  . 
-    inc b                      ;64c9 04  . 
-    jr l6497h                  ;64ca 18 cb  . . 
-    inc b                      ;64cc 04  . 
-    inc b                      ;64cd 04  . 
-    dec b                      ;64ce 05  . 
-    ex af,af'                  ;64cf 08  . 
-    rrca                       ;64d0 0f  . 
-    ld c,020h                  ;64d1 0e 20  .   
-    inc bc                     ;64d3 03  . 
-    dec b                      ;64d4 05  . 
-    rlc d                      ;64d5 cb 02  . . 
-    djnz $+7                   ;64d7 10 05  . . 
-    ld de,0040ah               ;64d9 11 0a 04  . . . 
-    ld a,(bc)                  ;64dc 0a  . 
-    jr nz,$+7                  ;64dd 20 05    . 
-    djnz l64ach                ;64df 10 cb  . . 
-    ld (bc),a                  ;64e1 02  . 
-    call 00902h                ;64e2 cd 02 09  . . . 
-    rst 8                      ;64e5 cf  . 
-    ld (bc),a                  ;64e6 02  . 
-    ld hl,(0cb04h)             ;64e7 2a 04 cb  * . . 
-    ld b,006h                  ;64ea 06 06  . . 
-    ex af,af'                  ;64ec 08  . 
-    rlc e                      ;64ed cb 03  . . 
-    inc b                      ;64ef 04  . 
-    inc c                      ;64f0 0c  . 
-    rrca                       ;64f1 0f  . 
-    inc bc                     ;64f2 03  . 
-    ld c,01bh                  ;64f3 0e 1b  . . 
-    inc bc                     ;64f5 03  . 
-    rra                        ;64f6 1f  . 
-    rlca                       ;64f7 07  . 
-    dec h                      ;64f8 25  % 
-    adc a,002h                 ;64f9 ce 02  . . 
-    dec c                      ;64fb 0d  . 
-    ex af,af'                  ;64fc 08  . 
-    inc de                     ;64fd 13  . 
-    inc bc                     ;64fe 03  . 
-    dec b                      ;64ff 05  . 
-    inc de                     ;6500 13  . 
-    djnz l6506h                ;6501 10 03  . . 
-    ld c,04eh                  ;6503 0e 4e  . N 
-    inc b                      ;6505 04  . 
-l6506h:
-    rrca                       ;6506 0f  . 
-    inc de                     ;6507 13  . 
-    inc h                      ;6508 24  $ 
-    inc bc                     ;6509 03  . 
-    dec b                      ;650a 05  . 
-    ld a,(bc)                  ;650b 0a  . 
-    dec b                      ;650c 05  . 
-    inc b                      ;650d 04  . 
-    dec c                      ;650e 0d  . 
-    call 0cb03h                ;650f cd 03 cb  . . . 
-    ld (bc),a                  ;6512 02  . 
-    rla                        ;6513 17  . 
-    rlca                       ;6514 07  . 
-    djnz $-44                  ;6515 10 d2  . . 
-    ld (bc),a                  ;6517 02  . 
-    inc bc                     ;6518 03  . 
-    ld a,(bc)                  ;6519 0a  . 
-    inc c                      ;651a 0c  . 
-    dec b                      ;651b 05  . 
-    call z,02002h              ;651c cc 02 20  . .   
-    inc bc                     ;651f 03  . 
-    ld c,c                     ;6520 49  I 
-    ex af,af'                  ;6521 08  . 
-    add hl,bc                  ;6522 09  . 
-    jr nz,l6528h               ;6523 20 03    . 
-    dec bc                     ;6525 0b  . 
-    inc bc                     ;6526 03  . 
-    add hl,bc                  ;6527 09  . 
-l6528h:
-    ex af,af'                  ;6528 08  . 
-    dec bc                     ;6529 0b  . 
-    ld (de),a                  ;652a 12  . 
-    ld a,(bc)                  ;652b 0a  . 
-    ld b,017h                  ;652c 06 17  . . 
-    inc bc                     ;652e 03  . 
-    dec bc                     ;652f 0b  . 
-    inc de                     ;6530 13  . 
-    inc bc                     ;6531 03  . 
-    ld b,00bh                  ;6532 06 0b  . . 
-    ex af,af'                  ;6534 08  . 
-    dec bc                     ;6535 0b  . 
-    add hl,bc                  ;6536 09  . 
-    rlca                       ;6537 07  . 
-    ex af,af'                  ;6538 08  . 
-    inc b                      ;6539 04  . 
-    dec b                      ;653a 05  . 
-    inc b                      ;653b 04  . 
-    ld de,00949h               ;653c 11 49 09  . I . 
-    inc c                      ;653f 0c  . 
-    inc bc                     ;6540 03  . 
-    inc b                      ;6541 04  . 
-    ld d,b                     ;6542 50  P 
-    ld a,(bc)                  ;6543 0a  . 
-    dec hl                     ;6544 2b  + 
-    ld (00b0fh),hl             ;6545 22 0f 0b  " . . 
-    add hl,bc                  ;6548 09  . 
-    inc bc                     ;6549 03  . 
-    ld b,003h                  ;654a 06 03  . . 
-    inc b                      ;654c 04  . 
-    dec b                      ;654d 05  . 
-    add hl,bc                  ;654e 09  . 
-    dec b                      ;654f 05  . 
-    inc b                      ;6550 04  . 
-    dec b                      ;6551 05  . 
-    dec bc                     ;6552 0b  . 
-    inc d                      ;6553 14  . 
-    inc b                      ;6554 04  . 
-    dec bc                     ;6555 0b  . 
-    ld c,00ah                  ;6556 0e 0a  . . 
-    ld b,003h                  ;6558 06 03  . . 
-    add hl,bc                  ;655a 09  . 
-    ld a,(de)                  ;655b 1a  . 
-    add hl,bc                  ;655c 09  . 
-    ld c,015h                  ;655d 0e 15  . . 
-    call z,v_l6ac2h-BA1        ;655f cc 02 0d  . . . 
-    dec bc                     ;6562 0b  . 
-    ld hl,0090eh               ;6563 21 0e 09  ! . . 
-    ld h,l                     ;6566 65  e 
-    rla                        ;6567 17  . 
-    ld c,03bh                  ;6568 0e 3b  .                  ; 
-    call 00302h                ;656a cd 02 03  . . . 
-    dec bc                     ;656d 0b  . 
-    ld c,004h                  ;656e 0e 04  . . 
-    rlca                       ;6570 07  . 
-    inc c                      ;6571 0c  . 
-    dec b                      ;6572 05  . 
-    inc de                     ;6573 13  . 
-    dec de                     ;6574 1b  . 
-    inc b                      ;6575 04  . 
-    ld b,00fh                  ;6576 06 0f  . . 
-    rlc e                      ;6578 cb 03  . . 
-    ld b,00ch                  ;657a 06 0c  . . 
-    add hl,hl                  ;657c 29  ) 
-    add hl,bc                  ;657d 09  . 
-    dec c                      ;657e 0d  . 
-    inc b                      ;657f 04  . 
-    inc bc                     ;6580 03  . 
-    inc b                      ;6581 04  . 
-    ld b,0cbh                  ;6582 06 cb  . . 
-    ld (bc),a                  ;6584 02  . 
-    ex af,af'                  ;6585 08  . 
-    add hl,bc                  ;6586 09  . 
-    adc a,002h                 ;6587 ce 02  . . 
-    dec bc                     ;6589 0b  . 
-    ld (de),a                  ;658a 12  . 
-    add hl,bc                  ;658b 09  . 
-    inc hl                     ;658c 23  # 
-    ld de,v_l63c5h-BA1         ;658d 11 05 06  . . . 
-    ex af,af'                  ;6590 08  . 
-    adc a,002h                 ;6591 ce 02  . . 
-    dec b                      ;6593 05  . 
-    jr nz,l65aah               ;6594 20 14    . 
-    dec e                      ;6596 1d  . 
-    inc b                      ;6597 04  . 
-    inc d                      ;6598 14  . 
-    dec bc                     ;6599 0b  . 
-    ld c,0cbh                  ;659a 0e cb  . . 
-    ld b,01bh                  ;659c 06 1b  . . 
-    rlc d                      ;659e cb 02  . . 
-    call 00302h                ;65a0 cd 02 03  . . . 
-    ld a,(bc)                  ;65a3 0a  . 
-    rlc (hl)                   ;65a4 cb 06  . . 
-    ld b,008h                  ;65a6 06 08  . . 
-    djnz logo_image_start      ;65a8 10 09  . . 
-l65aah:
-    ld b,011h                  ;65aa 06 11  . . 
-    ex af,af'                  ;65ac 08  . 
-    ld (de),a                  ;65ad 12  . 
-    ld b,00dh                  ;65ae 06 0d  . . 
-    inc b                      ;65b0 04  . 
-    rlc a                      ;65b1 cb 07  . . 
+
+; BLOCK 'data_613a' (start 0x613a end 0x65b3)
+vr_l05353h:
+    defb 001h                  ;613a 01  . 
+    defb 023h                  ;613b 23  # 
+    defb 0cfh                  ;613c cf  . 
+    defb 01dh                  ;613d 1d  . 
+    defb 0b6h                  ;613e b6  . 
+    defb 00ah                  ;613f 0a  . 
+    defb 007h                  ;6140 07  . 
+    defb 0cbh                  ;6141 cb  . 
+    defb 003h                  ;6142 03  . 
+    defb 006h                  ;6143 06  . 
+    defb 00ah                  ;6144 0a  . 
+    defb 00bh                  ;6145 0b  . 
+    defb 005h                  ;6146 05  . 
+    defb 0cbh                  ;6147 cb  . 
+    defb 009h                  ;6148 09  . 
+    defb 004h                  ;6149 04  . 
+    defb 0cbh                  ;614a cb  . 
+    defb 004h                  ;614b 04  . 
+    defb 007h                  ;614c 07  . 
+    defb 0cdh                  ;614d cd  . 
+    defb 005h                  ;614e 05  . 
+    defb 006h                  ;614f 06  . 
+    defb 003h                  ;6150 03  . 
+    defb 005h                  ;6151 05  . 
+    defb 00bh                  ;6152 0b  . 
+    defb 0cch                  ;6153 cc  . 
+    defb 002h                  ;6154 02  . 
+    defb 008h                  ;6155 08  . 
+    defb 004h                  ;6156 04  . 
+    defb 008h                  ;6157 08  . 
+    defb 009h                  ;6158 09  . 
+    defb 0d0h                  ;6159 d0  . 
+    defb 002h                  ;615a 02  . 
+    defb 00ch                  ;615b 0c  . 
+    defb 005h                  ;615c 05  . 
+    defb 004h                  ;615d 04  . 
+    defb 0cbh                  ;615e cb  . 
+    defb 002h                  ;615f 02  . 
+    defb 006h                  ;6160 06  . 
+    defb 008h                  ;6161 08  . 
+    defb 053h                  ;6162 53  S 
+    defb 008h                  ;6163 08  . 
+    defb 003h                  ;6164 03  . 
+    defb 00dh                  ;6165 0d  . 
+    defb 003h                  ;6166 03  . 
+    defb 0cch                  ;6167 cc  . 
+    defb 002h                  ;6168 02  . 
+    defb 006h                  ;6169 06  . 
+    defb 0cbh                  ;616a cb  . 
+    defb 005h                  ;616b 05  . 
+    defb 006h                  ;616c 06  . 
+    defb 0cbh                  ;616d cb  . 
+    defb 002h                  ;616e 02  . 
+    defb 005h                  ;616f 05  . 
+    defb 0cbh                  ;6170 cb  . 
+    defb 006h                  ;6171 06  . 
+    defb 005h                  ;6172 05  . 
+    defb 00ah                  ;6173 0a  . 
+    defb 003h                  ;6174 03  . 
+    defb 00dh                  ;6175 0d  . 
+    defb 005h                  ;6176 05  . 
+    defb 0cbh                  ;6177 cb  . 
+    defb 003h                  ;6178 03  . 
+    defb 005h                  ;6179 05  . 
+    defb 0cbh                  ;617a cb  . 
+    defb 002h                  ;617b 02  . 
+    defb 011h                  ;617c 11  . 
+    defb 005h                  ;617d 05  . 
+    defb 00eh                  ;617e 0e  . 
+    defb 003h                  ;617f 03  . 
+    defb 011h                  ;6180 11  . 
+    defb 004h                  ;6181 04  . 
+    defb 0cbh                  ;6182 cb  . 
+    defb 003h                  ;6183 03  . 
+    defb 011h                  ;6184 11  . 
+    defb 0cdh                  ;6185 cd  . 
+    defb 003h                  ;6186 03  . 
+    defb 009h                  ;6187 09  . 
+    defb 007h                  ;6188 07  . 
+    defb 004h                  ;6189 04  . 
+    defb 00ch                  ;618a 0c  . 
+    defb 0cbh                  ;618b cb  . 
+    defb 002h                  ;618c 02  . 
+    defb 005h                  ;618d 05  . 
+    defb 014h                  ;618e 14  . 
+    defb 005h                  ;618f 05  . 
+    defb 0cbh                  ;6190 cb  . 
+    defb 002h                  ;6191 02  . 
+    defb 0cch                  ;6192 cc  . 
+    defb 003h                  ;6193 03  . 
+    defb 003h                  ;6194 03  . 
+    defb 004h                  ;6195 04  . 
+    defb 011h                  ;6196 11  . 
+    defb 0cdh                  ;6197 cd  . 
+    defb 002h                  ;6198 02  . 
+    defb 0cbh                  ;6199 cb  . 
+    defb 002h                  ;619a 02  . 
+    defb 01ch                  ;619b 1c  . 
+    defb 004h                  ;619c 04  . 
+    defb 003h                  ;619d 03  . 
+    defb 004h                  ;619e 04  . 
+    defb 0cbh                  ;619f cb  . 
+    defb 004h                  ;61a0 04  . 
+    defb 00ah                  ;61a1 0a  . 
+    defb 009h                  ;61a2 09  . 
+    defb 003h                  ;61a3 03  . 
+    defb 00dh                  ;61a4 0d  . 
+    defb 0cbh                  ;61a5 cb  . 
+    defb 004h                  ;61a6 04  . 
+    defb 004h                  ;61a7 04  . 
+    defb 003h                  ;61a8 03  . 
+    defb 006h                  ;61a9 06  . 
+    defb 003h                  ;61aa 03  . 
+    defb 005h                  ;61ab 05  . 
+    defb 009h                  ;61ac 09  . 
+    defb 003h                  ;61ad 03  . 
+    defb 00eh                  ;61ae 0e  . 
+    defb 003h                  ;61af 03  . 
+    defb 005h                  ;61b0 05  . 
+    defb 003h                  ;61b1 03  . 
+    defb 004h                  ;61b2 04  . 
+    defb 003h                  ;61b3 03  . 
+    defb 005h                  ;61b4 05  . 
+    defb 003h                  ;61b5 03  . 
+    defb 008h                  ;61b6 08  . 
+    defb 0cbh                  ;61b7 cb  . 
+    defb 002h                  ;61b8 02  . 
+    defb 0cfh                  ;61b9 cf  . 
+    defb 002h                  ;61ba 02  . 
+    defb 005h                  ;61bb 05  . 
+    defb 003h                  ;61bc 03  . 
+    defb 004h                  ;61bd 04  . 
+    defb 0cbh                  ;61be cb  . 
+    defb 002h                  ;61bf 02  . 
+    defb 005h                  ;61c0 05  . 
+    defb 0cbh                  ;61c1 cb  . 
+    defb 002h                  ;61c2 02  . 
+    defb 005h                  ;61c3 05  . 
+    defb 003h                  ;61c4 03  . 
+    defb 00ch                  ;61c5 0c  . 
+    defb 00dh                  ;61c6 0d  . 
+    defb 007h                  ;61c7 07  . 
+    defb 009h                  ;61c8 09  . 
+    defb 0cbh                  ;61c9 cb  . 
+    defb 002h                  ;61ca 02  . 
+    defb 0cdh                  ;61cb cd  . 
+    defb 002h                  ;61cc 02  . 
+    defb 00dh                  ;61cd 0d  . 
+    defb 00ch                  ;61ce 0c  . 
+    defb 003h                  ;61cf 03  . 
+    defb 005h                  ;61d0 05  . 
+    defb 0cbh                  ;61d1 cb  . 
+    defb 002h                  ;61d2 02  . 
+    defb 015h                  ;61d3 15  . 
+    defb 0cch                  ;61d4 cc  . 
+    defb 003h                  ;61d5 03  . 
+    defb 010h                  ;61d6 10  . 
+    defb 00dh                  ;61d7 0d  . 
+    defb 005h                  ;61d8 05  . 
+    defb 00dh                  ;61d9 0d  . 
+    defb 0cdh                  ;61da cd  . 
+    defb 002h                  ;61db 02  . 
+    defb 0cch                  ;61dc cc  . 
+    defb 003h                  ;61dd 03  . 
+    defb 00ah                  ;61de 0a  . 
+    defb 005h                  ;61df 05  . 
+    defb 018h                  ;61e0 18  . 
+    defb 004h                  ;61e1 04  . 
+    defb 00dh                  ;61e2 0d  . 
+    defb 005h                  ;61e3 05  . 
+    defb 00fh                  ;61e4 0f  . 
+    defb 0cdh                  ;61e5 cd  . 
+    defb 002h                  ;61e6 02  . 
+    defb 00ch                  ;61e7 0c  . 
+    defb 00dh                  ;61e8 0d  . 
+    defb 005h                  ;61e9 05  . 
+    defb 010h                  ;61ea 10  . 
+    defb 013h                  ;61eb 13  . 
+    defb 017h                  ;61ec 17  . 
+    defb 003h                  ;61ed 03  . 
+    defb 008h                  ;61ee 08  . 
+    defb 00eh                  ;61ef 0e  . 
+    defb 005h                  ;61f0 05  . 
+    defb 01ch                  ;61f1 1c  . 
+    defb 0cah                  ;61f2 ca  . 
+    defb 004h                  ;61f3 04  . 
+    defb 01eh                  ;61f4 1e  . 
+    defb 010h                  ;61f5 10  . 
+    defb 005h                  ;61f6 05  . 
+    defb 006h                  ;61f7 06  . 
+    defb 0cbh                  ;61f8 cb  . 
+    defb 002h                  ;61f9 02  . 
+    defb 004h                  ;61fa 04  . 
+    defb 006h                  ;61fb 06  . 
+    defb 003h                  ;61fc 03  . 
+    defb 006h                  ;61fd 06  . 
+    defb 0cbh                  ;61fe cb  . 
+    defb 002h                  ;61ff 02  . 
+    defb 00ah                  ;6200 0a  . 
+    defb 003h                  ;6201 03  . 
+    defb 00bh                  ;6202 0b  . 
+    defb 00ah                  ;6203 0a  . 
+    defb 00eh                  ;6204 0e  . 
+    defb 003h                  ;6205 03  . 
+    defb 006h                  ;6206 06  . 
+    defb 017h                  ;6207 17  . 
+    defb 012h                  ;6208 12  . 
+    defb 021h                  ;6209 21  ! 
+    defb 01fh                  ;620a 1f  . 
+    defb 0cbh                  ;620b cb  . 
+    defb 002h                  ;620c 02  . 
+    defb 004h                  ;620d 04  . 
+    defb 003h                  ;620e 03  . 
+    defb 006h                  ;620f 06  . 
+    defb 003h                  ;6210 03  . 
+    defb 006h                  ;6211 06  . 
+    defb 003h                  ;6212 03  . 
+    defb 005h                  ;6213 05  . 
+    defb 0d6h                  ;6214 d6  . 
+    defb 002h                  ;6215 02  . 
+    defb 004h                  ;6216 04  . 
+    defb 003h                  ;6217 03  . 
+    defb 006h                  ;6218 06  . 
+    defb 00dh                  ;6219 0d  . 
+    defb 00ah                  ;621a 0a  . 
+    defb 004h                  ;621b 04  . 
+    defb 013h                  ;621c 13  . 
+    defb 007h                  ;621d 07  . 
+    defb 008h                  ;621e 08  . 
+    defb 003h                  ;621f 03  . 
+    defb 0cch                  ;6220 cc  . 
+    defb 002h                  ;6221 02  . 
+    defb 00ch                  ;6222 0c  . 
+    defb 0cbh                  ;6223 cb  . 
+    defb 006h                  ;6224 06  . 
+    defb 009h                  ;6225 09  . 
+    defb 007h                  ;6226 07  . 
+    defb 008h                  ;6227 08  . 
+    defb 005h                  ;6228 05  . 
+    defb 0cbh                  ;6229 cb  . 
+    defb 002h                  ;622a 02  . 
+    defb 005h                  ;622b 05  . 
+    defb 008h                  ;622c 08  . 
+    defb 005h                  ;622d 05  . 
+    defb 00dh                  ;622e 0d  . 
+    defb 0cbh                  ;622f cb  . 
+    defb 002h                  ;6230 02  . 
+    defb 006h                  ;6231 06  . 
+    defb 003h                  ;6232 03  . 
+    defb 007h                  ;6233 07  . 
+    defb 005h                  ;6234 05  . 
+    defb 0cbh                  ;6235 cb  . 
+    defb 006h                  ;6236 06  . 
+    defb 0cch                  ;6237 cc  . 
+    defb 002h                  ;6238 02  . 
+    defb 0cbh                  ;6239 cb  . 
+    defb 002h                  ;623a 02  . 
+    defb 0cch                  ;623b cc  . 
+    defb 002h                  ;623c 02  . 
+    defb 0cbh                  ;623d cb  . 
+    defb 002h                  ;623e 02  . 
+    defb 006h                  ;623f 06  . 
+    defb 004h                  ;6240 04  . 
+    defb 003h                  ;6241 03  . 
+    defb 005h                  ;6242 05  . 
+    defb 003h                  ;6243 03  . 
+    defb 004h                  ;6244 04  . 
+    defb 0cbh                  ;6245 cb  . 
+    defb 005h                  ;6246 05  . 
+    defb 004h                  ;6247 04  . 
+    defb 0cbh                  ;6248 cb  . 
+    defb 002h                  ;6249 02  . 
+    defb 009h                  ;624a 09  . 
+    defb 003h                  ;624b 03  . 
+    defb 004h                  ;624c 04  . 
+    defb 0cdh                  ;624d cd  . 
+    defb 002h                  ;624e 02  . 
+    defb 004h                  ;624f 04  . 
+    defb 003h                  ;6250 03  . 
+    defb 004h                  ;6251 04  . 
+    defb 00ah                  ;6252 0a  . 
+    defb 004h                  ;6253 04  . 
+    defb 003h                  ;6254 03  . 
+    defb 019h                  ;6255 19  . 
+    defb 003h                  ;6256 03  . 
+    defb 004h                  ;6257 04  . 
+    defb 003h                  ;6258 03  . 
+    defb 00eh                  ;6259 0e  . 
+    defb 012h                  ;625a 12  . 
+    defb 003h                  ;625b 03  . 
+    defb 00eh                  ;625c 0e  . 
+    defb 026h                  ;625d 26  & 
+    defb 003h                  ;625e 03  . 
+    defb 00bh                  ;625f 0b  . 
+    defb 0cch                  ;6260 cc  . 
+    defb 002h                  ;6261 02  . 
+    defb 007h                  ;6262 07  . 
+    defb 005h                  ;6263 05  . 
+    defb 00ch                  ;6264 0c  . 
+    defb 006h                  ;6265 06  . 
+    defb 014h                  ;6266 14  . 
+    defb 004h                  ;6267 04  . 
+    defb 003h                  ;6268 03  . 
+    defb 017h                  ;6269 17  . 
+    defb 004h                  ;626a 04  . 
+    defb 0cbh                  ;626b cb  . 
+    defb 002h                  ;626c 02  . 
+    defb 0cch                  ;626d cc  . 
+    defb 002h                  ;626e 02  . 
+    defb 006h                  ;626f 06  . 
+    defb 00dh                  ;6270 0d  . 
+    defb 0cdh                  ;6271 cd  . 
+    defb 002h                  ;6272 02  . 
+    defb 010h                  ;6273 10  . 
+    defb 0cdh                  ;6274 cd  . 
+    defb 003h                  ;6275 03  . 
+    defb 0cch                  ;6276 cc  . 
+    defb 002h                  ;6277 02  . 
+    defb 003h                  ;6278 03  . 
+    defb 004h                  ;6279 04  . 
+    defb 003h                  ;627a 03  . 
+    defb 009h                  ;627b 09  . 
+    defb 008h                  ;627c 08  . 
+    defb 007h                  ;627d 07  . 
+    defb 0cbh                  ;627e cb  . 
+    defb 002h                  ;627f 02  . 
+    defb 00bh                  ;6280 0b  . 
+    defb 003h                  ;6281 03  . 
+    defb 011h                  ;6282 11  . 
+    defb 007h                  ;6283 07  . 
+    defb 011h                  ;6284 11  . 
+    defb 004h                  ;6285 04  . 
+    defb 003h                  ;6286 03  . 
+    defb 027h                  ;6287 27  ' 
+    defb 008h                  ;6288 08  . 
+    defb 003h                  ;6289 03  . 
+    defb 005h                  ;628a 05  . 
+    defb 0cbh                  ;628b cb  . 
+    defb 002h                  ;628c 02  . 
+    defb 005h                  ;628d 05  . 
+    defb 003h                  ;628e 03  . 
+    defb 006h                  ;628f 06  . 
+    defb 004h                  ;6290 04  . 
+    defb 0cbh                  ;6291 cb  . 
+    defb 003h                  ;6292 03  . 
+    defb 004h                  ;6293 04  . 
+    defb 003h                  ;6294 03  . 
+    defb 006h                  ;6295 06  . 
+    defb 003h                  ;6296 03  . 
+    defb 004h                  ;6297 04  . 
+    defb 0cbh                  ;6298 cb  . 
+    defb 002h                  ;6299 02  . 
+    defb 008h                  ;629a 08  . 
+    defb 004h                  ;629b 04  . 
+    defb 006h                  ;629c 06  . 
+    defb 003h                  ;629d 03  . 
+    defb 025h                  ;629e 25  % 
+    defb 003h                  ;629f 03  . 
+    defb 004h                  ;62a0 04  . 
+    defb 0cbh                  ;62a1 cb  . 
+    defb 002h                  ;62a2 02  . 
+    defb 00bh                  ;62a3 0b  . 
+    defb 0cch                  ;62a4 cc  . 
+    defb 003h                  ;62a5 03  . 
+    defb 005h                  ;62a6 05  . 
+    defb 00ch                  ;62a7 0c  . 
+    defb 004h                  ;62a8 04  . 
+    defb 012h                  ;62a9 12  . 
+    defb 014h                  ;62aa 14  . 
+    defb 008h                  ;62ab 08  . 
+    defb 0cch                  ;62ac cc  . 
+    defb 002h                  ;62ad 02  . 
+    defb 003h                  ;62ae 03  . 
+    defb 005h                  ;62af 05  . 
+    defb 003h                  ;62b0 03  . 
+    defb 006h                  ;62b1 06  . 
+    defb 008h                  ;62b2 08  . 
+    defb 00fh                  ;62b3 0f  . 
+    defb 005h                  ;62b4 05  . 
+    defb 01ah                  ;62b5 1a  . 
+    defb 005h                  ;62b6 05  . 
+    defb 007h                  ;62b7 07  . 
+    defb 020h                  ;62b8 20    
+    defb 005h                  ;62b9 05  . 
+    defb 009h                  ;62ba 09  . 
+    defb 007h                  ;62bb 07  . 
+    defb 006h                  ;62bc 06  . 
+    defb 005h                  ;62bd 05  . 
+    defb 00ah                  ;62be 0a  . 
+    defb 008h                  ;62bf 08  . 
+    defb 003h                  ;62c0 03  . 
+    defb 0cch                  ;62c1 cc  . 
+    defb 002h                  ;62c2 02  . 
+    defb 003h                  ;62c3 03  . 
+    defb 006h                  ;62c4 06  . 
+    defb 005h                  ;62c5 05  . 
+    defb 008h                  ;62c6 08  . 
+    defb 00bh                  ;62c7 0b  . 
+    defb 011h                  ;62c8 11  . 
+    defb 015h                  ;62c9 15  . 
+    defb 00ah                  ;62ca 0a  . 
+    defb 08fh                  ;62cb 8f  . 
+    defb 004h                  ;62cc 04  . 
+    defb 008h                  ;62cd 08  . 
+    defb 004h                  ;62ce 04  . 
+    defb 00eh                  ;62cf 0e  . 
+    defb 003h                  ;62d0 03  . 
+    defb 00bh                  ;62d1 0b  . 
+    defb 005h                  ;62d2 05  . 
+    defb 006h                  ;62d3 06  . 
+    defb 008h                  ;62d4 08  . 
+    defb 004h                  ;62d5 04  . 
+    defb 02ch                  ;62d6 2c  , 
+    defb 008h                  ;62d7 08  . 
+    defb 004h                  ;62d8 04  . 
+    defb 01ah                  ;62d9 1a  . 
+    defb 004h                  ;62da 04  . 
+    defb 007h                  ;62db 07  . 
+    defb 005h                  ;62dc 05  . 
+    defb 009h                  ;62dd 09  . 
+    defb 003h                  ;62de 03  . 
+    defb 006h                  ;62df 06  . 
+    defb 007h                  ;62e0 07  . 
+    defb 003h                  ;62e1 03  . 
+    defb 009h                  ;62e2 09  . 
+    defb 017h                  ;62e3 17  . 
+    defb 02ah                  ;62e4 2a  * 
+    defb 008h                  ;62e5 08  . 
+    defb 003h                  ;62e6 03  . 
+    defb 005h                  ;62e7 05  . 
+    defb 003h                  ;62e8 03  . 
+    defb 007h                  ;62e9 07  . 
+    defb 01dh                  ;62ea 1d  . 
+    defb 01ah                  ;62eb 1a  . 
+    defb 00dh                  ;62ec 0d  . 
+    defb 007h                  ;62ed 07  . 
+    defb 02dh                  ;62ee 2d  - 
+    defb 02ah                  ;62ef 2a  * 
+    defb 004h                  ;62f0 04  . 
+    defb 008h                  ;62f1 08  . 
+    defb 005h                  ;62f2 05  . 
+    defb 004h                  ;62f3 04  . 
+    defb 00eh                  ;62f4 0e  . 
+    defb 0cdh                  ;62f5 cd  . 
+    defb 002h                  ;62f6 02  . 
+    defb 00ch                  ;62f7 0c  . 
+    defb 003h                  ;62f8 03  . 
+    defb 021h                  ;62f9 21  ! 
+    defb 005h                  ;62fa 05  . 
+    defb 009h                  ;62fb 09  . 
+    defb 003h                  ;62fc 03  . 
+    defb 018h                  ;62fd 18  . 
+    defb 014h                  ;62fe 14  . 
+    defb 00dh                  ;62ff 0d  . 
+    defb 015h                  ;6300 15  . 
+    defb 003h                  ;6301 03  . 
+    defb 004h                  ;6302 04  . 
+    defb 00ah                  ;6303 0a  . 
+    defb 016h                  ;6304 16  . 
+    defb 00dh                  ;6305 0d  . 
+    defb 003h                  ;6306 03  . 
+    defb 0d1h                  ;6307 d1  . 
+    defb 002h                  ;6308 02  . 
+    defb 003h                  ;6309 03  . 
+    defb 00fh                  ;630a 0f  . 
+    defb 015h                  ;630b 15  . 
+    defb 004h                  ;630c 04  . 
+    defb 005h                  ;630d 05  . 
+    defb 003h                  ;630e 03  . 
+    defb 004h                  ;630f 04  . 
+    defb 003h                  ;6310 03  . 
+    defb 004h                  ;6311 04  . 
+    defb 005h                  ;6312 05  . 
+    defb 011h                  ;6313 11  . 
+    defb 006h                  ;6314 06  . 
+    defb 01fh                  ;6315 1f  . 
+    defb 0cdh                  ;6316 cd  . 
+    defb 002h                  ;6317 02  . 
+    defb 003h                  ;6318 03  . 
+    defb 005h                  ;6319 05  . 
+    defb 003h                  ;631a 03  . 
+    defb 005h                  ;631b 05  . 
+    defb 009h                  ;631c 09  . 
+    defb 005h                  ;631d 05  . 
+    defb 0cbh                  ;631e cb  . 
+    defb 002h                  ;631f 02  . 
+    defb 006h                  ;6320 06  . 
+    defb 007h                  ;6321 07  . 
+    defb 00ch                  ;6322 0c  . 
+    defb 007h                  ;6323 07  . 
+    defb 005h                  ;6324 05  . 
+    defb 010h                  ;6325 10  . 
+    defb 005h                  ;6326 05  . 
+    defb 00ah                  ;6327 0a  . 
+    defb 006h                  ;6328 06  . 
+    defb 003h                  ;6329 03  . 
+    defb 006h                  ;632a 06  . 
+    defb 007h                  ;632b 07  . 
+    defb 000h                  ;632c 00  . 
+    defb 000h                  ;632d 00  . 
+vr_l05547h:
+    defb 001h                  ;632e 01  . 
+    defb 0cah                  ;632f ca  . 
+    defb 00dh                  ;6330 0d  . 
+    defb 006h                  ;6331 06  . 
+    defb 0cah                  ;6332 ca  . 
+    defb 00ah                  ;6333 0a  . 
+    defb 0cbh                  ;6334 cb  . 
+    defb 002h                  ;6335 02  . 
+    defb 004h                  ;6336 04  . 
+    defb 003h                  ;6337 03  . 
+    defb 005h                  ;6338 05  . 
+    defb 008h                  ;6339 08  . 
+    defb 003h                  ;633a 03  . 
+    defb 004h                  ;633b 04  . 
+    defb 003h                  ;633c 03  . 
+    defb 006h                  ;633d 06  . 
+    defb 00ah                  ;633e 0a  . 
+    defb 005h                  ;633f 05  . 
+    defb 003h                  ;6340 03  . 
+    defb 0cfh                  ;6341 cf  . 
+    defb 002h                  ;6342 02  . 
+    defb 0cdh                  ;6343 cd  . 
+    defb 002h                  ;6344 02  . 
+    defb 00ah                  ;6345 0a  . 
+    defb 005h                  ;6346 05  . 
+    defb 006h                  ;6347 06  . 
+    defb 008h                  ;6348 08  . 
+    defb 009h                  ;6349 09  . 
+    defb 007h                  ;634a 07  . 
+    defb 005h                  ;634b 05  . 
+    defb 0d0h                  ;634c d0  . 
+    defb 002h                  ;634d 02  . 
+    defb 009h                  ;634e 09  . 
+    defb 0cbh                  ;634f cb  . 
+    defb 002h                  ;6350 02  . 
+    defb 0d1h                  ;6351 d1  . 
+    defb 002h                  ;6352 02  . 
+    defb 0cbh                  ;6353 cb  . 
+    defb 002h                  ;6354 02  . 
+    defb 0cch                  ;6355 cc  . 
+    defb 002h                  ;6356 02  . 
+    defb 0cbh                  ;6357 cb  . 
+    defb 003h                  ;6358 03  . 
+    defb 00ch                  ;6359 0c  . 
+    defb 0ceh                  ;635a ce  . 
+    defb 003h                  ;635b 03  . 
+    defb 004h                  ;635c 04  . 
+    defb 009h                  ;635d 09  . 
+    defb 0cfh                  ;635e cf  . 
+    defb 002h                  ;635f 02  . 
+    defb 009h                  ;6360 09  . 
+    defb 0cbh                  ;6361 cb  . 
+    defb 008h                  ;6362 08  . 
+    defb 005h                  ;6363 05  . 
+    defb 006h                  ;6364 06  . 
+    defb 004h                  ;6365 04  . 
+    defb 0cbh                  ;6366 cb  . 
+    defb 002h                  ;6367 02  . 
+    defb 007h                  ;6368 07  . 
+    defb 00bh                  ;6369 0b  . 
+    defb 0cbh                  ;636a cb  . 
+    defb 009h                  ;636b 09  . 
+    defb 00ch                  ;636c 0c  . 
+    defb 005h                  ;636d 05  . 
+    defb 0cbh                  ;636e cb  . 
+    defb 002h                  ;636f 02  . 
+    defb 00ah                  ;6370 0a  . 
+    defb 012h                  ;6371 12  . 
+    defb 008h                  ;6372 08  . 
+    defb 0cbh                  ;6373 cb  . 
+    defb 003h                  ;6374 03  . 
+    defb 005h                  ;6375 05  . 
+    defb 00ch                  ;6376 0c  . 
+    defb 008h                  ;6377 08  . 
+    defb 00eh                  ;6378 0e  . 
+    defb 005h                  ;6379 05  . 
+    defb 0cbh                  ;637a cb  . 
+    defb 006h                  ;637b 06  . 
+    defb 0cch                  ;637c cc  . 
+    defb 002h                  ;637d 02  . 
+    defb 009h                  ;637e 09  . 
+    defb 049h                  ;637f 49  I 
+    defb 009h                  ;6380 09  . 
+    defb 00bh                  ;6381 0b  . 
+    defb 00ch                  ;6382 0c  . 
+    defb 01ch                  ;6383 1c  . 
+    defb 00bh                  ;6384 0b  . 
+    defb 0d7h                  ;6385 d7  . 
+    defb 002h                  ;6386 02  . 
+    defb 00ch                  ;6387 0c  . 
+    defb 0cbh                  ;6388 cb  . 
+    defb 002h                  ;6389 02  . 
+    defb 006h                  ;638a 06  . 
+    defb 00bh                  ;638b 0b  . 
+    defb 006h                  ;638c 06  . 
+    defb 008h                  ;638d 08  . 
+    defb 005h                  ;638e 05  . 
+    defb 017h                  ;638f 17  . 
+    defb 009h                  ;6390 09  . 
+    defb 00bh                  ;6391 0b  . 
+    defb 00ch                  ;6392 0c  . 
+    defb 005h                  ;6393 05  . 
+    defb 004h                  ;6394 04  . 
+    defb 005h                  ;6395 05  . 
+    defb 008h                  ;6396 08  . 
+    defb 007h                  ;6397 07  . 
+    defb 009h                  ;6398 09  . 
+    defb 008h                  ;6399 08  . 
+    defb 003h                  ;639a 03  . 
+    defb 013h                  ;639b 13  . 
+    defb 004h                  ;639c 04  . 
+    defb 0cbh                  ;639d cb  . 
+    defb 005h                  ;639e 05  . 
+    defb 005h                  ;639f 05  . 
+    defb 0cbh                  ;63a0 cb  . 
+    defb 002h                  ;63a1 02  . 
+    defb 00ch                  ;63a2 0c  . 
+    defb 009h                  ;63a3 09  . 
+    defb 005h                  ;63a4 05  . 
+    defb 0d2h                  ;63a5 d2  . 
+    defb 002h                  ;63a6 02  . 
+    defb 004h                  ;63a7 04  . 
+    defb 016h                  ;63a8 16  . 
+    defb 00ch                  ;63a9 0c  . 
+    defb 008h                  ;63aa 08  . 
+    defb 003h                  ;63ab 03  . 
+    defb 009h                  ;63ac 09  . 
+    defb 006h                  ;63ad 06  . 
+    defb 0cbh                  ;63ae cb  . 
+    defb 003h                  ;63af 03  . 
+    defb 00fh                  ;63b0 0f  . 
+    defb 005h                  ;63b1 05  . 
+    defb 00bh                  ;63b2 0b  . 
+    defb 00eh                  ;63b3 0e  . 
+    defb 007h                  ;63b4 07  . 
+    defb 004h                  ;63b5 04  . 
+    defb 00ah                  ;63b6 0a  . 
+    defb 003h                  ;63b7 03  . 
+    defb 0dbh                  ;63b8 db  . 
+    defb 002h                  ;63b9 02  . 
+    defb 011h                  ;63ba 11  . 
+    defb 026h                  ;63bb 26  & 
+    defb 009h                  ;63bc 09  . 
+    defb 005h                  ;63bd 05  . 
+    defb 003h                  ;63be 03  . 
+    defb 00eh                  ;63bf 0e  . 
+    defb 007h                  ;63c0 07  . 
+    defb 005h                  ;63c1 05  . 
+    defb 004h                  ;63c2 04  . 
+    defb 005h                  ;63c3 05  . 
+    defb 007h                  ;63c4 07  . 
+    defb 006h                  ;63c5 06  . 
+    defb 004h                  ;63c6 04  . 
+    defb 007h                  ;63c7 07  . 
+    defb 004h                  ;63c8 04  . 
+    defb 010h                  ;63c9 10  . 
+    defb 005h                  ;63ca 05  . 
+    defb 023h                  ;63cb 23  # 
+    defb 021h                  ;63cc 21  ! 
+    defb 004h                  ;63cd 04  . 
+    defb 005h                  ;63ce 05  . 
+    defb 01eh                  ;63cf 1e  . 
+    defb 003h                  ;63d0 03  . 
+    defb 00eh                  ;63d1 0e  . 
+    defb 0cch                  ;63d2 cc  . 
+    defb 002h                  ;63d3 02  . 
+    defb 00dh                  ;63d4 0d  . 
+    defb 005h                  ;63d5 05  . 
+    defb 006h                  ;63d6 06  . 
+    defb 0cbh                  ;63d7 cb  . 
+    defb 004h                  ;63d8 04  . 
+    defb 00ah                  ;63d9 0a  . 
+    defb 003h                  ;63da 03  . 
+    defb 011h                  ;63db 11  . 
+    defb 003h                  ;63dc 03  . 
+    defb 005h                  ;63dd 05  . 
+    defb 0cbh                  ;63de cb  . 
+    defb 002h                  ;63df 02  . 
+    defb 007h                  ;63e0 07  . 
+    defb 003h                  ;63e1 03  . 
+    defb 008h                  ;63e2 08  . 
+    defb 0cbh                  ;63e3 cb  . 
+    defb 002h                  ;63e4 02  . 
+    defb 004h                  ;63e5 04  . 
+    defb 003h                  ;63e6 03  . 
+    defb 00ah                  ;63e7 0a  . 
+    defb 0cbh                  ;63e8 cb  . 
+    defb 002h                  ;63e9 02  . 
+    defb 004h                  ;63ea 04  . 
+    defb 0cbh                  ;63eb cb  . 
+    defb 002h                  ;63ec 02  . 
+    defb 005h                  ;63ed 05  . 
+    defb 003h                  ;63ee 03  . 
+    defb 01ch                  ;63ef 1c  . 
+    defb 00eh                  ;63f0 0e  . 
+    defb 0cbh                  ;63f1 cb  . 
+    defb 003h                  ;63f2 03  . 
+    defb 004h                  ;63f3 04  . 
+    defb 00ah                  ;63f4 0a  . 
+    defb 003h                  ;63f5 03  . 
+    defb 004h                  ;63f6 04  . 
+    defb 003h                  ;63f7 03  . 
+    defb 00ah                  ;63f8 0a  . 
+    defb 004h                  ;63f9 04  . 
+    defb 007h                  ;63fa 07  . 
+    defb 008h                  ;63fb 08  . 
+    defb 005h                  ;63fc 05  . 
+    defb 007h                  ;63fd 07  . 
+    defb 0d0h                  ;63fe d0  . 
+    defb 002h                  ;63ff 02  . 
+    defb 0cdh                  ;6400 cd  . 
+    defb 002h                  ;6401 02  . 
+    defb 0cbh                  ;6402 cb  . 
+    defb 003h                  ;6403 03  . 
+    defb 004h                  ;6404 04  . 
+    defb 0cbh                  ;6405 cb  . 
+    defb 003h                  ;6406 03  . 
+    defb 005h                  ;6407 05  . 
+    defb 004h                  ;6408 04  . 
+    defb 003h                  ;6409 03  . 
+    defb 00ah                  ;640a 0a  . 
+    defb 005h                  ;640b 05  . 
+    defb 00bh                  ;640c 0b  . 
+    defb 0cbh                  ;640d cb  . 
+    defb 002h                  ;640e 02  . 
+    defb 006h                  ;640f 06  . 
+    defb 005h                  ;6410 05  . 
+    defb 006h                  ;6411 06  . 
+l6412h:
+    defb 008h                  ;6412 08  . 
+    defb 0cbh                  ;6413 cb  . 
+    defb 002h                  ;6414 02  . 
+    defb 008h                  ;6415 08  . 
+    defb 006h                  ;6416 06  . 
+    defb 003h                  ;6417 03  . 
+    defb 006h                  ;6418 06  . 
+    defb 0cbh                  ;6419 cb  . 
+    defb 002h                  ;641a 02  . 
+    defb 00ah                  ;641b 0a  . 
+    defb 005h                  ;641c 05  . 
+    defb 00fh                  ;641d 0f  . 
+    defb 00eh                  ;641e 0e  . 
+    defb 009h                  ;641f 09  . 
+    defb 0cbh                  ;6420 cb  . 
+    defb 003h                  ;6421 03  . 
+    defb 018h                  ;6422 18  . 
+    defb 003h                  ;6423 03  . 
+    defb 00fh                  ;6424 0f  . 
+    defb 0cfh                  ;6425 cf  . 
+    defb 003h                  ;6426 03  . 
+    defb 006h                  ;6427 06  . 
+    defb 003h                  ;6428 03  . 
+    defb 009h                  ;6429 09  . 
+    defb 0d5h                  ;642a d5  . 
+    defb 002h                  ;642b 02  . 
+    defb 012h                  ;642c 12  . 
+    defb 007h                  ;642d 07  . 
+    defb 00ch                  ;642e 0c  . 
+    defb 009h                  ;642f 09  . 
+    defb 029h                  ;6430 29  ) 
+    defb 005h                  ;6431 05  . 
+    defb 00eh                  ;6432 0e  . 
+    defb 00dh                  ;6433 0d  . 
+    defb 004h                  ;6434 04  . 
+    defb 00dh                  ;6435 0d  . 
+    defb 003h                  ;6436 03  . 
+    defb 005h                  ;6437 05  . 
+    defb 019h                  ;6438 19  . 
+    defb 028h                  ;6439 28  ( 
+    defb 008h                  ;643a 08  . 
+    defb 00eh                  ;643b 0e  . 
+    defb 0cch                  ;643c cc  . 
+    defb 002h                  ;643d 02  . 
+    defb 009h                  ;643e 09  . 
+    defb 0d3h                  ;643f d3  . 
+    defb 002h                  ;6440 02  . 
+    defb 004h                  ;6441 04  . 
+    defb 0cbh                  ;6442 cb  . 
+    defb 003h                  ;6443 03  . 
+    defb 009h                  ;6444 09  . 
+    defb 008h                  ;6445 08  . 
+    defb 003h                  ;6446 03  . 
+    defb 042h                  ;6447 42  B 
+    defb 007h                  ;6448 07  . 
+    defb 0d1h                  ;6449 d1  . 
+    defb 002h                  ;644a 02  . 
+    defb 005h                  ;644b 05  . 
+    defb 01fh                  ;644c 1f  . 
+    defb 008h                  ;644d 08  . 
+    defb 006h                  ;644e 06  . 
+    defb 00ch                  ;644f 0c  . 
+    defb 005h                  ;6450 05  . 
+    defb 029h                  ;6451 29  ) 
+    defb 050h                  ;6452 50  P 
+    defb 004h                  ;6453 04  . 
+    defb 03ah                  ;6454 3a  : 
+    defb 007h                  ;6455 07  . 
+    defb 0cbh                  ;6456 cb  . 
+    defb 003h                  ;6457 03  . 
+    defb 005h                  ;6458 05  . 
+    defb 00eh                  ;6459 0e  . 
+    defb 007h                  ;645a 07  . 
+    defb 013h                  ;645b 13  . 
+    defb 010h                  ;645c 10  . 
+    defb 00dh                  ;645d 0d  . 
+    defb 010h                  ;645e 10  . 
+    defb 003h                  ;645f 03  . 
+    defb 00ah                  ;6460 0a  . 
+    defb 005h                  ;6461 05  . 
+    defb 01dh                  ;6462 1d  . 
+    defb 009h                  ;6463 09  . 
+    defb 008h                  ;6464 08  . 
+    defb 003h                  ;6465 03  . 
+    defb 006h                  ;6466 06  . 
+    defb 003h                  ;6467 03  . 
+    defb 007h                  ;6468 07  . 
+    defb 028h                  ;6469 28  ( 
+    defb 00bh                  ;646a 0b  . 
+    defb 003h                  ;646b 03  . 
+    defb 008h                  ;646c 08  . 
+    defb 003h                  ;646d 03  . 
+    defb 0ceh                  ;646e ce  . 
+    defb 002h                  ;646f 02  . 
+    defb 009h                  ;6470 09  . 
+    defb 005h                  ;6471 05  . 
+    defb 003h                  ;6472 03  . 
+    defb 006h                  ;6473 06  . 
+    defb 003h                  ;6474 03  . 
+    defb 008h                  ;6475 08  . 
+    defb 0cbh                  ;6476 cb  . 
+    defb 004h                  ;6477 04  . 
+    defb 006h                  ;6478 06  . 
+    defb 005h                  ;6479 05  . 
+    defb 00dh                  ;647a 0d  . 
+    defb 003h                  ;647b 03  . 
+    defb 007h                  ;647c 07  . 
+    defb 004h                  ;647d 04  . 
+    defb 005h                  ;647e 05  . 
+    defb 009h                  ;647f 09  . 
+    defb 005h                  ;6480 05  . 
+    defb 0d3h                  ;6481 d3  . 
+    defb 002h                  ;6482 02  . 
+    defb 008h                  ;6483 08  . 
+    defb 00ch                  ;6484 0c  . 
+    defb 005h                  ;6485 05  . 
+    defb 003h                  ;6486 03  . 
+    defb 005h                  ;6487 05  . 
+    defb 00dh                  ;6488 0d  . 
+    defb 00bh                  ;6489 0b  . 
+    defb 008h                  ;648a 08  . 
+    defb 00ch                  ;648b 0c  . 
+    defb 005h                  ;648c 05  . 
+    defb 003h                  ;648d 03  . 
+    defb 005h                  ;648e 05  . 
+    defb 010h                  ;648f 10  . 
+    defb 0cbh                  ;6490 cb  . 
+    defb 002h                  ;6491 02  . 
+    defb 005h                  ;6492 05  . 
+    defb 003h                  ;6493 03  . 
+    defb 009h                  ;6494 09  . 
+    defb 0cbh                  ;6495 cb  . 
+    defb 003h                  ;6496 03  . 
+    defb 005h                  ;6497 05  . 
+    defb 00bh                  ;6498 0b  . 
+    defb 0cbh                  ;6499 cb  . 
+    defb 002h                  ;649a 02  . 
+    defb 00bh                  ;649b 0b  . 
+    defb 003h                  ;649c 03  . 
+    defb 006h                  ;649d 06  . 
+    defb 00ah                  ;649e 0a  . 
+    defb 003h                  ;649f 03  . 
+    defb 004h                  ;64a0 04  . 
+    defb 003h                  ;64a1 03  . 
+    defb 006h                  ;64a2 06  . 
+    defb 004h                  ;64a3 04  . 
+    defb 008h                  ;64a4 08  . 
+    defb 003h                  ;64a5 03  . 
+    defb 006h                  ;64a6 06  . 
+    defb 005h                  ;64a7 05  . 
+    defb 004h                  ;64a8 04  . 
+    defb 0cbh                  ;64a9 cb  . 
+    defb 002h                  ;64aa 02  . 
+    defb 03dh                  ;64ab 3d  = 
+    defb 00fh                  ;64ac 0f  . 
+    defb 01eh                  ;64ad 1e  . 
+    defb 025h                  ;64ae 25  % 
+    defb 00fh                  ;64af 0f  . 
+    defb 003h                  ;64b0 03  . 
+    defb 008h                  ;64b1 08  . 
+    defb 009h                  ;64b2 09  . 
+    defb 0cbh                  ;64b3 cb  . 
+    defb 002h                  ;64b4 02  . 
+    defb 005h                  ;64b5 05  . 
+    defb 0cbh                  ;64b6 cb  . 
+    defb 002h                  ;64b7 02  . 
+    defb 005h                  ;64b8 05  . 
+    defb 006h                  ;64b9 06  . 
+    defb 003h                  ;64ba 03  . 
+    defb 005h                  ;64bb 05  . 
+    defb 0cbh                  ;64bc cb  . 
+    defb 002h                  ;64bd 02  . 
+    defb 008h                  ;64be 08  . 
+    defb 0cbh                  ;64bf cb  . 
+    defb 002h                  ;64c0 02  . 
+    defb 004h                  ;64c1 04  . 
+    defb 0cbh                  ;64c2 cb  . 
+    defb 002h                  ;64c3 02  . 
+    defb 009h                  ;64c4 09  . 
+    defb 003h                  ;64c5 03  . 
+    defb 004h                  ;64c6 04  . 
+    defb 008h                  ;64c7 08  . 
+    defb 00ch                  ;64c8 0c  . 
+    defb 004h                  ;64c9 04  . 
+    defb 018h                  ;64ca 18  . 
+    defb 0cbh                  ;64cb cb  . 
+    defb 004h                  ;64cc 04  . 
+    defb 004h                  ;64cd 04  . 
+    defb 005h                  ;64ce 05  . 
+    defb 008h                  ;64cf 08  . 
+    defb 00fh                  ;64d0 0f  . 
+    defb 00eh                  ;64d1 0e  . 
+    defb 020h                  ;64d2 20    
+    defb 003h                  ;64d3 03  . 
+    defb 005h                  ;64d4 05  . 
+    defb 0cbh                  ;64d5 cb  . 
+    defb 002h                  ;64d6 02  . 
+    defb 010h                  ;64d7 10  . 
+    defb 005h                  ;64d8 05  . 
+    defb 011h                  ;64d9 11  . 
+    defb 00ah                  ;64da 0a  . 
+    defb 004h                  ;64db 04  . 
+    defb 00ah                  ;64dc 0a  . 
+    defb 020h                  ;64dd 20    
+    defb 005h                  ;64de 05  . 
+    defb 010h                  ;64df 10  . 
+    defb 0cbh                  ;64e0 cb  . 
+    defb 002h                  ;64e1 02  . 
+    defb 0cdh                  ;64e2 cd  . 
+    defb 002h                  ;64e3 02  . 
+    defb 009h                  ;64e4 09  . 
+    defb 0cfh                  ;64e5 cf  . 
+    defb 002h                  ;64e6 02  . 
+    defb 02ah                  ;64e7 2a  * 
+    defb 004h                  ;64e8 04  . 
+    defb 0cbh                  ;64e9 cb  . 
+    defb 006h                  ;64ea 06  . 
+    defb 006h                  ;64eb 06  . 
+    defb 008h                  ;64ec 08  . 
+    defb 0cbh                  ;64ed cb  . 
+    defb 003h                  ;64ee 03  . 
+    defb 004h                  ;64ef 04  . 
+    defb 00ch                  ;64f0 0c  . 
+    defb 00fh                  ;64f1 0f  . 
+    defb 003h                  ;64f2 03  . 
+    defb 00eh                  ;64f3 0e  . 
+    defb 01bh                  ;64f4 1b  . 
+    defb 003h                  ;64f5 03  . 
+    defb 01fh                  ;64f6 1f  . 
+    defb 007h                  ;64f7 07  . 
+    defb 025h                  ;64f8 25  % 
+    defb 0ceh                  ;64f9 ce  . 
+    defb 002h                  ;64fa 02  . 
+    defb 00dh                  ;64fb 0d  . 
+    defb 008h                  ;64fc 08  . 
+    defb 013h                  ;64fd 13  . 
+    defb 003h                  ;64fe 03  . 
+    defb 005h                  ;64ff 05  . 
+    defb 013h                  ;6500 13  . 
+    defb 010h                  ;6501 10  . 
+    defb 003h                  ;6502 03  . 
+    defb 00eh                  ;6503 0e  . 
+    defb 04eh                  ;6504 4e  N 
+    defb 004h                  ;6505 04  . 
+    defb 00fh                  ;6506 0f  . 
+    defb 013h                  ;6507 13  . 
+    defb 024h                  ;6508 24  $ 
+    defb 003h                  ;6509 03  . 
+    defb 005h                  ;650a 05  . 
+    defb 00ah                  ;650b 0a  . 
+    defb 005h                  ;650c 05  . 
+    defb 004h                  ;650d 04  . 
+    defb 00dh                  ;650e 0d  . 
+    defb 0cdh                  ;650f cd  . 
+    defb 003h                  ;6510 03  . 
+    defb 0cbh                  ;6511 cb  . 
+    defb 002h                  ;6512 02  . 
+    defb 017h                  ;6513 17  . 
+    defb 007h                  ;6514 07  . 
+    defb 010h                  ;6515 10  . 
+    defb 0d2h                  ;6516 d2  . 
+    defb 002h                  ;6517 02  . 
+    defb 003h                  ;6518 03  . 
+    defb 00ah                  ;6519 0a  . 
+    defb 00ch                  ;651a 0c  . 
+    defb 005h                  ;651b 05  . 
+    defb 0cch                  ;651c cc  . 
+    defb 002h                  ;651d 02  . 
+    defb 020h                  ;651e 20    
+    defb 003h                  ;651f 03  . 
+    defb 049h                  ;6520 49  I 
+    defb 008h                  ;6521 08  . 
+    defb 009h                  ;6522 09  . 
+    defb 020h                  ;6523 20    
+    defb 003h                  ;6524 03  . 
+    defb 00bh                  ;6525 0b  . 
+    defb 003h                  ;6526 03  . 
+    defb 009h                  ;6527 09  . 
+    defb 008h                  ;6528 08  . 
+    defb 00bh                  ;6529 0b  . 
+    defb 012h                  ;652a 12  . 
+    defb 00ah                  ;652b 0a  . 
+    defb 006h                  ;652c 06  . 
+    defb 017h                  ;652d 17  . 
+    defb 003h                  ;652e 03  . 
+    defb 00bh                  ;652f 0b  . 
+    defb 013h                  ;6530 13  . 
+    defb 003h                  ;6531 03  . 
+    defb 006h                  ;6532 06  . 
+    defb 00bh                  ;6533 0b  . 
+    defb 008h                  ;6534 08  . 
+    defb 00bh                  ;6535 0b  . 
+    defb 009h                  ;6536 09  . 
+    defb 007h                  ;6537 07  . 
+    defb 008h                  ;6538 08  . 
+    defb 004h                  ;6539 04  . 
+    defb 005h                  ;653a 05  . 
+    defb 004h                  ;653b 04  . 
+    defb 011h                  ;653c 11  . 
+    defb 049h                  ;653d 49  I 
+    defb 009h                  ;653e 09  . 
+    defb 00ch                  ;653f 0c  . 
+    defb 003h                  ;6540 03  . 
+    defb 004h                  ;6541 04  . 
+    defb 050h                  ;6542 50  P 
+    defb 00ah                  ;6543 0a  . 
+    defb 02bh                  ;6544 2b  + 
+    defb 022h                  ;6545 22  " 
+    defb 00fh                  ;6546 0f  . 
+    defb 00bh                  ;6547 0b  . 
+    defb 009h                  ;6548 09  . 
+    defb 003h                  ;6549 03  . 
+    defb 006h                  ;654a 06  . 
+    defb 003h                  ;654b 03  . 
+    defb 004h                  ;654c 04  . 
+    defb 005h                  ;654d 05  . 
+    defb 009h                  ;654e 09  . 
+    defb 005h                  ;654f 05  . 
+    defb 004h                  ;6550 04  . 
+    defb 005h                  ;6551 05  . 
+    defb 00bh                  ;6552 0b  . 
+    defb 014h                  ;6553 14  . 
+    defb 004h                  ;6554 04  . 
+    defb 00bh                  ;6555 0b  . 
+    defb 00eh                  ;6556 0e  . 
+    defb 00ah                  ;6557 0a  . 
+    defb 006h                  ;6558 06  . 
+    defb 003h                  ;6559 03  . 
+    defb 009h                  ;655a 09  . 
+    defb 01ah                  ;655b 1a  . 
+    defb 009h                  ;655c 09  . 
+    defb 00eh                  ;655d 0e  . 
+    defb 015h                  ;655e 15  . 
+    defb 0cch                  ;655f cc  . 
+    defb 002h                  ;6560 02  . 
+    defb 00dh                  ;6561 0d  . 
+    defb 00bh                  ;6562 0b  . 
+    defb 021h                  ;6563 21  ! 
+    defb 00eh                  ;6564 0e  . 
+    defb 009h                  ;6565 09  . 
+    defb 065h                  ;6566 65  e 
+    defb 017h                  ;6567 17  . 
+    defb 00eh                  ;6568 0e  . 
+    defb 03bh                  ;6569 3b                        ; 
+    defb 0cdh                  ;656a cd  . 
+    defb 002h                  ;656b 02  . 
+    defb 003h                  ;656c 03  . 
+    defb 00bh                  ;656d 0b  . 
+    defb 00eh                  ;656e 0e  . 
+    defb 004h                  ;656f 04  . 
+    defb 007h                  ;6570 07  . 
+    defb 00ch                  ;6571 0c  . 
+    defb 005h                  ;6572 05  . 
+    defb 013h                  ;6573 13  . 
+    defb 01bh                  ;6574 1b  . 
+    defb 004h                  ;6575 04  . 
+    defb 006h                  ;6576 06  . 
+    defb 00fh                  ;6577 0f  . 
+    defb 0cbh                  ;6578 cb  . 
+    defb 003h                  ;6579 03  . 
+    defb 006h                  ;657a 06  . 
+    defb 00ch                  ;657b 0c  . 
+    defb 029h                  ;657c 29  ) 
+    defb 009h                  ;657d 09  . 
+    defb 00dh                  ;657e 0d  . 
+    defb 004h                  ;657f 04  . 
+    defb 003h                  ;6580 03  . 
+    defb 004h                  ;6581 04  . 
+    defb 006h                  ;6582 06  . 
+    defb 0cbh                  ;6583 cb  . 
+    defb 002h                  ;6584 02  . 
+    defb 008h                  ;6585 08  . 
+    defb 009h                  ;6586 09  . 
+    defb 0ceh                  ;6587 ce  . 
+    defb 002h                  ;6588 02  . 
+    defb 00bh                  ;6589 0b  . 
+    defb 012h                  ;658a 12  . 
+    defb 009h                  ;658b 09  . 
+    defb 023h                  ;658c 23  # 
+    defb 011h                  ;658d 11  . 
+    defb 005h                  ;658e 05  . 
+    defb 006h                  ;658f 06  . 
+    defb 008h                  ;6590 08  . 
+    defb 0ceh                  ;6591 ce  . 
+    defb 002h                  ;6592 02  . 
+    defb 005h                  ;6593 05  . 
+    defb 020h                  ;6594 20    
+    defb 014h                  ;6595 14  . 
+    defb 01dh                  ;6596 1d  . 
+    defb 004h                  ;6597 04  . 
+    defb 014h                  ;6598 14  . 
+    defb 00bh                  ;6599 0b  . 
+    defb 00eh                  ;659a 0e  . 
+    defb 0cbh                  ;659b cb  . 
+    defb 006h                  ;659c 06  . 
+    defb 01bh                  ;659d 1b  . 
+    defb 0cbh                  ;659e cb  . 
+    defb 002h                  ;659f 02  . 
+    defb 0cdh                  ;65a0 cd  . 
+    defb 002h                  ;65a1 02  . 
+    defb 003h                  ;65a2 03  . 
+    defb 00ah                  ;65a3 0a  . 
+    defb 0cbh                  ;65a4 cb  . 
+    defb 006h                  ;65a5 06  . 
+    defb 006h                  ;65a6 06  . 
+    defb 008h                  ;65a7 08  . 
+    defb 010h                  ;65a8 10  . 
+    defb 009h                  ;65a9 09  . 
+    defb 006h                  ;65aa 06  . 
+    defb 011h                  ;65ab 11  . 
+    defb 008h                  ;65ac 08  . 
+    defb 012h                  ;65ad 12  . 
+    defb 006h                  ;65ae 06  . 
+    defb 00dh                  ;65af 0d  . 
+    defb 004h                  ;65b0 04  . 
+    defb 0cbh                  ;65b1 cb  . 
+    defb 007h                  ;65b2 07  . 
 
 ; BLOCK 'logo_image' (start 0x65b3 end 0x66f4)
-logo_image_start:
     defb 000h, 000h, 07fh, 0ffh, 0ffh, 0ffh, 0fch, 0dch, 0a8h, 000h, 0e0h, 0f8h, 0fch, 0fch, 0feh, 076h
     defb 0aah, 000h, 07fh, 0ffh, 0ffh, 0ffh, 0fch, 0dch, 0a8h, 000h, 0e0h, 0f8h, 0fch, 0fch, 0feh, 076h
     defb 0aah, 000h, 00fh, 03fh, 07fh, 07fh, 0feh, 0dch, 0a8h, 000h, 0e0h, 0f8h, 0fch, 0fch, 0feh, 06eh
@@ -2016,7 +2307,7 @@ v_l6063h:
     dec d                      ;69c3 15  . 
     ld a,c                     ;69c4 79  y 
     ld l,c                     ;69c5 69  i 
-    ld hl,(06412h)             ;69c6 2a 12 64  * . d 
+    ld hl,(l6412h)             ;69c6 2a 12 64  * . d 
     ld b,e                     ;69c9 43  C 
     ld e,h                     ;69ca 5c  \ 
     ld hl,(00877h)             ;69cb 2a 77 08  * w . 
@@ -2474,7 +2765,6 @@ l6cefh:
     pop hl                     ;6cf6 e1  . 
     ld b,005h                  ;6cf7 06 05  . . 
 l6cf9h:
-v_l63c5h:
     call v_sub_63efh-BA1       ;6cf9 cd 2f 06  . / . 
     djnz l6cf9h                ;6cfc 10 fb  . . 
     call v_sub_5f64h-BA1       ;6cfe cd a4 01  . . . 
@@ -3584,7 +3874,6 @@ l73f2h:
     ex de,hl                   ;73f2 eb  . 
     call v_sub_6b02h-BA1       ;73f3 cd 42 0d  . B . 
 l73f6h:
-v_l6ac2h:
     ld (ix+000h),0c0h          ;73f6 dd 36 00 c0  . 6 . . 
     ld ix,v_l8b21h-BA1         ;73fa dd 21 61 2d  . ! a - 
     call v_sub_8135h-BA1       ;73fe cd 75 23  . u # 
@@ -3895,7 +4184,7 @@ l75b0h:
     pop hl                     ;75b5 e1  . 
     ret                        ;75b6 c9  . 
 v_l6c83h:
-    ld hl,05800h               ;75b7 21 00 58  ! . X 
+    ld hl,ATTRIBUTES_ADDRESS   ;75b7 21 00 58  ! . X 
     ld bc,v_l5dc3h-BA1         ;75ba 01 03 00  . . . 
     push hl                    ;75bd e5  . 
     push bc                    ;75be c5  . 

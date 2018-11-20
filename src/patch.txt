@@ -3,6 +3,7 @@
 BA: 		equ 24000
 BA1: 		equ 24000+2356
 VR: 		equ 0xde7
+ATTRIBUTES_ADDRESS: 		equ 0x5800
 
 ; ROM routines
 
@@ -6176,3 +6177,44 @@ s/050a1h/vr_l050a1h-VR
 -
 ;5e88 <
 vr_l050a1h:
+-
+s/05309h/vr_l05309h-VR
+-
+;60f0 <
+vr_l05309h:
+-
+s/05353h/vr_l05353h-VR
+-
+;613a <
+vr_l05353h:
+-
+s/05547h/vr_l05547h-VR
+-
+;632e <
+vr_l05547h:
+-
+s/050eeh/vr_l050edh+1-VR
+-
+;5ed4 <
+vr_l050edh:
+-
+s/0502bh/vr_l0502bh-VR
+-
+;5e12 <
+vr_l0502bh:
+-
+s/05800h/ATTRIBUTES_ADDRESS
+-
+s/05801h/ATTRIBUTES_ADDRESS+1
+-
+s/0518ch/vr_l0518bh+1-VR
+-
+;5f72 <
+vr_l0518bh:
+-
+s/05e8dh/vr_l050a1h+5-VR
+-
+s/0531ch/vr_sub_0531ch-VR
+-
+;6103 <
+vr_sub_0531ch:
