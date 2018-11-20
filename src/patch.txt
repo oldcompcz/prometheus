@@ -245,6 +245,34 @@ start:
 	defb "CLEA", 0xD2	;CLEAR
 	defb "REPLAC", 0xC5	;REPLACE
 -
+;79df ;7a6e =
+    defb "Lengt",0xe8	;"h"+0x80	;79df
+    defb "Firs",0xf4	;"t"+0x80	;79e5
+    defb "Las",0xf4	;"t"+0x80	;79ea
+    defb "Memor",0xf9	;"y"+0x80	;79ee
+    defb "l",0xe4	;"d"+0x80	;79f4
+    defb " UNIVERSUM Contro",0xec	;"l"+0x80	;79f6
+    defb "ON",0xa0	;" "+0x80	;7a08
+    defb "OF",0xc6	;"F"+0x80	;7a0b
+    defb "NO",0xce	;"N"+0x80	;7a0e
+    defb "DE",0xc6	;"F"+0x80	;7a11
+    defb "AL",0xcc	;"L"+0x80	;7a14
+    defb "Cal",0xec	;"l"+0x80	;7a17
+    defb "Read/Writ",0xe5	;"e"+0x80	;7a1b
+    defb "Ru",0xee	;"n"+0x80	;7a25
+    defb "Interrup",0xf4	;"t"+0x80	;7a28
+    defb "ERRO",0xd2	;"R"+0x80	;7a31
+    defb "No ru",0xee	;"n"+0x80	;7a36
+    defb "No writ",0xe5	;"e"+0x80	;7a3c
+    defb "No rea",0xe4	;"d"+0x80	;7a44
+    defb "Def",0xe2	;"b"+0x80	;7a4b
+    defb "Def",0xf7	;"w"+0x80	;7a4f
+    defb "windows",0xba	;":"+0x80	;7a53
+    defb "Wit",0xe8	;"h"+0x80	;7a5b
+    defb "T",0xef	;"o"+0x80	;7a5f
+    defb "Leade",0xf2	;"r"+0x80	;7a61
+    defb "1. byte",0xba	;":"+0x80	;7a67
+-
 ;5f06 =
 	call ROM_KeyboardScanning	;5f06
 -
@@ -3036,7 +3064,7 @@ v_l8af9h:
 v_l8afeh:
 -
 ;9433 <
-v_l8affh:
+inputBufferStart: ;9433 (8aff)
 -
 ;943f <
 v_l8b0bh:
@@ -5618,7 +5646,7 @@ s/02d39h/v_l8af9h-BA1
 -
 s/02d3eh/v_l8afeh-BA1
 -
-s/02d3fh/v_l8affh-BA1
+s/02d3fh/inputBufferStart-BA1
 -
 s/02d4bh/v_l8b0bh-BA1
 -
@@ -6218,3 +6246,10 @@ s/0531ch/vr_sub_0531ch-VR
 -
 ;6103 <
 vr_sub_0531ch:
+-
+s/02855h/v_l8614h+1-BA1
+-
+;8fb8 <
+v_l8684h:
+-
+s/028c5h/v_l8684h+1-BA1

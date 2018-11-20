@@ -2153,7 +2153,7 @@ v_l5f74h:
     call v_sub_7800h-BA1       ;68a9 cd 40 1a  . @ . 
     ld sp,08ba1h-BA            ;68ac 31 e1 2d  1 . - 
     call v_sub_665ah-BA1       ;68af cd 9a 08  . . . 
-    ld hl,v_l8affh-BA1         ;68b2 21 3f 2d  ! ? - 
+    ld hl,inputBufferStart-BA1                                 ;68b2 21 3f 2d  ! ? - 
     ld (hl),0c6h               ;68b5 36 c6  6 . 
     inc hl                     ;68b7 23  # 
     ld a,(v_l68f2h+1-BA1)      ;68b8 3a 33 0b  : 3 . 
@@ -2171,7 +2171,7 @@ l68cah:
     ld (hl),a                  ;68cc 77  w 
     call v_sub_6669h-BA1       ;68cd cd a9 08  . . . 
     ld a,080h                  ;68d0 3e 80  > . 
-    ld (v_l8affh-BA1),a        ;68d2 32 3f 2d  2 ? - 
+    ld (inputBufferStart-BA1),a                                ;68d2 32 3f 2d  2 ? - 
     ld hl,02fafh               ;68d5 21 af 2f  ! . / 
     ld (02991h),hl             ;68d8 22 91 29  " . ) 
     ld hl,v_l89f4h-BA1         ;68db 21 34 2c  ! 4 , 
@@ -2347,7 +2347,7 @@ v_sub_60c3h:
 l69ffh:
     ld (v_l60f1h-BA1),a        ;69ff 32 31 03  2 1 . 
     call v_sub_665ah-BA1       ;6a02 cd 9a 08  . . . 
-    ld (v_l8affh-BA1),de       ;6a05 ed 53 3f 2d  . S ? - 
+    ld (inputBufferStart-BA1),de                               ;6a05 ed 53 3f 2d  . S ? - 
     ld (v_l60d9h+1-BA1),sp     ;6a09 ed 73 1a 03  . s . . 
 l6a0dh:
 v_l60d9h:
@@ -2362,7 +2362,7 @@ v_l60d9h:
     ret z                      ;6a24 c8  . 
 v_l60f1h:
     jp v_l719dh-BA1            ;6a25 c3 dd 13  . . . 
-    ld hl,v_l8affh-BA1         ;6a28 21 3f 2d  ! ? - 
+    ld hl,inputBufferStart-BA1                                 ;6a28 21 3f 2d  ! ? - 
 l6a2bh:
     call v_sub_85aeh-BA1       ;6a2b cd ee 27  . . ' 
     ld c,009h                  ;6a2e 0e 09  . . 
@@ -2517,7 +2517,7 @@ l6b2dh:
     ret c                      ;6b34 d8  . 
     jp v_l66c4h-BA1            ;6b35 c3 04 09  . . . 
     call v_sub_6c47h-BA1       ;6b38 cd 87 0e  . . . 
-    ld ix,v_l8affh-BA1         ;6b3b dd 21 3f 2d  . ! ? - 
+    ld ix,inputBufferStart-BA1                                 ;6b3b dd 21 3f 2d  . ! ? - 
     ld de,00012h               ;6b3f 11 12 00  . . . 
     xor a                      ;6b42 af  . 
     scf                        ;6b43 37  7 
@@ -2527,7 +2527,7 @@ l6b2dh:
     call 00562h                ;6b49 cd 62 05  . b . 
     ld ix,02ce8h               ;6b4c dd 21 e8 2c  . ! . , 
     jr c,l6b5dh                ;6b50 38 0b  8 . 
-    ld hl,(v_l8affh-BA1)       ;6b52 2a 3f 2d  * ? - 
+    ld hl,(inputBufferStart-BA1)                               ;6b52 2a 3f 2d  * ? - 
     ld h,000h                  ;6b55 26 00  & . 
     call v_sub_6b02h-BA1       ;6b57 cd 42 0d  . B . 
     jp v_sub_6c4ah-BA1         ;6b5a c3 8a 0e  . . . 
@@ -2624,12 +2624,12 @@ v_l62b7h:
     jr l6bb6h                  ;6c03 18 b1  . . 
 v_l62d1h:
     ld hl,v_l8aa5h-BA1         ;6c05 21 e5 2c  ! . , 
-    ld de,v_l8affh-BA1         ;6c08 11 3f 2d  . ? - 
+    ld de,inputBufferStart-BA1                                 ;6c08 11 3f 2d  . ? - 
     ld bc,00020h               ;6c0b 01 20 00  .   . 
     ldir                       ;6c0e ed b0  . . 
 v_sub_62dch:
     call v_l82dbh-BA1          ;6c10 cd 1b 25  . . % 
-    ld hl,v_l8affh-BA1         ;6c13 21 3f 2d  ! ? - 
+    ld hl,inputBufferStart-BA1                                 ;6c13 21 3f 2d  ! ? - 
     call v_sub_85aeh-BA1       ;6c16 cd ee 27  . . ' 
     ld d,000h                  ;6c19 16 00  . . 
     ld c,009h                  ;6c1b 0e 09  . . 
@@ -2983,7 +2983,7 @@ v_l64f9h:
 v_l64feh:
     call v_sub_665ah-BA1       ;6e32 cd 9a 08  . . . 
     ld hl,001c5h               ;6e35 21 c5 01  ! . . 
-    ld (v_l8affh-BA1),hl       ;6e38 22 3f 2d  " ? - 
+    ld (inputBufferStart-BA1),hl                               ;6e38 22 3f 2d  " ? - 
     ld hl,v_l64f9h-BA1         ;6e3b 21 39 07  ! 9 . 
     ld (080a0h-BA),hl          ;6e3e 22 e0 22  " . " 
     ld (00752h),sp             ;6e41 ed 73 52 07  . s R . 
@@ -3253,7 +3253,7 @@ v_l66c4h:
     ld a,0cdh                  ;6ff8 3e cd  > . 
 v_l66c6h:
     call v_sub_665ah-BA1       ;6ffa cd 9a 08  . . . 
-    ld hl,v_l8affh-BA1         ;6ffd 21 3f 2d  ! ? - 
+    ld hl,inputBufferStart-BA1                                 ;6ffd 21 3f 2d  ! ? - 
     ld (hl),a                  ;7000 77  w 
     inc hl                     ;7001 23  # 
     ld (hl),0d0h               ;7002 36 d0  6 . 
@@ -4978,150 +4978,32 @@ v_l7066h:
     defb 083h                  ;79dc 83  . 
     defb 084h                  ;79dd 84  . 
     defb 089h                  ;79de 89  . 
-    defb 04ch                  ;79df 4c  L 
-    defb 065h                  ;79e0 65  e 
-    defb 06eh                  ;79e1 6e  n 
-    defb 067h                  ;79e2 67  g 
-    defb 074h                  ;79e3 74  t 
-    defb 0e8h                  ;79e4 e8  . 
-    defb 046h                  ;79e5 46  F 
-    defb 069h                  ;79e6 69  i 
-    defb 072h                  ;79e7 72  r 
-    defb 073h                  ;79e8 73  s 
-    defb 0f4h                  ;79e9 f4  . 
-    defb 04ch                  ;79ea 4c  L 
-    defb 061h                  ;79eb 61  a 
-    defb 073h                  ;79ec 73  s 
-    defb 0f4h                  ;79ed f4  . 
-    defb 04dh                  ;79ee 4d  M 
-    defb 065h                  ;79ef 65  e 
-    defb 06dh                  ;79f0 6d  m 
-    defb 06fh                  ;79f1 6f  o 
-    defb 072h                  ;79f2 72  r 
-    defb 0f9h                  ;79f3 f9  . 
-    defb 06ch                  ;79f4 6c  l 
-    defb 0e4h                  ;79f5 e4  . 
-    defb 020h                  ;79f6 20    
-    defb 055h                  ;79f7 55  U 
-    defb 04eh                  ;79f8 4e  N 
-    defb 049h                  ;79f9 49  I 
-    defb 056h                  ;79fa 56  V 
-    defb 045h                  ;79fb 45  E 
-    defb 052h                  ;79fc 52  R 
-    defb 053h                  ;79fd 53  S 
-    defb 055h                  ;79fe 55  U 
-    defb 04dh                  ;79ff 4d  M 
-    defb 020h                  ;7a00 20    
-    defb 043h                  ;7a01 43  C 
-    defb 06fh                  ;7a02 6f  o 
-    defb 06eh                  ;7a03 6e  n 
-    defb 074h                  ;7a04 74  t 
-    defb 072h                  ;7a05 72  r 
-    defb 06fh                  ;7a06 6f  o 
-    defb 0ech                  ;7a07 ec  . 
-    defb 04fh                  ;7a08 4f  O 
-    defb 04eh                  ;7a09 4e  N 
-    defb 0a0h                  ;7a0a a0  . 
-    defb 04fh                  ;7a0b 4f  O 
-    defb 046h                  ;7a0c 46  F 
-    defb 0c6h                  ;7a0d c6  . 
-    defb 04eh                  ;7a0e 4e  N 
-    defb 04fh                  ;7a0f 4f  O 
-    defb 0ceh                  ;7a10 ce  . 
-    defb 044h                  ;7a11 44  D 
-    defb 045h                  ;7a12 45  E 
-    defb 0c6h                  ;7a13 c6  . 
-    defb 041h                  ;7a14 41  A 
-    defb 04ch                  ;7a15 4c  L 
-    defb 0cch                  ;7a16 cc  . 
-    defb 043h                  ;7a17 43  C 
-    defb 061h                  ;7a18 61  a 
-    defb 06ch                  ;7a19 6c  l 
-    defb 0ech                  ;7a1a ec  . 
-    defb 052h                  ;7a1b 52  R 
-    defb 065h                  ;7a1c 65  e 
-    defb 061h                  ;7a1d 61  a 
-    defb 064h                  ;7a1e 64  d 
-    defb 02fh                  ;7a1f 2f  / 
-    defb 057h                  ;7a20 57  W 
-    defb 072h                  ;7a21 72  r 
-    defb 069h                  ;7a22 69  i 
-    defb 074h                  ;7a23 74  t 
-    defb 0e5h                  ;7a24 e5  . 
-    defb 052h                  ;7a25 52  R 
-    defb 075h                  ;7a26 75  u 
-    defb 0eeh                  ;7a27 ee  . 
-    defb 049h                  ;7a28 49  I 
-    defb 06eh                  ;7a29 6e  n 
-    defb 074h                  ;7a2a 74  t 
-    defb 065h                  ;7a2b 65  e 
-    defb 072h                  ;7a2c 72  r 
-    defb 072h                  ;7a2d 72  r 
-    defb 075h                  ;7a2e 75  u 
-    defb 070h                  ;7a2f 70  p 
-    defb 0f4h                  ;7a30 f4  . 
-    defb 045h                  ;7a31 45  E 
-    defb 052h                  ;7a32 52  R 
-    defb 052h                  ;7a33 52  R 
-    defb 04fh                  ;7a34 4f  O 
-    defb 0d2h                  ;7a35 d2  . 
-    defb 04eh                  ;7a36 4e  N 
-    defb 06fh                  ;7a37 6f  o 
-    defb 020h                  ;7a38 20    
-    defb 072h                  ;7a39 72  r 
-    defb 075h                  ;7a3a 75  u 
-    defb 0eeh                  ;7a3b ee  . 
-    defb 04eh                  ;7a3c 4e  N 
-    defb 06fh                  ;7a3d 6f  o 
-    defb 020h                  ;7a3e 20    
-    defb 077h                  ;7a3f 77  w 
-    defb 072h                  ;7a40 72  r 
-    defb 069h                  ;7a41 69  i 
-    defb 074h                  ;7a42 74  t 
-    defb 0e5h                  ;7a43 e5  . 
-    defb 04eh                  ;7a44 4e  N 
-    defb 06fh                  ;7a45 6f  o 
-    defb 020h                  ;7a46 20    
-    defb 072h                  ;7a47 72  r 
-    defb 065h                  ;7a48 65  e 
-    defb 061h                  ;7a49 61  a 
-    defb 0e4h                  ;7a4a e4  . 
-    defb 044h                  ;7a4b 44  D 
-    defb 065h                  ;7a4c 65  e 
-    defb 066h                  ;7a4d 66  f 
-    defb 0e2h                  ;7a4e e2  . 
-    defb 044h                  ;7a4f 44  D 
-    defb 065h                  ;7a50 65  e 
-    defb 066h                  ;7a51 66  f 
-    defb 0f7h                  ;7a52 f7  . 
-    defb 077h                  ;7a53 77  w 
-    defb 069h                  ;7a54 69  i 
-    defb 06eh                  ;7a55 6e  n 
-    defb 064h                  ;7a56 64  d 
-    defb 06fh                  ;7a57 6f  o 
-    defb 077h                  ;7a58 77  w 
-    defb 073h                  ;7a59 73  s 
-    defb 0bah                  ;7a5a ba  . 
-    defb 057h                  ;7a5b 57  W 
-    defb 069h                  ;7a5c 69  i 
-    defb 074h                  ;7a5d 74  t 
-    defb 0e8h                  ;7a5e e8  . 
-    defb 054h                  ;7a5f 54  T 
-    defb 0efh                  ;7a60 ef  . 
-    defb 04ch                  ;7a61 4c  L 
-    defb 065h                  ;7a62 65  e 
-    defb 061h                  ;7a63 61  a 
-    defb 064h                  ;7a64 64  d 
-    defb 065h                  ;7a65 65  e 
-    defb 0f2h                  ;7a66 f2  . 
-    defb 031h                  ;7a67 31  1 
-    defb 02eh                  ;7a68 2e  . 
-    defb 020h                  ;7a69 20    
-    defb 062h                  ;7a6a 62  b 
-    defb 079h                  ;7a6b 79  y 
-    defb 074h                  ;7a6c 74  t 
-    defb 065h                  ;7a6d 65  e 
-    defb 0bah                  ;7a6e ba  . 
+    defb "Lengt",0xe8          ;"h"+0x80                       ;79df
+    defb "Firs",0xf4           ;"t"+0x80                       ;79e5
+    defb "Las",0xf4            ;"t"+0x80                       ;79ea
+    defb "Memor",0xf9          ;"y"+0x80                       ;79ee
+    defb "l",0xe4              ;"d"+0x80                       ;79f4
+    defb " UNIVERSUM Contro",0xec                              ;"l"+0x80                       ;79f6
+    defb "ON",0xa0             ;" "+0x80                       ;7a08
+    defb "OF",0xc6             ;"F"+0x80                       ;7a0b
+    defb "NO",0xce             ;"N"+0x80                       ;7a0e
+    defb "DE",0xc6             ;"F"+0x80                       ;7a11
+    defb "AL",0xcc             ;"L"+0x80                       ;7a14
+    defb "Cal",0xec            ;"l"+0x80                       ;7a17
+    defb "Read/Writ",0xe5      ;"e"+0x80                       ;7a1b
+    defb "Ru",0xee             ;"n"+0x80                       ;7a25
+    defb "Interrup",0xf4       ;"t"+0x80                       ;7a28
+    defb "ERRO",0xd2           ;"R"+0x80                       ;7a31
+    defb "No ru",0xee          ;"n"+0x80                       ;7a36
+    defb "No writ",0xe5        ;"e"+0x80                       ;7a3c
+    defb "No rea",0xe4         ;"d"+0x80                       ;7a44
+    defb "Def",0xe2            ;"b"+0x80                       ;7a4b
+    defb "Def",0xf7            ;"w"+0x80                       ;7a4f
+    defb "windows",0xba        ;":"+0x80                       ;7a53
+    defb "Wit",0xe8            ;"h"+0x80                       ;7a5b
+    defb "T",0xef              ;"o"+0x80                       ;7a5f
+    defb "Leade",0xf2          ;"r"+0x80                       ;7a61
+    defb "1. byte",0xba        ;":"+0x80                       ;7a67
     defb 000h                  ;7a6f 00  . 
     defb 000h                  ;7a70 00  . 
     defb 000h                  ;7a71 00  . 
@@ -5289,7 +5171,7 @@ l7b63h:
     ld (0151eh),ix             ;7b74 dd 22 1e 15  . " . . 
     call v_sub_8135h-BA1       ;7b78 cd 75 23  . u # 
     ld hl,v_l8aa5h-BA1         ;7b7b 21 e5 2c  ! . , 
-    ld de,v_l8affh-BA1         ;7b7e 11 3f 2d  . ? - 
+    ld de,inputBufferStart-BA1                                 ;7b7e 11 3f 2d  . ? - 
     ld a,001h                  ;7b81 3e 01  > . 
     ld (de),a                  ;7b83 12  . 
     inc de                     ;7b84 13  . 
@@ -6081,7 +5963,7 @@ l8053h:
     cp 010h                    ;807f fe 10  . .                    (flow from: 7748)  774b cp 10 
     jr z,l8044h                ;8081 28 c1  ( .                    (flow from: 774b)  774d jr z,7710 
     ld hl,v_l8aa5h-BA1         ;8083 21 e5 2c  ! . ,               (flow from: 774d)  774f ld hl,8aa5 
-    ld de,v_l8affh-BA1         ;8086 11 3f 2d  . ? -               (flow from: 774f)  7752 ld de,8aff 
+    ld de,inputBufferStart-BA1                                 ;8086 11 3f 2d  . ? -                                                   (flow from: 774f)  7752 ld de,8aff 
     ld bc,00020h               ;8089 01 20 00  .   .               (flow from: 7752)  7755 ld bc,0020 
     ldir                       ;808c ed b0  . .                    (flow from: 7755 7758)  7758 ldir 
     call v_l82dbh-BA1          ;808e cd 1b 25  . . %               (flow from: 7758)  775a call 82db 
@@ -6104,7 +5986,7 @@ l80a8h:
     ld (02079h),hl             ;80b5 22 79 20  " y   
 l80b8h:
     ld b,001h                  ;80b8 06 01  . . 
-    ld de,v_l8affh-BA1         ;80ba 11 3f 2d  . ? - 
+    ld de,inputBufferStart-BA1                                 ;80ba 11 3f 2d  . ? - 
     ld hl,(01960h)             ;80bd 2a 60 19  * ` . 
     inc hl                     ;80c0 23  # 
     inc hl                     ;80c1 23  # 
@@ -6965,7 +6847,7 @@ v_l7cdah:
     ld hl,v_l8aa5h-BA1         ;8611 21 e5 2c  ! . ,               (flow from: 8a1d)  7cdd ld hl,8aa5 
     ld bc,l9e00h               ;8614 01 00 9e  . . .               (flow from: 7cdd)  7ce0 ld bc,9e00 
     call v_l82e1h-BA1          ;8617 cd 21 25  . ! %               (flow from: 7ce0)  7ce3 call 82e1 
-    ld hl,v_l8affh-BA1         ;861a 21 3f 2d  ! ? -               (flow from: 82e5)  7ce6 ld hl,8aff 
+    ld hl,inputBufferStart-BA1                                 ;861a 21 3f 2d  ! ? -                                                   (flow from: 82e5)  7ce6 ld hl,8aff 
     ld (hl),001h               ;861d 36 01  6 .                    (flow from: 7ce6)  7ce9 ld (hl),01 
     dec hl                     ;861f 2b  +                         (flow from: 7ce9)  7ceb dec hl 
     ld (hl),080h               ;8620 36 80  6 .                    (flow from: 7ceb)  7cec ld (hl),80 
@@ -6990,7 +6872,7 @@ l08632h:
     cp 004h                    ;8641 fe 04  . .                    (flow from: 7d0b)  7d0d cp 04 
     jr nz,l865eh               ;8643 20 19    .                    (flow from: 7d0d)  7d0f jr nz,7d2a 
     ld ix,(v_sub_826ch+1-BA1)                                  ;8645 dd 2a ad 24  . * . $                                              (flow from: 7d0f)  7d11 ld ix,(826d) 
-    ld hl,v_l8affh-BA1         ;8649 21 3f 2d  ! ? -               (flow from: 7d11)  7d15 ld hl,8aff 
+    ld hl,inputBufferStart-BA1                                 ;8649 21 3f 2d  ! ? -                                                   (flow from: 7d11)  7d15 ld hl,8aff 
     push hl                    ;864c e5  .                         (flow from: 7d15)  7d18 push hl 
     ld bc,02000h               ;864d 01 00 20  . .                 (flow from: 7d18)  7d19 ld bc,2000 
     call v_l82e1h-BA1          ;8650 cd 21 25  . ! %               (flow from: 7d19)  7d1c call 82e1 
@@ -7099,7 +6981,7 @@ v_l7dddh:
     ld hl,05ae0h               ;8711 21 e0 5a  ! . Z               (flow from: 775d 7ddb)  7ddd ld hl,5ae0 
     ld bc,0203fh               ;8714 01 3f 20  . ?                 (flow from: 7ddd)  7de0 ld bc,203f 
     call v_l82e1h-BA1          ;8717 cd 21 25  . ! %               (flow from: 7de0)  7de3 call 82e1 
-    ld hl,v_l8affh-BA1         ;871a 21 3f 2d  ! ? -               (flow from: 82e5)  7de6 ld hl,8aff 
+    ld hl,inputBufferStart-BA1                                 ;871a 21 3f 2d  ! ? -                                                   (flow from: 82e5)  7de6 ld hl,8aff 
     call v_sub_85aeh-BA1       ;871d cd ee 27  . . '               (flow from: 7de6)  7de9 call 85ae 
     ld d,000h                  ;8720 16 00  . .                    (flow from: 85b1)  7dec ld d,00 
     ld c,009h                  ;8722 0e 09  . .                    (flow from: 7dec)  7dee ld c,09 
@@ -7205,7 +7087,7 @@ l87b5h:
     ret c                      ;87b7 d8  .                         (flow from: 7e81)  7e83 ret c 
     ld b,a                     ;87b8 47  G                         (flow from: 7e83)  7e84 ld b,a 
     jr nz,l87e0h               ;87b9 20 25    %                    (flow from: 7e84)  7e85 jr nz,7eac 
-    ld de,v_l8affh-BA1         ;87bb 11 3f 2d  . ? - 
+    ld de,inputBufferStart-BA1                                 ;87bb 11 3f 2d  . ? - 
     ld a,(de)                  ;87be 1a  . 
     cp 03bh                    ;87bf fe 3b  .                  ; 
     jr z,l87e0h                ;87c1 28 1d  ( . 
@@ -7919,7 +7801,7 @@ v_l82e1h:
     ret                        ;8c19 c9  .                         (flow from: 82e3)  82e5 ret 
 v_sub_82e6h:
     ld b,000h                  ;8c1a 06 00  . .                    (flow from: 7fc9 8007)  82e6 ld b,00 
-    ld hl,v_l8affh-BA1         ;8c1c 21 3f 2d  ! ? -               (flow from: 82e6)  82e8 ld hl,8aff 
+    ld hl,inputBufferStart-BA1                                 ;8c1c 21 3f 2d  ! ? -                                                   (flow from: 82e6)  82e8 ld hl,8aff 
     call v_sub_85aeh-BA1       ;8c1f cd ee 27  . . '               (flow from: 82e8)  82eb call 85ae 
     cp 041h                    ;8c22 fe 41  . A                    (flow from: 85b1)  82ee cp 41 
     jr c,l8c28h                ;8c24 38 02  8 .                    (flow from: 82ee)  82f0 jr c,82f4 
@@ -8488,7 +8370,7 @@ v_sub_8608h:
 v_l8614h:
     ld hl,00000h               ;8f48 21 00 00  ! . .               (flow from: 868c)  8614 ld hl,004e 
     inc hl                     ;8f4b 23  #                         (flow from: 8614)  8617 inc hl 
-    ld (02855h),hl             ;8f4c 22 55 28  " U (               (flow from: 8617)  8618 ld (8615),hl 
+    ld (v_l8614h+1-BA1),hl     ;8f4c 22 55 28  " U (               (flow from: 8617)  8618 ld (8615),hl 
     ld a,h                     ;8f4f 7c  |                         (flow from: 8618)  861b ld a,h 
     cp 005h                    ;8f50 fe 05  . .                    (flow from: 861b)  861c cp 05 
     jr nz,l8f6dh               ;8f52 20 19    .                    (flow from: 861c)  861e jr nz,8639 
@@ -8506,7 +8388,7 @@ l8f5ah:
     call v_sub_86a8h-BA1       ;8f64 cd e8 28  . . (               (flow from: 862e)  8630 call 86a8 
 l8f67h:
     ld hl,00000h               ;8f67 21 00 00  ! . .               (flow from: 8629 86ad)  8633 ld hl,0000 
-    ld (02855h),hl             ;8f6a 22 55 28  " U (               (flow from: 8633)  8636 ld (8615),hl 
+    ld (v_l8614h+1-BA1),hl     ;8f6a 22 55 28  " U (               (flow from: 8633)  8636 ld (8615),hl 
 l8f6dh:
 v_sub_8639h:
     call v_sub_86aeh-BA1       ;8f6d cd ee 28  . . (               (flow from: 7cfa 861e 8636)  8639 call 86ae 
@@ -8514,7 +8396,7 @@ v_sub_8639h:
     ld b,000h                  ;8f72 06 00  . .                    (flow from: 863c)  863e ld b,00 
     ld c,e                     ;8f74 4b  K                         (flow from: 863e)  8640 ld c,e 
     ld a,e                     ;8f75 7b  {                         (flow from: 8640)  8641 ld a,e 
-    ld (028c5h),a              ;8f76 32 c5 28  2 . (               (flow from: 8641)  8642 ld (8685),a 
+    ld (v_l8684h+1-BA1),a      ;8f76 32 c5 28  2 . (               (flow from: 8641)  8642 ld (8685),a 
     ld hl,00204h               ;8f79 21 04 02  ! . .               (flow from: 8642)  8645 ld hl,0204 
     ld a,d                     ;8f7c 7a  z                         (flow from: 8645)  8648 ld a,d 
     cp 019h                    ;8f7d fe 19  . .                    (flow from: 8648)  8649 cp 19 
@@ -8554,6 +8436,7 @@ l8fafh:
     cp 080h                    ;8fb3 fe 80  . .                    (flow from: 867d)  867f cp 80 
     jr z,l8f6dh                ;8fb5 28 b6  ( .                    (flow from: 867f)  8681 jr z,8639 
     ld b,a                     ;8fb7 47  G                         (flow from: 8681)  8683 ld b,a 
+v_l8684h:
     ld a,022h                  ;8fb8 3e 22  > "                    (flow from: 8683)  8684 ld a,22 
     cp 022h                    ;8fba fe 22  . "                    (flow from: 8684)  8686 cp 00 
     ld (028c7h),a              ;8fbc 32 c7 28  2 . (               (flow from: 8686)  8688 ld (8687),a 
@@ -8605,7 +8488,7 @@ l8ff7h:
     ld a,c                     ;8ff8 79  y                         (flow from: 86c3)  86c4 ld a,c 
     cp 01bh                    ;8ff9 fe 1b  . .                    (flow from: 86c4)  86c5 cp 1b 
     jr z,l9014h                ;8ffb 28 17  ( .                    (flow from: 86c5)  86c7 jr z,86e0 
-    ld hl,v_l8affh-BA1         ;8ffd 21 3f 2d  ! ? -               (flow from: 86c7)  86c9 ld hl,8aff 
+    ld hl,inputBufferStart-BA1                                 ;8ffd 21 3f 2d  ! ? -                                                   (flow from: 86c7)  86c9 ld hl,8aff 
     ld a,(hl)                  ;9000 7e  ~                         (flow from: 86c9)  86cc ld a,(hl) 
     dec a                      ;9001 3d  =                         (flow from: 86cc)  86cd dec a 
     jr nz,l9014h               ;9002 20 10    .                    (flow from: 86cd)  86ce jr nz,86e0 
@@ -9407,7 +9290,7 @@ v_l8af9h:
     defb 000h                  ;9431 00  . 
 v_l8afeh:
     defb 080h                  ;9432 80  . 
-v_l8affh:
+inputBufferStart:              ;9433 (8aff)
     defb 0c2h                  ;9433 c2  . 
     defb 001h                  ;9434 01  . 
     defb 000h                  ;9435 00  . 
