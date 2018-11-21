@@ -6278,3 +6278,125 @@ s/005c8h/ROM_LD_MARKER
 s/01601h/ROM_ChannelOpen
 -
 s/022b0h/ROM_PixelAddress_22b0
+-
+s/02505h/v_l82c4h+1-BA1
+-
+;8ca7 <
+vr_lO8373h:
+-
+s/025b4h/vr_lO8373h+1-BA1
+-
+;8fba <
+vr_l08686h:
+-
+s/028c7h/vr_l08686h+1-BA1
+-
+;9084 <
+vr_l08750h:
+-
+s/02991h/vr_l08750h+1-BA1
+-
+;89d6 <
+vr_l080a2h:
+-
+s/022e3h/vr_l080a2h+1-BA1
+-
+;876c <
+vr_l07e38h:
+-
+s/02079h/vr_l07e38h+1-BA1
+-
+;90bb <
+vr_l08787h:
+-
+s/029c8h/vr_l08787h+1-BA1
+-
+;90af <
+vr_l0877bh:
+-
+s/029bch/vr_l0877bh+1-BA1
+-
+;8752 <
+vr_l07e1eh:
+-
+s/0205fh/vr_l07e1eh+1-BA1
+-
+;8a1b <
+vr_l080e7h:
+-
+s/02328h/vr_l080e7h+1-BA1
+-
+;8a1e <
+vr_l080eah:
+-
+s/0232bh/vr_l080eah+1-BA1
+-
+;89f3 <
+vr_l080bfh:
+-
+s/02300h/vr_l080bfh+1-BA1
+-
+;8a4a <
+vr_l08116h:
+-
+s/02357h/vr_l08116h+1-BA1
+-
+;92a2 <
+vr_l0896eh:
+-
+s/02bafh/vr_l0896eh+1-BA1
+-
+;88cc <
+vr_l07f98h:
+-
+s/021d9h/vr_l07f98h+1-BA1
+-
+;88be <
+vr_l07f8ah:
+-
+s/021cbh/vr_l07f8ah+1-BA1
+-
+;88b6 <
+vr_l07f82h:
+-
+s/021c3h/vr_l07f82h+1-BA1
+-
+;88f4 <
+vr_l07fc0h:
+-
+s/02201h/vr_l07fc0h+1-BA1
+-
+;87e0 <
+vr_l07each:
+-
+s/020edh/vr_l07each+1-BA1
+-
+;876f <
+vr_l07e3bh:
+-
+s/0207ch/vr_l07e3bh+1-BA1
+-
+;8f54 <
+vr_l08620h:
+-
+s/02861h/vr_l08620h+1-BA1
+-
+;8852 <
+vr_l07f1eh:
+-
+s/0215fh/vr_l07f1eh+1-BA1
+-
+;912a <
+vr_l087f6h:
+-
+s/02a37h/vr_l087f6h+1-BA1
+-
+;9156 <
+vr_l08822h:
+-
+s/02a63h/vr_l08822h+1-BA1
+-
+;9312 <
+vr_l089deh:
+-
+s/02c1fh/vr_l089deh+1-BA1
