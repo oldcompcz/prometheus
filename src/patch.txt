@@ -7,7 +7,15 @@ ATTRIBUTES_ADDRESS: 		equ 0x5800
 
 ; ROM routines
 
-ROM_KeyboardScanning: 		equ 0028eh
+ROM_KeyboardScanning: 		equ 0x028e
+ROM_KeyboardTest: 		equ 0x031e
+ROM_BreakKey: 		equ 0x1f54
+ROM_LoadBytes_562: 		equ 0x0562
+ROM_SaveControl_4c6: 		equ 0x04c6
+ROM_SA_SET: 		equ 0x051a
+ROM_LD_MARKER: 		equ 0x05c8
+ROM_ChannelOpen: 		equ 0x1601
+ROM_PixelAddress_22b0: 		equ 0x22b0
 
 ; system variables
 
@@ -6253,3 +6261,20 @@ s/02855h/v_l8614h+1-BA1
 v_l8684h:
 -
 s/028c5h/v_l8684h+1-BA1
+-
+;5f0b =
+	call ROM_KeyboardTest		;5f0b	cd 1e 03 
+-
+s/01f54h/ROM_BreakKey
+-
+s/00562h/ROM_LoadBytes_562
+-
+s/004c6h/ROM_SaveControl_4c6
+-
+s/0051ah/ROM_SA_SET
+-
+s/005c8h/ROM_LD_MARKER
+-
+s/01601h/ROM_ChannelOpen
+-
+s/022b0h/ROM_PixelAddress_22b0

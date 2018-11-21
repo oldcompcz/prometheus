@@ -11,7 +11,15 @@ ATTRIBUTES_ADDRESS:      equ 0x5800
 
 ; ROM routines
 
-ROM_KeyboardScanning:    equ 0028eh
+ROM_KeyboardScanning:    equ 0x028e
+ROM_KeyboardTest:    equ 0x031e
+ROM_BreakKey:    equ 0x1f54
+ROM_LoadBytes_562:       equ 0x0562
+ROM_SaveControl_4c6:     equ 0x04c6
+ROM_SA_SET:      equ 0x051a
+ROM_LD_MARKER:       equ 0x05c8
+ROM_ChannelOpen:     equ 0x1601
+ROM_PixelAddress_22b0:       equ 0x22b0
 
 ; system variables
 
@@ -149,7 +157,7 @@ l5f01h:
 l5f06h:
     call ROM_KeyboardScanning  ;5f06                               (ghost flow from: 511d 5127)   511f call 028e 
     jr nz,l5f06h               ;5f09 20 fb    .                    (ghost flow from: 02b2)   5122 jr nz,511f 
-    call 0031eh                ;5f0b cd 1e 03  . . .               (ghost flow from: 5122)   5124 call 031e 
+    call ROM_KeyboardTest      ;5f0b cd 1e 03                      (ghost flow from: 5122)   5124 call 031e 
     jr nc,l5f06h               ;5f0e 30 f6  0 .                    (ghost flow from: 0324 0332)   5127 jr nc,511f 
     ld e,a                     ;5f10 5f  _                         (ghost flow from: 5127)   5129 ld e,a 
     inc b                      ;5f11 04  .                         (ghost flow from: 5129)   512a inc b 
@@ -2435,7 +2443,7 @@ l6a99h:
 l6a9eh:
     call v_sub_66e7h-BA1       ;6a9e cd 27 09  . ' . 
     call c,v_sub_6d79h-BA1     ;6aa1 dc b9 0f  . . . 
-    call 01f54h                ;6aa4 cd 54 1f  . T . 
+    call ROM_BreakKey          ;6aa4 cd 54 1f  . T . 
     jr c,l6a9eh                ;6aa7 38 f5  8 . 
 l6aa9h:
 v_l6175h:
@@ -2456,7 +2464,7 @@ l6ab9h:
     or a                       ;6ac5 b7  . 
     sbc hl,de                  ;6ac6 ed 52  . R 
     ret z                      ;6ac8 c8  . 
-    call 01f54h                ;6ac9 cd 54 1f  . T . 
+    call ROM_BreakKey          ;6ac9 cd 54 1f  . T . 
     jr nc,l6aa9h               ;6acc 30 db  0 . 
     jr l6ab9h                  ;6ace 18 e9  . . 
     ld hl,010a6h               ;6ad0 21 a6 10  ! . . 
@@ -2489,7 +2497,7 @@ l6addh:
     ld l,0ffh                  ;6b08 2e ff  . . 
 l6b0ah:
     call v_sub_61dch-BA1       ;6b0a cd 1c 04  . . . 
-    jp 004c6h                  ;6b0d c3 c6 04  . . . 
+    jp ROM_SaveControl_4c6     ;6b0d c3 c6 04  . . . 
 v_sub_61dch:
     ld a,l                     ;6b10 7d  } 
     pop bc                     ;6b11 c1  . 
@@ -2524,7 +2532,7 @@ l6b2dh:
     ex af,af'                  ;6b44 08  . 
     ld a,00fh                  ;6b45 3e 0f  > . 
     out (0feh),a               ;6b47 d3 fe  . . 
-    call 00562h                ;6b49 cd 62 05  . b . 
+    call ROM_LoadBytes_562     ;6b49 cd 62 05  . b . 
     ld ix,02ce8h               ;6b4c dd 21 e8 2c  . ! . , 
     jr c,l6b5dh                ;6b50 38 0b  8 . 
     ld hl,(inputBufferStart-BA1)                               ;6b52 2a 3f 2d  * ? - 
@@ -5304,7 +5312,7 @@ v_l732fh:
     call v_sub_7bbch-BA1       ;7c63 cd fc 1d  . . . 
 v_l7332h:
     ld a,003h                  ;7c66 3e 03  > . 
-    call 01601h                ;7c68 cd 01 16  . . . 
+    call ROM_ChannelOpen       ;7c68 cd 01 16  . . . 
     ei                         ;7c6b fb  . 
     ld hl,00010h               ;7c6c 21 10 00  ! . . 
     call v_sub_82a3h-BA1       ;7c6f cd e3 24  . . $ 
@@ -5414,7 +5422,7 @@ v_l73c7h:
     push bc                    ;7d03 c5  . 
     push hl                    ;7d04 e5  . 
     ld c,000h                  ;7d05 0e 00  . . 
-    call 022b0h                ;7d07 cd b0 22  . . " 
+    call ROM_PixelAddress_22b0                                 ;7d07 cd b0 22  . . " 
     ld (029c8h),hl             ;7d0a 22 c8 29  " . ) 
     pop hl                     ;7d0d e1  . 
     push hl                    ;7d0e e5  . 
@@ -5837,7 +5845,7 @@ l7f75h:
     pop de                     ;7fab d1  . 
     pop ix                     ;7fac dd e1  . . 
     ld a,0ffh                  ;7fae 3e ff  > . 
-    call 004c6h                ;7fb0 cd c6 04  . . . 
+    call ROM_SaveControl_4c6   ;7fb0 cd c6 04  . . . 
     ld ix,00000h               ;7fb3 dd 21 00 00  . ! . . 
     dec ix                     ;7fb7 dd 2b  . + 
     ld de,00000h               ;7fb9 11 00 00  . . . 
@@ -5849,7 +5857,7 @@ l7f75h:
     scf                        ;7fc3 37  7 
     rl l                       ;7fc4 cb 15  . . 
     ld b,037h                  ;7fc6 06 37  . 7 
-    call 0051ah                ;7fc8 cd 1a 05  . . . 
+    call ROM_SA_SET            ;7fc8 cd 1a 05  . . . 
     jp v_sub_7bbch-BA1         ;7fcb c3 fc 1d  . . . 
 v_sub_769ah:
     ld h,001h                  ;7fce 26 01  & . 
@@ -5866,7 +5874,7 @@ l7fd5h:
     jr z,l7fd5h                ;7fdb 28 f8  ( . 
     ld de,v_l5dd1h-BA1         ;7fdd 11 11 00  . . . 
     xor a                      ;7fe0 af  . 
-    call 004c6h                ;7fe1 cd c6 04  . . . 
+    call ROM_SaveControl_4c6   ;7fe1 cd c6 04  . . . 
 l7fe4h:
     dec de                     ;7fe4 1b  . 
     dec d                      ;7fe5 15  . 
@@ -5926,7 +5934,7 @@ l8013h:
     xor a                      ;8033 af  . 
     dec a                      ;8034 3d  = 
     ex af,af'                  ;8035 08  . 
-    call 005c8h                ;8036 cd c8 05  . . . 
+    call ROM_LD_MARKER         ;8036 cd c8 05  . . . 
     call v_sub_7bbch-BA1       ;8039 cd fc 1d  . . . 
     jr l8041h                  ;803c 18 03  . . 
 v_sub_770ah:
@@ -6654,7 +6662,7 @@ v_sub_7bb1h:
     di                         ;84e8 f3  .                         (flow from: 7bb3)  7bb4 di 
     ld a,00fh                  ;84e9 3e 0f  > .                    (flow from: 7bb4)  7bb5 ld a,0f 
     out (0feh),a               ;84eb d3 fe  . .                    (flow from: 7bb5)  7bb7 out (fe),a 
-    call 00562h                ;84ed cd 62 05  . b .               (flow from: 7bb7)  7bb9 call 0562 
+    call ROM_LoadBytes_562     ;84ed cd 62 05  . b .               (flow from: 7bb7)  7bb9 call 0562 
 v_sub_7bbch:
     push af                    ;84f0 f5  .                         (flow from: 0000)  7bbc push af 
     ld a,07fh                  ;84f1 3e 7f  >                     (flow from: 7bbc)  7bbd ld a,7f 
@@ -6754,7 +6762,7 @@ v_l7c41h:
 v_sub_7c54h:
     push af                    ;8588 f5  . 
     ld c,000h                  ;8589 0e 00  . . 
-    call 022b0h                ;858b cd b0 22  . . " 
+    call ROM_PixelAddress_22b0                                 ;858b cd b0 22  . . " 
     push hl                    ;858e e5  . 
     call v_sub_7c83h-BA1       ;858f cd c3 1e  . . . 
     pop de                     ;8592 d1  . 
@@ -8342,7 +8350,7 @@ l8f15h:
     jr l8f01h                  ;8f22 18 dd  . .                    (flow from: 85ed)  85ee jr 85cd 
 v_sub_85f0h:
     ld c,000h                  ;8f24 0e 00  . .                    (flow from: 827b)  85f0 ld c,00 
-    call 022b0h                ;8f26 cd b0 22  . . "               (flow from: 85f0)  85f2 call 22b0 
+    call ROM_PixelAddress_22b0                                 ;8f26 cd b0 22  . . "                                                   (flow from: 85f0)  85f2 call 22b0 
 v_sub_85f5h:
     ld (029c8h),hl             ;8f29 22 c8 29  " . )               (flow from: 22ca 80b7 85c7)  85f5 ld (8788),hl 
 v_sub_85f8h:
