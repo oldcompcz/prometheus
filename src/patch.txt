@@ -6535,3 +6535,28 @@ s/01f04h/vr_l07cc3h+1-BA1
 vr_l07cfeh:
 -
 s/01f3fh/vr_l07cfeh+1-BA1
+-
+;914d <
+vr_l08819h:
+-
+s/02a5ah/vr_l08819h+1-BA1
+-
+;910a <
+vr_l087d6h:
+-
+s/02a17h/vr_l087d6h+1-BA1
+-
+;78e0 <
+vr_l06fach:
+-
+s/011edh/vr_l06fach+1-BA1
+-
+;8265 <
+vr_l07931h:
+-
+s/01b72h/vr_l07931h+1-BA1
+-
+;78da <
+vr_l06fa6h:
+-
+s/011e7h/vr_l06fa6h+1-BA1
