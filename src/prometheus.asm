@@ -3029,7 +3029,7 @@ l6e80h:
     ld de,00007h               ;6e80 11 07 00  . . . 
     add ix,de                  ;6e83 dd 19  . . 
     djnz l6e54h                ;6e85 10 cd  . . 
-    jp v_l8081h-BA1            ;6e87 c3 c1 22  . . " 
+    jp badOperandError-BA1     ;6e87 c3 c1 22  . . " 
 l6e8ah:
     call v_sub_85aeh-BA1       ;6e8a cd ee 27  . . ' 
     or 020h                    ;6e8d f6 20  .   
@@ -5102,7 +5102,7 @@ l7ae7h:
     push hl                    ;7ae7 e5  . 
     push af                    ;7ae8 f5  . 
     call v_sub_8492h-BA1       ;7ae9 cd d2 26  . . & 
-    jp c,v_l8089h-BA1          ;7aec da c9 22  . . " 
+    jp c,syntaxError-BA1       ;7aec da c9 22  . . " 
     cp 02bh                    ;7aef fe 2b  . + 
     jr z,l7afah                ;7af1 28 07  ( . 
     ld (vr_l07208h+1-BA1),a    ;7af3 32 49 14  2 I . 
@@ -7220,15 +7220,15 @@ vr_l07f1eh:
     ld hl,v_l8545h-BA1         ;8856 21 85 27  ! . '               (flow from: 8522)  7f22 ld hl,8545 
     call v_sub_8559h-BA1       ;8859 cd 99 27  . . '               (flow from: 7f22)  7f25 call 8559 
     pop hl                     ;885c e1  .                         (flow from: 856e)  7f28 pop hl 
-    call v_sub_8527h-BA1       ;885d cd 67 27  . g '               (flow from: 7f28)  7f29 call 8527 
-    jp c,v_l807dh-BA1          ;8860 da bd 22  . . "               (flow from: 8538)  7f2c jp c,807d 
+    call compareWithMnemonics-BA1                              ;885d cd 67 27  . g '                                                   (flow from: 7f28)  7f29 call 8527 
+    jp c,badMnemonicError-BA1                                  ;8860 da bd 22  . . "                                                   (flow from: 8538)  7f2c jp c,807d 
 l8863h:
-    ld (vr_l07f98h+1-BA1),a    ;8863 32 d9 21  2 . !               (flow from: 7f1c 7f2c)  7f2f ld (7f99),a 
+    ld (varcMnemonicIndex+1-BA1),a                             ;8863 32 d9 21  2 . !                                                   (flow from: 7f1c 7f2c)  7f2f ld (7f99),a 
     cp 03ah                    ;8866 fe 3a  . :                    (flow from: 7f2f)  7f32 cp 3a 
-    jr c,l886fh                ;8868 38 05  8 .                    (flow from: 7f32)  7f34 jr c,7f3b 
+    jr c,mnemonicIsNotDef      ;8868 38 05  8 .                    (flow from: 7f32)  7f34 jr c,7f3b 
     cp 03eh                    ;886a fe 3e  . >                    (flow from: 7f34)  7f36 cp 3e 
-    jp c,v_l8001h-BA1          ;886c da 41 22  . A "               (flow from: 7f36)  7f38 jp c,8001 
-l886fh:
+    jp c,mnemonicIsDef-BA1     ;886c da 41 22  . A "               (flow from: 7f36)  7f38 jp c,8001 
+mnemonicIsNotDef:
     ld hl,v_l8ae5h-BA1         ;886f 21 25 2d  ! % -               (flow from: 7f34 7f38)  7f3b ld hl,8ae5 
     push hl                    ;8872 e5  .                         (flow from: 7f3b)  7f3e push hl 
     call v_sub_851fh-BA1       ;8873 cd 5f 27  . _ '               (flow from: 7f3e)  7f3f call 851f 
@@ -7236,16 +7236,16 @@ l886fh:
     ld a,b                     ;8877 78  x                         (flow from: 7f42)  7f43 ld a,b 
     dec a                      ;8878 3d  =                         (flow from: 7f43)  7f44 dec a 
     jr nz,l88a3h               ;8879 20 28    (                    (flow from: 7f44)  7f45 jr nz,7f6f 
-    ld a,(vr_l07f98h+1-BA1)    ;887b 3a d9 21  : . !               (flow from: 7f45)  7f47 ld a,(7f99) 
+    ld a,(varcMnemonicIndex+1-BA1)                             ;887b 3a d9 21  : . !                                                   (flow from: 7f45)  7f47 ld a,(7f99) 
     cp 006h                    ;887e fe 06  . .                    (flow from: 7f47)  7f4a cp 06 
     jr nz,l8890h               ;8880 20 0e    .                    (flow from: 7f4a)  7f4c jr nz,7f5c 
     ld a,(hl)                  ;8882 7e  ~                         (flow from: 7f4c)  7f4e ld a,(hl) 
     sub 02fh                   ;8883 d6 2f  . /                    (flow from: 7f4e)  7f4f sub 2f 
     cp 004h                    ;8885 fe 04  . .                    (flow from: 7f4f)  7f51 cp 04 
 l8887h:
-    jp nc,v_l8081h-BA1         ;8887 d2 c1 22  . . "               (flow from: 7f51)  7f53 jp nc,8081 
+    jp nc,badOperandError-BA1                                  ;8887 d2 c1 22  . . "                                                   (flow from: 7f51)  7f53 jp nc,8081 
     or a                       ;888a b7  .                         (flow from: 7f53)  7f56 or a 
-    jp z,v_l8081h-BA1          ;888b ca c1 22  . . "               (flow from: 7f56)  7f57 jp z,8081 
+    jp z,badOperandError-BA1   ;888b ca c1 22  . . "               (flow from: 7f56)  7f57 jp z,8081 
     jr l88a6h                  ;888e 18 16  . .                    (flow from: 7f57)  7f5a jr 7f72 
 l8890h:
     cp 011h                    ;8890 fe 11  . .                    (flow from: 7f4c)  7f5c cp 11 
@@ -7283,7 +7283,7 @@ l88c6h:
     sla e                      ;88c6 cb 23  . #                    (flow from: 7f90 7f96)  7f92 sla e 
     rl d                       ;88c8 cb 12  . .                    (flow from: 7f92)  7f94 rl d 
     djnz l88c6h                ;88ca 10 fa  . .                    (flow from: 7f94)  7f96 djnz 7f92 
-vr_l07f98h:
+varcMnemonicIndex:
     ld a,000h                  ;88cc 3e 00  > .                    (flow from: 7f96)  7f98 ld a,00 
     rla                        ;88ce 17  .                         (flow from: 7f98)  7f9a rla 
     ld hl,030e1h               ;88cf 21 e1 30  ! . 0               (flow from: 7f9a)  7f9b ld hl,8ea1 
@@ -7350,7 +7350,7 @@ l892fh:
     add a,002h                 ;892f c6 02  . .                    (flow from: 7ff1 7ffa)  7ffb add a,02 
     ld (v_l8b21h-BA1),a        ;8931 32 61 2d  2 a -               (flow from: 7ffb)  7ffd ld (8b21),a 
     ret                        ;8934 c9  .                         (flow from: 7ffd)  8000 ret 
-v_l8001h:
+mnemonicIsDef:
     push af                    ;8935 f5  .                         (flow from: 7f38)  8001 push af 
     sub 034h                   ;8936 d6 34  . 4                    (flow from: 8001)  8002 sub 34 
     ld e,a                     ;8938 5f  _                         (flow from: 8002)  8004 ld e,a 
@@ -7384,7 +7384,7 @@ l8955h:
 l895eh:
     ld a,012h                  ;895e 3e 12  > .                    (flow from: 8022)  802a ld a,12 
     cp c                       ;8960 b9  .                         (flow from: 802a)  802c cp c 
-    jr c,l89bdh                ;8961 38 5a  8 Z                    (flow from: 802c)  802d jr c,8089 
+    jr c,syntaxError22         ;8961 38 5a  8 Z                    (flow from: 802c)  802d jr c,8089 
     pop bc                     ;8963 c1  .                         (flow from: 802d)  802f pop bc 
     pop af                     ;8964 f1  .                         (flow from: 802f)  8030 pop af 
     cp 03bh                    ;8965 fe 3b  .                  ;   (flow from: 8030)  8031 cp 3b 
@@ -7433,17 +7433,17 @@ v_sub_8068h:
 l89adh:
     ld a,007h                  ;89ad 3e 07  > . 
     jr l89ceh                  ;89af 18 1d  . . 
-v_l807dh:
+badMnemonicError:
     ld a,001h                  ;89b1 3e 01  > . 
     jr l89ceh                  ;89b3 18 19  . . 
-v_l8081h:
+badOperandError:
     ld a,002h                  ;89b5 3e 02  > . 
     jr l89ceh                  ;89b7 18 15  . . 
-v_l8085h:
+bigNumberError:
     ld a,003h                  ;89b9 3e 03  > . 
     jr l89ceh                  ;89bb 18 11  . . 
-l89bdh:
-v_l8089h:
+syntaxError22:
+syntaxError:
     ld a,004h                  ;89bd 3e 04  > . 
     jr l89ceh                  ;89bf 18 0d  . . 
 v_sub_808dh:
@@ -7452,7 +7452,7 @@ v_sub_808dh:
     ret z                      ;89c4 c8  . 
     cp 022h                    ;89c5 fe 22  . " 
     ret z                      ;89c7 c8  . 
-v_l8094h:
+badStringError:
     ld a,005h                  ;89c8 3e 05  > . 
     jr l89ceh                  ;89ca 18 02  . . 
 v_l8098h:
@@ -7990,7 +7990,7 @@ v_sub_83a0h:
 l8cdfh:
     call v_sub_8492h-BA1       ;8cdf cd d2 26  . . &               (flow from: 83a2 83a7)  83ab call 8492 
 l8ce2h:
-    jp c,v_l8089h-BA1          ;8ce2 da c9 22  . . "               (flow from: 8417 849d)  83ae jp c,8089 
+    jp c,syntaxError-BA1       ;8ce2 da c9 22  . . "               (flow from: 8417 849d)  83ae jp c,8089 
     cp 02bh                    ;8ce5 fe 2b  . +                    (flow from: 83ae)  83b1 cp 2b 
     jr z,l8cf0h                ;8ce7 28 07  ( .                    (flow from: 83b1)  83b3 jr z,83bc 
     cp 02dh                    ;8ce9 fe 2d  . -                    (flow from: 83b3)  83b5 cp 2d 
@@ -8047,7 +8047,7 @@ l8d31h:
     jr z,l8d48h                ;8d41 28 05  ( . 
     cp 03fh                    ;8d43 fe 3f  . ? 
 l8d45h:
-    jp nz,v_l8089h-BA1         ;8d45 c2 c9 22  . . " 
+    jp nz,syntaxError-BA1      ;8d45 c2 c9 22  . . " 
 l8d48h:
     call v_sub_848fh-BA1       ;8d48 cd cf 26  . . &               (flow from: 8401)  8414 call 848f 
     jr l8ce2h                  ;8d4b 18 95  . .                    (flow from: 849d)  8417 jr 83ae 
@@ -8067,7 +8067,7 @@ l8d60h:
     ld c,010h                  ;8d64 0e 10  . . 
 l8d66h:
     call v_sub_848fh-BA1       ;8d66 cd cf 26  . . & 
-    jp c,v_l8089h-BA1          ;8d69 da c9 22  . . " 
+    jp c,syntaxError-BA1       ;8d69 da c9 22  . . " 
 l8d6ch:
     ld hl,00000h               ;8d6c 21 00 00  ! . .               (flow from: 8422)  8438 ld hl,0000 
 l8d6fh:
@@ -8082,12 +8082,12 @@ l8d6fh:
 l8d79h:
     add hl,de                  ;8d79 19  .                         (flow from: 8444 844a)  8445 add hl,de 
 l8d7ah:
-    jp c,v_l8085h-BA1          ;8d7a da c5 22  . . "               (flow from: 8445)  8446 jp c,8085 
+    jp c,bigNumberError-BA1    ;8d7a da c5 22  . . "               (flow from: 8445)  8446 jp c,8085 
     dec a                      ;8d7d 3d  =                         (flow from: 8446)  8449 dec a 
     jr nz,l8d79h               ;8d7e 20 f9    .                    (flow from: 8449)  844a jr nz,8445 
     pop af                     ;8d80 f1  .                         (flow from: 844a)  844c pop af 
     cp c                       ;8d81 b9  .                         (flow from: 844c)  844d cp c 
-    jp nc,v_l8085h-BA1         ;8d82 d2 c5 22  . . "               (flow from: 844d)  844e jp nc,8085 
+    jp nc,bigNumberError-BA1   ;8d82 d2 c5 22  . . "               (flow from: 844d)  844e jp nc,8085 
     ld d,000h                  ;8d85 16 00  . .                    (flow from: 844e)  8451 ld d,00 
     ld e,a                     ;8d87 5f  _                         (flow from: 8451)  8453 ld e,a 
     add hl,de                  ;8d88 19  .                         (flow from: 8453)  8454 add hl,de 
@@ -8110,13 +8110,13 @@ l8d93h:
     ld l,a                     ;8da4 6f  o 
     call v_sub_847ah-BA1       ;8da5 cd ba 26  . . & 
     or a                       ;8da8 b7  . 
-    jp nz,v_l8094h-BA1         ;8da9 c2 d4 22  . . " 
+    jp nz,badStringError-BA1   ;8da9 c2 d4 22  . . " 
 l8dach:
     jr l8dc1h                  ;8dac 18 13  . . 
 v_sub_847ah:
     call v_sub_848fh-BA1       ;8dae cd cf 26  . . & 
     or a                       ;8db1 b7  . 
-    jp z,v_l8094h-BA1          ;8db2 ca d4 22  . . " 
+    jp z,badStringError-BA1    ;8db2 ca d4 22  . . " 
     cp 022h                    ;8db5 fe 22  . " 
     jr z,l8dbbh                ;8db7 28 02  ( . 
     and a                      ;8db9 a7  . 
@@ -8199,7 +8199,7 @@ v_sub_84e0h:
     ld hl,v_l854fh-BA1         ;8e21 21 8f 27  ! . '               (flow from: 84ec)  84ed ld hl,854f 
     call v_sub_8559h-BA1       ;8e24 cd 99 27  . . '               (flow from: 84ed)  84f0 call 8559 
     pop hl                     ;8e27 e1  .                         (flow from: 856e)  84f3 pop hl 
-    call v_sub_8527h-BA1       ;8e28 cd 67 27  . g '               (flow from: 84f3)  84f4 call 8527 
+    call compareWithMnemonics-BA1                              ;8e28 cd 67 27  . g '                                                   (flow from: 84f3)  84f4 call 8527 
     ret nc                     ;8e2b d0  .                         (flow from: 8538 8544)  84f7 ret nc 
 l8e2ch:
     ld a,(hl)                  ;8e2c 7e  ~                         (flow from: 84ea 84f7)  84f8 ld a,(hl) 
@@ -8239,19 +8239,25 @@ l8e55h:
     inc hl                     ;8e57 23  #                         (flow from: 8522)  8523 inc hl 
     inc b                      ;8e58 04  .                         (flow from: 8523)  8524 inc b 
     jr l8e55h                  ;8e59 18 fa  . .                    (flow from: 8524)  8525 jr 8521 
+; compare instructions with the table records (pointer in DE)
 l8e5bh:
-v_sub_8527h:
+compareWithMnemonics:
     push hl                    ;8e5b e5  .                         (flow from: 7f29 84f4 8541)  8527 push hl 
 l8e5ch:
     ld a,(de)                  ;8e5c 1a  .                         (flow from: 8527 8533)  8528 ld a,(de) 
     and 07fh                   ;8e5d e6 7f  .                     (flow from: 8528)  8529 and 7f 
     cp (hl)                    ;8e5f be  .                         (flow from: 8529)  852b cp (hl) 
+; does the letter match?
+; the first letter does not match
+; find the end of the word
     jr nz,l8e6dh               ;8e60 20 0b    .                    (flow from: 852b)  852c jr nz,8539 
+; letter matches, compare until the end of the word
     ld a,(de)                  ;8e62 1a  .                         (flow from: 852c)  852e ld a,(de) 
     inc hl                     ;8e63 23  #                         (flow from: 852e)  852f inc hl 
     inc de                     ;8e64 13  .                         (flow from: 852f)  8530 inc de 
     and 080h                   ;8e65 e6 80  . .                    (flow from: 8530)  8531 and 80 
     jr z,l8e5ch                ;8e67 28 f3  ( .                    (flow from: 8531)  8533 jr z,8528 
+; all word corresponds, A will contain its index
     pop hl                     ;8e69 e1  .                         (flow from: 8533)  8535 pop hl 
     xor a                      ;8e6a af  .                         (flow from: 8535)  8536 xor a 
     ld a,c                     ;8e6b 79  y                         (flow from: 8536)  8537 ld a,c 
@@ -8265,6 +8271,7 @@ l8e6eh:
     jr z,l8e6eh                ;8e72 28 fa  ( .                    (flow from: 853d)  853e jr z,853a 
     inc c                      ;8e74 0c  .                         (flow from: 853e)  8540 inc c 
     djnz l8e5bh                ;8e75 10 e4  . .                    (flow from: 8540)  8541 djnz 8527 
+; no word found, set carry
     scf                        ;8e77 37  7                         (flow from: 8541)  8543 scf 
     ret                        ;8e78 c9  .                         (flow from: 8543)  8544 ret 
 v_l8545h:
@@ -8350,7 +8357,7 @@ l8ed9h:
     dec c                      ;8edb 0d  .                         (flow from: 85a6)  85a7 dec c 
     jr nz,l8ecfh               ;8edc 20 f1    .                    (flow from: 85a7)  85a8 jr nz,859b 
 l8edeh:
-    jp v_l8089h-BA1            ;8ede c3 c9 22  . . " 
+    jp syntaxError-BA1         ;8ede c3 c9 22  . . " 
 v_sub_85adh:
     inc hl                     ;8ee1 23  #                         (flow from: 859b)  85ad inc hl 
 v_sub_85aeh:
@@ -8500,7 +8507,7 @@ vr_l08686h:
     jp z,v_l8614h-BA1          ;8fc0 ca 54 28  . T (               (flow from: 868b)  868c jp z,8614 
 l8fc3h:
     push af                    ;8fc3 f5  .                         (flow from: 868c)  868f push af 
-    call v_sub_870fh-BA1       ;8fc4 cd 4f 29  . O )               (flow from: 868f)  8690 call 870f 
+    call keypressBeep-BA1      ;8fc4 cd 4f 29  . O )               (flow from: 868f)  8690 call 870f 
     pop af                     ;8fc7 f1  .                         (flow from: 8728)  8693 pop af 
     ld h,014h                  ;8fc8 26 14  & .                    (flow from: 8693)  8694 ld h,14 
 l8fcah:
@@ -8593,7 +8600,7 @@ l9014h:
     dec d                      ;9040 15  . 
     ld a,(hl)                  ;9041 7e  ~ 
     nop                        ;9042 00  . 
-v_sub_870fh:
+keypressBeep:
     ld e,01eh                  ;9043 1e 1e  . .                    (flow from: 8690)  870f ld e,0a 
     jr l9049h                  ;9045 18 02  . .                    (flow from: 870f)  8711 jr 8715 
 v_sub_8713h:
@@ -8743,7 +8750,7 @@ l90f6h:
     ld a,b                     ;90fa 78  x                         (flow from: 87c5)  87c6 ld a,b 
     cp 009h                    ;90fb fe 09  . .                    (flow from: 87c6)  87c7 cp 09 
     jr c,l90e3h                ;90fd 38 e4  8 .                    (flow from: 87c7)  87c9 jr c,87af 
-    jp v_l8089h-BA1            ;90ff c3 c9 22  . . " 
+    jp syntaxError-BA1         ;90ff c3 c9 22  . . " 
 l9102h:
     ld a,b                     ;9102 78  x                         (flow from: 87c0)  87ce ld a,b 
     ld (v_l8ac7h-BA1),a        ;9103 32 07 2d  2 . -               (flow from: 87ce)  87cf ld (8ac7),a 

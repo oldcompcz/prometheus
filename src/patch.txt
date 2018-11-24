@@ -2757,7 +2757,7 @@ v_l86c3h:
 v_l86e0h:
 -
 ;9043 <
-v_sub_870fh:
+keypressBeep:
 -
 ;9047 <
 v_sub_8713h:
@@ -5444,7 +5444,7 @@ s/02903h/v_l86c3h-BA1
 -
 s/02920h/v_l86e0h-BA1
 -
-s/0294fh/v_sub_870fh-BA1
+s/0294fh/keypressBeep-BA1
 -
 s/02953h/v_sub_8713h-BA1
 -
@@ -6560,3 +6560,44 @@ s/01b72h/vr_l07931h+1-BA1
 vr_l06fa6h:
 -
 s/011e7h/vr_l06fa6h+1-BA1
+-
+s/v_sub_8527h/compareWithMnemonics
+-
+8e5b <
+; compare instructions with the table records (pointer in DE)
+-
+8e60 <
+; does the letter match?
+-
+8e6d <
+; the first letter does not match
+; find the end of the word
+-
+8e77 <
+; no word found, set carry
+-
+8e62 <
+; letter matches, compare until the end of the word
+-
+8e69 <
+; all word corresponds, A will contain its index
+-
+s/v_l807dh/badMnemonicError
+-
+s/v_l8081h/badOperandError
+-
+s/v_l8085h/bigNumberError
+-
+s/v_l8089h/syntaxError
+-
+s/l89bdh/syntaxError22
+-
+s/v_l8094h/badStringError
+-
+s/vr_l07f98h/varcMnemonicIndex
+-
+s/vr_l07f98h/varcMnemonicIndex
+-
+s/l886fh/mnemonicIsNotDef
+-
+s/v_l8001h/mnemonicIsDef
