@@ -16,6 +16,7 @@ ROM_SA_SET: 		equ 0x051a
 ROM_LD_MARKER: 		equ 0x05c8
 ROM_ChannelOpen: 		equ 0x1601
 ROM_PixelAddress_22b0: 		equ 0x22b0
+ROM_NEWCommandRoutine: 		equ 0x11b7
 
 ; system variables
 
@@ -6620,22 +6621,158 @@ s/l8890h/mnemonicIsNotIM
 ;8898 <
 ; is the mnemonic SET?
 -
+;8193 <
+invokeAssembly:
+-
+;7a7f ;7a80 =
+	defw invokeAssembly-BA1 ;7a7f
+-
 ;857a <
 invokeBasic:
 -
-;7c4d <
-invokePrint:
+;7a81 ;7a82 =
+	defw invokeBasic-BA1 ;7a81
+-
+;9373 <
+invokeCopy:
+-
+;7a83 ;7a84 =
+	defw invokeCopy-BA1 ;7a83
+-
+;7c77 <
+invokeDelete:
+-
+;7a85 ;7a86 =
+	defw invokeDelete-BA1 ;7a85
+-
+;7aba <
+invokeE:
+-
+;7a87 ;7a88 =
+	defw invokeE-BA1 ;7a87
+-
+;7bd5 <
+invokeFind:
+-
+;7a89 ;7a8a =
+	defw invokeFind-BA1 ;7a89
+-
+;80af <
+invokeGens:
+-
+;7a8b ;7a8c =
+	defw invokeGens-BA1 ;7a8b
+-
+;856d <
+invokeH:
+-
+;7a8d ;7a8e =
+	defw invokeH-BA1 ;7a8d
+-
+;80af <
+invokeI:
+-
+;7a8f ;7a90 =
+	defw invokeI-BA1 ;7a8f
+-
+;80af <
+invokeJ:
+-
+;7a91 ;7a92 =
+	defw invokeJ-BA1 ;7a91
+-
+;7ab3 <
+invokeK:
+-
+;7a93 ;7a94 =
+	defw invokeK-BA1 ;7a93
+-
+;804a <
+invokeLoad:
+-
+;7a95 ;7a96 =
+	defw invokeLoad-BA1 ;7a95
 -
 ;84fb <
 invokeMonitor:
 -
-;7a81 ;7a82 =
-	defw invokeBasic-BA1 ;7a81
-	defb 0x7f ;7a83
--
 ;7a97 ;7a98 =
 	defw invokeMonitor-BA1 ;7a97
-	defb 0xb7 ;7a99
+-
+;78ab <
+invokeNew:
+-
+;7a99 ;7a9a =
+	defw ROM_NEWCommandRoutine ;7a99
+-
+;78ab <
+invokeO:
+-
+;7a9b ;7a9c =
+	defw ROM_NEWCommandRoutine ;7a9b
+-
+;7c4d <
+invokePrint:
 -
 ;7a9d ;7a9e =
 	defw invokePrint-BA1 ;7a9d
+-
+;8509 <
+invokeQuit:
+-
+;7a9f ;7aa0 =
+	defw invokeQuit-BA1 ;7a9f
+-
+;85e4 <
+invokeRun:
+-
+;7aa1 ;7aa2 =
+	defw invokeRun-BA1 ;7aa1
+-
+;7f3b <
+invokeSave:
+-
+;7aa3 ;7aa4 =
+	defw invokeSave-BA1 ;7aa3
+-
+;7ddc <
+invokeTable:
+-
+;7aa5 ;7aa6 =
+	defw invokeTable-BA1 ;7aa5
+-
+;7aca <
+invokeUTop:
+-
+;7aa7 ;7aa8 =
+	defw invokeUTop-BA1 ;7aa7
+-
+;8013 <
+invokeVerify:
+-
+;7aa9 ;7aaa =
+	defw invokeVerify-BA1 ;7aa9
+-
+;8572 <
+invokeW:
+-
+;7aab ;7aac =
+	defw invokeW-BA1 ;7aab
+-
+;7e0a <
+invokeClear: 
+-
+;7aad ;7aae =
+	defw invokeClear-BA1 ;7aad ;key X
+-
+;7e0a <
+invokeClear2:
+-
+;7aaf ;7ab0 =
+	defw invokeClear2-BA1 ;7aaf ;key Y
+-
+;7b65 <
+invokeReplace:
+-
+;7ab1 ;7ab2 =
+	defw invokeReplace-BA1 ;7ab1 ;key Z

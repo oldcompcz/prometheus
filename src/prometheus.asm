@@ -20,6 +20,7 @@ ROM_SA_SET:      equ 0x051a
 ROM_LD_MARKER:       equ 0x05c8
 ROM_ChannelOpen:     equ 0x1601
 ROM_PixelAddress_22b0:       equ 0x22b0
+ROM_NEWCommandRoutine:       equ 0x11b7
 
 ; system variables
 
@@ -4704,7 +4705,7 @@ v_sub_6f94h:
     ret nc                     ;78cc d0  .                         (flow (mon) from: 6f97)  6f98 ret nc 
     jr l78beh                  ;78cd 18 ef  . . 
 
-; BLOCK 'data_78cf' (start 0x78cf end 0x7a7c)
+; BLOCK 'data_78cf' (start 0x78cf end 0x7ab3)
 v_l6f9bh:
     defb 000h                  ;78cf 00  . 
     defb 000h                  ;78d0 00  . 
@@ -5030,51 +5031,41 @@ v_l7066h:
     defb 000h                  ;7a79 00  . 
     defb 000h                  ;7a7a 00  . 
     defb 000h                  ;7a7b 00  . 
-    jp v_l7cc9h-BA1            ;7a7c c3 09 1f  . . . 
-    sbc a,a                    ;7a7f 9f  . 
-    ld a,(de)                  ;7a80 1a  . 
+    defb 0c3h                  ;7a7c c3  . 
+    defb 009h                  ;7a7d 09  . 
+    defb 01fh                  ;7a7e 1f  . 
+    defw invokeAssembly-BA1    ;7a7f
     defw invokeBasic-BA1       ;7a81
-    defb 0x7f                  ;7a83
-    inc l                      ;7a84 2c  , 
-    add a,e                    ;7a85 83  . 
-    dec d                      ;7a86 15  . 
-    add a,013h                 ;7a87 c6 13  . . 
-    pop hl                     ;7a89 e1  . 
-    inc d                      ;7a8a 14  . 
-    cp e                       ;7a8b bb  . 
-    add hl,de                  ;7a8c 19  . 
-    ld a,c                     ;7a8d 79  y 
-l7a8eh:
-    ld e,0bbh                  ;7a8e 1e bb  . . 
-    add hl,de                  ;7a90 19  . 
-    cp e                       ;7a91 bb  . 
-    add hl,de                  ;7a92 19  . 
-    cp a                       ;7a93 bf  . 
-    inc de                     ;7a94 13  . 
-    ld d,(hl)                  ;7a95 56  V 
-    add hl,de                  ;7a96 19  . 
+    defw invokeCopy-BA1        ;7a83
+    defw invokeDelete-BA1      ;7a85
+    defw invokeE-BA1           ;7a87
+    defw invokeFind-BA1        ;7a89
+    defw invokeGens-BA1        ;7a8b
+    defw invokeH-BA1           ;7a8d
+    defw invokeI-BA1           ;7a8f
+    defw invokeJ-BA1           ;7a91
+    defw invokeK-BA1           ;7a93
+    defw invokeLoad-BA1        ;7a95
     defw invokeMonitor-BA1     ;7a97
-    defb 0xb7                  ;7a99
-    ld de,011b7h               ;7a9a 11 b7 11  . . . 
+    defw ROM_NEWCommandRoutine                                 ;7a99
+    defw ROM_NEWCommandRoutine                                 ;7a9b
     defw invokePrint-BA1       ;7a9d
-    dec d                      ;7a9f 15  . 
-    ld e,0f0h                  ;7aa0 1e f0  . . 
-    ld e,047h                  ;7aa2 1e 47  . G 
-    jr l7a8eh                  ;7aa4 18 e8  . . 
-    ld d,0d6h                  ;7aa6 16 d6  . . 
-    inc de                     ;7aa8 13  . 
-    rra                        ;7aa9 1f  . 
-    add hl,de                  ;7aaa 19  . 
-    ld a,(hl)                  ;7aab 7e  ~ 
-    ld e,016h                  ;7aac 1e 16  . . 
-    rla                        ;7aae 17  . 
-    ld d,017h                  ;7aaf 16 17  . . 
-    ld (hl),c                  ;7ab1 71  q 
-    inc d                      ;7ab2 14  . 
+    defw invokeQuit-BA1        ;7a9f
+    defw invokeRun-BA1         ;7aa1
+    defw invokeSave-BA1        ;7aa3
+    defw invokeTable-BA1       ;7aa5
+    defw invokeUTop-BA1        ;7aa7
+    defw invokeVerify-BA1      ;7aa9
+    defw invokeW-BA1           ;7aab
+    defw invokeClear-BA1       ;7aad                           ;key X
+    defw invokeClear2-BA1      ;7aaf                           ;key Y
+    defw invokeReplace-BA1     ;7ab1                           ;key Z
+invokeK:
     ld hl,03e68h               ;7ab3 21 68 3e  ! h > 
 l7ab6h:
     ld (v_sub_826ch+1-BA1),hl                                  ;7ab6 22 ad 24  " . $ 
     ret                        ;7ab9 c9  . 
+invokeE:
     call v_sub_718eh-BA1       ;7aba cd ce 13  . . . 
     call v_sub_8235h-BA1       ;7abd cd 75 24  . u $ 
     jr l7ab6h                  ;7ac0 18 f4  . . 
@@ -5083,6 +5074,7 @@ v_sub_718eh:
     ld de,0fff4h               ;7ac5 11 f4 ff  . . . 
     add hl,de                  ;7ac8 19  . 
     ret                        ;7ac9 c9  . 
+invokeUTop:
     call v_l719dh-BA1          ;7aca cd dd 13  . . . 
     ld (vr_l07945h+1-BA1),hl   ;7acd 22 86 1b  " . . 
     ret                        ;7ad0 c9  . 
@@ -5176,6 +5168,7 @@ l7b52h:
 l7b63h:
     pop hl                     ;7b63 e1  . 
     ret                        ;7b64 c9  . 
+invokeReplace:
     ld b,03ah                  ;7b65 06 3a  . : 
     call v_sub_7c2ch-BA1       ;7b67 cd 6c 1e  . l . 
     ld de,015e9h               ;7b6a 11 e9 15  . . . 
@@ -5237,6 +5230,7 @@ v_l7295h:
     ld (vr_l07e38h+1-BA1),hl   ;7bcc 22 79 20  " y   
     call v_sub_72d4h-BA1       ;7bcf cd 14 15  . . . 
     jp v_l7e34h-BA1            ;7bd2 c3 74 20  . t   
+invokeFind:
     ld hl,(v_sub_826ch+1-BA1)                                  ;7bd5 2a ad 24  * . $ 
     ld (vr_l072ddh+1-BA1),hl   ;7bd8 22 1e 15  " . . 
     ld b,053h                  ;7bdb 06 53  . S 
@@ -5330,6 +5324,7 @@ v_l7332h:
     xor a                      ;7c75 af  . 
     ret                        ;7c76 c9  . 
 v_sub_7343h:
+invokeDelete:
     call v_sub_080e7h-BA1      ;7c77 cd 27 23  . ' # 
     ld bc,00001h               ;7c7a 01 01 00  . . . 
 l7c7dh:
@@ -5572,6 +5567,7 @@ l7dd6h:
     jp z,v_l7cc9h-BA1          ;7dd6 ca 09 1f  . . . 
     exx                        ;7dd9 d9  . 
     jr l7db4h                  ;7dda 18 d8  . . 
+invokeTable:
     ld b,043h                  ;7ddc 06 43  . C 
     call v_sub_7c2ch-BA1       ;7dde cd 6c 1e  . l . 
     jr z,l7e1fh                ;7de1 28 3c  ( < 
@@ -5602,6 +5598,8 @@ vr_l074d0h:
     inc hl                     ;7e06 23  # 
     dec bc                     ;7e07 0b  . 
     jr l7e00h                  ;7e08 18 f6  . . 
+invokeClear: 
+invokeClear2:
     ld b,079h                  ;7e0a 06 79  . y 
     call v_sub_7c2ch-BA1       ;7e0c cd 6c 1e  . l . 
     ret nz                     ;7e0f c0  . 
@@ -5804,6 +5802,7 @@ l7f37h:
     inc hl                     ;7f38 23  # 
     scf                        ;7f39 37  7 
     ret                        ;7f3a c9  . 
+invokeSave:
     ld ix,050e0h               ;7f3b dd 21 e0 50  . ! . P 
     ld (ix+000h),003h          ;7f3f dd 36 00 03  . 6 . . 
     call v_sub_7c2ah-BA1       ;7f43 cd 6a 1e  . j . 
@@ -5935,6 +5934,7 @@ v_l76d5h:
     ld (hl),l                  ;8011 75  u 
     ld (hl),e                  ;8012 73  s 
 l8013h:
+invokeVerify:
     call v_sub_7bdch-BA1       ;8013 cd 1c 1e  . . . 
     call v_sub_7c1ah-BA1       ;8016 cd 5a 1e  . Z . 
     jr nz,l8013h               ;8019 20 f8    . 
@@ -5962,6 +5962,7 @@ l8041h:
 l8044h:
     call v_l89f4h-BA1          ;8044 cd 34 2c  . 4 , 
     jp v_l80a2h-BA1            ;8047 c3 e2 22  . . " 
+invokeLoad:
     call v_sub_89e8h-BA1       ;804a cd 28 2c  . ( ,               (flow from: 7e06)  7716 call 89e8 
     ld hl,v_l7760h-BA1         ;804d 21 a0 19  ! . .               (flow from: 8a1d)  7719 ld hl,7760 
     ld (vr_l07e38h+1-BA1),hl   ;8050 22 79 20  " y                 (flow from: 7719)  771c ld (7e39),hl 
@@ -6009,6 +6010,9 @@ l80a8h:
     ld hl,v_l7ccfh-BA1         ;80a8 21 0f 1f  ! . .               (flow from: 7733)  7774 ld hl,7ccf 
     ld (vr_l07e38h+1-BA1),hl   ;80ab 22 79 20  " y                 (flow from: 7774)  7777 ld (7e39),hl 
     jp (hl)                    ;80ae e9  .                         (flow from: 7777)  777a jp hl 
+invokeGens:
+invokeI:
+invokeJ:
     call v_sub_89e8h-BA1       ;80af cd 28 2c  . ( , 
     ld hl,v_l77b9h-BA1         ;80b2 21 f9 19  ! . . 
     ld (vr_l07e38h+1-BA1),hl   ;80b5 22 79 20  " y   
@@ -6137,6 +6141,7 @@ vr_l07850h:
     ld (vr_l07848h+1-BA1),hl   ;818d 22 89 1a  " . . 
     jr z,l8154h                ;8190 28 c2  ( . 
     ret                        ;8192 c9  . 
+invokeAssembly:
     call v_sub_7805h-BA1       ;8193 cd 45 1a  . E . 
     ld a,00bh                  ;8196 3e 0b  > . 
     jp v_l7cdah-BA1            ;8198 c3 1a 1f  . . . 
@@ -6705,6 +6710,7 @@ invokeMonitor:
     call z,v_sub_7805h-BA1     ;8500 cc 45 1a  . E .               (flow (mon) from: 7c38)  7bcc call z,7805 
     call v_sub_7ca1h-BA1       ;8503 cd e1 1e  . . .               (flow (mon) from: 7bcc)  7bcf call 7ca1 
     jp v_l5f74h-BA1            ;8506 c3 b4 01  . . .               (flow (mon) from: 7caf)  7bd2 jp 5f74 
+invokeQuit:
     ld b,079h                  ;8509 06 79  . y 
     call v_sub_7c2ch-BA1       ;850b cd 6c 1e  . l . 
     ret nz                     ;850e c0  . 
@@ -6773,9 +6779,11 @@ v_sub_7c33h:
     cp b                       ;856b b8  .                         (flow (mon) from: 7c35)  7c37 cp b 
     ret                        ;856c c9  .                         (flow (mon) from: 7c37)  7c38 ret 
 v_l7c39h:
+invokeH:
     ld hl,02b49h               ;856d 21 49 2b  ! I + 
     jr l8575h                  ;8570 18 03  . . 
 v_sub_7c3eh:
+invokeW:
     ld hl,vr_l07e1eh+1-BA1     ;8572 21 5f 20  ! _   
 l8575h:
 v_l7c41h:
@@ -6859,6 +6867,7 @@ l85dah:
     dec c                      ;85e0 0d  .                         (flow from: 7caa)  7cac dec c 
     jr nz,l85dah               ;85e1 20 f7    .                    (flow from: 7cac)  7cad jr nz,7ca6 
     ret                        ;85e3 c9  .                         (flow from: 7cad)  7caf ret 
+invokeRun:
     ld a,001h                  ;85e4 3e 01  > . 
     ld (01ef9h),a              ;85e6 32 f9 1e  2 . . 
     call v_sub_7805h-BA1       ;85e9 cd 45 1a  . E . 
@@ -9192,6 +9201,7 @@ v_sub_8a2fh:
     pop de                     ;9370 d1  .                         (flow from: 8a3a)  8a3c pop de 
     pop hl                     ;9371 e1  .                         (flow from: 8a3c)  8a3d pop hl 
     ret                        ;9372 c9  .                         (flow from: 8a3d)  8a3e ret 
+invokeCopy:
     call v_sub_080e7h-BA1      ;9373 cd 27 23  . ' # 
     push hl                    ;9376 e5  . 
     push de                    ;9377 d5  . 
