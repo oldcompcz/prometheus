@@ -26,6 +26,9 @@ ROM_NEWCommandRoutine:       equ 0x11b7
 
 SYSVAR_ERR_SP:       equ 05c3dh                                ; Address of item on machine stack to use as error return
 
+; constants
+
+INSTRUCTIONS_TABLE_SIZE:     equ 687  
 
 start:
     di                         ;5dc0 f3  .                         (flow from: 34bb 52ad)  5dc0 jp 7cc9 
@@ -2366,14 +2369,14 @@ v_l60d9h:
     ld (080a0h-BA),hl          ;6a16 22 e0 22  " . "               (flow (mon) from: 60df)  60e2 ld (80a0),hl 
     call v_sub_6675h-BA1       ;6a19 cd b5 08  . . .               (flow (mon) from: 60e2)  60e5 call 6675 
     ld hl,02d40h               ;6a1c 21 40 2d  ! @ - 
-    call v_sub_85aeh-BA1       ;6a1f cd ee 27  . . ' 
+    call atHLorNextIfOne-BA1   ;6a1f cd ee 27  . . ' 
     cp 03ah                    ;6a22 fe 3a  . : 
     ret z                      ;6a24 c8  . 
 v_l60f1h:
     jp v_l719dh-BA1            ;6a25 c3 dd 13  . . . 
     ld hl,inputBufferStart-BA1                                 ;6a28 21 3f 2d  ! ? - 
 l6a2bh:
-    call v_sub_85aeh-BA1       ;6a2b cd ee 27  . . ' 
+    call atHLorNextIfOne-BA1   ;6a2b cd ee 27  . . ' 
     ld c,009h                  ;6a2e 0e 09  . . 
     call v_sub_7ee7h-BA1       ;6a30 cd 27 21  . ' ! 
     call v_sub_664ch-BA1       ;6a33 cd 8c 08  . . . 
@@ -2639,7 +2642,7 @@ v_l62d1h:
 v_sub_62dch:
     call v_l82dbh-BA1          ;6c10 cd 1b 25  . . % 
     ld hl,inputBufferStart-BA1                                 ;6c13 21 3f 2d  ! ? - 
-    call v_sub_85aeh-BA1       ;6c16 cd ee 27  . . ' 
+    call atHLorNextIfOne-BA1   ;6c16 cd ee 27  . . ' 
     ld d,000h                  ;6c19 16 00  . . 
     ld c,009h                  ;6c1b 0e 09  . . 
     jp v_l7e07h-BA1            ;6c1d c3 47 20  . G   
@@ -3004,7 +3007,7 @@ l6e45h:
     ld ix,v_l5ddfh-BA1         ;6e50 dd 21 1f 00  . ! . . 
 l6e54h:
     ld hl,02d40h               ;6e54 21 40 2d  ! @ - 
-    call v_sub_85aeh-BA1       ;6e57 cd ee 27  . . ' 
+    call atHLorNextIfOne-BA1   ;6e57 cd ee 27  . . ' 
     ld a,(ix+002h)             ;6e5a dd 7e 02  . ~ . 
     bit 7,a                    ;6e5d cb 7f  .  
     jr nz,l6e73h               ;6e5f 20 12    . 
@@ -3016,14 +3019,14 @@ l6e54h:
     jr nz,l6e80h               ;6e6b 20 13    . 
     inc de                     ;6e6d 13  . 
     inc hl                     ;6e6e 23  # 
-    call v_sub_85aeh-BA1       ;6e6f cd ee 27  . . ' 
+    call atHLorNextIfOne-BA1   ;6e6f cd ee 27  . . ' 
     ld a,(de)                  ;6e72 1a  . 
 l6e73h:
     xor (hl)                   ;6e73 ae  . 
     and 05fh                   ;6e74 e6 5f  . _ 
     jr nz,l6e80h               ;6e76 20 08    . 
     inc hl                     ;6e78 23  # 
-    call v_sub_85aeh-BA1       ;6e79 cd ee 27  . . ' 
+    call atHLorNextIfOne-BA1   ;6e79 cd ee 27  . . ' 
     cp 041h                    ;6e7c fe 41  . A 
     jr c,l6eafh                ;6e7e 38 2f  8 / 
 l6e80h:
@@ -3032,7 +3035,7 @@ l6e80h:
     djnz l6e54h                ;6e85 10 cd  . . 
     jp badOperandError-BA1     ;6e87 c3 c1 22  . . " 
 l6e8ah:
-    call v_sub_85aeh-BA1       ;6e8a cd ee 27  . . ' 
+    call atHLorNextIfOne-BA1   ;6e8a cd ee 27  . . ' 
     or 020h                    ;6e8d f6 20  .   
     push hl                    ;6e8f e5  . 
     ld hl,v_l656bh-BA1         ;6e90 21 ab 07  ! . . 
@@ -5202,13 +5205,13 @@ l7b94h:
     ld a,(v_l738dh-BA1)        ;7b9c 3a cd 15  : . . 
     ld b,a                     ;7b9f 47  G 
 l7ba0h:
-    call v_sub_85aeh-BA1       ;7ba0 cd ee 27  . . ' 
+    call atHLorNextIfOne-BA1   ;7ba0 cd ee 27  . . ' 
     inc hl                     ;7ba3 23  # 
     djnz l7ba0h                ;7ba4 10 fa  . . 
     jr l7b87h                  ;7ba6 18 df  . . 
 l7ba8h:
     pop hl                     ;7ba8 e1  . 
-    call v_sub_85aeh-BA1       ;7ba9 cd ee 27  . . ' 
+    call atHLorNextIfOne-BA1   ;7ba9 cd ee 27  . . ' 
     inc hl                     ;7bac 23  # 
     or a                       ;7bad b7  . 
     jr z,l7bb5h                ;7bae 28 05  ( . 
@@ -5288,7 +5291,7 @@ v_sub_7304h:
     ld b,000h                  ;7c38 06 00  . . 
     push de                    ;7c3a d5  . 
 l7c3bh:
-    call v_sub_85aeh-BA1       ;7c3b cd ee 27  . . ' 
+    call atHLorNextIfOne-BA1   ;7c3b cd ee 27  . . ' 
     inc hl                     ;7c3e 23  # 
     or a                       ;7c3f b7  . 
     jr z,l7c49h                ;7c40 28 07  ( . 
@@ -5908,7 +5911,7 @@ v_sub_76bch:
 v_sub_76bfh:
     ld b,00ah                  ;7ff3 06 0a  . .                    (flow from: 76bc)  76bf ld b,0a 
 l7ff5h:
-    call v_sub_85aeh-BA1       ;7ff5 cd ee 27  . . '               (flow from: 76bf 76cb)  76c1 call 85ae 
+    call atHLorNextIfOne-BA1   ;7ff5 cd ee 27  . . '               (flow from: 76bf 76cb)  76c1 call 85ae 
     inc hl                     ;7ff8 23  #                         (flow from: 85b1)  76c4 inc hl 
     or a                       ;7ff9 b7  .                         (flow from: 76c4)  76c5 or a 
     jr z,l8002h                ;7ffa 28 06  ( .                    (flow from: 76c5)  76c6 jr z,76ce 
@@ -6772,7 +6775,7 @@ v_sub_7c2ah:
 v_sub_7c2ch:
     ld hl,02d40h               ;8560 21 40 2d  ! @ -               (flow from: 76b8)  7c2c ld hl,8b00 
 v_sub_7c2fh:
-    call v_sub_85aeh-BA1       ;8563 cd ee 27  . . '               (flow from: 7c2c)  7c2f call 85ae 
+    call atHLorNextIfOne-BA1   ;8563 cd ee 27  . . '               (flow from: 7c2c)  7c2f call 85ae 
     inc hl                     ;8566 23  #                         (flow from: 85b1)  7c32 inc hl 
 v_sub_7c33h:
     cp b                       ;8567 b8  .                         (flow from: 7c32)  7c33 cp b 
@@ -7033,7 +7036,7 @@ v_l7dddh:
     ld bc,0203fh               ;8714 01 3f 20  . ?                 (flow from: 7ddd)  7de0 ld bc,203f 
     call v_l82e1h-BA1          ;8717 cd 21 25  . ! %               (flow from: 7de0)  7de3 call 82e1 
     ld hl,inputBufferStart-BA1                                 ;871a 21 3f 2d  ! ? -                                                   (flow from: 82e5)  7de6 ld hl,8aff 
-    call v_sub_85aeh-BA1       ;871d cd ee 27  . . '               (flow from: 7de6)  7de9 call 85ae 
+    call atHLorNextIfOne-BA1   ;871d cd ee 27  . . '               (flow from: 7de6)  7de9 call 85ae 
     ld d,000h                  ;8720 16 00  . .                    (flow from: 85b1)  7dec ld d,00 
     ld c,009h                  ;8722 0e 09  . .                    (flow from: 7dec)  7dee ld c,09 
     cp 080h                    ;8724 fe 80  . .                    (flow from: 7dee)  7df0 cp 80 
@@ -7302,14 +7305,15 @@ l88c6h:
 varcMnemonicIndex:
     ld a,000h                  ;88cc 3e 00  > .                    (flow from: 7f96)  7f98 ld a,00 
     rla                        ;88ce 17  .                         (flow from: 7f98)  7f9a rla 
-    ld hl,030e1h               ;88cf 21 e1 30  ! . 0               (flow from: 7f9a)  7f9b ld hl,8ea1 
-    ld bc,002afh               ;88d2 01 af 02  . . .               (flow from: 7f9b)  7f9e ld bc,02af 
+    ld hl,instructionsTable-2-BA1                              ;88cf 21 e1 30  ! . 0                                                   (flow from: 7f9a)  7f9b ld hl,8ea1                                  (flow from: 7f9a)  7f9b ld hl,8ea1 
+    ld bc,INSTRUCTIONS_TABLE_SIZE                              ;88d2 01 af 02  . . .                                                   (flow from: 7f9b)  7f9e ld bc,02af                                  (flow from: 7f9b)  7f9e ld bc,02af 
 l88d5h:
     inc hl                     ;88d5 23  #                         (flow from: 7f9e 7fac)  7fa1 inc hl 
     ex af,af'                  ;88d6 08  .                         (flow from: 7fa1)  7fa2 ex af,af' 
 l88d7h:
     inc hl                     ;88d7 23  #                         (flow from: 7fa2 7fb2 7fb8)  7fa3 inc hl 
     ex af,af'                  ;88d8 08  .                         (flow from: 7fa3)  7fa4 ex af,af' 
+; move to instructionRecord[2]
     inc hl                     ;88d9 23  #                         (flow from: 7fa4)  7fa5 inc hl 
     inc hl                     ;88da 23  #                         (flow from: 7fa5)  7fa6 inc hl 
     cpi                        ;88db ed a1  . .                    (flow from: 7fa6)  7fa7 cpi 
@@ -7871,7 +7875,7 @@ v_l82e1h:
 v_sub_82e6h:
     ld b,000h                  ;8c1a 06 00  . .                    (flow from: 7fc9 8007)  82e6 ld b,00 
     ld hl,inputBufferStart-BA1                                 ;8c1c 21 3f 2d  ! ? -                                                   (flow from: 82e6)  82e8 ld hl,8aff 
-    call v_sub_85aeh-BA1       ;8c1f cd ee 27  . . '               (flow from: 82e8)  82eb call 85ae 
+    call atHLorNextIfOne-BA1   ;8c1f cd ee 27  . . '               (flow from: 82e8)  82eb call 85ae 
     cp 041h                    ;8c22 fe 41  . A                    (flow from: 85b1)  82ee cp 41 
     jr c,l8c28h                ;8c24 38 02  8 .                    (flow from: 82ee)  82f0 jr c,82f4 
     set 3,d                    ;8c26 cb da  . .                    (flow from: 82f0)  82f2 set 3,d 
@@ -8337,7 +8341,7 @@ v_sub_8573h:
 v_sub_8577h:
     ld b,000h                  ;8eab 06 00  . .                    (flow from: 7f11)  8577 ld b,00 
 l8eadh:
-    call v_sub_85aeh-BA1       ;8ead cd ee 27  . . '               (flow from: 8571 8575 8577 8597)  8579 call 85ae 
+    call atHLorNextIfOne-BA1   ;8ead cd ee 27  . . '               (flow from: 8571 8575 8577 8597)  8579 call 85ae 
     cp 022h                    ;8eb0 fe 22  . "                    (flow from: 85b1)  857c cp 22 
     jr z,l8ed9h                ;8eb2 28 25  ( %                    (flow from: 857c)  857e jr z,85a5 
     cp 027h                    ;8eb4 fe 27  . '                    (flow from: 857e)  8580 cp 27 
@@ -8376,7 +8380,7 @@ l8edeh:
     jp syntaxError-BA1         ;8ede c3 c9 22  . . " 
 v_sub_85adh:
     inc hl                     ;8ee1 23  #                         (flow from: 859b)  85ad inc hl 
-v_sub_85aeh:
+atHLorNextIfOne:
     ld a,(hl)                  ;8ee2 7e  ~                         (flow from: 76c1 7c2f 7de9 82eb 8579 85ad 85b5 87af 8ll)  85ae ld a,(hl) 
     cp 001h                    ;8ee3 fe 01  . .                    (flow from: 85ae)  85af cp 01 
     ret nz                     ;8ee5 c0  .                         (flow from: 85af)  85b1 ret nz 
@@ -8385,7 +8389,7 @@ v_sub_85aeh:
     ret                        ;8ee8 c9  .                         (flow from: 85b3)  85b4 ret 
 l8ee9h:
 v_sub_85b5h:
-    call v_sub_85aeh-BA1       ;8ee9 cd ee 27  . . '               (flow from: 7ef0 7efb 85bc)  85b5 call 85ae 
+    call atHLorNextIfOne-BA1   ;8ee9 cd ee 27  . . '               (flow from: 7ef0 7efb 85bc)  85b5 call 85ae 
     cp 020h                    ;8eec fe 20  .                      (flow from: 85b1 85b4)  85b8 cp 20 
     ret nz                     ;8eee c0  .                         (flow from: 85b8)  85ba ret nz 
     inc hl                     ;8eef 23  #                         (flow from: 85ba)  85bb inc hl 
@@ -8750,7 +8754,7 @@ v_sub_87aah:
     ld de,v_l8ac8h-BA1         ;90de 11 08 2d  . . -               (flow from: 8815)  87aa ld de,8ac8 
     ld b,000h                  ;90e1 06 00  . .                    (flow from: 87aa)  87ad ld b,00 
 l90e3h:
-    call v_sub_85aeh-BA1       ;90e3 cd ee 27  . . '               (flow from: 87ad 87c9)  87af call 85ae 
+    call atHLorNextIfOne-BA1   ;90e3 cd ee 27  . . '               (flow from: 87ad 87c9)  87af call 85ae 
     call v_sub_8726h-BA1       ;90e6 cd 66 29  . f )               (flow from: 85b1)  87b2 call 8726 
     jr z,l90f6h                ;90e9 28 0b  ( .                    (flow from: 8728 872b 872d)  87b5 jr z,87c2 
     res 5,a                    ;90eb cb af  . .                    (flow from: 87b5)  87b7 res 5,a 
@@ -9843,6 +9847,7 @@ v_l8db4h:
     defb "CLEA", 0xD2          ;CLEAR
     defb "REPLAC", 0xC5        ;REPLACE
 ; nop
+instructionsTable:
     defb 0x00, 0x00, 0x42, 0x00, 0x04                          ;97d7
 ; ?
     defb 0x00, 0x30, 0x00, 0x00, 0x00                          ;97dc
@@ -11217,7 +11222,6 @@ l9c28h:
     defb 0xff, 0x80, 0x62, 0x41, 0x28                          ;a538
 ; rst 56
     defb 0xff, 0xff, 0xff, 0xff, 0xff                          ;a53d
-
     defb 000h                  ;a542 00  . 
     defb 030h                  ;a543 30  0 
     defb 000h                  ;a544 00  . 

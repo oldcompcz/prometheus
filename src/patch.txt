@@ -22,6 +22,9 @@ ROM_NEWCommandRoutine: 		equ 0x11b7
 
 SYSVAR_ERR_SP: 		equ 05c3dh   ; Address of item on machine stack to use as error return
 
+; constants
+
+INSTRUCTIONS_TABLE_SIZE: 		equ 687  
 
 start:
 -
@@ -9547,4 +9550,18 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 ;a53d ;a541 = 
 ; rst 56
 	defb 0xff, 0xff, 0xff, 0xff, 0xff ;a53d
-
+-
+;=======================================================================
+;
+-
+s/v_sub_85aeh/atHLorNextIfOne
+-
+;97d7 < 
+instructionsTable:
+-
+;88cf ;88d2 = 
+	ld hl,instructionsTable-2-BA1               ;88cf 21 e1 30  ! . 0               (flow from: 7f9a)  7f9b ld hl,8ea1 
+	ld bc,INSTRUCTIONS_TABLE_SIZE               ;88d2 01 af 02  . . .               (flow from: 7f9b)  7f9e ld bc,02af 
+-
+;88d9 < 
+; move to instructionRecord[2]
