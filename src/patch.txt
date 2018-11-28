@@ -258,24 +258,64 @@ start:
 	defb "(iy", 0xA9	;(iy)
 	defb "(sp", 0xA9	;(sp)
 -
+;9764 9767 =
+operationLabels:
+	defb	operationLabelAssembly - operationLabels
+	defb	operationLabelBasic - operationLabels - 1
+	defb	operationLabelCopy - operationLabels - 2
+	defb	operationLabelDelete - operationLabels - 3
+;	defb	operationLabelFind - operationLabels - 4
+;	defb	operationLabelGens - operationLabels - 5
+;	defb	operationLabelLoad - operationLabels - 6
+;	defb	operationLabelMonitor - operationLabels - 7
+;	defb	operationLabelNew - operationLabels - 8
+;	defb	operationLabelPrint - operationLabels - 9
+;	defb	operationLabelQuit - operationLabels - 10
+;	defb	operationLabelRun - operationLabels - 11
+;	defb	operationLabelSave - operationLabels - 12
+;	defb	operationLabelTable - operationLabels - 13
+;	defb	operationLabelUTop - operationLabels - 14
+;	defb	operationLabelVerify - operationLabels - 15
+;	defb	operationLabelClear - operationLabels - 16
+;	defb	operationLabelReplace - operationLabels - 17
+
+-
 ;977e ;97d6 =
+operationLabelAssembly:
 	defb "ASSEMBL", 0xD9	;977e ;ASSEMBLY
+operationLabelBasic:
 	defb "BASI", 0xC3	;BASIC
+operationLabelCopy:
 	defb "COP", 0xD9	;COPY
+operationLabelDelete:
 	defb "DELET", 0xC5	;DELETE
+operationLabelFind:
 	defb "FIN", 0xC4	;FIND
+operationLabelGens:
 	defb "GEN", 0xD3	;GENS
+operationLabelLoad:
 	defb "LOA", 0xC4	;LOAD
+operationLabelMonitor:
 	defb "MONITO", 0xD2	;MONITOR
+operationLabelNew:
 	defb "NE", 0xD7	;NEW
+operationLabelPrint:
 	defb "PRIN", 0xD4	;PRINT
+operationLabelQuit:
 	defb "QUI", 0xD4	;QUIT
+operationLabelRun:
 	defb "RU", 0xCE	;RUN
+operationLabelSave:
 	defb "SAV", 0xC5	;SAVE
+operationLabelTable:
 	defb "TABL", 0xC5	;TABLE
+operationLabelUTop:
 	defb "U-TO", 0xD0	;U-TOP
+operationLabelVerify:
 	defb "VERIF", 0xD9	;VERIFY
+operationLabelClear:
 	defb "CLEA", 0xD2	;CLEAR
+operationLabelReplace:
 	defb "REPLAC", 0xC5	;REPLACE
 -
 ;79df ;7a6e =
@@ -6808,7 +6848,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x00, 0x00, 0x42, 0x00, 0x04 ;97d7
 -
 ;97dc ;97e0 = 
-; ?
+; ???
 	defb 0x00, 0x30, 0x00, 0x00, 0x00 ;97dc
 -
 ;97e1 ;97e5 = 
@@ -6820,7 +6860,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x01, 0x02, 0x14, 0xb5, 0x8a ;97e6
 -
 ;97eb ;97ef = 
-; ?
+; ???
 	defb 0x01, 0x37, 0x02, 0x00, 0x00 ;97eb
 -
 ;97f0 ;97f4 = 
@@ -6832,7 +6872,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x02, 0x00, 0x15, 0x31, 0x27 ;97f5
 -
 ;97fa ;97fe = 
-; ?
+; ent
 	defb 0x02, 0x37, 0x31, 0x60, 0x00 ;97fa
 -
 ;97ff ;9803 = 
@@ -6844,7 +6884,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x03, 0x00, 0x36, 0xb0, 0x06 ;9804
 -
 ;9809 ;980d = 
-; ?
+; equ
 	defb 0x03, 0x37, 0x33, 0x60, 0x00 ;9809
 -
 ;980e ;9812 = 
@@ -6856,7 +6896,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x04, 0x00, 0x36, 0x50, 0x04 ;9813
 -
 ;9818 ;981c = 
-; ?
+; org
 	defb 0x04, 0x37, 0x45, 0x60, 0x00 ;9818
 -
 ;981d ;9821 = 
@@ -6868,7 +6908,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x05, 0x00, 0x2e, 0x50, 0x04 ;9822
 -
 ;9827 ;982b = 
-; ?
+; put
 	defb 0x05, 0x37, 0x4b, 0x60, 0x00 ;9827
 -
 ;982c ;9830 = 
@@ -6880,7 +6920,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x06, 0x01, 0x14, 0x55, 0x87 ;9831
 -
 ;9836 ;983a = 
-; ?
+; defb
 	defb 0x06, 0x37, 0x74, 0x00, 0x00 ;9836
 -
 ;983b ;983f = 
@@ -6888,7 +6928,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x06, 0x80, 0x53, 0x40, 0x0f ;983b
 -
 ;9840 ;9844 = 
-; ld b,N
+; rlc ??? 
 	defb 0x06, 0xa4, 0x53, 0x70, 0x17 ;9840
 -
 ;9845 ;9849 = 
@@ -6896,7 +6936,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x07, 0x00, 0x96, 0x00, 0x04 ;9845
 -
 ;984a ;984e = 
-; ?
+; defm
 	defb 0x07, 0x37, 0x76, 0x00, 0x00 ;984a
 -
 ;984f ;9853 = 
@@ -6908,7 +6948,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x08, 0x00, 0x0a, 0xac, 0xa4 ;9854
 -
 ;9859 ;985d = 
-; ?
+; defs
 	defb 0x08, 0x37, 0x78, 0x00, 0x00 ;9859
 -
 ;985e ;9862 = 
@@ -6924,7 +6964,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x09, 0x20, 0x1e, 0xda, 0xcf ;9868
 -
 ;986d ;9871 = 
-; ?
+; defw
 	defb 0x09, 0x37, 0x7a, 0x00, 0x00 ;986d
 -
 ;9872 ;9876 = 
@@ -6948,11 +6988,11 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x0b, 0x80, 0x58, 0x68, 0x08 ;9886
 -
 ;988b ;988f = 
-; incc
+; inc
 	defb 0x0c, 0x00, 0x36, 0x58, 0x04 ;988b
 -
 ;9890 ;9894 = 
-; rrch
+; rrc
 	defb 0x0c, 0x80, 0x58, 0x70, 0x08 ;9890
 -
 ;9895 ;9899 = 
@@ -6964,7 +7004,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x0d, 0x80, 0x58, 0x80, 0x08 ;989a
 -
 ;989f ;98a3 = 
-; ld c,N
+; rcc ???
 	defb 0x0e, 0x01, 0x14, 0x5d, 0x87 ;989f
 -
 ;98a4 ;98a8 = 
@@ -6996,7 +7036,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x11, 0x02, 0x14, 0xbd, 0x8a ;98c2
 -
 ;98c7 ;98cb = 
-; rlc
+; rl ???
 	defb 0x11, 0x80, 0x18, 0x58, 0x08 ;98c7
 -
 ;98cc ;98d0 = 
@@ -7112,7 +7152,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x1e, 0x80, 0x1b, 0x40, 0x0f ;9953
 -
 ;9958 ;995c = 
-; ld e,N
+; rr ???
 	defb 0x1e, 0xa4, 0x1b, 0x70, 0x17 ;9958
 -
 ;995d ;9961 = 
@@ -7204,7 +7244,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x26, 0x80, 0x65, 0x40, 0x0f ;99c6
 -
 ;99cb ;99cf = 
-; ld h,N
+; sla ???
 	defb 0x26, 0xa4, 0x65, 0x70, 0x17 ;99cb
 -
 ;99d0 ;99d4 = 
@@ -7312,7 +7352,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x30, 0x03, 0x12, 0xfd, 0x87 ;9a4d
 -
 ;9a52 ;9a56 = 
-; jr nc,DlS
+; slia ???
 	defb 0x30, 0x80, 0x9a, 0x50, 0x08 ;9a52
 -
 ;9a57 ;9a5b = 
@@ -7320,7 +7360,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x31, 0x02, 0x15, 0x1d, 0x8a ;9a57
 -
 ;9a5c ;9a60 = 
-; ld sp,NN
+; slia ???
 	defb 0x31, 0x80, 0x9a, 0x58, 0x08 ;9a5c
 -
 ;9a61 ;9a65 = 
@@ -7328,7 +7368,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x32, 0x02, 0x15, 0x69, 0x2d ;9a61
 -
 ;9a66 ;9a6a = 
-; ld (NN),a
+; slia ???
 	defb 0x32, 0x80, 0x9a, 0x60, 0x08 ;9a66
 -
 ;9a6b ;9a6f = 
@@ -7336,7 +7376,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x33, 0x00, 0x37, 0x18, 0x06 ;9a6b
 -
 ;9a70 ;9a74 = 
-; inc sp
+; slia ???
 	defb 0x33, 0x80, 0x9a, 0x68, 0x08 ;9a70
 -
 ;9a75 ;9a79 = 
@@ -7348,7 +7388,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x34, 0x24, 0x37, 0x70, 0x17 ;9a7a
 -
 ;9a7f ;9a83 = 
-; inc (hl)
+; slia ???
 	defb 0x34, 0x80, 0x9a, 0x70, 0x08 ;9a7f
 -
 ;9a84 ;9a88 = 
@@ -7360,7 +7400,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x35, 0x24, 0x2f, 0x70, 0x17 ;9a89
 -
 ;9a8e ;9a92 = 
-; dec (hl)
+; slia ???
 	defb 0x35, 0x80, 0x9a, 0x80, 0x08 ;9a8e
 -
 ;9a93 ;9a97 = 
@@ -7372,11 +7412,11 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x36, 0x25, 0x15, 0x75, 0x93 ;9a98
 -
 ;9a9d ;9aa1 = 
-; ld (hl),N
+; slia ???
 	defb 0x36, 0x80, 0x9b, 0x40, 0x0f ;9a9d
 -
 ;9aa2 ;9aa6 = 
-; ld (hl),N
+; slia ???
 	defb 0x36, 0xa4, 0x9b, 0x70, 0x17 ;9aa2
 -
 ;9aa7 ;9aab = 
@@ -7384,11 +7424,11 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x37, 0x00, 0x60, 0x00, 0x04 ;9aa7
 -
 ;9aac ;9ab0 = 
-; scf
+; slia ???
 	defb 0x37, 0x80, 0x9a, 0x48, 0x08 ;9aac
 -
 ;9ab1 ;9ab5 = 
-; lr c,DlS
+; jr ???
 	defb 0x38, 0x03, 0x12, 0x5d, 0x87 ;9ab1
 -
 ;9ab6 ;9aba = 
@@ -7448,7 +7488,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x3e, 0x80, 0x69, 0x40, 0x0f ;9af7
 -
 ;9afc ;9b00 = 
-; ld a,N
+; srl ???
 	defb 0x3e, 0xa4, 0x69, 0x70, 0x17 ;9afc
 -
 ;9b01 ;9b05 = 
@@ -7464,7 +7504,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x40, 0x00, 0x14, 0x51, 0x44 ;9b0b
 -
 ;9b10 ;9b14 = 
-; ld b,b
+; in ???
 	defb 0x40, 0x40, 0x0e, 0x54, 0x8c ;9b10
 -
 ;9b15 ;9b19 = 
@@ -7476,7 +7516,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x41, 0x00, 0x14, 0x51, 0x64 ;9b1a
 -
 ;9b1f ;9b23 = 
-; ld b,c
+; out
 	defb 0x41, 0x40, 0x47, 0x21, 0x4c ;9b1f
 -
 ;9b24 ;9b28 = 
@@ -7488,7 +7528,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x42, 0x00, 0x14, 0x51, 0x84 ;9b29
 -
 ;9b2e ;9b32 = 
-; ld b,d
+; sbc ???
 	defb 0x42, 0x40, 0x5e, 0xc2, 0xcf ;9b2e
 -
 ;9b33 ;9b37 = 
@@ -7516,7 +7556,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x44, 0x20, 0x14, 0x53, 0x28 ;9b4c
 -
 ;9b51 ;9b55 = 
-; ld b,h
+; neg ???
 	defb 0x44, 0x40, 0x40, 0x00, 0x08 ;9b51
 -
 ;9b56 ;9b5a = 
@@ -7532,7 +7572,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x45, 0x20, 0x14, 0x53, 0xa8 ;9b60
 -
 ;9b65 ;9b69 = 
-; ld b,l
+; retn ???
 	defb 0x45, 0x40, 0x94, 0x00, 0x0e ;9b65
 -
 ;9b6a ;9b6e = 
@@ -7548,7 +7588,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x46, 0x24, 0x14, 0x55, 0xd3 ;9b74
 -
 ;9b79 ;9b7d = 
-; ld b,(hl)
+; im ???
 	defb 0x46, 0x40, 0x0c, 0x08, 0x08 ;9b79
 -
 ;9b7e ;9b82 = 
@@ -7576,7 +7616,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x48, 0x00, 0x14, 0x59, 0x44 ;9b97
 -
 ;9b9c ;9ba0 = 
-; ld c,b
+; in ???
 	defb 0x48, 0x40, 0x0e, 0x5c, 0x8c ;9b9c
 -
 ;9ba1 ;9ba5 = 
@@ -7588,7 +7628,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x49, 0x00, 0x14, 0x59, 0x64 ;9ba6
 -
 ;9bab ;9baf = 
-; ld cc
+; out ???
 	defb 0x49, 0x40, 0x47, 0x21, 0x6c ;9bab
 -
 ;9bb0 ;9bb4 = 
@@ -7600,7 +7640,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x4a, 0x00, 0x14, 0x59, 0x84 ;9bb5
 -
 ;9bba ;9bbe = 
-; ld c,d
+; adc ???
 	defb 0x4a, 0x40, 0x1c, 0xc2, 0xcf ;9bba
 -
 ;9bbf ;9bc3 = 
@@ -7640,7 +7680,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x4d, 0x20, 0x14, 0x5b, 0xa8 ;9be7
 -
 ;9bec ;9bf0 = 
-; ld c,l
+; reti
 	defb 0x4d, 0x40, 0x92, 0x00, 0x0e ;9bec
 -
 ;9bf1 ;9bf5 = 
@@ -7660,7 +7700,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x4e, 0x80, 0x22, 0x15, 0x0c ;9c00
 -
 ;9c05 ;9c09 = 
-; ld c,(hl)
+; bit ???
 	defb 0x4e, 0xa4, 0x22, 0x15, 0xd4 ;9c05
 -
 ;9c0a ;9c0e = 
@@ -7692,7 +7732,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x51, 0x00, 0x14, 0x61, 0x64 ;9c28
 -
 ;9c2d ;9c31 = 
-; ld d,c
+; out ???
 	defb 0x51, 0x40, 0x47, 0x21, 0x8c ;9c2d
 -
 ;9c32 ;9c36 = 
@@ -7704,7 +7744,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x52, 0x00, 0x14, 0x61, 0x84 ;9c37
 -
 ;9c3c ;9c40 = 
-; ld d,d
+; sbc ???
 	defb 0x52, 0x40, 0x5e, 0xc2, 0xef ;9c3c
 -
 ;9c41 ;9c45 = 
@@ -7756,7 +7796,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x56, 0x24, 0x14, 0x65, 0xd3 ;9c78
 -
 ;9c7d ;9c81 = 
-; ld d,(hl)
+; im
 	defb 0x56, 0x40, 0x0c, 0x10, 0x08 ;9c7d
 -
 ;9c82 ;9c86 = 
@@ -7784,7 +7824,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x58, 0x00, 0x14, 0x69, 0x44 ;9c9b
 -
 ;9ca0 ;9ca4 = 
-; ld e,b
+; in ???
 	defb 0x58, 0x40, 0x0e, 0x6c, 0x8c ;9ca0
 -
 ;9ca5 ;9ca9 = 
@@ -7796,7 +7836,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x59, 0x00, 0x14, 0x69, 0x64 ;9caa
 -
 ;9caf ;9cb3 = 
-; ld e,c
+; out ???
 	defb 0x59, 0x40, 0x47, 0x21, 0xac ;9caf
 -
 ;9cb4 ;9cb8 = 
@@ -7808,7 +7848,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x5a, 0x00, 0x14, 0x69, 0x84 ;9cb9
 -
 ;9cbe ;9cc2 = 
-; ld e,d
+; adc
 	defb 0x5a, 0x40, 0x1c, 0xc2, 0xef ;9cbe
 -
 ;9cc3 ;9cc7 = 
@@ -7860,7 +7900,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x5e, 0x24, 0x14, 0x6d, 0xd3 ;9cfa
 -
 ;9cff ;9d03 = 
-; ld e,(hl)
+; im ???
 	defb 0x5e, 0x40, 0x0c, 0x18, 0x08 ;9cff
 -
 ;9d04 ;9d08 = 
@@ -7892,7 +7932,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x60, 0x20, 0x14, 0xc9, 0x48 ;9d22
 -
 ;9d27 ;9d2b = 
-; ld h,b
+; in ???
 	defb 0x60, 0x40, 0x0e, 0x74, 0x8c ;9d27
 -
 ;9d2c ;9d30 = 
@@ -7908,7 +7948,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x61, 0x20, 0x14, 0xc9, 0x68 ;9d36
 -
 ;9d3b ;9d3f = 
-; ld h,c
+; out ???
 	defb 0x61, 0x40, 0x47, 0x21, 0xcc ;9d3b
 -
 ;9d40 ;9d44 = 
@@ -7924,7 +7964,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x62, 0x20, 0x14, 0xc9, 0x88 ;9d4a
 -
 ;9d4f ;9d53 = 
-; ld h,d
+; sbc ???
 	defb 0x62, 0x40, 0x5e, 0xc3, 0x0f ;9d4f
 -
 ;9d54 ;9d58 = 
@@ -7996,7 +8036,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x67, 0x20, 0x14, 0xc9, 0x28 ;9da4
 -
 ;9da9 ;9dad = 
-; ld h,a
+; rrd ???
 	defb 0x67, 0x40, 0x5a, 0x00, 0x12 ;9da9
 -
 ;9dae ;9db2 = 
@@ -8012,7 +8052,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x68, 0x20, 0x14, 0xe9, 0x48 ;9db8
 -
 ;9dbd ;9dc1 = 
-; ld l,b
+; in ???
 	defb 0x68, 0x40, 0x0e, 0x84, 0x8c ;9dbd
 -
 ;9dc2 ;9dc6 = 
@@ -8028,7 +8068,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x69, 0x20, 0x14, 0xe9, 0x68 ;9dcc
 -
 ;9dd1 ;9dd5 = 
-; ld l,c
+; out ???
 	defb 0x69, 0x40, 0x47, 0x22, 0x0c ;9dd1
 -
 ;9dd6 ;9dda = 
@@ -8044,7 +8084,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x6a, 0x20, 0x14, 0xe9, 0x88 ;9de0
 -
 ;9de5 ;9de9 = 
-; ld l,d
+; adc ???
 	defb 0x6a, 0x40, 0x1c, 0xc3, 0x0f ;9de5
 -
 ;9dea ;9dee = 
@@ -8104,7 +8144,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x6e, 0x80, 0x22, 0x35, 0x0c ;9e2b
 -
 ;9e30 ;9e34 = 
-; ld l,(hl)
+; bit ???
 	defb 0x6e, 0xa4, 0x22, 0x35, 0xd4 ;9e30
 -
 ;9e35 ;9e39 = 
@@ -8116,7 +8156,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x6f, 0x20, 0x14, 0xe9, 0x28 ;9e3a
 -
 ;9e3f ;9e43 = 
-; ld l,a
+; rld ???
 	defb 0x6f, 0x40, 0x54, 0x00, 0x12 ;9e3f
 -
 ;9e44 ;9e48 = 
@@ -8156,7 +8196,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x72, 0x24, 0x15, 0x71, 0x93 ;9e6c
 -
 ;9e71 ;9e75 = 
-; ld (hl),d
+; sbc
 	defb 0x72, 0x40, 0x5e, 0xc4, 0x6f ;9e71
 -
 ;9e76 ;9e7a = 
@@ -8212,7 +8252,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x76, 0x80, 0x22, 0x3d, 0x0c ;9eb2
 -
 ;9eb7 ;9ebb = 
-; halt
+; bit ???
 	defb 0x76, 0xa4, 0x22, 0x3d, 0xd4 ;9eb7
 -
 ;9ebc ;9ec0 = 
@@ -8232,7 +8272,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x78, 0x00, 0x14, 0x49, 0x44 ;9ecb
 -
 ;9ed0 ;9ed4 = 
-; ld a,b
+; in
 	defb 0x78, 0x40, 0x0e, 0x4c, 0x8c ;9ed0
 -
 ;9ed5 ;9ed9 = 
@@ -8244,7 +8284,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x79, 0x00, 0x14, 0x49, 0x64 ;9eda
 -
 ;9edf ;9ee3 = 
-; ld a,c
+; out ???
 	defb 0x79, 0x40, 0x47, 0x21, 0x2c ;9edf
 -
 ;9ee4 ;9ee8 = 
@@ -8256,7 +8296,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x7a, 0x00, 0x14, 0x49, 0x84 ;9ee9
 -
 ;9eee ;9ef2 = 
-; ld a,d
+; adc ???
 	defb 0x7a, 0x40, 0x1c, 0xc4, 0x6f ;9eee
 -
 ;9ef3 ;9ef7 = 
@@ -8276,11 +8316,11 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x7b, 0x80, 0x22, 0x41, 0xa8 ;9f02
 -
 ;9f07 ;9f0b = 
-; lda,h
+; ld a,h
 	defb 0x7c, 0x00, 0x14, 0x49, 0xc4 ;9f07
 -
 ;9f0c ;9f10 = 
-; lda,h
+; ld a,h
 	defb 0x7c, 0x20, 0x14, 0x4b, 0x28 ;9f0c
 -
 ;9f11 ;9f15 = 
@@ -8288,11 +8328,11 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x7c, 0x80, 0x22, 0x41, 0xc8 ;9f11
 -
 ;9f16 ;9f1a = 
-; ld al
+; ld a,l
 	defb 0x7d, 0x00, 0x14, 0x4a, 0x04 ;9f16
 -
 ;9f1b ;9f1f = 
-; ld al
+; ld a,l
 	defb 0x7d, 0x20, 0x14, 0x4b, 0xa8 ;9f1b
 -
 ;9f20 ;9f24 = 
@@ -8552,7 +8592,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x96, 0x80, 0x4c, 0x1d, 0x0f ;a05b
 -
 ;a060 ;a064 = 
-; sub (hl)
+; res ???
 	defb 0x96, 0xa4, 0x4c, 0x1d, 0xd7 ;a060
 -
 ;a065 ;a069 = 
@@ -8632,7 +8672,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0x9e, 0x80, 0x4c, 0x25, 0x0f ;a0bf
 -
 ;a0c4 ;a0c8 = 
-; sbc a,(hl)
+; res ???
 	defb 0x9e, 0xa4, 0x4c, 0x25, 0xd7 ;a0c4
 -
 ;a0c9 ;a0cd = 
@@ -8648,7 +8688,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0xa0, 0x00, 0x20, 0x50, 0x04 ;a0d3
 -
 ;a0d8 ;a0dc = 
-; and b
+; ldi ???
 	defb 0xa0, 0x40, 0x3e, 0x00, 0x10 ;a0d8
 -
 ;a0dd ;a0e1 = 
@@ -8660,7 +8700,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0xa1, 0x00, 0x20, 0x58, 0x04 ;a0e2
 -
 ;a0e7 ;a0eb = 
-; and c
+; cpi ???
 	defb 0xa1, 0x40, 0x28, 0x00, 0x10 ;a0e7
 -
 ;a0ec ;a0f0 = 
@@ -8672,7 +8712,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0xa2, 0x00, 0x20, 0x60, 0x04 ;a0f1
 -
 ;a0f6 ;a0fa = 
-; and d
+; ini ???
 	defb 0xa2, 0x40, 0x3a, 0x00, 0x10 ;a0f6
 -
 ;a0fb ;a0ff = 
@@ -8684,7 +8724,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0xa3, 0x00, 0x20, 0x68, 0x04 ;a100
 -
 ;a105 ;a109 = 
-; and e
+; outi ???
 	defb 0xa3, 0x40, 0x8e, 0x00, 0x10 ;a105
 -
 ;a10a ;a10e = 
@@ -8744,7 +8784,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0xa8, 0x00, 0x6c, 0x50, 0x04 ;a14b
 -
 ;a150 ;a154 = 
-; xor b
+; ldd ???
 	defb 0xa8, 0x40, 0x3c, 0x00, 0x10 ;a150
 -
 ;a155 ;a159 = 
@@ -8756,7 +8796,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0xa9, 0x00, 0x6c, 0x58, 0x04 ;a15a
 -
 ;a15f ;a163 = 
-; xor c
+; cpd ???
 	defb 0xa9, 0x40, 0x26, 0x00, 0x10 ;a15f
 -
 ;a164 ;a168 = 
@@ -8768,7 +8808,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0xaa, 0x00, 0x6c, 0x60, 0x04 ;a169
 -
 ;a16e ;a172 = 
-; xor d
+; ind ???
 	defb 0xaa, 0x40, 0x38, 0x00, 0x10 ;a16e
 -
 ;a173 ;a177 = 
@@ -8780,7 +8820,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0xab, 0x00, 0x6c, 0x68, 0x04 ;a178
 -
 ;a17d ;a181 = 
-; xor e
+; outd ???
 	defb 0xab, 0x40, 0x8c, 0x00, 0x10 ;a17d
 -
 ;a182 ;a186 = 
@@ -8824,7 +8864,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0xae, 0x80, 0x4c, 0x35, 0x0f ;a1af
 -
 ;a1b4 ;a1b8 = 
-; xor (hl)
+; res ???
 	defb 0xae, 0xa4, 0x4c, 0x35, 0xd7 ;a1b4
 -
 ;a1b9 ;a1bd = 
@@ -8840,7 +8880,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0xb0, 0x00, 0x16, 0x50, 0x04 ;a1c3
 -
 ;a1c8 ;a1cc = 
-; or b
+; ldir ???
 	defb 0xb0, 0x40, 0x86, 0x00, 0x15 ;a1c8
 -
 ;a1cd ;a1d1 = 
@@ -8852,7 +8892,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0xb1, 0x00, 0x16, 0x58, 0x04 ;a1d2
 -
 ;a1d7 ;a1db = 
-; or c
+; cpir ???
 	defb 0xb1, 0x40, 0x72, 0x00, 0x15 ;a1d7
 -
 ;a1dc ;a1e0 = 
@@ -8864,7 +8904,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0xb2, 0x00, 0x16, 0x60, 0x04 ;a1e1
 -
 ;a1e6 ;a1ea = 
-; or d
+; inir ???
 	defb 0xb2, 0x40, 0x82, 0x00, 0x15 ;a1e6
 -
 ;a1eb ;a1ef = 
@@ -8876,7 +8916,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0xb3, 0x00, 0x16, 0x68, 0x04 ;a1f0
 -
 ;a1f5 ;a1f9 = 
-; or e
+; otir ???
 	defb 0xb3, 0x40, 0x8a, 0x00, 0x15 ;a1f5
 -
 ;a1fa ;a1fe = 
@@ -8920,7 +8960,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0xb6, 0x80, 0x4c, 0x3d, 0x0f ;a227
 -
 ;a22c ;a230 = 
-; or (hl)
+; res ???
 	defb 0xb6, 0xa4, 0x4c, 0x3d, 0xd7 ;a22c
 -
 ;a231 ;a235 = 
@@ -8936,7 +8976,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0xb8, 0x00, 0x04, 0x50, 0x04 ;a23b
 -
 ;a240 ;a244 = 
-; cp b
+; lddr ???
 	defb 0xb8, 0x40, 0x84, 0x00, 0x15 ;a240
 -
 ;a245 ;a249 = 
@@ -8948,7 +8988,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0xb9, 0x00, 0x04, 0x58, 0x04 ;a24a
 -
 ;a24f ;a253 = 
-; cp c
+; cpdr
 	defb 0xb9, 0x40, 0x70, 0x00, 0x15 ;a24f
 -
 ;a254 ;a258 = 
@@ -8960,7 +9000,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0xba, 0x00, 0x04, 0x60, 0x04 ;a259
 -
 ;a25e ;a262 = 
-; cp d
+; indr ???
 	defb 0xba, 0x40, 0x80, 0x00, 0x15 ;a25e
 -
 ;a263 ;a267 = 
@@ -8972,7 +9012,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	defb 0xbb, 0x00, 0x04, 0x68, 0x04 ;a268
 -
 ;a26d ;a271 = 
-; cp e
+; otdr
 	defb 0xbb, 0x40, 0x88, 0x00, 0x15 ;a26d
 -
 ;a272 ;a276 = 
