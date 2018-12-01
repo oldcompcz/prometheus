@@ -1,0 +1,2761 @@
+                             PROMÉTHEUS
+
+                l a d í c í   s y s t é m   P R O M É T H E U S
+
+                   I. Trocha sebechvály aneb odkud to pøišlo
+
+     Pøi psaní programù v assembleru na Spectru èlovìk brzy narazí na problém
+velikosti pamìti - do pamìti se musí vejít assembler, zdrojovı text, pøeloenı
+kód a pokud mono nìjakı prostøedek pro ladìní. Nabízejí se dvì øešení, buï si
+koupit nìco vìtšího ne je Spectrum - toto øešení má malı zádrhel, chce to
+peníze - nebo získat programy, které s tím malım mnostvím pamìti, které je k
+dispozici , zacházejí úspornì. Nápady jako jsou kompilace pøímo z pásku jsou
+silnì kostrbaté a pro lid nevlastnící ani disketovou jednotku ani microdrive
+prakticky nepouitelné.
+
+     Rozhlédne-li se uivatel kolem sebe na nabídku assemblerù a ladících
+prostøedkù zjistí následující fakta :
+
+     GENS - nejstarší a nejrozšíøenìjší assembler, zdrojovı text je uloen
+            jako textovı soubor, pomìr mezi délkou zdrojového textu a pøe-
+            kladu je asi 8:1, snad nejhorší editor, kterı si lze vymyslet,
+            assembler je dlouhı pøiblinì 8.5 KB, pøekládá pomìrnì rychle,
+            silnì obtìující je neustálá otázka 'Table size:', kde impli-
+            citní hodnota obvykle nestaèí a po hlášení 'No table space' je
+            nutno kompilaci opakovat s vìtší tabulkou, také dotaz 'Option:'
+            pøi kadé kompilaci práci zbyteènì zdruje, program je reloko-
+            vatelnı, co jeho hodnotu velmi zvyšuje, k programu existuje
+            monitor MONS - bohuel práce s ním není pohodlná pro uivatele
+            nepouívající hexa soustavu, ani sluby, které monitor posky-
+            tuje u nejsou na úrovni doby, monitor je dlouhı 5 KB a je re-
+            lokovatelnı
+
+     Rozšíøené verze GENSu
+          - GENS3E (Lamaè) - vylepšená verze programu GENS, obsahuje Full
+            Screen Editor s automatickou tabelací a 42 znaky na øádek,
+            program je 12 KB dlouhı a zachoval si relokovatelnost
+
+          - Adámkovo rozšíøení - podobnì jako GENS3E má Full Screen Editor
+            s automatickou tabelací, na øádku je 64 znakù (horší èitel-
+            nost), program u není relokovatelnı
+
+          - MASM (MACROS, ASSEMBLER 90) - u tohoto programu by se dalo po-
+            lemizovat, jestli je nebo není od programu GENS odvozen, má s
+            ním však velké mnoství shodnıch prvkù (bohuel i špatnıch),
+            délka programu je 11 KB, není relokovatelnı, má Full Screen
+            Editor s automatickou tabelací, zná 'neznámé instrukce', má
+            køíové reference, celkovì lze øíci, e to není ádná revoluce,
+            zdrojovı text je uloen stejnì neefektivnì jako u programu GENS
+
+     OCP assembler - program je nerelokovatelnı, zdrojovı text zabírá více
+            místa ne stejnı u programu GENS, pøed kompilací je nutno
+            zadávat delší posloupnost parametrù, má Full Screen Editor,
+            chyby na rozdíl od programu GENS (i modifikací) nevypisuje
+            èísly (tzn. mít po ruce tabulku) ale pøímo slovy (práce je
+            pohodlnìjší)
+
+     Laser Genius Assembler - program je relokovatelnı, má délku kolem
+            20 KB (s lopatou na komára), pro svou délku je tìko pouitelnı
+            bez disketové jednotky nebo microdrivù, existuje k nìmu Laser
+            Genius Monitor, oba programy se však do pamìti najednou témìø
+            nevejdou
+
+
+
+     Memory Resident System - první assembler, kterı se snaí uloit
+            efektivnì zdrojovı text, pomìr je okolo 4:1 (tedy pøi stejné
+            délce pojme dvakrát tak dlouhı zdrojovı text), program je
+            dlouhı 11 KB a není relokovatelnı (existují 3 verze), má Full
+            Screen Editor a kontroluje instrukce u pøi vkládání (odstraní
+            se mnoho chyb), ve snaze zkrátit zdrojovı text byla pouita
+            nìkterá ne pøíliš šastná omezení - maximálnì 255 návìstí, ve
+            vırazu se smí pouít maximálnì dva operandy a jeden operátor,
+            nelze pouít binární zápis èísel (zvláštì první omezení doslova
+            zabíjí dobrı nápad), rozpornı je také monitor, dokáe pøi
+            trasování hlídat assembler a zdrojovı text pøed náhodnım
+            pøepsáním, bohuel všechny vıpisy jsou v šestnáctkové soustavì,
+            v monitoru se lze odkazovat na existující návìští v tabulce
+            symbolù, pøi psaní MRS byl zøejmì poadavek na krátkost
+            pøecenìn (program je dlouhı 12 KB) ale na úkor komfortu obsluhy
+            i moností
+
+     PIKASM - program od T.R.C., je 11 KB dlouhı, není relokovatelnı, má
+            Full Screen Editor, zdrojovı text ukládá v komprimované formì
+            (pomìr 5-6:1), na rozdíl od pøedchozích editorù má pøíjemnou
+            vlastnost - po kompilaci zùstává kurzor na tom místì, kde byl
+            pøed kompilací (pøi vstupu do editoru neskáèe ani na konec ani
+            na zaèátek), assembler také umí pøi kompilaci pøed kadou
+            instrukci øídící bìh programu (call, jp, ret) vloit volání
+            testu klávesy BREAK - uiteèné pøi ladìní bez monitoru (lze
+            zastavit program, kterı se zacyklil (tzv. kousnul)
+
+     MON, MON2 - monitory, dlouhé 7.5 a 9 KB oba jsou relokovatelné, umí
+            krokovat instrukce - ruènì i automaticky (s vypisováním po
+            kadé instrukci i bez nìj - velmi rychlé), vypisovat pamì,
+            mìnit obsah pamìti, plnit a pøesouvat bloky, lze také
+            nadefinovat oblast obrazovky, kam budou míøit vıpisy (souvislı
+            úsek øádkù na obrazovce)
+
+     VAST (FIKOMON, MILIMON, MIKROMON) - monitor dlouhı 4.6 KB, umístìnı v
+            obrazovkové pamìti - pùvodnì byl urèen pro hledání nekoneènıch
+            ivotù, lze ho pouít i pøi ladìní programù v závìreèné fázi
+            kdy je v pamìti málo místa. Existuje nová verze nazvaná DEVAST,
+            vylepšená o další sluby, tento program však na rozdíl od
+            pøedchozích nemá na svìdomí T.R.C. nıbr moje malièkost,
+            existuje i verze pracující na zvoleném místì v pamìti. Pro
+            zajímavost : program DEVAST je dlouhı asi 4.6 KB a jeho
+            zdrojovı text v assembleru PROMÉTHEUS má délku kolem 16 KB
+
+     Uvedenı pøehled ukazuje autorovi známı stav a jeho názory na dostupné
+programy. Z uvedenıch programù jsou èasto pouívané kombinace :
+                 GENS + MONS
+                 GENS + MON (MON2)
+                 OCP + MONS
+                 Memory Resident System
+                 Laser Genius
+
+     Pøi posouzení dostupnıch programù vzniká myšlenka vyrobit program, kterı
+by spojoval vıhody všech pøedchozích programù a neobsahoval jejich nevıhody.
+
+     Nejdùleitìjšími vlastnostmi, které by takovı program mìl mít jsou dvì :
+co nejefektivnìjší uloení zdrojového textu a spojení assembleru s monitorem
+do jednoho celku, tak, aby mohl monitor pouívat nìkteré podprogramy z
+assembleru a pouívat existující tabulku symbolù pøi vıpisech. Proto vznikl
+tento program.
+
+
+
+
+     Assembler a monitor, ladící systém PROMÉTHEUS vznikal za pomoci programù
+GENS3E, GENS 3.1, MON, MON2 a VAST. Program GENS byl pouíván do té doby, ne
+se podaøilo odladit první provozuschopnou verzi assembleru PROMÉTHEUS, další
+vylepšování se provádìlo vdy na starší verzi - assembler byl pøekládán sám
+sebou, monitor vznikl úplnì od zaèátku na assembleru PROMÉTHEUS.
+Pro srovnání - zdrojovı text GENS byl dlouhı kolem 40 KB a byl tedy nutnì
+rozdìlen na dva, pøekládal se celkem 40 sekund, po pøetaení zdrojového textu
+do PROMÉTHEA se zdrojovı text zkrátil na polovinu (20 KB), odpadla potøeba
+místa na tabulku symbolù - u obou èástí asi po 3 KB, text se tedy vešel do
+pamìti najednou (asi 5 KB kódu assembleru jsou tabulky a pracovní místa, která
+nebyla ve zdrojovém textu). Celı zdrojovı text byl nyní pøeloen za 3 sekundy
+(tedy 2 KB/s).
+
+             Nejdùleitìjší vlastnosti ladícího systému PROMÉTHEUS
+
+                - délka: 11 KB assembler, 5 KB monitor
+                  (celkem 16 KB, monitor lze odpojit a neuívat)
+
+                - celı program je relokovatelnı, a není závislı
+                  na systému Spectra
+
+                - pomìr mezi zdrojovım textem a pøeloenım kódem
+                  je 3-4 : 1  (GENS 8 : 1)
+
+                - tabulka symbolù je organickou èástí zdrojového
+                  textu, vytváøí se hned pøi psaní textu, vdy je
+                  ihned pøístupná - tzn. e pro kompilaci u není
+                  tøeba ani byte navíc
+
+                - rychlost kompilace je asi 2-3 KB/s - 10x víc ne
+                  GENS
+
+                - editor je øádkovì orientovanı, má automatickou
+                  tabelaci - skrolování a stránkování je velmi
+                  rychlé, umoòuje mazání a kopírování blokù, vy-
+                  hledávání a nahrazování øetìzcù, kadı øádek je
+                  pøi odeslání syntakticky kontrolován
+
+                - obvyklé kazetové operace - SAVE, VERIFY, LOAD,
+                  monost vyhrát i pøihrát (na libovolné místo)
+                  kus zdrojového textu
+
+                - pøíkaz GENS umoòuje nahrát zdrojovı text ve
+                  formátu assembleru GENS (MASM)
+
+                - monitor chránící zdrojovı text a ladící systém
+
+                - nìkolik trasovacích reimù
+
+                - monost definovat okna se zákazem zápisu, ètení
+                  nebo bìhu
+
+                - monost zcela ovlivnit sloení, tvar a polohu
+                  èelního panelu, poèet a zpùsob vıpisu všech
+                  poloek
+
+                - pøi krokování umí monitor zjistit èasovou
+                  nároènost krokovaného programu - poèítá cykly
+                  procesoru (tzv. Téèka)
+
+     Detailnì jsou vlastnosti a monosti tohoto programu popsány v dalším textu.
+
+
+
+
+                        II. Instalace ladícího systému
+
+     Na kazetì je program uloen jako blok CODE dlouhı asi 18500 bytù - obsahuje
+5000 bytù monitoru, 11000 bytù assembleru, a 2500 bytù instalaèního programu
+a tabulky relokaèních adres.
+
+     Program lze nahrát na libovolnou adresu v rozmezí adres 24000 a 47000 a od
+této adresy spustit :
+
+      CLEAR adr-1 :LOAD "" CODE adr :RANDOMIZE USR adr
+
+     Po spuštìní se objeví instalaèní obrazovka obsahující následující
+informace :
+
+     Instalation adress:xxxxx_ - kde xxxxx je adresa kam byl program nahrán -
+tuto adresu je mono pøepsat pomocí kláves 0 a 9 a DELETE (CAPS SHIFT+0) na
+libovolnou adresu v rozsahu adres 23296 a 49500 (23296 a 54500 bez monitoru).
+Na tuto adresu bude PROMÉTHEUS umístìn a od ní ho bude mono z BASICu kdykoliv
+opìt spustit. Umístíte-li program od adresy 23296, nelze se ji vrátit do
+BASICu - program pøepíše systémové promìnné. Budete-li pouívat instalaci na
+adresu pod nastavenı RAMTOP, nelze se ji vrátit do BASICu bezpeènì. Umístíte-li
+ladící systém tak, e pøepíše systémové promìnné (tzn. na adresu niší ne
+23755), nesmí Vaše programy pouívat sluby BASICu (tisk znakù atd.) a povolovat
+pøerušení v módu IM 1. Obvykle je nejlépe pouít pro instalaci adresu 25000.
+
+     Monitor:Yes - instalovat je mono buï celı ladící systém nebo jen
+assembler, zmìnu volby docílíte stisknutím klávesy M. Instalovat jen samotnı
+monitor není moné protoe pouívá mnoho podprogramù assembleru.
+
+     Dále lze nastavit barvy, které bude assembler pouívat. Je to barvy papíru
+ - klávesa P, barva inkoustu - klávesa I a jas tìchto dvou barev - klávesa B.
+Pøi editaci je jeden øádek vyznaèen jinou barvou - nastavení je obdobné, je
+nutné stisknout souèasnì navíc CAPS SHIFT.
+
+     PROMÉTHEUS umí psát dvìma druhy písma - obvyklım a dvojnásobnì tlustım
+(mùe bıt lépe èitelné) - pøepínání mezi obìma typy písma klávesou D.
+
+     Pøi editaci vypisuje assembler (i disassembler) instrukce malımi písmeny
+a návìští velkımi písmeny, je-li však nìkdo zvyklı pouívat jen velká písmena
+(jako GENS) nebo malá (MRS), mùe toto nastavení zmìnit klávesou C - vısledek
+je hned vidìt na instalaèní obrazovce.
+
+     Poslední vlastnost ladícího systému, kterou je mono ovlivnit pøi instalaci
+je klávesnicové echo - mìní se klávesou X jedním smìrem a klávesami CAPS SHIFT
+ + X druhım smìrem - souèasné nastavení je slyšet pøi stisku libovolné klávesy.
+
+     Po nastavení poadovanıch parametrù stisknìte klávesu ENTER, program se
+pøesune na zvolenou adresu, pøepíší se absolutní adresy (relokace) a program se
+spustí.
+
+     Tuto instalaci mùete provádìt pøi kadém pouití ladícího systému (obvykle
+staèí jen stisknout ENTER) nebo si poadovanou konfiguraci vyhrát na pracovní
+kazetu - nejlépe následovnì:
+
+         1 RANDOMIZE USR adr :STOP
+      9999 CLEAR adr-1 :LOAD "" CODE :RUN
+
+     Kam místo "adr" a "adr-1" dosadíte èísla (adresa, kde je program) a na
+kazetu uloíte pomocí:
+
+      SAVE "PROMETHEUS" LINE 9999
+      SAVE "prometheus" CODE adr,16000 (11000 bez monitoru)
+
+
+
+     Kde opìt místo "adr" bude adresa. Tuto konfiguraci nahrajete pomocí
+obyèejného LOAD "" a z basicu budete spouštìt jednoduše pøíkazem RUN. První
+øádek z tohoto programu je dobré vloit vdy - PROMÉTHEUS se bude spouštìt
+pøíkazem RUN a nehrozí chyba, která by mohla vzniknout pøi psaní "RANDOMIZE USR
+ adr", o tom, e funkce USR pouitá se špatnım argumentem mùe znaènì narušit
+duševní pohodu uivatele snad není nutno nijak zdùrazòovat.
+
+                           III. assembler PROMÉTHEUS
+
+                                   1. editor
+
+     Assembler obsahuje pohodlnı øádkovı editor, kterı se hodnì podobá editoru
+BASICu. V editoru se zadávají také všechny pøíkazy - odpadá tedy nutnost
+neustálého pøecházení z editoru do systému a naopak spojená se ztrátou pozice
+v editoru jako je tomu u MRSu a rozšíøenıch verzí GENSu. Editor umoòuje blokové
+operace - mazání a pøesouvání - a vyhledávání a nahrazování øetìzce v textu.
+
+     Oznaèení:
+
+      pøístupovı (pøístupnı) øádek - barevnì odlišenı
+            øádek ve vıpisu
+
+      editaèní øádek - úplnì spodní øádek, je na nìm
+            kurzor
+
+      stavovı øádek obsahuje toto (zleva doprava):
+          - sdìlení nebo chybové hlášení
+          - informaci o nastaveném reimu (INSERT/OVERWRITE)
+          - adresu posledního bytu zdrojového textu
+          - adresu posledního bytu oblasti pro zdrojovı text,
+               jakási obdoba RAMTOP v BASICu
+
+     Vkládání pøíkazù se provádí stisknutím klávesy SYMBOL SHIFT a
+odpovídajícího písmene pøi prázdném editaèním øádku, tedy kurzor je úplnì vlevo
+a za ním není ádnı znak (ani mezera). Nejsou-li tyto podmínky splnìny, napíše
+se znak na dané klávese se SYMBOL SHIFTem, jsou-li splnìny, vypíše se celı
+pøíkaz (jako klíèové slovo) nebo se ihned provede (nìkteré pøíkazy - skok na
+konec zdrojového textu atd.)
+
+     Zápis instrukce - na øádek lze zapsat maximálnì 31 znakù, prvních 9 pozic
+je vyhrazeno pro návìští (maximálnì 8 znaková), dalších 5 pozic je vyhrazeno pro
+mnemoniku a zbıvající místa jsou vyhrazena pro operandy. Poznámky je mono psát
+pouze na zvláštní øádek a to hned od zaèátku za støedník - nelze psát komentáøe
+za instrukce (ony by se tam stejnì nevešly). Pokud se nìkomu zdá 31 znakù málo,
+nezbıvá mu ne si buï zvyknout nebo pouívat jinı assembler. K tomuto omezení
+jsem dospìl na základì zkušeností svıch i svıch pøátel, témìø nikdo, koho znám
+nepíše komentáøe do zdrojového textu (maximálnì na papír s programem), je to
+práce navíc a zdrojovı text to neúmìrnì prodluuje - a zpomaluje to pøeklad i
+nahrávání (to zvláštì). Omezení má také své svìtlé stránky, zdrojovı text je
+dobøe èitelnı a pøehlednı.
+
+     Mezerník automaticky tabeluje, instrukce je mono psát libovolnì, malımi
+nebo velkımi písmeny, program rozliší návìští a zkontroluje vkládanı øádek,
+najde-li chybu, ohlásí ji a øádek nezaøadí do vıpisu.
+
+
+
+
+
+
+     Editaèní klávesy:
+
+
+
+
+       CAPS SHIFT + 1 (EDIT) - pøenese pøístupovı øádek do editaèního øádku
+
+       CAPS SHIFT + 2 (CAPS LOCK) - zapíná / vypíná CAPS LOCK, ten pracuje
+           trochu jinak ne obvykle, pùvodnì píše Spectrum pøi zapnutém
+           CAPS LOCKu pouze velká písmena, nyní funguje spíše jako jakısi
+           invertor CAPS SHIFTu, kdy je zapnut CAPS LOCK a není stisknut
+           CAPS SHIFT píše Spectrum velká písmena, a je-li stisknut CAPS
+           SHIFT, píše Spectrum malá písmena
+
+       CAPS SHIFT + 3 (TRUE VIDEO) - pøechod ve vıpisu na následující stránku
+
+       CAPS SHIFT + 4 (INV. VIDEO) - pøechod ve vıpisu na pøedcházející
+           stránku
+
+       CAPS SHIFT + 5 (šipka doleva) - posun kurzoru doleva o jeden znak
+           v editaèním øádku
+
+       CAPS SHIFT + 6 (šipka dolù) - posun pøístupného øádku na pøedchozí
+           øádek ve vıpisu
+
+       CAPS SHIFT + 7 (šipka nahoru) - posun pøístupného øádku na
+           následující øádek ve vıpisu
+
+       CAPS SHIFT + 8 (šipka doprava) - posun kurzoru vpravo o jeden znak
+           v editaèním øádku
+
+       CAPS SHIFT + 9 (GRAPH) - vyma pøístupovı øádek, posuò se na
+           pøedchozí øádek
+
+       CAPS SHIFT + 0 (DELETE) - vyma znak vlevo pøed kurzorem a posuò
+           kurzor doleva
+
+       SYMBOL SHIFT + W - pøepínání reimù INSERT a OVERWRITE (písmeno O
+           nebo I ve stavovém øádku), pøi stisku EDIT se pøepne reim
+           OVERWRITE a po odeslání se vrátí zpìt reim INSERT, chcete-li
+           zkopírovat jeden øádek, vyeditujte ho, pøepnìte na INSERT a
+           vlote na poadované místo, chcete-li úplnì pøepsat øádek,
+           napište text, pøepnìte na OVERWRITE a odešlete
+
+       SYMBOL SHIFT + Q - vymazání editaèního øádku, ne pøi prázdném øádku
+
+       CAPS SHIFT + SYMBOL SHIFT (EXTEND MODE) - nastaví okraj bloku -
+           pøíslušnost øádku k bloku je signalizována èernım ètvercem na
+           deváté pozici, mezi návìštím a instrukcí - oznaèení je vidìt
+           pouze ve vıpisu, nikoliv pøi hledání nebo tisku, není rozlišen
+           zaèátek a konec, program si pamatuje vdy dva okraje a pøi
+           zadání nového odstraní ten, co byl zadán døíve a pøidá novı
+           okraj, chcete-li nastavit blok, nastavte jeden okraj do
+           pøístupového øádku, stisknìte CAPS SHIFT + SYMBOL SHIFT,
+           nastavte druhı okraj bloku do pøístupového øádku a stisknìte
+           CAPS SHIFT + SYMBOL SHIFT
+
+       ENTER - odeslání instrukce nebo pøíkazu, odeslání instrukce má za
+           následek její syntaktickou kontrolu a zaøazení do vıpisu - podle
+           reimu (I/O) se buï zaøadí za instrukci v pøístupném øádku, nebo
+           ji pøepíše
+
+       SYMBOL SHIFT + E - jdi na konec zdrojového textu, jde o pøíkaz,
+           kterı se ihned provede, je ho tedy nutno zadat pøi prázdném
+           editaèním øádku
+
+       SYMBOL SHIFT + K - jdi na zaèátek zdrojového
+
+
+
+           textu, jde o pøíkaz, kterı se ihned provede, je ho tedy nutno
+           zadat pøi prázdném editaèním øádku
+
+       SYMBOL SHIFT + H - pøepínání vıpisu èísel mezi desítkovou a
+           šestnáctkovou soustavou, ovlivní vıpisy ve stavovém øádku a v
+           tabulce symbolù
+
+
+     Pøíkazy pro blokové operace:
+
+       COPY (SYMBOL SHIFT + C) - pøenese nastavenı blok pøed pøístupovı
+           øádek - nelze kopírovat blok do sebe
+
+       DELETE (SYMBOL SHIFT + D) - vymae nastavenı blok zdrojového textu
+
+
+
+     Pøíkazy pro vyhledávání a nahrazování øetìzcù:
+
+       FIND (SYMBOL SHIFT + F) - vyhledávání (viz dále), nerozlišují se
+           malá a velká písmena, není-li øetìzec nalezen, zùstane vıpis na
+           místì
+
+       REPLACE (SYMBOL SHIFT + Z) - zamìòování øetìzcù
+
+
+
+     Vyhledávání øetìzcù:
+
+       FIND s:xxxxx - vyhledání øetìzce 'xxxxx' od zaèátku zdrojového
+           textu
+
+       FIND s - vyhledání naposledy zadaného øetìzce od zaèátku zdrojového
+           textu
+
+       FIND b:xxxxx - vyhledání øetìzce 'xxxxx' v bloku od jeho zaèátku
+           bloku
+
+       FIND b - vyhledání naposledy zadaného øetìzce v bloku od zaèátku
+           bloku
+
+       FIND :xxxxx - vyhledání øetìzce 'xxxxx' od øádku, kterı je právì
+           pøístupnı buï do konce zdrojového textu nebo do konce bloku -
+           toto v pøípadì, e poslednì byl prohledáván blok
+
+       FIND - vyhledání naposledy zadaného øetìzce od øádku, kterı je právì
+           pøístupnı buï do konce zdrojového textu nebo do konce bloku ,
+           opìt to závisí na posledním zpùsobu prohledávání
+
+       FIND b:  - tímto pøíkazem se lze dostat okamitì na zaèátek bloku
+           (za dvojteèku nutno zapsat jednu mezeru!)
+
+
+     Pøíklady:
+
+      - chci vyhledat všechny vıskyty návìští 'KAREL', zadám 'FIND s:karel'
+           (nerozlišují se malá a velká), po nalezení prvního vıskytu zadám
+           pokadé jen 'FIND' pro nalezení dalšího, jakmile se po zadání
+           'FIND' jen obnoví vıpis na stejném místì, jedná se o poslední
+           vıskyt øetìzce 'KAREL'
+
+      - chci se opìt dostat na první vıskyt øetìzce 'KAREL'
+
+
+
+           zadám jen 'FIND s' a dostanu se na první vıskyt
+
+      - chci vyhledat vıskyt návìští 'KAREL' pouze v poli návìští (toto je
+           nejrychlejší zpùsob jak se dostat ve vıpisu na poadované
+           místo), zadám 'FIND s:KAREL ' - za návìští vloím mezeru!
+
+      - chci vyhledat první instrukci ld a,(hl) od zaèátku zdrojového
+           textu, zadám 'FIND s:ld   a,(hl)', mezi mnemoniku a operandy
+           musím vloit tolik mezer, aby jejich poèet plus poèet písmen
+           mnemoniky dal souèet 5
+
+
+
+     Nahrazování øetìzcù:
+
+       REPLACE :xxxxx - nahradí všechny vıskyty øetìzce 'yyyy' vyhledaného
+           pøíkazem 'FIND :yyyy' v daném øádku øetìzcem 'xxxxx' a vyhledá
+           další vıskyt øetìzce 'yyyy'
+
+       REPLACE - nahradí všechny vıskyty øetìzce, kterı byl zadán pøíkazem
+           FIND, øetìzcem, kterı byl zadán pøíkazem REPLACE
+
+
+     Pøíklad:
+
+      - chci najít a vymìnit nìkteré vıskyty øetìzce 'KAREL' øetìzcem
+           'JOSEF', zadám pøíkaz 'FIND s:karel', po nalezení vıskytu
+           øetìzce 'KAREL' udìlám:
+            - buï zadám 'REPLACE :JOSEF' (podruhé a dále u jen 'REPLACE')
+              kdy budu chtít vıskyt nahradit
+            - nebo zadám 'FIND' kdy budu chtít tento vıskyt ponechat beze
+              zmìny
+           co opakuji tak dlouho dokud neprojdu všechny vıskyty øetìzce
+           'KAREL'
+
+
+
+     Mazání zdrojového textu a nastavení prostoru pro nìj:
+
+       CLEAR (SYMBOL SHIFT + X) - pøíkaz vymae zdrojovı text a vyèistí
+           tabulku symbolù (ponechá v ní jen uzamèené symboly - viz
+           kapitolu 4 Tabulka symbolù), protoe se jedná o pøíkaz, jeho
+           chybné pouití mùe znaènì zvıšit hladinu adrenalinu v krvi
+           uivatele, je nutno jej zadávat ve tvaru 'CLEAR y'
+
+       U-TOP (SYMBOL SHIFT + U) - uivatelská zaráka, toto je poslední
+           adresa, kam smí bıt uloen zdrojovı text a kam smí bıt provedena
+           kompilace (kap. 3 Pøeklad). Za pøíkazem U-TOP musíte uvést èíslo
+           nebo matematickı vıraz (bude vyhodnocen zleva doprava), mùe
+           obsahovat èísla i existující definovaná návìští (jinak chyba),
+           tento pøíkaz lze pouít i jako kalkulaèku, vısledek je trvale
+           vidìt vpravo nahoøe, k nastavení zaráky na adresu 65535 pouí-
+           vejte pøíkaz 'U-TOP -1', pomocí uivatelské zaráky získáte
+           chránìnou oblast pamìti, kam mùete uloit tøeba tiskové pod-
+           programy a jiné, pro assembler i monitor je oblast od zaráky a
+           do konce pamìti nepøístupná
+
+
+     Chyby pøi editování:
+
+      Bad mnemonic     chyba v zápisu mnemoniky, nebo návìští v poli
+                       mnemoniky
+
+
+
+      Bad operand      v instrukci pouit chybnı operand
+
+      Big number       pouité èíslo je vìtší ne 65535
+
+      Syntax horror    syntaktická chyba, nìkterá poloka je delší ne mùe
+                       bıt, dvì operace ve vırazu vedle sebe, ...
+
+      Bad string       špatnì zadanı øetìzec, uvozovka se píše do øetìzce
+                       dvojitì, øetìzec nesmí bıt prázdnı
+
+      Bad instruction  instrukce zapsána formálnì správnì, pouitá
+                       instrukce však nemá monost pracovat s touto
+                       kombinací operandù
+
+      Memory full      pamì pøidìlená pro zdrojovı text je vyèerpána,
+                       mùete se pokusit zkrátit zdrojovı text (viz
+                       kapitolu 6. Formát zdrojového textu)
+
+      XXXX unknown     chyba pøi pouití návìští, které v tabulce symbolù
+                       není nebo tam je, ale nemá definovanou hodnotu -
+                       tato chyba je hlášena u pøíkazu U-TOP
+
+
+
+                           2. magnetofonové operace
+
+
+     Assembler PROMÉTHEUS umoòuje (kdyby ne, bylo by to na pováenou) ukládat,
+kontrolovat a èíst zdrojové texty (i jejich èásti) z magnetofonu.
+
+       SAVE (SYMBOL SHIFT + S)
+
+         Pøíkaz urèenı pro uloení zdrojového textu na kazetu.
+
+       SAVE :karel - uloí celı zdrojovı text (zdrojovı text a tabulku
+           symbolù) na kazetu, blok bude uloen jako BASICovské CODE pod
+           jménem 'karel'
+
+       SAVE - uloí celı zdrojovı text na kazetu, jako jméno bude vzato
+           naposledy pouité jméno - toto se hodí jestlie pøi verifikaci
+           došlo k chybì a je nutno opakovat opìt ukládání
+
+       SAVE b:karel - uloí na kazetu èást zdrojového textu (nastavenı
+           blok) a celou tabulku symbolù - vybírání návìští, která jsou ve
+           zvoleném bloku pouita, by bylo èasovì a pamìovì nároèné -
+           proto chcete-li na kazetu uloit opravdu jen èást zdrojového
+           textu, musíte vymazat všechno ostatní a potom vyèistit tabulku
+           symbolù (viz kapitola 4 Tabulka symbolù)
+
+       SAVE b - uloí zvolenou èást zdrojového textu se jménem naposledy
+           pouitım v pøíkazu SAVE nebo LOAD
+
+
+       LOAD (SYMBOL SHIFT + L)
+
+         Pøíkaz slouící k pøihrání zdrojového textu z kazety.
+Chcete-li novı zdrojovı text pouze nahrát, musíte ten starı nejprve vymazat
+(pøíkazem 'CLEAR y' - SS + X).
+
+       LOAD : - nahraje první nalezenı zdrojovı text z kazety do poèítaèe
+
+       LOAD :karel - nahraje do poèítaèe zdrojovı text se jménem 'karel'
+
+
+
+       LOAD - nahraje do poèítaèe zdrojovı text se jménem, které bylo
+           naposledy pouito v pøíkazech LOAD nebo SAVE
+
+           Pouijí-li se místo jména samé mezery, bude to bráno jako kdyby
+       nebylo zadáno ádné jméno a naète se první nalezenı blok CODE.
+
+
+           Nahrávání probíhá následovnì:
+
+       1.  prohledává se kazeta dokud se nenajde blok CODE se správnım
+           jménem
+
+       2.  po nalezení takového bloku se zjistí, zda se blok vejde do volné
+           pamìti, pokud ne, je hlášena chyba Memory full
+
+       3.  blok se nahraje na konec pamìti urèené pro zdrojovı text (adresa
+           posledního bytu je napsána vpravo ve stavovém øádku)
+
+       4.  zjistí-li se, e se nejedná o zdrojovı text tohoto assembleru,
+           pøíkaz je pøerušen
+
+       5.  zaène se vkládání nahraného zdrojového textu do zdrojového
+           textu, kterı je v pamìti od minula, pøi této operaci se kadı
+           novı øádek pøevede na textovı tvar a vloí do  pùvodního textu
+           - vkládá se stejnì jako pøi vkládání z klávesnice - za pøístupnı
+           øádek, bude-li pøi vkládání nalezena chyba, objeví se chybové
+           hlášení a je mono chybu opravit, po opravì program pokraèuje ve
+           vkládání, pøi pøihrání bloku se do pamìti musí vejít souèasnì
+           dvì tabulky symbolù, stará (ta se zvìtšuje o nová návìští) a
+           nová, ze které se berou návìští pøi pøevodu øádkù na textovı
+           tvar - tyto podrobnosti Vás nemusí zajímat, pokud se pøekládá za
+           zdrojovı text (nejèastìjší situace), tak problémy s místem
+           nastanou jen tìko
+
+       6.  stav vkládání lze zobrazit stiskem libovolné klávesy
+
+       7.  stiskne-li se pøi vkládání klávesa SPACE, vkládání se ukonèí a v
+           editaèním øádku bude právì vkládaná instrukce
+
+       8.  pokud dojde pøi vkládání k chybì a v editaèním øádku je chybná
+           instrukce, lze vkládání ukonèit vloením nìjakého pøíkazu nebo
+           povelu(tøeba pøepnutím mezi desítkovou a šestnáctkovou soustavou)
+
+       9.  vkládání bude chvíli trvat - po dobu vkládání je na obrazovce
+           nápis 'Wait please'
+
+
+       VERIFY (SYMBOL SHIFT + V)
+
+         Pøíkaz slouící ke kontrole na pásce uloeného textu, je ho nutné
+       provést ihned po pøíkazu SAVE, nepotøebuje ádné parametry, pouije
+       jméno z pøíkazu SAVE a testuje blok pouze s tímto jménem
+
+
+       GENS (SYMBOL SHIFT + G)
+
+         Pøíkaz slouí k pøihrání zdrojového textu ve formátu assembleru
+       GENS (MACROS), syntaxe je úplnì stejná jako u pøíkazu LOAD, zdrojovı
+       text nahraje a vkládá stejnì jako u pøíkazu LOAD, pøed vkládáním
+       zdrojového textu z GENSu je vıhodné text nejprve upravit - zkrátit
+
+
+
+
+
+       øádky tak, aby odpovídaly formátu PROMÉTHEA, pøemístit moné
+       komentáøe na zvláštní øádky atd. - je s tím ménì práce ne opravovat
+       øádky a pøi vkládání
+
+         Je-li konec prostoru pro zdrojovı text nastaven na adresu 65535
+       (#FFFF), nebude rozeznán konec souboru a vkládání se zastaví na
+       chybì - dojde k pokusu vzít jako øádek zdrojového textu nìkolik
+       prvních bytù z ROM, pøerušte vkládání vloením nìjakého povelu - viz
+       bod 8. Chcete-li se tomu vyhnout, nastavte konec pamìti pro zdrojovı
+       text tøeba adresu 65500 (pøíkaz U-TOP).
+
+       Pokud dojde pøi kazetovıch operacích ke stisku klávesy BREAK (SPACE), v
+editaèním øádku zùstane naposledy zadanı povel. Pokud dojde v pøíkazu LOAD, GENS
+nebo VERIFY k chybì, vypíše se chybové hlášení 'Tape error' a opìt je v
+editaèním øádku poslednì zadanı pøíkaz.
+
+       Pokud budete chtít do assembleru vloit zdrojovı text z jiného assem-
+bleru, musíte ho pøevést na formát assembleru GENS, kadı øádek zaèíná dvìma
+byty - èíslo øádku (pro PROMÉTHEUS není podstatné), potom text øádku (staèí vdy
+jedna mezera místo nìkolika) a na konci øádku je kód 13, takto upravenı zdrojovı
+text vyhrajte z pamìti jako CODE a mùete ho pøíkazem GENS dostat do PROMÉTHEA.
+Další pouitelnı zpùsob (moná jednodušší) je popsán v kapitole 5.
+Ostatní (viz GENSOR).
+
+
+
+                                  3. pøeklad
+
+       ASSEMBLY (SYMBOL SHIFT + A) - pøíkaz provede kompilaci zdrojového textu.
+Za pøíkazem ASSEMBLY je mono uvést parametr 'b' (nebo 'B') - v tomto pøípadì
+bude kompilován pouze nastavenı blok zdrojového textu.
+
+       Pøi kompilaci neexistuje kompilaèní vıpis - tato monost byla pro
+jednoduchost a zvıšení rychlosti odstranìna, upøímnì øeèeno autorovi (a nejen
+jemu) se zdála zbyteèná. Pokud se chcete dozvìdìt, na jaké adrese je která
+instrukce (to byla jediná námitka proti odstranìní kompilaèního vıpisu), napište
+tam nìjaké návìští (pokud u tam není) a po skonèení kompilace se podívejte do
+tabulky symbolù na jeho hodnotu (viz kapitola 4. tabulka symbolù), lze také
+samozøejmì pouít disassembler monitoru. Potøebujete-li z nìjakého dùvodu (?)
+protokol o pøekladu, pøeneste zdrojovı text do nìjakého jiného assembleru (GENS
+pomocí programu GENSOR - viz kapitolu 5. ostatní - GENSOR) a s jeho pomocí ho
+získáte.
+
+       Kompilace je provádìna rychlostí pøiblinì 2 KB strojového kódu za
+sekundu - tedy ani dlouhı zdrojovı text není pøekládán déle ne 3-4 sekundy,
+u krátkıch zdrojovıch textù je kompilace témìø okamitá.
+
+       Kompilace je dvouprùchodová, pøi prvním prùchodu se pouze zjišují
+hodnoty návìští v poli návìští (nikoliv u pøíkazu EQU), pøi druhém prùchodu se
+ji generuje strojovı kód, nyní musí bıt známa všechna návìští. Ukládání
+strojového kódu do pamìti je kontrolováno tak, aby nebyl pøepsán ladící systém,
+zdrojovı text a oblast pamìti nad uivatelskou zarákou.
+
+
+      Moná chybová hlášení:
+
+      Bad PUT (ORG)   - pøi druhém prùchodu kompilace došlo k pokusu o
+                        pøepsání ladícího systému, zdrojového textu nebo
+                        oblasti nad uivatelskou zarákou strojovım kódem
+
+      XXXXX unknown   - pouité návìští 'XXXXX' nemá dosud pøiøazenou
+                        ádnou hodnotu
+
+
+
+      Already defined - pokus o druhé definování hodnoty návìští
+
+      Big number      - pokus o zapsání velkého èísla do 8 bitù, u pøíkazù
+                        relativních skokù to znamená, e vzdálenost je
+                        pøíliš velká, u instrukcí typu (ix+d) smí bıt d v
+                        rozsahu -128 a 127, pøíkazy typu ld a,N smí bıt N
+                        v rozsahu -256 a 255 (podrobnìji dále)
+
+       Dojde-li k chybì pøi kompilaci, pøeklad se zastaví a obnoví se vıpis tak,
+e øádek, na kterém došlo k chybì je nyní pøístupnı (jedná-li se o chybu Already
+defined tak ono podruhé definované návìští je samozøejmì v poli návìští, nikoliv
+v poli operandù). Pokud kompilace skonèí úspìšnì, vypíše se hlášení 'Assembly
+complete'.
+
+       RUN (SYMBOL SHIFT + R) - pøíkaz slouící ke spuštìní programu od místa
+zadaného pøíkazem ENT (Entry point - viz dále), pøed spuštìním programu se vdy
+provede kompilace - pøíkaz zahrnuje pøíkaz ASSEMBLY (pøeklad je rychlı a není
+tøeba zadávat dva pøíkazy), pokud nebude nalezen právì jeden pøíkaz ENT, vypíše
+se chybové hlášení 'ENT ?'. Také tento pøíkaz mùe obsahovat parametr 'b' - pøed
+spuštìním se pøeloí pouze zvolenı blok zdrojového textu. Váš program bude
+spuštìn se zakázanım pøerušením a proto jej musíte pøípadnì povolit!
+
+      Instrukce:
+       PROMÉTHEUS pøekládá všechny základní instrukce (známé) a také vìtšinu
+tzv. 'neznámıch' instrukcí - jediné 'neznámé' instrukce, které assembler nezná
+jsou všechny rotace na adrese (ix+d) s následnım pøenosem do zvoleného registru,
+pokud budete chtít tyto instrukce pouít, musíte je zapsat pomocí pseudo -
+instrukce DEFB (instrukce nebyly zaøazeny protoe se v praxi nepouívají a
+zvìtšily by délku assembleru). Následuje seznam tìch 'neznámıch' instrukcí,
+které assembler pouívá:
+
+   Instrukce, které pouívají poloviny indexregistrù - IX,IY. Dolní polovina
+   registru IX je znaèena LX a horní polovina bude oznaèena HX, obdobnì pro
+   registr IY je LY a HY.
+
+     inc   inc  hx      inc  lx      inc  hy      inc  ly
+     dec   dec  hx      dec  lx      dec  hy      dec  ly
+
+     ld    ld   hx,N    ld   lx,N    ld   hy,N    ld   ly,N
+           ld   b,hx    ld   b,lx    ld   b,hy    ld   b,ly
+           ld   c,hx    ld   c,lx    ld   c,hy    ld   c,ly
+           ld   d,hx    ld   d,lx    ld   d,hy    ld   d,ly
+           ld   e,hx    ld   e,lx    ld   e,hy    ld   e,ly
+           ld   hx,hx   ld   hx,lx   ld   hy,hy   ld   hy,ly
+           ld   lx,hx   ld   lx,lx   ld   ly,hy   ld   ly,ly
+           ld   a,hx    ld   a,lx    ld   a,hy    ld   a,ly
+
+     add   add  a,hx    add  a,lx    add  a,hy    add  a,ly
+
+     adc   adc  a,hx    adc  a,lx    adc  a,hy    adc  a,ly
+
+     sub   sub  hx      sub  lx      sub  hy      sub  ly
+
+     sbc   sbc  a,hx    sbc  a,lx    sbc  a,hy    sbc  a,ly
+
+     and   and  hx      and  lx      and  hy      and  ly
+
+     xor   xor  hx      xor  lx      xor  hy      xor  ly
+
+     or    or   hx      or   lx      or   hy      or   ly
+
+     cp    cp   hx      cp   lx      cp   hy      cp   ly
+
+
+
+   Rotace SLIA (shift left inverted arithmetic - invertovanı aritmetickı
+   posun doleva) - posune doleva zvolenı registr, vystupující bit je uloen
+   do CARRY, vstupující bit je jednièka.
+
+     slia  slia b       slia c       slia d       slia e
+           slia h       slia l       slia (hl)    slia a
+
+       U instrukcí relativních skokù a instrukce DJNZ se jako u ostatních
+assemblerù píše absolutní adresa. Pøi kompilaci se vypoète relativní adresa a
+uloí se, pokud je relativní adresa mimo rozsah -128 a 127, ohlásí se chyba
+'Big number'.
+
+       Assembler pouívá nìkteré pseudoinstrukce - slouí buï k zápisu èísel a
+textù do pamìti nebo k ovládání ukazatele kompilace, umístìní strojového kódu a
+k nastavování startu pro pøíkaz RUN a hodnot návìští - následuje seznam:
+
+       ORG vıraz - nastaví èítaè adres a ukazatel uloení do pamìti na hodnotu
+vırazu. Ukazatel uloení do pamìti urèuje, kam se bude ukládat strojovı kód,
+èítaè adres urèuje kde bude pøeloenı program pracovat - hodnota tohoto èítaèe
+se pouívá pøi dosazování hodnot návìští pøi prvním prùchodu. Ukazatel uloení
+do pamìti i èítaè instrukcí se vdy zvìtšují o délku právì pøeloené instrukce.
+
+       PUT vıraz - nastaví ukazatel uloení do pamìti na hodnotu vırazu. Tento
+pøíkaz se pouívá v pøípadì, e je potøeba uloit strojovı kód jinam ne bude
+spuštìn. Chcete tøeba pøeloit program tak, aby pracoval v obrazovkové pamìti
+tedy, od adresy 16384, protoe pøekládat pøímo do obrazovky není moné, vlote
+za pøíkaz ORG 16384 ještì pøíkaz PUT 60000 - program se bude pøekládat tak, aby
+pracoval od adresy 16384 ale ukládat se bude od adresy 60000. Nelze pøehodit
+poøadí, ve kterém jsou obì pseudoinstrukce uvedeny, protoe pøíkaz ORG nastavuje
+také ukazatel uloení do pamìti! Pøíkaz PUT byl zaveden jako alternativa k
+monosti ukládat pøeloenı program za tabulku symbolù bez ohledu na pseudo -
+instrukci ORG, kterou poskytuje assembler GENS (MASM), toto øešení je však
+podstatnì pøizpùsobivìjší, programátor se nemusí starat, kde tabulka symbolù
+konèí a mùe si sám nastavit, kam se bude pøeklad ukládat. Chcete-li vyrobit
+program, kterı se po spuštìní sám rozmístí po pamìti, mùete to vyrobit tøeba
+takto:
+
+           org  60000
+
+  START    ld   hl,START1   ;adresa, kde je 1. blok uloen
+           ld   de,30000    ;adresa, kde má 1. blok pracovat
+           ld   bc,BLOK1LEN ;délka 1. bloku
+           ldir             ;pøesuò 1. blok
+           ld   de,35000    ;adresa, kde má 2. blok pracovat
+           ld   bc,BLOK2LEN ;délka 2. bloku
+           ldir             ;pøesuò 2. blok
+           jp   30000       ;skok na zaèátek 1. bloku
+  END1
+           org  30000       ;první blok bude na adrese 30000
+           put  END1        ;jeho kód se ukládá stále dále
+  START1   ???              ;zde je text prvního bloku
+           ???
+  BLOK1LEN equ  $-START1    ;BLOK1LEN bude obsahovat délku
+  END2
+           org  35000       ;druhı blok bude na adrese 35000
+           put  END2        ;kód se ukládá stále dále
+  START2   ???              ;zde je text druhého bloku
+           ???
+  BLOK2LEN equ  $-START     ;BLOK2LEN bude obsahovat délku
+
+       návìští EQU vıraz - pøiøadí pouitému návìští hodnotu vırazu.V okamiku,
+kdy dochází pøi druhém prùchodu ke zpracování této instrukce u musí bıt známé
+
+
+
+hodnoty všech návìští, která jsou pouita ve vırazu, jinak dojde k chybì.
+
+  LABEL1   equ  LABEL2+1    ;takhle to bude fungovat, protoe
+  LABEL2                    ;návìští LABEL2 bylo definováno
+                            ;u pøi prvním prùchodu pøekladu
+
+  LABEL1   equ  LABEL2+1    ;takhle to bohuel fungovat nebude
+  LABEL2   equ  32000       ;protoe návìští LABEL2 ještì nemá
+                            ;definovanou hodnotu
+
+       ENT vıraz - tento pøíkaz slouí k nastavení adresy, od které bude spuštìn
+strojovı kód v pøípadì, e bude pouit pøíkaz RUN.
+
+           ent  START       ;program bude spuštìn od místa, na
+                            ;nìm se nachází návìští START
+                            ;v poli návìští
+
+           ent  $           ;program bude spuštìn od místa, na
+                            ;kterém se vyskytuje tento pøíkaz
+
+       DEFB vıraz,vıraz,...,vıraz - uloí od adresy, na kterou ukazuje ukazatel
+uloení do pamìti, vısledky vırazù jako osmibitové hodnoty - musí leet v roz-
+mezí -256 a 255, jinak je hlášena chyba 'Big number'. Potom jsou zvıšeny
+hodnoty èítaèe adres a ukazatele uloení do pamìti o poèet bytù, které byly
+pøíkazem DEFB naplnìny - poèet vırazù.
+
+       DEFW vıraz,vıraz,...,vıraz - podobné jako pøíkaz DEFB, ukládají se šest-
+náctibitové hodnoty (napøed niší byte a potom vyšší byte). Ukazatel uloení do
+pamìti a èítaè adres se zvìtší o poèet bytù, které byly naplnìny - poèet vırazù
+krát dva.
+
+       DEFM øetìzec - uloení øetìzce do pamìti, tento pøíkaz byl u assembleru
+rozšíøen:
+
+           defm "karel"     ;uloí do pamìti postupnì ASCII
+                            ;kódy jednotlivıch písmen
+
+           defm 'karel'     ;provede témìø toté, poslední
+                            ;znak bude mít ASCII hodnotu vìtší
+                            ;o 128 - invertovanı znak, pokud
+                            ;netušíte, k èemu je to dobré,
+                            ;podívejte se na pøíklady programù
+
+       DEFS vıraz - vyhodnotí se vıraz a o jeho hodnotu se zvìtší ukazatel
+uloení do pamìti a èítaè adres. Tato pseudoinstrukce se pouívá k vynechání
+místa o poadované délce.
+
+  BUFFER   defs 100         ;vynechání 100 bytù
+  BUFFER2  defs 1000        ;vynechání 1000 bytù
+
+      Vırazy:
+
+       Assembler umoòuje vloit na místo, kde je v instrukci èíselná hodnota,
+matematickı vıraz. Matematickı vıraz se skládá z jednoho nebo nìkolika návìští
+èi konstant oddìlenıch od sebe operátory. Všechna èísla jsou pøevedena na roz-
+sah 0-65535 (záporná èísla jsou pøiètena k èíslu 65535 a tím jsou pøevedena na
+rozsah 0-65535), v tomto tvaru jsou provedeny operace a vısledek je pouit podle
+potøeb instrukce. Vıpoèet je provádìn zleva doprava, není zachovávána priorita
+operátorù. Pokud není mono vıraz zapsat tak, aby ho bylo moné provádìt zleva
+doprava, musíte ho rozepsat na dva øádky a mezivısledek pøiøadit nìjakému ná-
+vìští a to pouít na dalším øádku, autor se s touto eventualitou ještì nesetkal
+- nejèastìjší vırazy pouívají pouze jeden operátor.
+
+
+
+      Konstanty:
+
+       Jsou povoleny tyto konstanty:
+
+          desítkové:      1234     47       -32
+
+          šestnáctkové:   #ABCD    -#30     #a3
+
+          dvojkové:       %10111   %111     -%011010
+
+          znakové:        "a"      "aB"     """"
+                    uvozovka se musí vloit dvojitì
+
+       Je monost odkázat se na aktuální hodnotu èítaèe adres:
+
+          $ - na toto místo bude dosazena hodnota èítaèe adres
+
+  START    ????             ;zde je èást textu, její
+           ????             ;délku potøebujeme zjistit
+           ????             ;a vloit do návìští LENGTH
+  LENGTH   equ  $-START     ;toto je na konci oné èásti
+
+      Návìští:
+
+         Návìští je posloupnost èísel, písmen a znaku '_', která zaèíná
+písmenem. Znakù lze pouít maximálnì 8 a pro identifikaci jsou dùleité všechny.
+
+      Operátory:
+
+           sèítání             +
+           odèítání            -
+           násobení            *
+           dìlení              /
+           zbytek po dìlení    ?
+
+       Chcete-li získat dolní byte návìští TAB, vlote TAB?256, horní byte
+získáte pomocí TAB/256.
+
+       Dùleité upozornìní: pøi dìlení nulou není hlášena chyba a vısledek je
+65535.
+
+
+
+                              4. Tabulka symbolù
+
+       Monosti, které poskytuje PROMÉTHEUS s tabulkou symbolù jsou jedním ze
+znakù, které ho vıraznì odlišují od ostatních assemblerù.
+
+       Tabulka symbolù existuje neustále a je vdy moné prohlédnout si abecednì
+seøazenı vıpis návìští a jejich hodnot, pokud jim byly nìjaké pøiøazeny.
+Neustálá existence tabulky symbolù se mùe zdát nevıhodná - je to však
+vlastnost, která umoòuje vırazné zkrácení zdrojového textu a také zrychlení
+kompilace.
+
+      Pøíkazy pro práci s tabulkou:
+
+       TABLE (SYMBOL SHIFT + T) - tento pøíkaz vypíše tabulku symbolù na
+obrazovku, zobrazí se jedna stránka (40 návìští) a oèekává se stisk nìjaké
+klávesy, pokud to bude klávesa SPACE, vypisování tabulky se skonèí, pokud to
+klávesa SPACE nebude, vypíše se další stránka. Návìští jsou vypsána ve dvou
+sloupcích, pøed návìštím je vypsána buï mezera nebo hvìzdièka (její vıznam je
+popsán dále), za návìštím je vypsána hodnota, která byla
+
+
+
+návìští pøiøazena pøi posledním pøekladu, pokud mu ádná hodnota pøiøazena
+nebyla, je vypsáno pìt teèek. Hodnota návìští je vypsána v nastavené èíselné
+soustavì (desítkové èi šestnáctkové viz kapitolu 1. Editor). Monost pøeèíst si
+tabulku symbolù lze pouít, zajímají-li Vás adresy nìkterıch èástí programu nebo
+kdy si nejste jistí (u dlouhıch textù se to obèas stane), která návìští jste u
+pouili a která ne.
+
+       TABLE p - provádí vıpis tabulky symbolù na obrazovku a také na tiskárnu,
+pro podrobnosti se podívejte na pøíkaz PRINT, na kadı øádek se vytiskne jedno
+návìští a jeho hodnota, jedna stránka obrazovky se tedy vypíše na 40 øádkù
+papíru.
+
+       TABLE c - vyèištìní tabulky symbolù, z tabulky symbolù se odstraní ta
+návìští, která se nevyskytují ve zdrojovém textu a nejsou uzamèena. Pøi vymazání
+øádku nebo bloku zdrojového textu se z tabulky symbolù neodstraní ta návìští,
+která se vyskytovala pouze ve vymazané èásti zdrojového textu - tato akce mùe
+bıt èasovì nároènìjší a nevyplatí se jí provádìt neustále protoe by mohla
+zdrovat, také nìkolik bytù za to nestojí. Zbyteèná návìští jsou vidìt kdy si
+po provedení kompilace vypíšete tabulku symbolù - nemají definovanou hodnotu
+- pokud jejich poèet vzroste, tak pouijte pøíkaz pro vyèištìní tabulky symbolù.
+Pokud nemáte problémy s volnou pamìtí (pak je kadı byte dobrı) mùete na tento
+pøíkaz zapomenout, pøi kadém pøeètení zdrojového textu z kazety (tuto akci je
+nutno provádìt obvykle nìkolikrát za den - pøi ladìní programù ve strojovém kódu
+není nouze o stavy, kdy se zkoušenı program odmítá vrátit zpìt, pøípadnì se
+rovnou po spuštìní vymae) se ve zdrojovém textu zachovávají jen pouitá
+návìští.
+
+      Oddìlená kompilace - kompilace po èástech:
+
+       TABLE l - uzamkne všechna návìští v tabulce symbolù, tato návìští se pøi
+kompilaci chovají tak, jako by byla stále definována, pøíkaz TABLE c tato
+návìští neodstraní. Popsání smyslu tohoto pøíkazu následuje.
+
+       TABLE u - odemkne všechna zamèená návìští v tabulce symbolù, opak pøíkazu
+TABLE l.
+
+       Dva pøedchozí pøíkazy jsou urèeny pro umonìní oddìlené kompilace
+- dùvodem mùe bıt velkı rozsah zdrojového textu. Zdrojovı text je nutno
+rozdìlit na jakısi základ (pomocné podprogramy - tiskové rutiny, práce s
+obrazovkou, data,...) a na hlavní èást (toto rozdìlení mùe bıt i nìkolika-
+vrstevné), dùleité je, aby se základ (niší úroveò) neodkazovala na návìští v
+hlavní èásti (vyšší úroveò). Nyní se odladí základ, zamkne tabulka symbolù a
+vymae zdrojovı text. Po vymazání zdrojového textu zùstanou v pamìti všechna
+návìští, která obsahoval a je mono se na nì odvolávat v dalším zdrojovém textu.
+Tuto monost Vám snad lépe osvìtlí následující pøíklad:
+
+       V pøíkladu je program rozdìlen na tøi vrstvy, v první vrstvì jsou uloeny
+texty, druhá èást obsahuje program, kterı vytiskne text, jeho adresa mu bude
+zadána a poslední (nejvyšší) vrstva bude volat tisk textu.
+
+           org  65000
+  TEXT1    defm "Zkusebni " ;toto je první èást programu,
+           defm 'text c.1'  ;není v ní ádnı odkaz na
+  TEXT2    defm "pokusny "  ;návìští ve vyšší vrstvì
+           defm 'text c.2'
+
+       Tuto èást programu zkompilujte (ASSEMBLY), zamknìte tabulku symbolù
+(TABLE l) a vymae zdrojovı text (CLEAR y).
+
+           org  64000
+  PRINT    ld   a,(hl)      ;toto je druhá èást programu,
+           and  127         ;odkaz na niší úroveò v ní
+
+
+
+           rst  16          ;sice není, mohl by však bıt,
+           ld   a,(hl)      ;odkaz do vyšší úrovnì se
+           inc  hl          ;zde vyskytovat nesmí
+           and  128
+           jr   z,PRINT
+           ret
+
+       Nyní opìt zkompilujte zdrojovı text (ASSEMBLY), uzamknìte opìt tabulku
+symbolù (TABLE l), nyní jsou v ní ji tøi návìští, a opìt vymate zdrojovı text
+(CLEAR y).
+
+           org  63000
+  MAIN     ld   a,2         ;poslední a nejvyšší úroveò
+           call #1601       ;programu, mùe se odkazovat
+           ld   hl,TEXT1    ;i na návìští definovaná v
+           call PRINT       ;obou niších úrovních
+           ret
+
+       Po vloení poslední èásti zdrojového textu jsou v tabulce symbolù návìští
+TEXT1, TEXT2, PRINT a MAIN. První tøi návìští jsou uzamèena.
+
+       Je zøejmé, e v uvedeném pøíkladì nemá rozdìlení tohoto krátkého
+zdrojového textu na kusy smysl, ilustruje však zpùsob, jakım lze zpracovávat i
+dlouhé zdrojové texty.
+
+       Tento zpùsob práce byl pouit pøi ladìní monitoru, z kompilace zdrojového
+textu byla zachována tabulka symbolù a pøeloenı kód, do pamìti byl vkládán
+zdrojovı text monitoru a ladìn - tímto zpùsobem bylo mono odladit rozumnım
+zpùsobem program dlouhı 11 KB, odpovídající zdrojovı text by byl dlouhı celkem
+asi 40 KB a nevešel by se za ádnıch okolností spolu s assemblerem do pamìti,
+o potøebì místa pro pøeloenı kód ani nemluvì.
+
+       Pøi kompilaci jednotlivıch vrstev je vhodné niší vrstvy chránit tím, e
+se uivatelská zaráka nastaví pod nì - nehrozí nebezpeèí, e ji hotové èásti
+budou pøepsány zdrojovım textem nebo generovanım strojovım kódem.
+
+       Pøi kadém zahájení práce je nutno opìt zkompilovat všechny vrstvy, aby
+se do tabulky symbolù dostala potøebná návìští, a vyplatí se tedy spíše vyhrát
+na kazetu celou pamì, tedy ladící systém i se zdrojovım textem a ji pøeloe-
+nımi vrstvami programu. Mùe se to zdát, e se nahrává zbyteènì velkı rozsah
+pamìti, ale z èasovıch dùvodù je to lepší, ne pøi zapnutí poèítaèe provádìt
+nìkteré akce vdy znovu, navíc tento postup umoòuje mít v pamìti i další
+programy a data a nemuset je pokadé nahrávat z deseti rùznıch kazet po dlouhém
+hledání a pøevíjení kazet z jednoho konce na druhı, takto popsanı zpùsob jsem si
+nevycucal z palce ale sám jsem ho pouíval pøi práci na monitoru k tomuto
+ladícímu systému - assembler u byl plnì funkèní v této dobì. Mùete pouít
+následující modifikaci tohoto zpùsobu:
+
+    1. odladíte si základní vrstvu
+
+    2. pro ladìní další vrstvy si vyrobíte jakousi instalaci, ta bude
+       obsahovat krátkı zavádìcí BASIC program a dva bloky CODE - první
+       bude tvoøit ladící systém spolu s tabulkou symbolù vzniklou
+       odladìním základní vrstvy, druhı pak pøeloenı kód a pøípadnì nìjaká
+       data nebo cokoliv jiného - rozdìlení je proto, e mezi ladícím
+       systémem a pøeloenım kódem je obvykle velká mezera a nemá smysl
+       nahrávat nìkolik KB nul, to ovšem neplatí kdy pøekládáte pøed
+       ladící systém a ne za nìj.
+       Zavádìcí BASIC mùe vypadat tøeba takto:
+
+             1 RANDOMIZE USR 24e3 :STOP
+          9999 CLEAR 23999 :LOAD "" CODE :LOAD "" CODE :RUN
+
+
+
+       Odpovídající bloky dostanete na kazetu pomocí pøíkazù:
+
+               SAVE "Instalace" LINE 9999:
+               SAVE "Code 1" CODE 24e3,konec-23999:
+               SAVE "Code 2" CODE zaèátek,délka
+
+       'konec' je konec zdrojového textu (první èíslo ve stavové øádce,
+       zaèátek a délka jsou èísla urèující polohu a rozsah pøeloené niší
+       vrstvy a pøípadnì dat, v tomto pøíkladu je assembler umístìn na
+       adrese 24000.
+
+    3. v instalaci si mùete také nastavit monitor podle svıch poadavkù a
+       nemusíte jej pak pokadé nastavovat znovu
+
+    4. po odladìní další vrstvy si vyrobíte opìt novou další instalaci - a
+       takto poøád dokola dokud není program celı hotov
+
+       Mùete samozøejmì také základní vrstvu pøeloit a z dalších vrstev se
+odkazovat u pøímo na adresy, to má nejménì dvì nevıhody - pøi pouívání
+monitoru se nebudete moci odkazovat na návìští v ji hotové vrstvì (nebudou v
+tabulce) a v pøípadì, e se rozhodnete pro zmìnu nìkteré èásti v niší vrstvì,
+budete muset pøepsat kadı odkaz na adresy ve vyšší vrstvì protoe se tyto
+adresy posunou, pouijete-li vıše popsanı postup, staèí vyrobit si novou
+instalaci s novımi hodnotami v tabulce symbolù a vyšší vrstvu nemusíte mìnit
+(pokud ovšem nezmìníte nìjak více základní vrstvu - jiná návìští, jinı smysl).
+
+       Nutnost pouití oddìlené kompilace se však díky znaènému zkrácení
+zdrojového textu (proti GENS je polovièní) odsouvá a na hranici kolem 5-7 KB
+generovaného strojového kódu, kratší strojovı kód lze ladit najednou - jaké to
+má vıhody snad není potøeba moc zdùrazòovat.
+
+
+
+                        5. Ostatní pøíkazy a monosti:
+
+       Doposud nebyly uvedeny nìkteré pøíkazy, které lze v assembleru pouívat,
+zde je jejich pøehled.
+
+       PRINT (SYMBOL SHIFT + P) - tento pøíkaz slouí k vytištìní zdrojového
+textu na tiskárnu nebo plotter. Program bere jednotlivé znaky a posílá je znak
+za znakem do kanálu systému Spectra #3 - kanál pro tiskárnu. Kadı øádek je
+ukonèen kódem 13 (ENTER) a nejsou v nìm pouity ádné tabelátory - mezery jsou
+opravdu tištìny všechny. Pokud v tomto pøíkazu pouijete parametr 'b', bude
+vytištìn pouze nastavenı blok. Chcete-li si vytisknout tabulku symbolù, pouijte
+pøíkaz 'TABLE p'. Provádìní lze zastavit stiskem klávesy SPACE. Jakım zpùsobem
+si pøipojíte svou tiskárnu na kanál #3 je Vaše vìc - staèí, aby byl k dispozici
+program, kterı 'umí' LPRINT.
+
+       MONITOR (SYMBOL SHIFT + M) - pøíkaz slouí k pøechodu do monitoru (viz
+dále). Pouijete-li parametr 'a', provede se pøed spuštìním monitoru kompilace
+zdrojového textu - je to vıhodnìjší ne zadávat pøíkazy ASSEMBLY a MONITOR
+postupnì. Pokud jste si pøi instalaci monitor odpojili, spuštìní se neprovede.
+
+       BASIC (SYMBOL SHIFT + B) - vrátí øízení do systému Spectra, do BASICu.
+Pokud se Vám však podaøilo pøepsat nìkteré systémové promìnné Spectra (program
+pracující s obrazovkou Vám 'utekl' a prošel pøes tuto oblast), pouijte pro
+návrat do BASICu radìji pøíkaz NEW. Pro nové spuštìní PROMÉTHEA pouijte adresu,
+na které je instalován - pøi návratu je assembler ve stejném stavu v nìm jste
+ho opustili (pokud jste ho ovšem z BASIC nìjak 'nevylepšili'). Pøi návratu se
+nastaví potøebné hodnoty do registrù IY a SP, zapne pøerušení v módu IM 1 a
+provede se skok do hlavní provádìcí smyèky (bude se interpretovat další pøíkaz),
+pøi tomto návratu není potøeba nastavovat registr HL !
+
+
+
+       NEW (SYMBOL SHIFT + N) - pøíkaz provede stejnou akci jako v BASIC pøíkaz
+NEW - vymae celou pamì a po nastavenı RAMTOP. Do assembleru byl zaøazen
+protoe pøi trasování nebo pøi bìhu se mùe podaøit pøepsat systémové promìnné
+a hrozí, e se pøi návratu pomocí pøíkazu BASIC systém zhroutí. Pokud nevíte,
+zda se nepøepsala také systémová promìnná RAMTOP, podívejte se na její hodnotu
+(je to hodnota na adresách 23730 a 23731) a pøípadnì ji opravte pøedtím, ne
+pouijete pøíkaz NEW (toto lze provést buï v monitoru nebo tak, e vyrobíte
+krátkı program, kterı to provede a ten spustíte pøíkazem RUN:
+
+           org  23296
+           ent  $
+           ld   hl,23999
+           ld   (23730),hl
+           ret
+
+       Program pøeloíte a spustíte pøíkazem 'RUN b' - pøedtím ho nastavíte jako
+blok - potom mùete bez obav provést pøíkaz NEW. Pokud pouíváte rutiny z ROM
+Spectra, které pøepisují systémové promìnné, je nìkdy lepší pouívat pro návrat
+do systému vdy pøíkaz NEW - po skonèení Vašeho programu toti nemusí bıt v tom
+stavu, v jakém by bıt mìly.
+
+       QUIT (SYMBOL SHIFT + Q) - pokud bude tento pøíkaz pouit tak zaruèenì
+jako poslední, k pouití jinıch u nebudete mít monost - provádí RESET
+(RANDOMIZE USR 0). Tímto pøíkazem pouze elegantnì ukonèíte práci a zcela
+vyèistíte poèítaè. Protoe tento pøíkaz je mimoøádnì nebezpeènı a jeho nechtìné
+pouití by mohlo vyvolat u uivatele silnou depresi (u se stalo), je nutno za
+nìj pøidat parametr 'y', pouze takto se provede.
+
+      GENSOR:
+
+       Zpùsob, jak dostat zdrojovı text z programu GENS do tohoto assembleru byl
+ji zmínìn, mùe nastat také opaèná potøeba, k tomuto úèelu byl vyroben krátkı
+program GENSOR.
+
+       Program GENSOR se skládá z krátké èásti v BASICu a pøiblinì z 200 Bytù
+strojového kódu. Ke své èinnosti potøebuje, aby byla oblast pamìti od adresy
+55000 a ke konci prázdná - sem se ukládá zdrojovı text ve formátu assembleru
+GENS (MASM). Nahrajte do pamìti PROMÉTHEUS (mùete odpojit monitor aby bylo více
+místa) a instalujte ho tøeba na adresu 25000. Nahrajte do assembleru zdrojovı
+text - pokud by pøesahoval adresu 55000, budete ho muset rozdìlit. Jestlie je
+adresa konce zdrojového textu menší ne 55000 mùete nahrát program GENSOR
+pøíkazem LOAD 'GENSOR'. Po nahrání pøepíšete v pøíkazu RANDOMIZE USR adr,
+promìnnou 'adr' skuteènım startem assembleru (nyní 25e3). Nyní mùete zadat
+pøíkaz GO TO 0 (ne RUN !), provede se inicializace a program GENSOR se pøipojí
+na tiskovı kanál #3, potom se provede spuštìní assembleru. Nastavte zaèátek
+bloku na zaèátek zdrojového textu a konec dejte o maximálnì 30 stránek dál, nyní
+zadejte pøíkaz 'PRINT b' - zadanı blok pùjde místo na tiskárnu do programu
+GENSOR, kterı ho ukládá za sebe - omezení na 30 stránek je dáno velikostí
+pamìti, do které se mùe zdrojovı text ukládat (kdyby byly jednotlivé øádky
+zdrojového textu delší ne je obvyklé - data nebo texty vyplòující celı øádek -
+vlote radìji konec bloku døíve ne po 30 stránkách). Zadejte pøíkaz BASIC a
+nahrajte právì vytvoøenou èást zdrojového textu na kazetu, po návratu do
+assembleru nastavte další èást zdrojového textu a opakujte dokud celı zdrojovı
+text není nahrán na kazetì.
+
+       Tento zpùsob pøenesení zdrojového textu do programu GENS mùete pouít i
+u jinıch assemblerù, máte-li zdrojovı text ve formátu pro GENS, mùete ho snadno
+pøenést do PROMÉTHEA.
+
+
+
+
+
+
+
+         6. formát zdrojového textu a další podrobnosti o assembleru:
+
+       Tato kapitola je urèena všem, kteøí by se rádi dozvìdìli jak vypadá
+zdrojovı text, jakım zpùsobem je mono ho ještì zkrátit (v mezích moností
+samozøejmì) a proè vlastnì dosahuje assembler v nìkterıch ohledech takové vıkony
+(rychlost a délka èi spíše úspornost uloení zdrojového textu) proti jinım
+assemblerùm.
+
+       Na poèátku byly tyto myšlenky:
+
+         - k tomu, aby se dala instrukce zcela jednoznaènì rozlišit staèí
+           její operaèní kód, informace o prefixech a tvaru pøípadného
+           èíselného operandu, tedy informace, které lze zapsat do dvou
+           bytù, toto øešení vıraznì urychlí pøeklad, bude staèit jen brát
+           operaèní kódy a hlídat syntaxi pøíkazù pøi kompilaci - tyto akce
+           se provádìjí u pøi editování (v této dobì èeká poèítaè na
+           èlovìka a má dost èasu aby tyto akce provedl) - vedlejším
+           efektem pak je, e u pøi psaní zdrojového textu dojde k
+           vychytání spousty chyb a pøeklepù
+
+         - návìští ve zdrojovém textu mohou bıt uloena jen jako odkazy do
+           tabulky symbolù, tyto odkazy zaberou jen dva byty, u návìští
+           dlouhıch alespoò tøi znaky vzniká úspora - tabulka symbolù se
+           bude vytváøet ji pøi psaní zdrojového textu, nebude tedy
+           potøeba vytváøet ji a pøi pøekladu, také kadı odkaz na návìští
+           bude nasmìrován pøi editaci a nebude potøeba pøi pøekladu
+           tabulku prohledávat
+
+       Nyní šlo o to, jak to provést s nejmenším monım nárokem na èas - tøeba
+jedna stránka vıpisu vlastnì znamená jakési disassemblování 20 instrukcí - o
+rychlosti, s jakou se to provádí se mùete pøesvìdèit sami (provádí se po kadém
+odeslání instrukce).
+
+       Kadı øádek zdrojového textu má tvar:
+
+         - první byte je operaèní kód instrukce, jsou zde ale také pseudo-
+           instrukce a další 'neinstrukce' jako je prázdnı øádek a
+           komentáø, ty mají také pøiøazeny své kódy, aby se odlišily od
+           obyèejnıch instrukcí, mají v druhém bytu øádku (informaèní byte)
+           takovou kombinaci prefixù, kterou nemá ádná instrukce, je
+           kombinace prefixù #DD a #FD, a v posledních tøech bitech je
+           uloeno èíslo 7 (mimo prázdnı øádek, ten tu má uloenou 0),
+           hodnota informaèního bytu závisí také na tom, jestli je nebo
+           není pøed instrukcí èi neinstrukcí návìští nebo ne - pro
+           signalizaci této skuteènosti je urèen 3 bit informaèního bytu,
+           kdy je návìští pouito, je zde zapsána 1, odpovídající hodnota
+           je zapsána v závorce, následuje pøehled kódù 'neinstrukcí':
+
+            neinstrukce           operaèní kód           informaèní byte
+
+             prázdnı øádek             0                     48 (56)
+             komentáø                  1                     55
+             ent                       2                     55 (63)
+             equ                       3                        (63)
+             org                       4                     55 (63)
+             put                       5                     55 (63)
+             defb                      6                     55 (63)
+             defm                      7                     55 (63)
+             defs                      8                     55 (63)
+             defw                      9                     55 (63)
+
+
+
+
+
+         - druhı byte je informaèní byte, obsahuje tyto údaje:
+
+             7 bit - #CB prefix (203), 0 ne, 1 ano
+             6 bit - #ED prefix (237)
+             5 bit - #DD prefix (221)
+             4 bit - #FD prefix (253)
+             3 bit - v poli operandù je návìští
+             2-0 bit - typ èíselného vırazu - podle tohoto se dosazuje
+                       vısledek vırazu, vıznam hodnoty je následující:
+
+                             0 - instrukce nemá èíselnı operand
+                             1 - jeden byte, rozsah -256 a 255
+                             2 - dva byty, mezi -65535 a 65535
+                             3 - jeden byte, rozsah -128 a 128
+                             4 - jeden byte, typu (ix+d)
+                             5 - typ (ix+d),n
+                             6 - rst p (p se vloí do op. kódu)
+                             7 - neinstrukce
+
+                       uvedené rozsahy je moné pouívat v textu
+
+         - další byty jsou pouity jen v pøípadì, e je 3 bit informaèního
+           bytu nastaven na 1 nebo kdy poslední tøi bity informaèního bytu
+           neobsahují nuly, tvar je následující:
+
+                 1. bit 3 je 1, bity 0 a 2 jsou všechny 0
+
+                    potom v dalších dvou bytech je zapsáno
+                    poøadí daného návìští v tabulce a na
+                    konci je èíslo 192+2 (délka)
+
+                 2. bit 3 je 0, bity 0 a 2 nejsou jenom 0
+
+                    v dalších bytech je zapsán celı vıraz
+                    návìští jsou nahrazena svım poøadím
+                    v tabulce symbolù, ostatní znaky jsou
+                    zapsány obvyklım zpùsobem, na konci je
+                    èíslo 192+délka vırazu
+
+                    napøíklad vıraz 2*LABEL+#23 je zapsán
+                    takto:
+
+                     '2','*',128+H,L,'+','#','2','3',192+8
+
+                    kde H a L jsou horní a dolní byte poøadí
+                    návìští LABEL v tabulce symbolù;
+                    vıraz (2*LABEL+#23) bude uloen také
+                    takto, jestli se jedná nebo nejedná o
+                    adresu se zjistí z operaèního kódu
+
+                 3. bit 3 je 1, bity 0 a 2 nejsou jenom 0
+
+                    uloení bude stejné jako v pøedchozím
+                    pøípadì, pøed vırazem budou dva byty
+                    obsahovat poøadí návìští a délka bude
+                    o dva byty vìtší
+
+      Monosti zkrácení zdrojového textu:
+
+       Dostane-li se programátor do situace, e potøebuje nìkolik desítek bytù
+pamìti a tyto nejsou k dispozici, pokusí se zkrátit zdrojovı text tak, aby byl
+pøi stejném obsahu kratší. Nìkolik zpùsobù, které vedou k vısledku:
+
+
+
+      1. Vyèistìte tabulku symbolù od zbyteènıch návìští pøíkazem 'TABLE c'.
+
+      2. Odstraòte komentáøe a prázdné øádky
+
+      3. Pokud se ve zdrojovém textu vyskytují pøíkazy DEFB nebo DEFW za sebou,
+snate se dostat co nejvíce vırazù do jednoho pøíkazu (bude ménì operaèních kódù
+a informaèních bytù) - napø:
+
+           defb 255
+  pøepisem defb 0      na   defb 255,0,32   ušetøíte 4 byty
+           defb 32
+
+      4. Zvyknìte si pokud pouíváte texty s posledním invertovanım znakem
+pouívat rozšíøení pøíkazu DEFM - sekvenci
+
+           defb "Invertovany tex"      ;v GENSu to jinak
+           defb "t"+128                ;nelze udìlat
+
+lze zapsat také takto: defm "Invertovany text" , je to pøehlednìjší a kratší
+(zvyk bıvá elezná košile).
+
+      5. U konstant pouijte desítkovou soustavu, stejné èíslo lze zapsat nej-
+kratším zpùsobem, je to sice ménì pøehledné, ale dá se takto ušetøit mnoho -
+hlavnì u binárního zápisu, poèet znakù potøebnı na zápis stejného èísla je
+rùznı, tøeba kód mezery je mono zapsat:
+
+                 '32'              v desítkové soustavì
+                 '#20'             v šestnáctkové soustavì
+                 '" "'             jako znak
+                 '%100000'         ve dvojkové soustavì
+
+zápis v desítkové soustavì je viditelnì ze všech nejkratší. Také je vhodné místo
+2+3 psát rovnou 5. Nìkdy je vhodné psát èísla v záporném tvaru, tøeba èíslo
+65535 lze zapsat jako -1, toté platí pro èíslo 255, pouze však je-li pouito v
+instrukci s osmibitovou konstantou.
+
+      6. Zkrate návìští, o kolik znakù zkrátíte návìští, o tolik se zkrátí
+tabulka symbolù a tedy i celı zdrojovı text, vyplatí se ovšem zkracovat vìtší
+mnoství návìští najednou, pouíváte-li tøeba návìští LOOP s èíslem, pak je
+vhodné nahradit stejnou èást kratší sekvencí - tøeba LP - zde si však dejte
+dobrı pozor abyste prohozením nezpùsobili, e døíve rùzná návìští budou nyní
+stejná, po prohození návìští samozøejmì musíte vyèistit tabulku symbolù.
+
+      7. Vyskytuje-li se ve zdrojovém textu nìkterá konstanta velmi èasto a
+je-li dlouhá alespoò 3 znaky, je vhodné její hodnotu pøiøadit nìkterému návìští
+a nahradit ji všude tímto návìštím - tento postup není dobrı jen pro zkrácení
+ale i pro zpøehlednìní a budete-li chtít konstantu zmìnit, staèí ji zmìnit na
+jednom místì a ne všude! Je-li tato konstanta pouita v pøíkazu DEFB (DEFW) a
+pouíváte-li jednopísmenné návìští, mùe se Vám vejít na jeden øádek vícekrát
+ne pùvodní konstanta.
+
+       Uvedené zpùsoby nejsou doporuèením jak psát zdrojové texty, vedou toti
+a na malé vıjimky k horší pøehlednosti. Je to zpùsob, jak se vyhnout nutnosti
+pouít oddìlenou kompilaci. Pokud se Vám podaøí zjistit, e se zdrojovı text
+nevejde do pamìti u v polovinì prací, nezbyde Vám ne ho rozdìlit, zaènou-li
+problémy s pamìtí a na konci, stojí za pokus zkrátit zdrojovı text - obvykle se
+to podaøí - stále je to lepší ne se zabıvat dìlením zdrojového textu a pouívat
+oddìlenou kompilaci.
+
+      Tabulka symbolù:
+
+       Tabulka je uloena za zdrojovım textem a má následující tvar:
+
+
+
+  èítaè    dva byty          poèet návìští v tabulce
+
+           dva byty          odkazy do vlastní tabulky, poèet
+           ........          odkazù je roven poètu návìští,
+  tabulka  ........          v horním bytu odkazu je v bitech
+  vektorù  ........          è. 6 a 7 uloena informace o
+           ........          definování nebo uzamèení daného
+           dva byty          návìští
+
+           dva byty, jméno   dva byty obsahují hodnotu daného
+  vlastní  ...............   návìští, poslední znak jména je
+  tabulka  ...............   invertován, identifikátory jsou
+           ...............   abecednì seøazeny, jejich poèet
+           dva byty, jméno   je roven poètu návìští
+
+      Podrobnosti editoru:
+
+       Na tomto místì se dozvíte o zpùsobu, kterım probíhá pøevádìní øádku z
+textového tvaru do tvaru, ve kterém je uloen. Nejdøíve se oddìlí návìští v poli
+návìští (pokud tam nìjaké je), potom se rozdìlí instrukce na mnemoniku a dva
+operandy (operand mùe bıt i prázdnı), zjistí se o jakı typ mnemoniky a operandù
+se jedná a prohledá se tabulka, jestli taková instrukce existuje. Pøi prohle-
+dávání operandù se nejprve hledají registry a kdy se nenajdou, snaí se
+assembler vyhodnotit operand jako vıraz, tento zpùsob umoòuje, e je mono
+pouít jako návìští zcela libovolnou kombinaci znakù, nejsou zde ádná rezervo-
+vaná slova - pouze u nìkterıch slov je nutno pouít takovı zápis, aby byl
+vyhodnocen jako vıraz:
+
+     napø. chcete pouít jako návìští øetìzec 'SP' - tento øetìzec by se
+     vyhodnotil jako registr SP, napíšete-li však SP+0 , bude vše v poøádku
+
+           ld   hl,sp       ;takto zadanı øádek bude
+                            ;vyhodnocen jako chyba
+
+           ld   hl,sp+0     ;pøi tomto zadání u bude
+                            ;pøijat a slovo 'sp' bude
+                            ;vyhodnoceno jako návìští
+
+           ld   hl,+sp      ;pokud to zadáte takhle, dojde
+                            ;také k pøijetí, zmizí však
+                            ;znaménko '+' a pøi vyeditování
+                            ;a zpìtném vloení bude opìt
+                            ;hlášena chyba (toté pøi LOAD)
+
+       Poslední poznámka se tıká pouívání závorek pro oznaèení adresy - pokud
+je v závorce èíselná hodnota (vıraz), staèí zadat jen tu levou, pravá závorka
+bude doplnìna. Pokud však toté udìláte a v závorce má bıt registr (napø. (hl)),
+bude slovo 'hl' vyhodnoceno jako návìští, nikoliv jako registr - zde je nutno
+závorku uzavøít. Pouití závorek pøi uzávorkování vırazu není povoleno!
+
+           ld   a,(hl)      ;toto se vezme jako   ld   a,(hl)
+
+           ld   a,(hl       ;toto bude vyhodnoceno jako
+                            ;ld   a,(HL), tedy HL je návìští!
+
+           ld   a,(label    ;toto staèí k tomu aby to bylo
+                            ;bráno jako   ld   a,(LABEL)
+
+
+
+
+
+
+
+
+                            IV. Monitor PROMÉTHEUS
+
+     Monitor PROMÉTHEUS byl vytvoøen tak, aby vhodnì doplnil monosti, které
+poskytuje assembler PROMÉTHEUS. Poskytuje mnoho funkcí, které usnadòují ladìní
+programù. Pøi návrhu ovládání byla zachována shoda s programem VAST od T.R.C
+prakticky ve všech shodnıch funkcích - uivatelé tohoto programu jistì rádi tuto
+skuteènost ocení.
+
+     Po vstupu do monitoru se vymae obrazovka a vypíše èelní panel, pokud nebyl
+èelní panel pøedefinován, bude vypadat takto:
+
+00000    di                       ;vıpis dvou øádkù strojového
+00001    xor  a                   ;kódu od aktuální adresy
+
+A:000 00000000 .  DI  (SP):45043  ;vıpisy registrù A,B,C,D,E,H,L
+B:175 \                    65297  ;a dvojregistrù BC,DE,HL,IX,IY,
+C:255 Ü  BC:45055 SP:00000 50175  ;SP a vıpis stavu pøerušení
+D:001 .  DE:00257 IX:00000 04555  ;vıpis zásobníku (5 adres),
+E:001 .  HL:00000 IY:23610 23850  ;vıpis registrù R a F - jsou
+H:000 .                           ;vypsány platné podmínky, dále
+L:000 . R:000 NZ NC PO P T:00000  ;vıpis poèítadla T-cyklù
+ UNIVERSUM Control On Call NON    ;stavovı a editaèní øádek
+
+     Po vypsání èelního panelu je oèekáván stisk nìjaké klávesy pøípadnì více
+kláves, po stisknutí klávesy se zjistí, odpovídá-li stisknutá klávesa nìjaké
+funkci, pokud ano, pøejde øízení do této funkce, pokud ne, opìt se èeká na stisk
+klávesy.
+
+
+             Pøístup k pamìti (aktuální adresa) a pomocné funkce:
+
+
+                   Návrat do systému assembleru - klávesa Q
+
+     Po stisku klávesy Q se provede návrat do assembleru, po návratu bude
+assembler ve stejném stavu, v jakém byl opuštìn, toto neplatí v pøípadì, e byla
+provedena zpìtná kompilace.
+
+                     Nastavení aktuální adresy - klávesa M
+
+     Po stisknutí klávesy M se ve spodním øádku objeví otázka Memory a kurzor,
+nyní je mono vloit matematickı vıraz (pravidla jsou stejná jako v assembleru),
+ten bude vyhodnocen zleva doprava, v pøípadì, e dojde pøi vyhodnocování vırazu
+k chybì, zazní zvukovı signál a do editaèního øádku se na nìkolik sekund vypíše
+chybové hlášení, potom se opìt objeví editaèní øádek s textem, kterı v nìm byl
+pøi odeslání a je umonìna oprava chyby. Pokud chcete pøerušit vkládání,
+stisknìte klávesu EDIT (CAPS SHIFT + 1), øízení se vrátí do hlavní smyèky.
+Hodnota vırazu bude pøiøazena aktuální adrese.
+
+               Posun na další instrukci - klávesy CAPS SHIFT + 6
+
+     Pøi pouití této volby se zjistí délka instrukce na aktuální adrese a
+aktuální adresa se zvìtší o tuto délku. Po provedení se obnoví vıpis èelního
+panelu.
+
+
+
+
+
+
+
+
+
+
+
+               Posun o jeden byte zpìt - klávesy CAPS SHIFT + 7
+
+     Odeètení jednièky od aktuální adresy, Po provedení se obnoví vıpisu èelního
+panelu.
+
+                Vnoøení o jednu úroveò - klávesy CAPS SHIFT + 8
+
+     Pøi prohlíení programu ve strojovém kódu se èasto objeví nutnost podívat
+se do nìjakého podprogramu a neztratit pøitom souèasné místo - v prohlíeném
+podprogramu mùe dojít ke stejné potøebì. Proto existuje funkce vnoøování - po
+zvolení této funkce se objeví dotaz 'Memory', souèasná hodnota aktuální adresy
+se uloí na zvláštní zásobník (kapacita 10 adres) a aktuální adresa je nastavena
+vloenou hodnotou. Pokud je zásobník plnı, pøíkaz se neprovede. Obnoví se vıpis
+èelního panelu.
+
+               Vynoøení o jednu úroveò - klávesy CAPS SHIFT + 5
+
+     Vynoøení je opak funkce vnoøení. Funkce odebere ze zásobníku hodnotu a
+nastaví na ni aktuální adresu, pokud na zásobníku není ádná adresa, nic se
+neprovede. Obnoví se vıpis èelního panelu.
+
+                  Smazání obrazovky - klávesy CAPS SHIFT + 0
+
+     Tato funkce smae obrazovku, nastaví barvy, které pouívá assembler
+(i monitor) a obnoví se vıpis èelního panelu.
+
+               Smazání vıpisového okna - klávesy CAPS SHIFT + 2
+
+     Smazání èásti obrazovky, která je urèena pro vıpisy - tato èást obrazovky
+je volitelnı poèet øádkù - viz Editor vıpisù.
+
+
+                   Volání podprogramù a pouití BREAKPOINTu:
+
+
+                 Volání podprogramu - klávesy SYMBOL SHIFT + H
+
+     Po stisku klávesy se objeví dotaz 'Call' na adresu, o ní má bıt volán
+podprogram. Po vloení adresy (zadávejte velmi pozornì, pokud se zmılíte, mùe
+to mít neodstranitelné následky) se nastaví všechny registry na hodnoty uvedené
+v èelním panelu, podle stavu indikátoru se provede zavolání podprogramu buï s
+povolenım nebo zakázanım pøerušením. Mód pøerušení bude takovı, jakı byl
+nastaven naposledy - ladící systém pracuje pod zakázanım pøerušením a nemìní
+nastavenı mód, pouze pøi návratu do systému BASIC je nastaveno IM 1 (pøíkazy
+BASIC, NEW). Po návratu z podprogramu se uloí všechny registry, zjistí se
+jestli pøi návratu bylo nebo nebylo povoleno pøerušení a obnoví se vıpis èelního
+panelu. Pøi volání se správnì ukládá také hodnota registru R. Pøi pouití tohoto
+pøíkazu si ovìøte, zda je registr SP nastaven na správné místo - nesmí bıt
+samozøejmì nastaven do oblasti pamìti ROM (1-16385), takto se na zásobníku
+neuloí návratová adresa (ROM nelze pøepsat) a program se nevrátí na správné
+místo!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+             Nastavení startu pro pouití BREAKPOINTu - klávesa W
+
+     Tato funkce vezme hodnotu aktuální adresy a uschová ji pro potøebu bìhu s
+BREAKPOINTem - viz následující funkce.
+
+              Bìh s pomocí BREAKPOINT - klávesy SYMBOL SHIFT + U
+
+     Funkce vyzvedne tøi byty na aktuální adrese, uschová je a na jejich místo
+vloí skok do monitoru. Potom se nastaví všechny registry na hodnoty uvedené v
+èelním panelu, povolí nebo zakáe se pøerušení a provede skok na adresu zadanou
+stiskem klávesy W. Pokud program probìhne místem s BREAKPOINTem, vrátí se zpìt
+do monitoru, budou uloeny všechny registry, zjištìn stav pøerušení a na své
+místo se opìt uloí odebrané tøi byty. Z uvedeného je zøejmé, e tato funkce
+není pouitelná v pamìti ROM. Opìt je správnì zpracován registr R. U této
+instrukce není potøebné hlídat hodnotu SP, dùleité je pouze to, aby procesor
+pøi provádìní programu na BREAKPOINT narazil.
+
+Pøíklad:
+
+  49999    ...
+  50000    ld   hl,START    ;na tomto místì stisknìte W
+  50003    ld   bc,30000    ;poèet prùchodù
+  LOOP     ld   a,(hl)
+  50005    cpl
+  50006    ld   (hl),a
+  50007    inc  hl
+  50008    dec  bc
+  50009    ld   a,b
+  50010    or   c
+  50011    jr   nz,LOOP
+  50013    call SUBROUT     ;na tomto místì stisknìte klávesy
+  50016    ...              ;SYMBOL SHIFT + U
+
+     Oznaèení 'na tomto místì' znamená, e v okamiku stisknutí klávesy W bude
+aktuální adresa rovna 50000 a v okamiku stisku kláves SYMBOL SHIFT + U bude
+aktuální adresa rovna 50013.
+
+     Varovnı pøíklad:
+
+     Pøi vybírání místa pro vloení BREAKPOINTu kontrolujte dùslednì, aby
+BREAKPOINT (3 byty) nepøepsal jinou èást programu, kterou bude bìh potøebovat:
+
+  50000    ld   hl,43210    ;na této instrukci stisknìte W
+  50003    call PROCEDUR
+  50006    ret              ;na této instrukci má bıt konec
+
+  PROCEDUR ld   a,(hl)      ;kdyby byl pouit BREAKPOINT
+  50008    inc  hl          ;na adrese 50006, pøepíší se
+  50009    ret              ;také adresy 50007 a 50008 co
+                            ;nelze potøebovat a je tedy
+                            ;nutno zvolit jinı zpùsob
+                            ;projdení této èásti programu
+
+
+                     Pøístup na magnetofon - LOAD a SAVE:
+
+                      Uloení bloku na kazetu - klávesa S
+
+     Assembler umoòuje ukládat na kazetu jak bezhlavièkové bloky, tak bloky
+CODE (se standardní hlavièkou jako v BASICu). Postup je následující:
+
+     - stisknìte klávesu S
+
+
+
+     - na dotaz 'First' vlote adresu prvního bytu bloku, kterı má bıt
+       nahrán na kazetu
+
+     - na dotaz 'Last' vlote poslední adresu zvoleného bloku
+
+     - na dotaz 'Leader' mùete odpovìdìt dvìma zpùsoby:
+
+                 1. vloením èísla - v tomto pøípadì bude na kazetu uloen
+                    bezhlavièkovı blok, jako leader (znaèkovı byte) bude
+                    pouito toto zadané èíslo, nahrávání se provádí hned
+                    po odeslání, neèeká se na další stisk klávesy
+
+                 2. vloením dvojteèky a jména (pouije se prvních 10
+                    znakù, ostatní budou oddìleny stejnì jako v BASICu) - v
+                    tomto pøípadì bude vytvoøena hlavièka, ve které bude
+                    uloen zaèátek bloku (First), jeho délka (Last-First+1)
+                    a zadané jméno, po stisku klávesy ENTER se poèká na
+                    stisk nìjaké klávesy a pak se zaène ukládání bloku na
+                    kazetu (magnetofon musíte spustit sami)
+
+
+              Uloení bloku na kazetu - klávesy SYMBOL SHIFT + S
+
+     Tento pøíkaz pracuje stejnì jako pøedcházející pøíkaz, pouze místo dotazu
+na 'Last' se ptá na 'Length', tedy délku ukládaného bloku - zadání parametrù
+bloku je takto úplnì stejné jako v BASICu. Chcete-li napøíklad uloit pøeloenı
+program na kazetu, provedete to nejlépe takto:
+
+     - na zaèátek programu vlote návìští A0START - písmeno A a èíslo 0
+       jsou tam proto, aby pøi vıpisu tabulky symbolù nebylo tøeba toto
+       návìští hledat - bude hned na zaèátku
+
+     - za konec zdrojového textu programu vlote sekvenci
+
+           A0LENGTH equ  $-A0START
+
+       písmeno A a èíslo 0 jsou tu ze stejnıch dùvodù jako u návìští
+       A0START
+
+     - proveïte kompilaci pøíkazem 'MONITOR a' a v monitoru zvolte nyní
+       popisovanou funkci, na dotaz 'First' vloíte A0START a na dotaz
+       'Length' A0LENGTH
+
+     - návìští A0LENGTH Vám mùe poskytovat informaci jak dlouhı je
+       vyrobenı strojovı kód, která není nikdy na škodu
+
+                Nahrání bloku z kazety do poèítaèe - klávesa J
+
+     Funkce se zeptá na adresu, kam se má blok nahrávat - dotaz 'First', na
+poslední adresu nahrávaného bloku - dotaz 'Last', a na znaèkovı byte nahrávaného
+bloku - dotaz 'Leader'. Potom se nahraje první blok, kterı bude nalezen, v
+pøípadì, e nebude splòovat parametry, které byly zadány, nebo bude zjištìna
+chyba v paritì bude ohlášeno chybové hlášení 'READ/WRITE Error'. Tato chyba bude
+hlášena také v pøípadì, e blok bude zasahovat ladící systém nebo zdrojovı text
+- další provádìní se pøeruší ještì pøed zadáním znaèkového bytu.
+
+
+
+
+
+
+
+
+
+         Nahrání bloku z kazety do poèítaèe - klávesy SYMBOL SHIFT + J
+
+     Funkce pracuje jako funkce pøedešlá, liší se jen tím, e se místo dotazu
+'Last' pouívá dotaz 'Length'.
+
+
+              Pøeètení hlavièky nebo znaèkového bytu - klávesa Y
+
+     Provádí se ètení hlavièky z kazety - vypíše se typ bloku (0 je BASIC, 1 je
+èíselné pole, 2 je znakové pole a 3 je CODE), potom jméno bloku, jeho poèáteèní
+adresu, jeho délku a další informaci, její vıznam závisí na typu bloku. Po
+vypsání informací se oèekává stisk klávesy, pokud se jedná o klávesu J, bude
+nahrán blok podle údajù zjištìnıch z hlavièky. Jinak se vrací øízení do hlavní
+smyèky.
+
+
+
+                                Pamìové vıpisy
+
+
+                Vıpis disassembleru - klávesy SYMBOL SHIFT + 4
+
+     Po stisku klávesy se do vıpisového okna vypisují disassemblované instrukce.
+Vıpis lze pøerušit stiskem klávesy EDIT (CAPS SHIFT + 1). Poèáteèní adresa
+vıpisu je právì nastavená aktuální adresa.
+
+
+               Vıpis disassembleru od zadané adresy - klávesa V
+
+     Pøíkaz se dotáe na adresu, od ní má bıt disassemblování provádìno,
+otázkou 'First'. Další akce jsou stejné jako v pøedchozím pøíkazu.
+
+
+                Zpùsob vıpisu adres - klávesy SYMBOL SHIFT + C
+
+     Pøi vypisování hodnot dvojbytovıch èíselnıch operandù mùe disassembler
+pracovat ve tøech reimech, pøepínání tìchto reimù je cyklické:
+
+     1. vypíše se bìnım zpùsobem èíselná hodnota
+
+     2. pokud se hodnota, která má bıt vypsána, rovná hodnotì nìkterého
+        návìští v tabulce symbolù, vypíše se místo èísla toto návìští,
+        stejnì tak se návìští vypisuje místo adresy pøed instrukcí
+
+     3. vypisuje návìští stejnì jako v reimu è. 2, navíc pokud se hodnota
+        zmenšena o jednu rovná hodnotì nìkterého návìští, bude vypsáno:
+        'návìští+1'
+
+po instalaci ladícího systému je nastaven vypisovací reim è. 3
+
+
+                   Povolení / zákaz vıpisu adres - klávesa C
+
+     Monitor umoòuje zakázat vıpis adres pøed instrukcemi, tento zákaz se
+netıká návìští, která mohou bıt vypisována pøed instrukcemi pøi zvolení reimù
+2 a 3.
+
+
+
+
+
+
+
+
+
+               Zmìna èíselné soustavy - klávesy SYMBOL SHIFT + 3
+
+     Zmìna èíselné soustavy se tıká všech èísel vypisovanıch ve všech typech
+pamìovıch vıpisù, netıká se ovšem vıpisu registrù v èelním panelu - toto lze
+ovlivnit v editoru èelního panelu.
+
+
+                  Vıpis disassembleru na tiskárnu - klávesa D
+
+     Program umoòuje posílat vıpis disassembleru na tiskárnu, komunikace se
+provádí stejnì jako v assembleru pøes kanál è. 3 operaèního systému Spectra.
+Pøi zvolení této funkce se program zeptá na první 'First' a na poslední 'Last'
+adresu úseku, kterı má bıt vypsán na tiskárnu - instrukce zaèínající na poslední
+'Last' adrese u vypsána nebude. Vypisování lze pøerušit stiskem kláves CAPS
+SHIFT + ENTER po kadé instrukci, kadı øádek je pro kontrolu také vypisován do
+vıpisového okna.
+
+
+         Zpìtnı pøeklad do zdrojového textu - klávesy SYMBOL SHIFT + D
+
+     Funkce se podobá pøedchozí, vıpis strojového textu smìøuje místo na
+tiskárnu do zdrojového textu v assembleru - vkládání se provádí za pøístupovı
+øádek (zcela jako pøi napø. pøíkazu LOAD). Opìt dotaz na 'First' a 'Last',
+instrukce poèínající na adrese 'Last' se také do zdrojového textu nedostane.
+Pokud dojde k chybì, ohlásí se chybové hlášení a uivateli je dána monost
+nalezenou chybu opravit, bude-li hlášena chyba 'Memory full', nezbyde ne
+stiskem EDIT (CAPS SHIFT + 1) celou akci pøerušit. Chcete-li pøevod pøedèasnì
+ukonèit, stisknìte souèasnì klávesy CAPS SHIFT + ENTER. Pøi zpìtném pøekladu se
+opìt kadı øádek vypisuje do vıpisového okna. Více Vám poví pøíklad - viz
+pøílohy.
+
+
+                       Znakovı vıpis pamìti - klávesa O
+
+     Protoe pøi prohlíení obsahu pamìti nepotøebujeme vdy vidìt jen strojovı
+kód, umoòuje monitor vypisování èísel v pamìti jako znakù. Kadı øádek vıpisu
+obsahuje adresu a dvacet pìt znakù od této adresy. Znaky s kódy v rozsahu 0 a
+31 jsou nahrazeny teèkou. Pokud je kód znaku vìtší ne 127, odeète se èíslo 128
+a znak se vypíše stejnì jako pøedtím, pouze bude prohozena barva papíru a barva
+inkoustu - inverzní vıpis. Jako první adresa se vezme aktuální adresa. Vıpis se
+provádí tak dlouho, dokud je stisknuta libovolná klávesa. Pøerušení vıpisu a
+návrat do hlavní smyèky zajistí stisk klávesy EDIT.
+
+
+           Znakovı vıpis od zadané adresy - klávesy SYMBOL SHIFT + O
+
+     Naprosto toté jako v pøedchozím pøípadì, vıpis se provádí od adresy zadané
+na dotaz 'First'.
+
+
+                            Vıpis èísel - klávesa L
+
+     Poslední vıpis umonìnı monitorem je èíselnı vıpis od aktuální adresy. Na
+øádku bude vypsána adresa, pìt jednobytovıch èísel a pìt znakù odpovídajících
+tìmto èíslùm. Všechno ostatní je shodné jako u znakového vıpisu.
+
+
+
+
+
+
+
+
+
+
+            Vıpis èísel od zadané adresy - klávesy SYMBOL SHIFT + L
+
+     Vıpis se bude provádìt od adresy zadané na dotaz 'First'. Jinak se tato
+funkce neliší od pøedchozí.
+
+
+                    Vyhledávání posloupností bytù v pamìti
+
+
+          Zadání posloupnosti a vyhledání prvního vıskytu - klávesa G
+
+     Pøíkaz umoòuje vyhledávat 5 bytù dlouhou posloupnost, nìkteré byty mohou
+bıt pro porovnávání nevıznamné. Po zvolení se objeví dotaz '1. byte' a
+'5. byte', mùete vloit buï poadované èíslo (vıraz) nebo dvojteèku - takto se
+oznaèují nevıznamné byty v hledané posloupnosti. Po odeslání pátého èísla se
+provede hledání, pokud bude posloupnost nalezena, nastaví se na adresu jejího
+vıskytu aktuální adresa, potom se obnoví vıpis èelního panelu. Hledání se
+provádí od adresy, která je vìtší o 1 ne aktuální adresa a do konce pamìti.
+
+     Pøíklady:
+
+           hledáte vıskyt posloupnosti znakù 'ABcd', zadejte:
+
+                             1. byte 'A'
+                             2. byte 'B'
+                             3. byte 'c'
+                             4. byte 'd'
+                             5. byte :
+
+           hledáte instrukci    ld   hl,33333    , zadejte:
+
+                             1. byte #21
+                             2. byte 33333?256
+                             3. byte 33333/256
+                             4. byte :
+                             5. byte :
+
+     Kód instrukce ld hl,N buï znáte, najdete ho v tabulce nebo do prázdného
+místa v pamìti tuto instrukci vloíte (viz editace pamìti) a podíváte se na její
+operaèní kód.
+
+
+           Vyhledání dalšího vıskytu zadané posloupnosti - klávesa N
+
+     Aktuální adresa se zvìtší o jednièku a od této adresy se hledá další vıskyt
+posloupnosti zadané pøedchozím pøíkazem, pokud bude posloupnost nalezena,
+aktuální adresa se nastaví na její zaèátek.
+
+
+                            Pøenosy a plnìní blokù
+
+
+                           Pøenos bloku - klávesa I
+
+     Program se zeptá na první 'First' adresu bloku, na poslední 'Last' adresu
+bloku a na místo, kam má bıt blok pøenesen 'To'. Po zadání se provede kontrola
+jestli se místo kam má bıt blok pøenesen nepøekrıvá s ladícím systémem nebo
+zdrojovım textem, a provede se pøesun. Dojde-li pøi testu ke zjištìní kolize
+tìchto dvou èástí pamìti, provádìní se pøeruší a vypíše se chybové hlášení
+'READ/WRITE Error'. Místa odkud a místa kam se bude pøenášet se mohou pøekrıvat,
+blok bude vdy pøesunut dobøe.
+
+
+
+
+                    Pøenos bloku - klávesy SYMBOL SHIFT + I
+
+     Pøíkaz se od pøedchozího liší pouze zpùsobem zadání parametrù bloku, místo
+otázky 'Last' je nyní otázka 'Length' na délku pøenášeného bloku.
+
+
+                           Plnìní bloku - klávesa P
+
+     Program se zeptá na zaèátek 'First' a na konec 'Last' bloku, provede se
+kontrola, zda blok nezasahuje do pamìti obsazené ladícím systémem a zdrojovım
+textem - pokud ano, ohlásí se chyba 'READ/WRITE Error', pokud ne, zeptá se
+program ještì na to, èím 'With' chcete plnit zvolenı blok, potom se blok vyplní.
+
+
+                    Plnìní bloku - klávesy SYMBOL SHIFT + P
+
+     Obdoba pøedchozí funkce - blok se tentokrát zadává parametry zaèátek
+'First' a délka 'Length'.
+
+
+                                Editace pamìti
+
+
+     Vıraznou vlastností monitoru PROMÉTHEUS je, e umoòuje zapisovat v
+monitoru do pamìti pøímo instrukce, není tedy nutno pouívat tabulky operaèních
+kódù. Tato funkce vyuívá podprogramy pro kompilaci z assembleru.
+
+
+                  Jednorázová editace pamìti - klávesa SPACE
+
+     Po stisku klávesy SPACE se objeví v editaèním øádku kurzor úplnì vlevo,
+nyní je mono zadat instrukci strojového kódu a to zcela stejnım zpùsobem jako
+pøi vkládání zdrojového textu, tedy instrukce zaèíná od desátého znaku na øádce
+- u tohoto pøíkazu funguje automatická tabelace, staèí stisknout ještì jednou
+mezerník. Po vloení instrukce se provedou oba prùchody kompilace a instrukce
+bude uloena na aktuální adresu. Pøi ukládání instrukce se kontroluje, aby
+instrukce nebyla uloena do oblasti ladícího systému se zdrojovım textem ani za
+uivatelskou zaráku. Pokud chcete instrukci za uivatelskou zaráku pøece jen
+vloit, musíte se vrátit do assembleru, pøepsat její hodnotu, vrátit se do
+monitoru a vloit instrukci. Chcete-li do pamìti pøece jen zapsat èíslo nebo
+text, pouijte odpovídající zpùsob jako ve zdrojovém textu - pseudoinstrukce
+DEFB, DEFW, DEFM se stejnım úèinkem. Tento pøíkaz sice slouí k editování
+pamìti, mùete ho pouít i pro nadefinování hodnoty nìjakého (i nového) návìští
+- pouijte pseudoinstrukci EQU, více se dozvíte v pøíloze. Pokud bude ve vloené
+instrukci nalezena chyba, ohlásí se do editaèního øádku na nìkolik sekund
+chybové hlášení, bude-li to pokus o zápis do zakázané oblasti, vypíše se chybové
+hlášení 'Bad PUT (ORG)'. Ve fázi vkládání instrukce do editaèního øádku lze
+funkci pøerušit stiskem EDIT.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     Opakovaná editace pamìti - klávesa E
+
+     Chcete-li do pamìti vloit více instrukcí, není jednorázová editace pøíliš
+pohodlná - je nutno neustále pøeskakovat za právì vloenou instrukci - proto
+pouijte tento pøíkaz. Po zvolení této funkce se v editaèním øádku také objeví
+kurzor, stejnì se funkce chová i dále, po zapsání instrukce do pamìti, se
+ukazatel posune za vloenou instrukci, obnoví se vıpis èelního panelu (dùleité
+jsou dva disassemblované øádky) a je mono vloit další instrukci. Pøi vkládání
+mùete pouívat pøed instrukcí také návìští, bude mu pøiøazena hodnota ukazatele
+pro ukládání instrukce. Pøi psaní se lze odvolávat na všechna ji existující
+definovaná návìští - tedy napøed návìští pouít v poli návìští a pak se na nìj
+lze odvolat v poli operandù, jinak bude hlášena chyba, odvolávat se samozøejmì
+lze i na návìští definovaná v prùbìhu poslední kompilace nebo definované døíve
+pomocí jednorázové editace pseudoinstrukcí EQU - viz pøíloha.
+
+                        Krokování a trasování programù
+
+     Krokování a trasování jsou nejdùleitìjší funkce, které monitor poskytuje.
+Pøi trasování a krokování instrukcí se provádí kontroly jestli instrukce
+nepouívá zakázané oblasti pro zápis, ètení a bìh - takovıch oblastí je mono
+pro kadou èinnost definovat a 5, navíc oblast v ní se nachází ladící systém
+a zdrojovı text se kontroluje na všechny èinnosti. Dále se kontroluje, aby se
+nepouila instrukce HALT pøi zakázaném pøerušení. Provádìní kontrol je mono
+vypnout a rychlost trasování se pøiblinì zdvojnásobí - kontrola na instrukci
+HALT se vypnout nedá, vypínají se kontroly na zakázané oblasti pamìti vèetnì
+oblasti s ladícím systémem a zdrojovım textem. U instrukcí CALL a RST lze volit
+tøi reimy - obvyklou simulaci, u vybranıch adres (mono a 10 adres) se tyto
+instrukce provedou pøímo (nebude se simulovat volání podprogramu ale celı
+podprogram se zavolá najednou) anebo se budou všechny instrukce CALL a RST
+provádìt najednou. Poslední dva reimy zvyšují rychlost trasování, je tu však
+riziko ztráty kontroly nad programem - reim rychlého volání vybranıch
+podprogramù lze vıhodnì pouít na dokonale odladìnıch podprogramech pro zvıšení
+rychlosti trasování. V èástech programu, které jsou pøímo volány samozøejmì
+neexistují ádné kontroly. V editaèním øádku jsou vypsány indikace stavu
+kontroly (Control ON/OFF) a zpùsobu, jakım se budou provádìt instrukce CALL a
+RST (Call NON/DEF/ALL) (ádné/definované/všechny instrukce se budou pøímo
+volat).
+
+     Nevypnete-li kontrolu a budete-li krokovat èi trasovat své programy se
+zakázanım pøerušením, nemùe se stát, e by monitor ztratil øízení programu.
+Budete-li pouívat povolené pøerušení v módu IM 1 nesmíte mìnit hodnotu registru
+IY (je pouíván systémem jako ukazatel do systémovıch promìnnıch), dávejte si
+také pozor, aby se registr SP (ukazatel na zásobník) nenastavil do oblasti
+pamìti ROM. Budete-li povolovat pøerušení v módu IM 2, musí bıt? nastaveno
+správnì - pøerušení není trasováno ani nijak kontrolováno!
+
+     Pøi krokování a trasování poèítá monitor také èasovou nároènost programu
+- poèítadlo T-cyklù (T:00000). Poèítání cyklù se hodí pøi práci na programech,
+které musí trvat pøesnì zadanou dobu - programy LOAD a SAVE, hudební rutiny,
+barevné efekty na obrazovce a v borderu. Na zaèátku nastavte poèítadlo na nulu
+a protrasujte tu èást, její èasovou délku chcete zjistit. Pøi trasování se
+nesmí ádná instrukce CALL nebo RST provádìt pøímo.
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     Krokování - klávesy SYMBOL SHIFT + Z
+
+     Po stisknutí kláves se provede simulace jedné instrukce na aktuální adrese,
+pøed provedením se obnoví hodnoty všech registrù (vèetnì R) a pøípadnì se povolí
+pøerušení, po provedení simulace se hodnoty všech registrù opìt uloí, zaznamená
+se stav pøerušení a obnoví se vıpis èelního panelu. Pokud je povolena kontrola,
+provedou se potøebné testy pøed vlastní simulací, kdy je zjištìna nìjaká
+kolize, vypíše se chybové hlášení a èeká se na stisk klávesy. Simulace instrukcí
+CALL a RST se provádí podle zvoleného reimu. Aktuální adresa se nastaví podle
+toho, jak simulovaná instrukce zmìní obsah èítaèe instrukcí.
+
+                         Pomalé trasování - klávesa T
+
+     Funkce provede simulaci instrukce na aktuální adrese, obnoví vıpis èelního
+panelu, zmìní aktuální adresu, provede test stisknuté klávesy a pokud není
+stisknuta klávesa BREAK (CAPS SHIFT + SPACE) opakuje celı cyklus stále znovu.
+Stisknete-li pøi trasování souèasnì klávesy CAPS SHIFT + ENTER, vynechá se po
+dobu, kdy budou klávesy stisknuty, obnovování èelního panelu, tato monost je
+uiteèná pro zrychlení trasování na kratší dobu - tøeba pro urychlení nìkterého
+cyklu. Simulace probíhá stejnì jako pøi krokování.
+
+                  Rychlé trasování - klávesy SYMBOL SHIFT + T
+
+     Pøi zvolení této monosti se program zeptá na adresu instrukce na ní by se
+mìl zastavit - 'Last', a provádí cyklicky tyto akce: simuluje instrukci na
+aktuální adrese, zmìní aktuální adresu, pokud jsou stisknuty klávesy CAPS SHIFT
++ ENTER obnoví èelní panel, testuje stisk klávesy BREAK (CAPS SHIFT + SPACE) a
+testuje, jestli se aktuální adresa nerovná zadané poslední adrese, pokud tomu
+tak není a není stisknut BREAK, skoèí opìt na zaèátek cyklu. V opaèném pøípadì
+se obnoví vıpis èelního panelu a rychlé trasování se zastaví. Pokud nevíte, na
+které adrese by se mìl program zastavit (nezáleí na tom - zastavíte ho BREAKem)
+vlote tøeba 0.
+
+
+                               Práce s registry
+
+              Zmìna stavu indikátoru pøerušení - SYMBOL SHIFT + M
+
+     Pøehodí hodnotu indikátoru stavu pøerušení z EI na DI nebo naopak.
+Indikátor urèuje v jakém stavu pøerušení se bude simulovat kadá instrukce,
+volat podprogram nebo provádìt bìh s pomocí BREAKPOINTu, po skonèení kadé
+takové akce se indikátor nastaví podle skuteènosti po provedení instrukce.
+
+
+             Pøehození obsahù základních a alternativních registrù
+
+                           klávesy SYMBOL SHIFT + B
+
+     Provede vımìnu základní a alternativní sady registrù, ve strojovém kódu je
+to ekvivalentní instrukcím EXX a EX AF,AF'. Pøi trasování nebo krokování jsou
+základní vdy ty registry, které jsou viditelné na èelním panelu. Chcete-li se
+tedy pøi krokování podívat na hodnoty alternativních registrù, musíte pøed
+dalším krokováním registry vrátit.
+
+
+
+
+
+
+
+
+
+
+
+
+             Nastavení obsahu registrù - klávesy SYMBOL SHIFT + N
+
+     Po zvolení této monosti se v editaèním øádku objeví nápis 'ld ', vlote
+jméno registru, jeho hodnotu chcete zmìnit, èárku nebo mezeru a napište èíslo
+(vıraz), které chcete do tohoto registru zapsat, registry jsou tyto:
+
+     Jednobytové registry: A,B,C,D,E,H,L,HX,LX,HY,LY,I,R
+
+     Dvoubytové registry : AF,BC,DE,HL,IX,IY,SP
+
+     Poèítadlo T-cyklù   : T
+
+     Pamìové ukazatele  : X,Y (viz editor èelního panelu)
+
+     Stavovı registr     : F
+
+U stavového registru (F registr) je mono mìnit jednotlivé bity následujícím
+zpùsobem:
+
+     ld f,c  -  zmìní hodnotu CARRY flagu z NC na C a naopak
+
+     ld f,s  -  zmìní hodnotu SIGN flagu z P na M a naopak
+
+     ld f,z  -  zmìní hodnotu ZERRO flagu z NZ na Z a naopak
+
+     ld f,p  -  zmìní hodnotu PARITY flagu z PO na PE a zpìt
+
+
+                Nastavení zakázanıch oblastí a jinıch parametrù
+
+                      Nastavení DEFB oblastí - klávesa 1
+
+     Monitor dovoluje nastavovat oblasti, které budou pøi vıpisu disassemblerem
+vypsány jako jednobytová data, takovıch oblastí si mùeme nadefinovat celkem 5.
+Kadá oblast je zadána prvním a posledním bytem (vèetnì). Po stisku klávesy 1 se
+do vıpisového okna vypíší souèasnì nastavené oblasti, kadı øádek zaèíná èíslem
+oblasti (0 a 4), za ním je vypsána adresa prvního bytu oblasti a pokud je
+stejná jako hodnota nìjakého návìští, je vypsáno také toto návìští, nakonec je
+vypsána adresa posledního bytu oblasti a pøípadné návìští. Nyní mùete stisknout
+buï klávesu s èíslem nìkteré oblasti - tato oblast se vymae a znovu se vypíše
+seznam nastavenıch oblastí (windows-okna), nebo klávesu I, v tomto pøípadì se
+program zeptá na první 'First' a na poslední 'Last' adresu oblasti, provìøí,
+jestli platí, e 'First'<='Last', a pøidá novou oblast za ji definované
+oblasti, pokud je ji všech pìt oblastí definováno, klávesa I nebude reagovat.
+Stisknete-li jinou klávesu ne 0,1,2,3,4,I, program se vrátí do hlavní smyèky.
+Za oblast s jednobytovımi hodnotami je povaován také prostor pamìti obsazenı
+ladícím systémem a zdrojovım textem.
+
+                      Nastavení DEFW oblastí - klávesa 2
+
+     Další typ oblastí, které lze pouívat jsou oblasti s dvoubytovımi hodnotami
+(tabulky adres), jejich nastavení je úplnì stejné jako u oblastí DEFB.
+
+             Nastavení oblastí, z nich se nesmí èíst - klávesa 3
+
+     Pøi ladìní programu je vıhodné mít jistotu, e program neète data z míst v
+pamìti, která k tomu nejsou urèena, proto byla do programu dána monost tato
+místa instrukcím zakázat. Kadá instrukce, která nìjakım zpùsobem ète data z
+pamìti, napø. pøímo z adresy, z adresy v registru, pomocí indexregistrù nebo
+pøes SP registr (tedy i RET, POP a EX (SP),HL), bude nejprve provìøena, zda tak
+neèiní z oblasti, kde to má zakázáno, pokud ano, její simulace se neprovede a
+bude ohlášeno chybové hlášení. Za oblast se zákazem ètení je navíc povaován
+
+
+
+pamìovı prostor obsazenı ladícím systémem a zdrojovım textem. Vlastní definice
+tìchto 'No read' oblastí je stejná jako u DEFB oblastí.
+
+          Nastavení oblastí, do nich se nesmí zapisovat - klávesa 4
+
+     Dùleitìjší, ne zjišovat, zda program neète data z míst v pamìti, z nich
+by nemìl, je mít monost hlídat program, aby nezapisoval do jinıch ne
+povolenıch úsekù pamìti. U kadé instrukce, která provádí zápis do pamìti
+(vèetnì instrukcí CALL, RST, PUSH, EX (SP),HL) se provede kontrola jestli se
+nepøepíší zakázané oblasti, pokud ano, simulace se neprovede a bude hlášena
+chyba 'READ/WRITE Error'. Nastavení je obdobné jako u DEFB oblastí. Oblast s
+ladícím systémem a zdrojovım textem je také povaována za oblast se zákazem
+zápisu - No write.
+
+                 Nastavení oblastí se zákazem bìhu - klávesa 5
+
+     Posledním typem oblastí, kde je monost nìco zakázat, jsou oblasti se
+zákazem bìhu. Jakmile by se po provedení nìjaké instrukce ocitl program v
+oblasti se zakázanım bìhem, instrukce se nevykoná a ohlásí se chyba 'RUN Error'.
+Zadávání je stejné jako u všech pøedchozích. Pouití snad ani není potøeba nìjak
+vysvìtlovat - napøíklad kdy se program nevrací tam, kam by mìl, zakate vše,
+kromì vlastní oblasti s programem, jakmile se nìjaké instrukce pøi trasování
+pokusí o skok mimo povolenou oblast, bude hlášena chyba - tyto problémy vyvolává
+nejèastìji chybná práce se zásobníkem návratovıch adres pomocí instrukcí PUSH a
+POP - obvykle nìco chybí nebo pøebıvá.
+
+                 Definování adres pro pøímé volání - klávesa 6
+
+     Vıhodnı zpùsob, jak urychlit trasování programù, je provádìt vybrané
+pøíkazy CALL a RST pøímo (nesimulovat kadou instrukci ve volanıch podprogramech
+- volat celı podprogram najednou). K tomuto úèelu si mùete zvolit celkem deset
+adres. Pokud nastavíte reim volání definovanıch podprogramù (Call DEF) bude se
+kadı pøíkaz CALL nebo RST, jeho adresní èást je rovna nìkteré adrese ze
+seznamu definovaného tímto pøíkazem, nahrazovat zavoláním podprogramu na této
+adrese. Pøi ladìní programu se tato monost vıhodnì pouívá na ji odladìné a
+dobøe fungující podprogramy (nehrozí tu ji nebezpeèí ztráty kontroly,
+podprogram se vrací zpìt tam, odkud byl zavolán) - tisk znaku, test klávesnice
+pokud není pouíváno pøerušení - a také na podprogramy, jejich práci není mono
+zpomalit - nahrávání a zvukové podprogramy. Ukázky pouití v pøíloze. Editace je
+podobná jako u definování oblastí, vymazání je mono navíc provádìt klávesami 0
+a 9.
+
+            Zmìna reimu provádìní instrukcí CALL a RST - klávesa X
+
+     Jak bylo døíve uvedeno, mohou se instrukce CALL a RST provádìt tøemi
+rùznımi zpùsoby, které se liší hlavnì rychlostí a bezpeèností - bohuel nepøímo
+úmìrnì. Tyto reimy jsou indikovány v editaèním øádku (NON/DEF/ALL) a jejich
+vıznam u byl popsán døíve.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+           Zapnutí / vypnutí kontroly instrukcí - SYMBOL SHIFT + X
+
+     Tímto pøíkazem lze najednou vypnout provádìní všech kontrol, nejménì
+dvojnásobnì to zvıší rychlost provádìní trasování. Tuto monost pouívejte
+uváenì.
+
+
+                             Editor èelního panelu
+
+         Pøechod do editoru èelního panelu - klávesy SYMBOL SHIFT + W
+
+     Po pøepnutí do editoru èelního panelu se vymae obrazovka, obnoví vıpis
+èelního panelu a rozsvítí se jedna z poloek v èelním panelu. Nyní je mono pro
+kadou poloku definovat její umístìní, zpùsob vıpisu a další monosti - viz
+dále.
+                        Ovládání editoru èelního panelu
+
+     CAPS SHIFT + 1 (EDIT) - opuštìní editoru èelního panelu
+
+
+     4 - pøechod na následující poloku v seznamu (viz dále)
+
+     3 - pøechod na pøedchozí poloku v seznamu
+
+
+     5 - posun poloky o jednu pozici doleva
+
+     6 - posun poloky o jednu pozici dolù
+
+     7 - posun poloky o jednu pozici nahoru
+
+     8 - posun poloky o jednu pozici doprava
+
+
+     A a Z - nastavení velikosti poloky (0 a 25), pro registry znamená,
+              jestli se budou nebo nebudou vypisovat, pro pamìové vıpisy
+              se takto mìní poèet adres, které se vypisují
+
+
+     SYMBOL SHIFT + D - zapnutí nebo vypnutí vıpisu také v desítkové
+                        soustavì
+
+     SYMBOL SHIFT + H - zapnutí nebo vypnutí vıpisu také v šestnáctkové
+                        soustavì
+
+     SYMBOL SHIFT + B - zapnutí nebo vypnutí vıpisu také ve dvojkové
+                        soustavì
+
+     SYMBOL SHIFT + C - zapnutí nebo vypnutí vıpisu také ve znakové formì
+
+     SYMBOL SHIFT + T - zmìna typu vıpisu u pamìovıch vıpisù - vypisují se
+                        buï jednobyty nebo dvoubyty
+
+     SYMBOL SHIFT + S - zmìna smìru vıpisu u pamìovıch vıpisù - obsahy
+                        jednotlivıch adres jsou vypisovány buï vedle sebe
+                        nebo pod sebe
+
+
+
+
+
+
+
+
+                      Seznam poloek, které lze pouívat:
+
+     Editaèní øádek - lze ovlivnit pouze, kterı øádek bude pouíván pro
+           tyto úèely
+
+     Vıpisové okno - lze ovlivnit poèet øádkù, které budou pouity, lze
+           také zmìnit polohu okna
+
+     Vıpisové okno disassembleru - pøi obnovování èelního panelu se
+           vypisuje nìkolik øádkù instrukcí strojového kódu od aktuální
+           adresy, poèet øádkù a polohu okna lze nastavit
+
+     Stav pøerušení - vıpis EI nebo DI
+
+     Jednobytové registry - A,B,C,D,E,H,L,I,R,HX,LX,HY,LY a F - lze volit
+           soustavy, ve kterıch budou jejich hodnoty vypisovány - registry
+           mohou bıt vypisovány ve všech najednou, u registru F je mono
+           volit (SYMBOL SHIFT + B) mezi binárním vıpisem a vıpisem
+           splnìnıch podmínek
+
+     Dvoubytové registry - AF,BC,DE,HL,SP,IX,IY - podobá se jednobytovım
+           registrùm
+
+     Vıpis poèítadla T-cyklù - lze nastavit stejnì jako dvojbytovı registr
+
+     Adresové vıpisy od zadané adresy (ukazatele X,Y)
+           u tìchto vıpisù lze volit poèet bytù, které budou vypisovány,
+           lze mìnit smìr, kterım se jednotlivé hodnoty vypisují, lze mìnit
+           také jestli se budou vypisovat jednobytové nebo dvoubytové
+           hodnoty
+
+     Adresové vıpisy od adresy v dvojregistru - (BC),(DE),(HL),(SP),(IX),
+           (IY) - nastavit lze stejné vlastnosti jako u pøedcházející
+           poloky
+
+     Nejjistìjší zpùsob, jak si osvojit zpùsob pouití editoru èelního panelu,
+je ho zkusit pouít - nemùete nic zkazit.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     V. Pøíklady práce s ladícím systémem
+
+                          1. Pøíklad - zpìtnı pøeklad
+
+     Tento pøíklad Vám pomùe vyzkoušet a pochopit zpùsob jak lze pøevést
+strojovı kód do zdrojového textu. Provádìjte pøesnì popsané úkony a sledujte
+vısledky.
+
+     Nahrajte PROMÉTHEUS na adresu 24000 a instalujte ho vèetnì monitoru. V
+assembleru vlote pøíkaz MONITOR, objeví se vıpis èelního panelu, nyní stisknìte
+klávesu SPACE, dolní øádek panelu zmizí a objeví se kurzor, napište
+'ldbytes equ #556' a stisknìte ENTER. Nyní stisknìte klávesu M a na dotaz
+'Memory:' vlote text 'ldbytes'. Po odeslání se obnoví vıpis èelního panelu a
+uvidíte vıpis obsahu pamìti ROM od adresy 1366, místo èísla 1366 však bude
+vypsáno LDBYTES.
+
+     Nyní stisknìte klávesy SYMBOL SHIFT (dále SS) a 4, objeví se nìkolik øádkù
+vıpisu disassembleru, a se ve vıpisu objeví instrukce 'call 1511', pøerušte
+vıpis klávesou EDIT. Stisknìte opìt klávesu SPACE a vlote 'ldedge1 equ 1511'.
+
+     Opakujete-li znovu disassemblování naleznete další adresu v instrukci
+'jr nc,1387'. Vlote 'ldbreak equ 1387' a vylistujte si nìkolik instrukcí
+(SS + 4), návìští LDBREAK se objevilo na všech místech, kde bylo døíve èíslo
+1387, podobnì tak návìští LDEDGE1. Vypište si instrukce tak, aby návìští LDBREAK
+na zaèátku øádku bylo v horní èásti vıpisu.
+
+     Další adresa je èíslo 1396, vlote 'ldwait equ 1396'. Obnovte vıpis.
+
+     Ve vıpisu mùete vidìt instrukci 'jr nc,LDBREAK+1', toto je skok na druhou
+instrukci od adresy LDBREAK, pokud by se mezi tyto dvì instrukce pozdìji u ve
+zdrojovém textu vloila další instrukce, nepracoval by program správnì. Vlote
+tedy radìji 'ldstart equ ldbreak+1', uvìdomte si, e mùete pouívat ji
+definovaná návìští místo adres, snite si tak pravdìpodobnost omylu pøi
+vkládání.
+
+     Abychom se nezdrovali vlote postupnì tato návìští:
+
+                       ldedge2  equ  1507
+                       ldleader equ  1408
+                       ldsync   equ  1423
+                       ldmaker  equ  1480
+                       ldflag   equ  1459
+                       ldverify equ  1469
+                       ldnext   equ  1474
+                       lddec    equ  1476
+                       ld8bits  equ  1482
+                       ldloop   equ  1449
+
+     Prohlédnìte si disassemblerem pamì, v hlavní èásti programu je kadá
+adresa nahrazena návìštím. Nyní se podíváme na oba podprogramy: LDEDGE1 a
+LDEDGE2 nejprve LDEDGE2, nastavte aktuální adresu na LDEDGE2 (klávesa M) a pøi
+disassemblování naleznete adresy 1513 a 1517, vlote návìští LDDELAY a LDSAMPLE,
+pokud jste si dobøe všimli, je návìští LDEDGE1 na tøetí instrukci za návìštím
+LDEDGE2 a tedy spoleèná èást ji neobsahuje adresy, které by nebyly nahrazeny
+návìštími.
+
+     Nyní provedeme zpìtnı pøeklad: Stisknìte SS a D, na dotaz 'First:' vlote
+'ldbytes' a na dotaz 'Last:' vlote '1540+1'. Po odeslání uvidíte vıpis
+disassemblované èásti pamìti nyní bez adres pøed instrukcemi, pouze s návìštími.
+Po skonèení stisknìte klávesu C - opìt se zapne vıpis adres pøed instrukcemi.
+
+     Vrate se do assembleru stiskem klávesy Q.
+
+
+
+     Pokud jste všechno provedli pøesnì podle pokynù, mìl by zdrojovı text
+konèit na adrese 40607. Stisknìte SS+K a dostanete se na zaèátek zdrojového
+textu. Najdìte instrukci 'ld  hl,1343', je to sedmá instrukce od zaèátku,
+nastavte do pøístupového øádku následující instrukci 'push hl' a stisknìte
+dvakrát CAPS SHIFT + 9 a vymate tyto dva øádky.
+
+     Zaèátek programu bude po provedení zmìn následující:
+
+                       LDBYTES  inc  d
+                                ex   af,af'
+                                dec  d
+                                di
+                                ld   a,15
+                                out  (254),a
+                                in   a,(254)
+                                ...
+
+     Zdrojovı text bude konèit na adrese 40598.
+
+     V tomto okamiku je nejvyšší èas pro uloení zdrojového textu na kazetu.
+Stisknìte SS+S a vlote ':loader', spuste volnou kazetu a stisknìte nìjakou
+klávesu, po provedení stisknìte SS+V (VERIFY) a po odeslání vrate kazetu a
+zkontrolujte nahrávku, pokud bude chybná, opakujte VERIFY a kdy bude neúspìšné,
+opakujte SAVE, nyní u mùete odeslat jen SAVE bez nièeho a jako jméno se vezme
+poslednì zadané jméno.
+
+     Nyní pøipište pøed program instrukce:
+
+                                org  60000
+                                ent  $
+                       START    ld   ix,16384
+                                ld   de,6912
+                                ld   a,255
+                                scf
+                                call LDBYTES
+                                ret
+
+     Vezmìte kazetu s libovolnou obrazovkou a nastavte ji pøed blok dat (za
+hlavièku) a zadejte pøíkaz RUN (SS+R) a spuste magnetofon, po skonèení
+nahrávání bude program èekat na stisk libovolné klávesy, aby se mohl vrátit do
+editoru.
+
+     Vlote 'Find s:or   2', zmìníte-li èíslo 2 na nìjaké èíslo z rozsahu 0..7,
+zmìní se barva pruhù - zùstanou zachovány dvojice:
+
+                             èerná - bílá
+                             modrá - lutá
+                             èervená - svìtle modrá
+                             fialová - zelená
+
+     Další instrukce, která mìní barvy pruhù je instrukce CPL, zmìòte ji za
+instrukci xor %11111111, zmìníte-li jednièky na posledních tøech místech za nuly
+(ne všechny, rùznì zkoušejte), mùete získat další kombinace barev. Poslední
+instrukce mìnící barvy je instrukce xor 3 za návìštím LDSYNC, která mìní barvy
+zavádìcích pruhù na barvy pøi nahrávání.
+
+     Vlote pøíkaz 'MONITOR a' (SS+M), provede se pøeklad a skok do monitoru.
+Nastavte aktuální adresu na LDEDGE1, stisknìte SS+N a zadejte 't,0' - vynuluje
+se poèítadlo T-cyklù. Stisknìte SS+T a vlote 'ldsample-1' - trasování do adresy
+LDSAMPLE-1. Po skonèení ukazuje poèítadlo T-cyklù hodnotu 354. Toto je poèet
+cyklù procesoru potøebnı na provedení tohoto programu:
+
+
+
+
+                       LDEDGE1  ld   a,22
+                       LDDELAY  dec  a
+                                jr   nz,LDDELAY
+
+     Tato èást programu se provede dvakrát pøi nahrání kadého bitu - tedy
+celkem 16 krát pøi nahrání 1 bytu. Stisknìte Q a vrate se do assembleru.
+
+     Nahraïte uvedené tøi øádky takto:
+
+                       LDEDGE1  ld   a,7
+                       LDDELAY  dec  a
+                                set  3,a
+                                out  (254),a
+                                res  3,a
+                                jr   nz,LDDELAY
+
+     Vlote 'MONITOR a', nastavte aktuální adresu na 'ldedge1', nastavte
+poèítadlo T-cyklù na 0 a trasujte program a do adresy 'ldsample-1'. Poèítadlo
+T-cyklù ukazuje hodnotu 346, tedy o 8 cyklù ménì, ne by mìlo, pøidejte dvì
+instrukce NOP za instrukci 'jr nz,LDDELAY', zopakujte vıpoèet T-cyklù, nyní je
+hodnota 354 a tedy stejná jako døíve a loader bude pracovat opìt bez chyb.
+
+     Spuste program pøíkazem RUN a vyzkoušejte nahrávání, vısledek uvidíte
+sami.
+
+     Vìtšina loaderù reaguje na stisk SPACE, pokud budete chtít tuto monost
+vylouèit, nahraïte instrukci 'ret nc' za návìštím LDSAMPLE instrukcí 'nop'.
+
+     Další monosti u musíte vymyslet a vyzkoušet sami.
+
+
+                        2. Pøíklad - monosti trasování
+
+     Vlote pøíkaz 'CLEAR y', napište tento krátkı program:
+
+                                ent  $
+                       START    xor  a
+                                out  (254),a
+                       FILL     ld   hl,16384
+                                ld   bc,6912
+                       FILL2    ld   a,r
+                                ld   (hl),a
+                                inc  hl
+                                dec  bc
+                                ld   a,b
+                                or   c
+                                jr   nz,FILL2
+                                ret
+
+     Proveïte RUN - vısledek nevypadá špatnì, zkuste to znovu, je to jiné, také
+ne ošklivé (pokud nemáte barevnou televizi, tak máte smùlu).
+
+     To, e po kadém spuštìní vypadá obrázek jinak, má na svìdomí registr R.
+Vlote tedy za instrukci 'xor a' instrukci 'ld r,a', tentokrát bude vısledek
+vdy stejnı, registr R má vdy pøi spuštìní hodnotu nastavenou na nulu.
+
+     Vlote 'MONITOR a' a pøejdìte do monitoru, nastavte aktuální adresu na
+návìští START, zjistìte, na které adrese je instrukce 'ret', vymate obrazovku
+(CS+0) a spuste rychlé trasování (SS+T), na dotaz 'Last' dejte adresu instrukce
+'ret'. Po odeslání uvidíte znaènì zpomalené všechny akce, které program provádí
+- nyní mùete:
+
+
+
+
+     a) nedìlat nic - poèkat a to samo skonèí
+
+     b) stisknout CAPS SHIFT a ENTER a sledovat co se dìje s jednotlivımi
+        registry, rychlost trasování se znaènì zpomalí
+
+     c) stisknout CAPS SHIFT a SPACE a trasování zastavit, pøípadnì opìt
+        spustit nebo krokovat jednotlivé instrukce
+
+     Chcete-li pøi trasování sledovat jednotlivé registry, pouijte pomalé
+trasování (T), znovu mùete:
+
+     a) opìt nedìlat nic - tentokrát program pobìí tak dlouho, dokud
+        nenarazí na instrukci, která by provádìla nebezpeènou akci
+
+     b) stisknout CAPS SHIFT + ENTER, teï se program naopak zrychlí,
+        pøestanou se vypisovat hodnoty registrù
+
+     c) stisknout CAPS SHIFT + SPACE a zastavit trasování
+
+     Nastavte opìt aktuální adresu na návìští START, vymate obrazovku (SS+0) a
+vypnìte provádìní kontrol. Vyzkoušejte opìt rychlé i pomalé trasování - u
+rychlého by mìlo bıt patrné zvıšení rychlosti.
+
+     A se do sytosti pøesvìdèíte o rozdílu v rychlostech, kontrolu opìt zapnìte
+(SS+X).
+
+     Zrychlení trasování vypínáním kontrol radìji nepouívejte, a pokud ano, tak
+si dobøe rozmyslete zda program nebude páchat nìjaké nepøístojnosti - pøi prvním
+spuštìní vdy s kontrolami. Nìkolik sekund takto ušetøenıch Vás mùe stát
+spoustu èasu ztraceného nahráváním programu znovu do poèítaèe.
+
+     Vrate se do assembleru a pøed instrukci 'ld  hl,16384' vlote tyto øádky:
+
+                       LOOP     push af
+                                call FILL
+                                pop  af
+                                inc  a
+                                cp   128
+                                jr   c,LOOP
+                                ret
+
+a takto upravenı program spuste pøíkazem RUN.
+
+     Po skonèení se pøepnìte do monitoru (SS+M) a pøepnìte reim provádìní
+instrukcí 'call' a 'rst' na reim 'ALL' (X). Stisknìte klávesu 3 a nastavte okno
+se zakázanım ètením na rozsah 0-1 (po vıpisu prázdného seznamu stisknìte I a
+zadejte obì èísla), potom nastavte registr SP na 0. Aktuální adresu nastavte na
+START a nyní krokujte (SS+Z), pomalu (T) nebo rychle (SS+T) trasujte danı
+program (pozor na SP - vdy na 0). Instrukce 'call FILL' se provede najednou i s
+celım podprogramem.
+
+                            3. Pøíklad - trasování
+
+     Instalujte PROMÉTHEUS na adresu 25000, pøejdìte do monitoru, nastavte
+aktuální adresu na #12a2, registry IY na hodnotu 23610 a SP na 0, povolte
+pøerušení (SS+M) a spuste rychlé trasování, jako poslední adresu uveïte 0.
+
+     - vymae se obrazovka (uvidíte zpomalené CLS)
+     - provede se automatickı listing (pokud je co vypsat)
+     - objeví se kurzor v editaèní zónì
+
+
+
+
+
+     Stisknìte klávesu Q, pomalu se vypíše pøíkaz PLOT, pøipište ještì '0,0' a
+stisknìte ENTER. Po chvíli se objeví teèka, stejnì vlote pøíkaz 'DRAW 255,175',
+pøi psaní musíte klávesu dret ponìkud déle ne obvykle, pøi psaní '55' radìji
+po napsání první èíslice klávesu na chvíli puste a potom opìt stisknìte.
+Klávesu mùete pustit v okamiku kdy se z poèítaèe ozve cvakání - zpomalené
+klávesnicové echo.
+
+     Nastavte reim 'DEF' (X) a vlote jako 'Call' adresy hodnoty #F2C, 16 a
+#556 (klávesa 6 a I - podobnì jako okna). Nastavte registry, aktuální adresu a
+pøerušení jako pøedešle a zkoušejte vloit tyto pøíkazy:
+
+               PLOT 0,0: DRAW 255,175
+               CIRCLE 127,87,87 - trpìlivost, chvíli poèkejte
+               POKE 25000,0 - program se zastaví na instrukci
+                     'ld (bc),a', která realizuje pøíkaz POKE
+               LIST
+               LOAD ""SCREEN$ - a samozøejmì také puste kazetu
+               FOR i=22528 TO 23295: POKE i,PEEK 23672: NEXT i
+               CLS
+               BEEP .05,40
+               RANDOMIZE USR 25000 - program se zastaví na adrese
+                     25000 a bude chtít trasovat assembler
+
+
+                     4. Pøíklad - zdrojovı text na ukázku
+
+     Na kazetì je také hudební rutina za hry SKATE CRAZY, vymate zdrojovı text
+(CLEAR y) a nahrajte ho do pamìti, chvíli poèkejte, ne se uloí a spuste jej
+pøíkazem RUN.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+           OBSAH :
+
+           I.   Trochu sebechvály aneb odkud to pøišlo _____________ 1
+
+           II.  Instalace ladícího sytému __________________________ 4
+
+           III. Assembler PROMÉTHEUS _______________________________ 5
+                editor _____________________________________________ 5
+                magnetofonové operace ______________________________ 9
+                pøeklad ___________________________________________ 11
+                tabulka symbolù ___________________________________ 15
+                ostatní pøíkazy a monosti ________________________ 18
+                formát zdrojového textu a další podrobnosti
+                o assembleru ______________________________________ 20
+
+           IV.  Monitor PROMÉTHEUS ________________________________ 24
+                pøístup k pamìti (aktuální adresa)
+                a pomocné funkce __________________________________ 24
+                volání podprogramù a pouití BREAKPOINTU __________ 25
+                pøístup na magnetofon - LOAD a SAVE _______________ 26
+                pamìové vıpisy ___________________________________ 28
+                vyhledání posloupnosti bytù v pamìti ______________ 30
+                pøenos a plnìní blokù _____________________________ 30
+                editace pamìti ____________________________________ 31
+                krokování a trasování programù ____________________ 32
+                práce s registry __________________________________ 33
+                nastavení zakázanıch oblastí a jinıch parametrù ___ 34
+                editor èelního panelu _____________________________ 36
+
+           V.   Pøíklady práce s ladícím systémem _________________ 38
+                1. pøíklad - zpìtnı pøeklad _______________________ 38
+                2. pøíklad - monosti trasování ___________________ 40
+                3. pøíklad - trasování ____________________________ 41
+                4. pøíklad - zdrojovı text na ukázku ______________ 42
+
