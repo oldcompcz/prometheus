@@ -25,6 +25,9 @@ SYSVAR_ERR_SP: 		equ 05c3dh   ; Address of item on machine stack to use as error
 ; constants
 
 INSTRUCTIONS_TABLE_SIZE: 		equ 687  
+LEFT_BOTTOM_ATTRIBUTE_ADDRESS: 		equ 0x5ae0
+HIGHLIGHT_COLOR:		equ 0x30 ; yellow paper, black color
+BOTTOM_LINE_VRAM_ADDRESS:		equ 0x50e0
 
 start:
 -
@@ -9641,3 +9644,61 @@ s/v_sub_85aeh/atHLorNextIfOne
 -
 ;88d9 < 
 ; move to instructionRecord[2]
+-
+s/v_l82e1h/atHLrepeatBTimesC
+-
+s/05ae0h/LEFT_BOTTOM_ATTRIBUTE_ADDRESS
+-
+s/050e0h/BOTTOM_LINE_VRAM_ADDRESS
+-
+s/02d40h/inputBufferStart+1-BA1
+-
+;8606 = 
+    ld bc,02000h+HIGHLIGHT_COLOR               ;8606 01 30 20  . 0                 (flow from: 7ccf)  7cd2 ld bc,2030 
+-
+;8009 8012 = 
+    defb "prometheus"	;8009
+-
+s/v_sub_86aeh/getKeypressCodeOrZero
+-
+s/v_sub_877fh/displayCharacter
+-
+;8ff0 <
+; any key pressed
+-
+;8ff1 <
+; SS pressed?
+-
+;8ff4 <
+; CS pressed?
+-
+;8fe2 <
+; get code of a pressed key in E. A is 0 if no key or a special key (SS or CS) was pressed
+-
+s/v_l8614h/varcKeyboardScanningsCount
+-
+;8f67 <
+; some key was pressed
+-
+s/v_l8684h/varcLastPressedKey
+-
+;8ff7 <
+; a key in combination with SS was pressed
+-
+;8ff9 <
+; was SS+O pressed? (";", start of a comment)
+-
+s/l9014h/standardKeyPlusSSPressed
+-
+;8ffd <
+; are we on the beginning of the line so commands can be accecpted?
+-
+s/v_sub_872eh/potencialCommandKeyPressed
+-
+;9062 <
+; ignore if the command key is not in a-z or A-Z
+-
+s/02926h/varc9019+1-BA1
+-
+;9019 <
+varc9019:

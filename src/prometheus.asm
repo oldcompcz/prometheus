@@ -29,6 +29,9 @@ SYSVAR_ERR_SP:       equ 05c3dh                                ; Address of item
 ; constants
 
 INSTRUCTIONS_TABLE_SIZE:     equ 687  
+LEFT_BOTTOM_ATTRIBUTE_ADDRESS:       equ 0x5ae0
+HIGHLIGHT_COLOR:     equ 0x30  ; yellow paper, black color
+BOTTOM_LINE_VRAM_ADDRESS:    equ 0x50e0
 
 start:
     di                         ;5dc0 f3  .                         (flow from: 34bb 52ad)  5dc0 jp 7cc9 
@@ -2368,7 +2371,7 @@ v_l60d9h:
     ld hl,v_l612dh-BA1         ;6a13 21 6d 03  ! m .               (flow (mon) from: 82e5)  60df ld hl,612d 
     ld (080a0h-BA),hl          ;6a16 22 e0 22  " . "               (flow (mon) from: 60df)  60e2 ld (80a0),hl 
     call v_sub_6675h-BA1       ;6a19 cd b5 08  . . .               (flow (mon) from: 60e2)  60e5 call 6675 
-    ld hl,02d40h               ;6a1c 21 40 2d  ! @ - 
+    ld hl,inputBufferStart+1-BA1                               ;6a1c 21 40 2d  ! @ - 
     call atHLorNextIfOne-BA1   ;6a1f cd ee 27  . . ' 
     cp 03ah                    ;6a22 fe 3a  . : 
     ret z                      ;6a24 c8  . 
@@ -2544,7 +2547,7 @@ l6b2dh:
     call v_sub_6b02h-BA1       ;6b57 cd 42 0d  . B . 
     jp v_sub_6c4ah-BA1         ;6b5a c3 8a 0e  . . . 
 l6b5dh:
-    ld hl,02d40h               ;6b5d 21 40 2d  ! @ - 
+    ld hl,inputBufferStart+1-BA1                               ;6b5d 21 40 2d  ! @ - 
     ld a,(hl)                  ;6b60 7e  ~ 
     add a,030h                 ;6b61 c6 30  . 0 
     ld (ix-003h),a             ;6b63 dd 77 fd  . w . 
@@ -3006,7 +3009,7 @@ l6e45h:
     ld b,018h                  ;6e4e 06 18  . . 
     ld ix,v_l5ddfh-BA1         ;6e50 dd 21 1f 00  . ! . . 
 l6e54h:
-    ld hl,02d40h               ;6e54 21 40 2d  ! @ - 
+    ld hl,inputBufferStart+1-BA1                               ;6e54 21 40 2d  ! @ - 
     call atHLorNextIfOne-BA1   ;6e57 cd ee 27  . . ' 
     ld a,(ix+002h)             ;6e5a dd 7e 02  . ~ . 
     bit 7,a                    ;6e5d cb 7f  .  
@@ -3207,7 +3210,7 @@ v_sub_665ah:
     ld (hl),001h               ;6f94 36 01  6 .                    (flow (mon) from: 665f)  6660 ld (hl),01 
     inc hl                     ;6f96 23  #                         (flow (mon) from: 6660)  6662 inc hl 
     ld bc,02000h               ;6f97 01 00 20  . .                 (flow (mon) from: 6662)  6663 ld bc,2000 
-    jp v_l82e1h-BA1            ;6f9a c3 21 25  . ! %               (flow (mon) from: 6663)  6666 jp 82e1 
+    jp atHLrepeatBTimesC-BA1   ;6f9a c3 21 25  . ! %               (flow (mon) from: 6663)  6666 jp 82e1 
 v_sub_6669h:
     ld hl,v_l6fd0h-BA1         ;6f9d 21 10 12  ! . .               (flow (mon) from: 5f99 6675)  6669 ld hl,6fd0 
     ld (vr_l08750h+1-BA1),hl   ;6fa0 22 91 29  " . )               (flow (mon) from: 6669)  666c ld (8751),hl 
@@ -4680,7 +4683,7 @@ l78a9h:
 v_sub_6f75h:
     ld a,(de)                  ;78a9 1a  .                         (flow (mon) from: 6f85 82d3)  6f75 ld a,(de) 
     res 7,a                    ;78aa cb bf  . .                    (flow (mon) from: 6f75)  6f76 res 7,a 
-    call v_sub_872eh-BA1       ;78ac cd 6e 29  . n )               (flow (mon) from: 6f76)  6f78 call 872e 
+    call potencialCommandKeyPressed-BA1                        ;78ac cd 6e 29  . n )                                                   (flow (mon) from: 6f76)  6f78 call 872e 
     jr nz,l78b3h               ;78af 20 02    .                    (flow (mon) from: 8730 8733 873c)  6f7b jr nz,6f7f 
     sub 020h                   ;78b1 d6 20  .                      (flow (mon) from: 6f7b)  6f7d sub 20 
 l78b3h:
@@ -5084,7 +5087,7 @@ invokeUTop:
     ld (vr_l07945h+1-BA1),hl   ;7acd 22 86 1b  " . . 
     ret                        ;7ad0 c9  . 
 v_l719dh:
-    ld hl,02d40h               ;7ad1 21 40 2d  ! @ - 
+    ld hl,inputBufferStart+1-BA1                               ;7ad1 21 40 2d  ! @ - 
 v_sub_71a0h:
     ld de,v_l8ad1h-BA1         ;7ad4 11 11 2d  . . - 
     push de                    ;7ad7 d5  . 
@@ -5110,7 +5113,7 @@ l7afdh:
     cp 024h                    ;7afd fe 24  . $ 
     ld hl,(v_l7953h+1-BA1)     ;7aff 2a 94 1b  * . . 
     jr z,l7b31h                ;7b02 28 2d  ( - 
-    call v_sub_872eh-BA1       ;7b04 cd 6e 29  . n ) 
+    call potencialCommandKeyPressed-BA1                        ;7b04 cd 6e 29  . n ) 
     jr nz,l7b36h               ;7b07 20 2d    - 
     dec de                     ;7b09 1b  . 
     push de                    ;7b0a d5  . 
@@ -5491,7 +5494,7 @@ l7d48h:
     and 0c0h                   ;7d54 e6 c0  . . 
     jr nz,l7d61h               ;7d56 20 09    . 
     ld bc,0052eh               ;7d58 01 2e 05  . . . 
-    call v_l82e1h-BA1          ;7d5b cd 21 25  . ! % 
+    call atHLrepeatBTimesC-BA1                                 ;7d5b cd 21 25  . ! % 
     ld (hl),b                  ;7d5e 70  p 
     jr l7d6ah                  ;7d5f 18 09  . . 
 l7d61h:
@@ -5808,7 +5811,7 @@ l7f37h:
     scf                        ;7f39 37  7 
     ret                        ;7f3a c9  . 
 invokeSave:
-    ld ix,050e0h               ;7f3b dd 21 e0 50  . ! . P 
+    ld ix,BOTTOM_LINE_VRAM_ADDRESS                             ;7f3b dd 21 e0 50  . ! . P 
     ld (ix+000h),003h          ;7f3f dd 36 00 03  . 6 . . 
     call v_sub_7c2ah-BA1       ;7f43 cd 6a 1e  . j . 
     push af                    ;7f46 f5  . 
@@ -5928,16 +5931,7 @@ l8004h:
     djnz l8004h                ;8006 10 fc  . . 
     ret                        ;8008 c9  . 
 v_l76d5h:
-    ld (hl),b                  ;8009 70  p 
-    ld (hl),d                  ;800a 72  r 
-    ld l,a                     ;800b 6f  o 
-    ld l,l                     ;800c 6d  m 
-    ld h,l                     ;800d 65  e 
-    ld (hl),h                  ;800e 74  t 
-    ld l,b                     ;800f 68  h 
-    ld h,l                     ;8010 65  e 
-    ld (hl),l                  ;8011 75  u 
-    ld (hl),e                  ;8012 73  s 
+    defb "prometheus"          ;8009
 l8013h:
 invokeVerify:
     call v_sub_7bdch-BA1       ;8013 cd 1c 1e  . . . 
@@ -6722,7 +6716,7 @@ invokeQuit:
     rst 0                      ;850f c7  . 
 l8510h:
 v_sub_7bdch:
-    ld ix,050e0h               ;8510 dd 21 e0 50  . ! . P          (flow from: 77d1)  7bdc ld ix,50e0 
+    ld ix,BOTTOM_LINE_VRAM_ADDRESS                             ;8510 dd 21 e0 50  . ! . P                                              (flow from: 77d1)  7bdc ld ix,50e0 
     ld de,v_l5dd1h-BA1         ;8514 11 11 00  . . .               (flow from: 7bdc)  7be0 ld de,0011 
     xor a                      ;8517 af  .                         (flow from: 7be0)  7be3 xor a 
     scf                        ;8518 37  7                         (flow from: 7be3)  7be4 scf 
@@ -6744,7 +6738,7 @@ l8533h:
     call v_sub_8744h-BA1       ;8533 cd 84 29  . . )               (flow from: 7bfb)  7bff call 8744 
     inc hl                     ;8536 23  #                         (flow from: 8749)  7c02 inc hl 
     djnz l8528h                ;8537 10 ef  . .                    (flow from: 7c02)  7c03 djnz 7bf4 
-    ld a,(050e0h)              ;8539 3a e0 50  : . P               (flow from: 7c03)  7c05 ld a,(50e0) 
+    ld a,(BOTTOM_LINE_VRAM_ADDRESS)                            ;8539 3a e0 50  : . P                                                   (flow from: 7c03)  7c05 ld a,(50e0) 
     cp 003h                    ;853c fe 03  . .                    (flow from: 7c05)  7c08 cp 03 
     jr nz,l8510h               ;853e 20 d0    .                    (flow from: 7c08)  7c0a jr nz,7bdc 
     ret                        ;8540 c9  .                         (flow from: 7c0a)  7c0c ret 
@@ -6773,7 +6767,7 @@ l8556h:
 v_sub_7c2ah:
     ld b,042h                  ;855e 06 42  . B 
 v_sub_7c2ch:
-    ld hl,02d40h               ;8560 21 40 2d  ! @ -               (flow from: 76b8)  7c2c ld hl,8b00 
+    ld hl,inputBufferStart+1-BA1                               ;8560 21 40 2d  ! @ -                                                   (flow from: 76b8)  7c2c ld hl,8b00 
 v_sub_7c2fh:
     call atHLorNextIfOne-BA1   ;8563 cd ee 27  . . '               (flow from: 7c2c)  7c2f call 85ae 
     inc hl                     ;8566 23  #                         (flow from: 85b1)  7c32 inc hl 
@@ -6892,14 +6886,14 @@ v_l7cc9h:
 l8603h:
 v_l7ccfh:
     ld hl,059e0h               ;8603 21 e0 59  ! . Y               (flow from: 777a 7caf 7e38)  7ccf ld hl,59e0 
-    ld bc,02030h               ;8606 01 30 20  . 0                 (flow from: 7ccf)  7cd2 ld bc,2030 
-    call v_l82e1h-BA1          ;8609 cd 21 25  . ! %               (flow from: 7cd2)  7cd5 call 82e1 
+    ld bc,02000h+HIGHLIGHT_COLOR                               ;8606 01 30 20  . 0                                                     (flow from: 7ccf)  7cd2 ld bc,2030                                  (flow from: 7ccf)  7cd2 ld bc,2030 
+    call atHLrepeatBTimesC-BA1                                 ;8609 cd 21 25  . ! %                                                   (flow from: 7cd2)  7cd5 call 82e1 
     ld a,00fh                  ;860c 3e 0f  > .                    (flow from: 82e5)  7cd8 ld a,0f 
 v_l7cdah:
     call v_l89f4h-BA1          ;860e cd 34 2c  . 4 ,               (flow from: 7cd8)  7cda call 89f4 
     ld hl,v_l8aa5h-BA1         ;8611 21 e5 2c  ! . ,               (flow from: 8a1d)  7cdd ld hl,8aa5 
     ld bc,09e00h               ;8614 01 00 9e  . . .               (flow from: 7cdd)  7ce0 ld bc,9e00 
-    call v_l82e1h-BA1          ;8617 cd 21 25  . ! %               (flow from: 7ce0)  7ce3 call 82e1 
+    call atHLrepeatBTimesC-BA1                                 ;8617 cd 21 25  . ! %                                                   (flow from: 7ce0)  7ce3 call 82e1 
     ld hl,inputBufferStart-BA1                                 ;861a 21 3f 2d  ! ? -                                                   (flow from: 82e5)  7ce6 ld hl,8aff 
     ld (hl),001h               ;861d 36 01  6 .                    (flow from: 7ce6)  7ce9 ld (hl),01 
     dec hl                     ;861f 2b  +                         (flow from: 7ce9)  7ceb dec hl 
@@ -6929,7 +6923,7 @@ vr_l07cfeh:
     ld hl,inputBufferStart-BA1                                 ;8649 21 3f 2d  ! ? -                                                   (flow from: 7d11)  7d15 ld hl,8aff 
     push hl                    ;864c e5  .                         (flow from: 7d15)  7d18 push hl 
     ld bc,02000h               ;864d 01 00 20  . .                 (flow from: 7d18)  7d19 ld bc,2000 
-    call v_l82e1h-BA1          ;8650 cd 21 25  . ! %               (flow from: 7d19)  7d1c call 82e1 
+    call atHLrepeatBTimesC-BA1                                 ;8650 cd 21 25  . ! %                                                   (flow from: 7d19)  7d1c call 82e1 
     pop hl                     ;8653 e1  .                         (flow from: 82e5)  7d1f pop hl 
     call v_sub_8138h-BA1       ;8654 cd 78 23  . x #               (flow from: 7d1f)  7d20 call 8138 
     ld a,001h                  ;8657 3e 01  > .                    (flow from: 81b6)  7d23 ld a,01 
@@ -7032,9 +7026,9 @@ l870ch:
     call v_sub_7e3bh-BA1       ;870c cd 7b 20  . {                 (flow from: 7dc8)  7dd8 call 7e3b 
     jr nz,l86deh               ;870f 20 cd    .                    (flow from: 7e40 7e73)  7ddb jr nz,7daa 
 v_l7dddh:
-    ld hl,05ae0h               ;8711 21 e0 5a  ! . Z               (flow from: 775d 7ddb)  7ddd ld hl,5ae0 
+    ld hl,LEFT_BOTTOM_ATTRIBUTE_ADDRESS                        ;8711 21 e0 5a  ! . Z                                                   (flow from: 775d 7ddb)  7ddd ld hl,5ae0 
     ld bc,0203fh               ;8714 01 3f 20  . ?                 (flow from: 7ddd)  7de0 ld bc,203f 
-    call v_l82e1h-BA1          ;8717 cd 21 25  . ! %               (flow from: 7de0)  7de3 call 82e1 
+    call atHLrepeatBTimesC-BA1                                 ;8717 cd 21 25  . ! %                                                   (flow from: 7de0)  7de3 call 82e1 
     ld hl,inputBufferStart-BA1                                 ;871a 21 3f 2d  ! ? -                                                   (flow from: 82e5)  7de6 ld hl,8aff 
     call atHLorNextIfOne-BA1   ;871d cd ee 27  . . '               (flow from: 7de6)  7de9 call 85ae 
     ld d,000h                  ;8720 16 00  . .                    (flow from: 85b1)  7dec ld d,00 
@@ -7085,7 +7079,7 @@ vr_l07e38h:
     jp v_l7ccfh-BA1            ;876c c3 0f 1f  . . .               (flow from: 7e35)  7e38 jp 7ccf 
 v_sub_7e3bh:
 vr_l07e3bh:
-    ld hl,02d40h               ;876f 21 40 2d  ! @ -               (flow from: 7dd8)  7e3b ld hl,8b00 
+    ld hl,inputBufferStart+1-BA1                               ;876f 21 40 2d  ! @ -                                                   (flow from: 7dd8)  7e3b ld hl,8b00 
     cp 00dh                    ;8772 fe 0d  . .                    (flow from: 7e3b)  7e3e cp 0d 
     ret z                      ;8774 c8  .                         (flow from: 7e3e)  7e40 ret z 
     cp 008h                    ;8775 fe 08  . .                    (flow from: 7e40)  7e41 cp 08 
@@ -7164,7 +7158,7 @@ l87d5h:
     ld b,a                     ;87d5 47  G 
     inc b                      ;87d6 04  . 
     ld c,020h                  ;87d7 0e 20  .   
-    call v_l82e1h-BA1          ;87d9 cd 21 25  . ! % 
+    call atHLrepeatBTimesC-BA1                                 ;87d9 cd 21 25  . ! % 
     ld (hl),001h               ;87dc 36 01  6 . 
     jr l87a6h                  ;87de 18 c6  . . 
 l87e0h:
@@ -7595,7 +7589,7 @@ v_sub_8135h:
 v_sub_8138h:
     push hl                    ;8a6c e5  .                         (flow from: 7d20 8135)  8138 push hl 
     ld bc,02000h               ;8a6d 01 00 20  . .                 (flow from: 8138)  8139 ld bc,2000 
-    call v_l82e1h-BA1          ;8a70 cd 21 25  . ! %               (flow from: 8139)  813c call 82e1 
+    call atHLrepeatBTimesC-BA1                                 ;8a70 cd 21 25  . ! %                                                   (flow from: 8139)  813c call 82e1 
     pop hl                     ;8a73 e1  .                         (flow from: 82e5)  813f pop hl 
     ld a,(ix+000h)             ;8a74 dd 7e 00  . ~ .               (flow from: 813f)  8140 ld a,(ix+00) 
     dec a                      ;8a77 3d  =                         (flow from: 8140)  8143 dec a 
@@ -7840,7 +7834,7 @@ l8bdfh:
 l8bedh:
     bit 0,c                    ;8bed cb 41  . A                    (flow from: 82b4)  82b9 bit 0,c 
     jr nz,l8bf8h               ;8bef 20 07    .                    (flow from: 82b9)  82bb jr nz,82c4 
-    call v_sub_872eh-BA1       ;8bf1 cd 6e 29  . n )               (flow from: 82bb)  82bd call 872e 
+    call potencialCommandKeyPressed-BA1                        ;8bf1 cd 6e 29  . n )                                                   (flow from: 82bb)  82bd call 872e 
     jr nz,l8bf8h               ;8bf4 20 02    .                    (flow from: 8730 873c)  82c0 jr nz,82c4 
     and 0ffh                   ;8bf6 e6 ff  . .                    (flow from: 82c0)  82c2 and ff 
 l8bf8h:
@@ -7867,7 +7861,7 @@ v_l82dbh:
     ld bc,03700h               ;8c0f 01 00 37  . . 7               (flow from: 775a)  82db ld bc,3700 
     ld hl,v_l8ac7h-BA1         ;8c12 21 07 2d  ! . -               (flow from: 82db)  82de ld hl,8ac7 
 l8c15h:
-v_l82e1h:
+atHLrepeatBTimesC:
     ld (hl),c                  ;8c15 71  q                         (flow from: 1 7cd5 7ce3 7d1c 7de3 813c 82d9 82de 82e3)  82e1 ld (hl),c 
     inc hl                     ;8c16 23  #                         (flow from: 82e1)  82e2 inc hl 
     djnz l8c15h                ;8c17 10 fc  . .                    (flow from: 82e2)  82e3 djnz 82e1 
@@ -8027,7 +8021,7 @@ l8cf5h:
 l8cfeh:
     ld c,a                     ;8cfe 4f  O                         (flow from: 83c3)  83ca ld c,a 
     or 020h                    ;8cff f6 20  .                      (flow from: 83ca)  83cb or 20 
-    call v_sub_872eh-BA1       ;8d01 cd 6e 29  . n )               (flow from: 83cb)  83cd call 872e 
+    call potencialCommandKeyPressed-BA1                        ;8d01 cd 6e 29  . n )                                                   (flow from: 83cb)  83cd call 872e 
     jr nz,l8d2dh               ;8d04 20 27    '                    (flow from: 8730 873c)  83d0 jr nz,83f9 
     push bc                    ;8d06 c5  .                         (flow from: 83d0)  83d2 push bc 
     dec de                     ;8d07 1b  .                         (flow from: 83d2)  83d3 dec de 
@@ -8397,7 +8391,7 @@ v_sub_85b5h:
 v_sub_85beh:
     ld hl,02fafh               ;8ef2 21 af 2f  ! . /               (flow from: 7cf4)  85be ld hl,8d6f 
     ld (vr_l08750h+1-BA1),hl   ;8ef5 22 91 29  " . )               (flow from: 85be)  85c1 ld (8751),hl 
-    ld hl,050e0h               ;8ef8 21 e0 50  ! . P               (flow from: 85c1)  85c4 ld hl,50e0 
+    ld hl,BOTTOM_LINE_VRAM_ADDRESS                             ;8ef8 21 e0 50  ! . P                                                   (flow from: 85c1)  85c4 ld hl,50e0 
 v_l85c7h:
     call v_sub_85f5h-BA1       ;8efb cd 35 28  . 5 (               (flow from: 85c4)  85c7 call 85f5 
     ld hl,v_l8afeh-BA1         ;8efe 21 3e 2d  ! > -               (flow from: 8607)  85ca ld hl,8afe 
@@ -8444,14 +8438,14 @@ v_sub_8608h:
     exx                        ;8f3c d9  .                         (flow (mon) from: 5fc0)  8608 exx 
     call v_sub_8639h-BA1       ;8f3d cd 79 28  . y (               (flow (mon) from: 8608)  8609 call 8639 
     exx                        ;8f40 d9  .                         (flow (mon) from: 86a0)  860c exx 
-    call v_sub_872eh-BA1       ;8f41 cd 6e 29  . n )               (flow (mon) from: 860c)  860d call 872e 
+    call potencialCommandKeyPressed-BA1                        ;8f41 cd 6e 29  . n )                                                   (flow (mon) from: 860c)  860d call 872e 
     ret nz                     ;8f44 c0  .                         (flow (mon) from: 8730)  8610 ret nz 
     or 020h                    ;8f45 f6 20  .   
     ret                        ;8f47 c9  . 
-v_l8614h:
+varcKeyboardScanningsCount:
     ld hl,00000h               ;8f48 21 00 00  ! . .               (flow from: 868c)  8614 ld hl,004e 
     inc hl                     ;8f4b 23  #                         (flow from: 8614)  8617 inc hl 
-    ld (v_l8614h+1-BA1),hl     ;8f4c 22 55 28  " U (               (flow from: 8617)  8618 ld (8615),hl 
+    ld (varcKeyboardScanningsCount+1-BA1),hl                   ;8f4c 22 55 28  " U (                                                   (flow from: 8617)  8618 ld (8615),hl 
     ld a,h                     ;8f4f 7c  |                         (flow from: 8618)  861b ld a,h 
     cp 005h                    ;8f50 fe 05  . .                    (flow from: 861b)  861c cp 05 
     jr nz,l8f6dh               ;8f52 20 19    .                    (flow from: 861c)  861e jr nz,8639 
@@ -8461,7 +8455,7 @@ vr_l08620h:
 l8f58h:
     ld h,002h                  ;8f58 26 02  & .                    (flow from: 863c)  8624 ld h,02 
 l8f5ah:
-    call v_sub_86aeh-BA1       ;8f5a cd ee 28  . . (               (flow from: 8624 862e)  8626 call 86ae 
+    call getKeypressCodeOrZero-BA1                             ;8f5a cd ee 28  . . (                                                   (flow from: 8624 862e)  8626 call 86ae 
     jr nz,l8f67h               ;8f5d 20 08    .                    (flow from: 86b9 86bb 86bf 86c2)  8629 jr nz,8633 
     dec hl                     ;8f5f 2b  +                         (flow from: 8629)  862b dec hl 
     inc h                      ;8f60 24  $                         (flow from: 862b)  862c inc h 
@@ -8469,16 +8463,17 @@ l8f5ah:
     jr nz,l8f5ah               ;8f62 20 f6    .                    (flow from: 862d)  862e jr nz,8626 
     call v_sub_86a8h-BA1       ;8f64 cd e8 28  . . (               (flow from: 862e)  8630 call 86a8 
 l8f67h:
+; some key was pressed
     ld hl,00000h               ;8f67 21 00 00  ! . .               (flow from: 8629 86ad)  8633 ld hl,0000 
-    ld (v_l8614h+1-BA1),hl     ;8f6a 22 55 28  " U (               (flow from: 8633)  8636 ld (8615),hl 
+    ld (varcKeyboardScanningsCount+1-BA1),hl                   ;8f6a 22 55 28  " U (                                                   (flow from: 8633)  8636 ld (8615),hl 
 l8f6dh:
 v_sub_8639h:
-    call v_sub_86aeh-BA1       ;8f6d cd ee 28  . . (               (flow from: 7cfa 861e 8636)  8639 call 86ae 
+    call getKeypressCodeOrZero-BA1                             ;8f6d cd ee 28  . . (                                                   (flow from: 7cfa 861e 8636)  8639 call 86ae 
     jr z,l8f58h                ;8f70 28 e6  ( .                    (flow from: 86b9 86bb 86bf 86c2)  863c jr z,8624 
     ld b,000h                  ;8f72 06 00  . .                    (flow from: 863c)  863e ld b,00 
     ld c,e                     ;8f74 4b  K                         (flow from: 863e)  8640 ld c,e 
     ld a,e                     ;8f75 7b  {                         (flow from: 8640)  8641 ld a,e 
-    ld (v_l8684h+1-BA1),a      ;8f76 32 c5 28  2 . (               (flow from: 8641)  8642 ld (8685),a 
+    ld (varcLastPressedKey+1-BA1),a                            ;8f76 32 c5 28  2 . (                                                   (flow from: 8641)  8642 ld (8685),a 
     ld hl,00204h               ;8f79 21 04 02  ! . .               (flow from: 8642)  8645 ld hl,0204 
     ld a,d                     ;8f7c 7a  z                         (flow from: 8645)  8648 ld a,d 
     cp 019h                    ;8f7d fe 19  . .                    (flow from: 8648)  8649 cp 19 
@@ -8498,7 +8493,7 @@ v_sub_8639h:
     sub 02dh                   ;8f95 d6 2d  . -                    (flow from: 865f)  8661 sub 2d 
     jr l8fafh                  ;8f97 18 16  . .                    (flow from: 8661)  8663 jr 867b 
 l8f99h:
-    call v_sub_872eh-BA1       ;8f99 cd 6e 29  . n ) 
+    call potencialCommandKeyPressed-BA1                        ;8f99 cd 6e 29  . n ) 
     jr nz,l8fa0h               ;8f9c 20 02    . 
     res 5,a                    ;8f9e cb af  . . 
 l8fa0h:
@@ -8507,7 +8502,7 @@ l8fa0h:
     or a                       ;8fa3 b7  .                         (flow from: 866d)  866f or a 
     ld a,b                     ;8fa4 78  x                         (flow from: 866f)  8670 ld a,b 
     jr z,l8fafh                ;8fa5 28 08  ( .                    (flow from: 8670)  8671 jr z,867b 
-    call v_sub_872eh-BA1       ;8fa7 cd 6e 29  . n )               (flow from: 8671)  8673 call 872e 
+    call potencialCommandKeyPressed-BA1                        ;8fa7 cd 6e 29  . n )                                                   (flow from: 8671)  8673 call 872e 
     jr nz,l8fafh               ;8faa 20 03    .                    (flow from: 873c)  8676 jr nz,867b 
     ld a,020h                  ;8fac 3e 20  >                      (flow from: 8676)  8678 ld a,20 
     xor b                      ;8fae a8  .                         (flow from: 8678)  867a xor b 
@@ -8518,13 +8513,13 @@ l8fafh:
     cp 080h                    ;8fb3 fe 80  . .                    (flow from: 867d)  867f cp 80 
     jr z,l8f6dh                ;8fb5 28 b6  ( .                    (flow from: 867f)  8681 jr z,8639 
     ld b,a                     ;8fb7 47  G                         (flow from: 8681)  8683 ld b,a 
-v_l8684h:
+varcLastPressedKey:
     ld a,022h                  ;8fb8 3e 22  > "                    (flow from: 8683)  8684 ld a,22 
 vr_l08686h:
     cp 022h                    ;8fba fe 22  . "                    (flow from: 8684)  8686 cp 00 
     ld (vr_l08686h+1-BA1),a    ;8fbc 32 c7 28  2 . (               (flow from: 8686)  8688 ld (8687),a 
     ld a,b                     ;8fbf 78  x                         (flow from: 8688)  868b ld a,b 
-    jp z,v_l8614h-BA1          ;8fc0 ca 54 28  . T (               (flow from: 868b)  868c jp z,8614 
+    jp z,varcKeyboardScanningsCount-BA1                        ;8fc0 ca 54 28  . T (                                                   (flow from: 868b)  868c jp z,8614 
 l8fc3h:
     push af                    ;8fc3 f5  .                         (flow from: 868c)  868f push af 
     call keypressBeep-BA1      ;8fc4 cd 4f 29  . O )               (flow from: 868f)  8690 call 870f 
@@ -8548,7 +8543,8 @@ v_sub_86a8h:
     ld hl,vr_l08686h+1-BA1     ;8fdc 21 c7 28  ! . (               (flow from: 8630 86a6)  86a8 ld hl,8687 
     ld (hl),000h               ;8fdf 36 00  6 .                    (flow from: 86a8)  86ab ld (hl),00 
     ret                        ;8fe1 c9  .                         (flow from: 86ab)  86ad ret 
-v_sub_86aeh:
+getKeypressCodeOrZero:
+; get code of a pressed key in E. A is 0 if no key or a special key (SS or CS) was pressed
     push hl                    ;8fe2 e5  .                         (flow from: 8626 8639)  86ae push hl 
     call ROM_KeyboardScanning  ;8fe3                               (flow from: 8626 86ae)  86af call 028e 
     pop hl                     ;8fe6 e1  .                         (flow from: 02b2 02b5 02b8 02be)  86b2 pop hl 
@@ -8561,34 +8557,41 @@ l8febh:
     ret z                      ;8fed c8  .                         (flow from: 86b8)  86b9 ret z 
     inc d                      ;8fee 14  .                         (flow from: 86b9)  86ba inc d 
     ret nz                     ;8fef c0  .                         (flow from: 86ba)  86bb ret nz 
+; any key pressed
     ld a,e                     ;8ff0 7b  {                         (flow from: 86bb)  86bc ld a,e 
+; SS pressed?
     sub 019h                   ;8ff1 d6 19  . .                    (flow from: 86bc)  86bd sub 19 
     ret z                      ;8ff3 c8  .                         (flow from: 86bd)  86bf ret z 
+; CS pressed?
     sub 00fh                   ;8ff4 d6 0f  . .                    (flow from: 86bf)  86c0 sub 0f 
     ret                        ;8ff6 c9  .                         (flow from: 86c0)  86c2 ret 
 l8ff7h:
+; a key in combination with SS was pressed
     ex de,hl                   ;8ff7 eb  .                         (flow from: 864b)  86c3 ex de,hl 
     ld a,c                     ;8ff8 79  y                         (flow from: 86c3)  86c4 ld a,c 
+; was SS+O pressed? ("         ;", start of a comment)
     cp 01bh                    ;8ff9 fe 1b  . .                    (flow from: 86c4)  86c5 cp 1b 
-    jr z,l9014h                ;8ffb 28 17  ( .                    (flow from: 86c5)  86c7 jr z,86e0 
+    jr z,standardKeyPlusSSPressed                              ;8ffb 28 17  ( .                                                        (flow from: 86c5)  86c7 jr z,86e0 
+; are we on the beginning of the line so commands can be accecpted?
     ld hl,inputBufferStart-BA1                                 ;8ffd 21 3f 2d  ! ? -                                                   (flow from: 86c7)  86c9 ld hl,8aff 
     ld a,(hl)                  ;9000 7e  ~                         (flow from: 86c9)  86cc ld a,(hl) 
     dec a                      ;9001 3d  =                         (flow from: 86cc)  86cd dec a 
-    jr nz,l9014h               ;9002 20 10    .                    (flow from: 86cd)  86ce jr nz,86e0 
+    jr nz,standardKeyPlusSSPressed                             ;9002 20 10    .                                                        (flow from: 86cd)  86ce jr nz,86e0 
     inc hl                     ;9004 23  #                         (flow from: 86ce)  86d0 inc hl 
     or (hl)                    ;9005 b6  .                         (flow from: 86d0)  86d1 or (hl) 
-    jr nz,l9014h               ;9006 20 0c    .                    (flow from: 86d1)  86d2 jr nz,86e0 
+    jr nz,standardKeyPlusSSPressed                             ;9006 20 0c    .                                                        (flow from: 86d1)  86d2 jr nz,86e0 
     ex de,hl                   ;9008 eb  .                         (flow from: 86d2)  86d4 ex de,hl 
     add hl,bc                  ;9009 09  .                         (flow from: 86d4)  86d5 add hl,bc 
     ld a,(hl)                  ;900a 7e  ~                         (flow from: 86d5)  86d6 ld a,(hl) 
-    call v_sub_872eh-BA1       ;900b cd 6e 29  . n )               (flow from: 86d6)  86d7 call 872e 
-    jr nz,l9014h               ;900e 20 04    .                    (flow from: 873c)  86da jr nz,86e0 
+    call potencialCommandKeyPressed-BA1                        ;900b cd 6e 29  . n )                                                   (flow from: 86d6)  86d7 call 872e 
+    jr nz,standardKeyPlusSSPressed                             ;900e 20 04    .                                                        (flow from: 873c)  86da jr nz,86e0 
     set 7,a                    ;9010 cb ff  . .                    (flow from: 86da)  86dc set 7,a 
     jr l8fafh                  ;9012 18 9b  . .                    (flow from: 86dc)  86de jr 867b 
-l9014h:
-    ld hl,02926h               ;9014 21 26 29  ! & )               (flow from: 86ce)  86e0 ld hl,86e6 
+standardKeyPlusSSPressed:
+    ld hl,varc9019+1-BA1       ;9014 21 26 29  ! & )               (flow from: 86ce)  86e0 ld hl,86e6 
     add hl,bc                  ;9017 09  .                         (flow from: 86e0)  86e3 add hl,bc 
     ld a,(hl)                  ;9018 7e  ~                         (flow from: 86e3)  86e4 ld a,(hl) 
+varc9019:
     jr l8fafh                  ;9019 18 94  . .                    (flow from: 86e4)  86e5 jr 867b 
     ld hl,(05b5eh)             ;901b 2a 5e 5b  * ^ [ 
     ld h,025h                  ;901e 26 25  & % 
@@ -8646,7 +8649,8 @@ v_sub_8726h:
     ret nc                     ;905f d0  .                         (flow from: 8729)  872b ret nc 
     cp a                       ;9060 bf  .                         (flow from: 872b)  872c cp a 
     ret                        ;9061 c9  .                         (flow from: 872c)  872d ret 
-v_sub_872eh:
+potencialCommandKeyPressed:
+; ignore if the command key is not in a-z or A-Z
     cp 041h                    ;9062 fe 41  . A                    (flow from: 82bd 83cd 8673 86d7 87bd)  872e cp 41 
     ret c                      ;9064 d8  .                         (flow from: 872e)  8730 ret c 
     cp 07ah                    ;9065 fe 7a  . z                    (flow from: 8730)  8731 cp 7a 
@@ -8667,7 +8671,7 @@ v_sub_8741h:
 l9078h:
 v_sub_8744h:
     exx                        ;9078 d9  .                         (flow from: 7bff 82c4 873f 8742 8a06)  8744 exx 
-    call v_sub_877fh-BA1       ;9079 cd bf 29  . . )               (flow from: 8744)  8745 call 877f 
+    call displayCharacter-BA1                                  ;9079 cd bf 29  . . )                                                   (flow from: 8744)  8745 call 877f 
     exx                        ;907c d9  .                         (flow from: 87a9)  8748 exx 
     ret                        ;907d c9  .                         (flow from: 8748)  8749 ret 
 v_sub_874ah:
@@ -8699,7 +8703,7 @@ v_sub_8767h:
     res 7,a                    ;909b cb bf  . .                    (flow from: 80d8 874c 875c 8765)  8767 res 7,a 
 v_sub_8769h:
     exx                        ;909d d9  .                         (flow from: 7ca7 85ea 8767)  8769 exx 
-    call v_sub_877fh-BA1       ;909e cd bf 29  . . )               (flow from: 8769)  876a call 877f 
+    call displayCharacter-BA1                                  ;909e cd bf 29  . . )                                                   (flow from: 8769)  876a call 877f 
     ld a,h                     ;90a1 7c  |                         (flow from: 87a9)  876d ld a,h 
     add a,00ah                 ;90a2 c6 0a  . .                    (flow from: 876d)  876e add a,0a 
     cp 05ah                    ;90a4 fe 5a  . Z                    (flow from: 876e)  8770 cp 5a 
@@ -8714,7 +8718,7 @@ vr_l0877bh:
     ld (hl),038h               ;90af 36 38  6 8                    (flow from: 877a)  877b ld (hl),38 
     exx                        ;90b1 d9  .                         (flow from: 877b)  877d exx 
     ret                        ;90b2 c9  .                         (flow from: 877d)  877e ret 
-v_sub_877fh:
+displayCharacter:
     add a,a                    ;90b3 87  .                         (flow from: 8745 876a)  877f add a,a 
     ld h,00fh                  ;90b4 26 0f  & .                    (flow from: 877f)  8780 ld h,0f 
     ld l,a                     ;90b6 6f  o                         (flow from: 8780)  8782 ld l,a 
@@ -8760,7 +8764,7 @@ l90e3h:
     res 5,a                    ;90eb cb af  . .                    (flow from: 87b5)  87b7 res 5,a 
     cp 05fh                    ;90ed fe 5f  . _                    (flow from: 87b7)  87b9 cp 5f 
     jr z,l90f6h                ;90ef 28 05  ( .                    (flow from: 87b9)  87bb jr z,87c2 
-    call v_sub_872eh-BA1       ;90f1 cd 6e 29  . n )               (flow from: 87bb)  87bd call 872e 
+    call potencialCommandKeyPressed-BA1                        ;90f1 cd 6e 29  . n )                                                   (flow from: 87bb)  87bd call 872e 
     jr nz,l9102h               ;90f4 20 0c    .                    (flow from: 8730 873c)  87c0 jr nz,87ce 
 l90f6h:
     ld (de),a                  ;90f6 12  .                         (flow from: 87b5 87c0)  87c2 ld (de),a 
