@@ -5,7 +5,7 @@
 
 
 ; BA:    equ 24000
-BA1:     equ 2356
+BA1:     equ 24000+2356
 VR:      equ 0xde7
 ATTRIBUTES_ADDRESS:      equ 0x5800
 
@@ -578,14 +578,8 @@ include 'relocationTable.asm'
     defb 0feh, 02ah, 05ch, 07fh, 07fh, 03fh, 03fh, 01fh, 007h, 015h, 02eh, 07fh, 0ffh, 0feh, 0feh, 0fch
     defb 0f0h, 02ah, 00dh, 000h, 07fh, 0ffh, 0ffh, 0ffh, 07fh, 0a8h, 0deh, 07eh, 0feh, 0feh, 0fch, 0fch
     defb 0f0h
-
-org 2356
-
 ENTRY_POINT_WITH_MONITOR:
     jp v_l7cc9h-BA1            ;66f4 c3 09 1f  . . . 
-
-
-
 
 ; BLOCK 'data_66f7' (start 0x66f7 end 0x6898)
 v_l5dc3h:
