@@ -4,8 +4,8 @@
     org 05dc0h
 
 
-BA:      equ 24000
-BA1:     equ 24000+2356
+; BA:    equ 24000
+BA1:     equ 2356
 VR:      equ 0xde7
 ATTRIBUTES_ADDRESS:      equ 0x5800
 
@@ -552,1155 +552,9 @@ l612eh:
     jr nz,l612bh               ;6137 20 f2    .                    (ghost flow from: 534f)   5350 jr nz,5344 
     ret                        ;6139 c9  .                         (ghost flow from: 5350)   5352 ret 
 
-; BLOCK 'data_613a' (start 0x613a end 0x65b3)
-vr_l05353h:
-    defb 001h                  ;613a 01  . 
-    defb 023h                  ;613b 23  # 
-    defb 0cfh                  ;613c cf  . 
-    defb 01dh                  ;613d 1d  . 
-    defb 0b6h                  ;613e b6  . 
-    defb 00ah                  ;613f 0a  . 
-    defb 007h                  ;6140 07  . 
-    defb 0cbh                  ;6141 cb  . 
-    defb 003h                  ;6142 03  . 
-    defb 006h                  ;6143 06  . 
-    defb 00ah                  ;6144 0a  . 
-    defb 00bh                  ;6145 0b  . 
-    defb 005h                  ;6146 05  . 
-    defb 0cbh                  ;6147 cb  . 
-    defb 009h                  ;6148 09  . 
-    defb 004h                  ;6149 04  . 
-    defb 0cbh                  ;614a cb  . 
-    defb 004h                  ;614b 04  . 
-    defb 007h                  ;614c 07  . 
-    defb 0cdh                  ;614d cd  . 
-    defb 005h                  ;614e 05  . 
-    defb 006h                  ;614f 06  . 
-    defb 003h                  ;6150 03  . 
-    defb 005h                  ;6151 05  . 
-    defb 00bh                  ;6152 0b  . 
-    defb 0cch                  ;6153 cc  . 
-    defb 002h                  ;6154 02  . 
-    defb 008h                  ;6155 08  . 
-    defb 004h                  ;6156 04  . 
-    defb 008h                  ;6157 08  . 
-    defb 009h                  ;6158 09  . 
-    defb 0d0h                  ;6159 d0  . 
-    defb 002h                  ;615a 02  . 
-    defb 00ch                  ;615b 0c  . 
-    defb 005h                  ;615c 05  . 
-    defb 004h                  ;615d 04  . 
-    defb 0cbh                  ;615e cb  . 
-    defb 002h                  ;615f 02  . 
-    defb 006h                  ;6160 06  . 
-    defb 008h                  ;6161 08  . 
-    defb 053h                  ;6162 53  S 
-    defb 008h                  ;6163 08  . 
-    defb 003h                  ;6164 03  . 
-    defb 00dh                  ;6165 0d  . 
-    defb 003h                  ;6166 03  . 
-    defb 0cch                  ;6167 cc  . 
-    defb 002h                  ;6168 02  . 
-    defb 006h                  ;6169 06  . 
-    defb 0cbh                  ;616a cb  . 
-    defb 005h                  ;616b 05  . 
-    defb 006h                  ;616c 06  . 
-    defb 0cbh                  ;616d cb  . 
-    defb 002h                  ;616e 02  . 
-    defb 005h                  ;616f 05  . 
-    defb 0cbh                  ;6170 cb  . 
-    defb 006h                  ;6171 06  . 
-    defb 005h                  ;6172 05  . 
-    defb 00ah                  ;6173 0a  . 
-    defb 003h                  ;6174 03  . 
-    defb 00dh                  ;6175 0d  . 
-    defb 005h                  ;6176 05  . 
-    defb 0cbh                  ;6177 cb  . 
-    defb 003h                  ;6178 03  . 
-    defb 005h                  ;6179 05  . 
-    defb 0cbh                  ;617a cb  . 
-    defb 002h                  ;617b 02  . 
-    defb 011h                  ;617c 11  . 
-    defb 005h                  ;617d 05  . 
-    defb 00eh                  ;617e 0e  . 
-    defb 003h                  ;617f 03  . 
-    defb 011h                  ;6180 11  . 
-    defb 004h                  ;6181 04  . 
-    defb 0cbh                  ;6182 cb  . 
-    defb 003h                  ;6183 03  . 
-    defb 011h                  ;6184 11  . 
-    defb 0cdh                  ;6185 cd  . 
-    defb 003h                  ;6186 03  . 
-    defb 009h                  ;6187 09  . 
-    defb 007h                  ;6188 07  . 
-    defb 004h                  ;6189 04  . 
-    defb 00ch                  ;618a 0c  . 
-    defb 0cbh                  ;618b cb  . 
-    defb 002h                  ;618c 02  . 
-    defb 005h                  ;618d 05  . 
-    defb 014h                  ;618e 14  . 
-    defb 005h                  ;618f 05  . 
-    defb 0cbh                  ;6190 cb  . 
-    defb 002h                  ;6191 02  . 
-    defb 0cch                  ;6192 cc  . 
-    defb 003h                  ;6193 03  . 
-    defb 003h                  ;6194 03  . 
-    defb 004h                  ;6195 04  . 
-    defb 011h                  ;6196 11  . 
-    defb 0cdh                  ;6197 cd  . 
-    defb 002h                  ;6198 02  . 
-    defb 0cbh                  ;6199 cb  . 
-    defb 002h                  ;619a 02  . 
-    defb 01ch                  ;619b 1c  . 
-    defb 004h                  ;619c 04  . 
-    defb 003h                  ;619d 03  . 
-    defb 004h                  ;619e 04  . 
-    defb 0cbh                  ;619f cb  . 
-    defb 004h                  ;61a0 04  . 
-    defb 00ah                  ;61a1 0a  . 
-    defb 009h                  ;61a2 09  . 
-    defb 003h                  ;61a3 03  . 
-    defb 00dh                  ;61a4 0d  . 
-    defb 0cbh                  ;61a5 cb  . 
-    defb 004h                  ;61a6 04  . 
-    defb 004h                  ;61a7 04  . 
-    defb 003h                  ;61a8 03  . 
-    defb 006h                  ;61a9 06  . 
-    defb 003h                  ;61aa 03  . 
-    defb 005h                  ;61ab 05  . 
-    defb 009h                  ;61ac 09  . 
-    defb 003h                  ;61ad 03  . 
-    defb 00eh                  ;61ae 0e  . 
-    defb 003h                  ;61af 03  . 
-    defb 005h                  ;61b0 05  . 
-    defb 003h                  ;61b1 03  . 
-    defb 004h                  ;61b2 04  . 
-    defb 003h                  ;61b3 03  . 
-    defb 005h                  ;61b4 05  . 
-    defb 003h                  ;61b5 03  . 
-    defb 008h                  ;61b6 08  . 
-    defb 0cbh                  ;61b7 cb  . 
-    defb 002h                  ;61b8 02  . 
-    defb 0cfh                  ;61b9 cf  . 
-    defb 002h                  ;61ba 02  . 
-    defb 005h                  ;61bb 05  . 
-    defb 003h                  ;61bc 03  . 
-    defb 004h                  ;61bd 04  . 
-    defb 0cbh                  ;61be cb  . 
-    defb 002h                  ;61bf 02  . 
-    defb 005h                  ;61c0 05  . 
-    defb 0cbh                  ;61c1 cb  . 
-    defb 002h                  ;61c2 02  . 
-    defb 005h                  ;61c3 05  . 
-    defb 003h                  ;61c4 03  . 
-    defb 00ch                  ;61c5 0c  . 
-    defb 00dh                  ;61c6 0d  . 
-    defb 007h                  ;61c7 07  . 
-    defb 009h                  ;61c8 09  . 
-    defb 0cbh                  ;61c9 cb  . 
-    defb 002h                  ;61ca 02  . 
-    defb 0cdh                  ;61cb cd  . 
-    defb 002h                  ;61cc 02  . 
-    defb 00dh                  ;61cd 0d  . 
-    defb 00ch                  ;61ce 0c  . 
-    defb 003h                  ;61cf 03  . 
-    defb 005h                  ;61d0 05  . 
-    defb 0cbh                  ;61d1 cb  . 
-    defb 002h                  ;61d2 02  . 
-    defb 015h                  ;61d3 15  . 
-    defb 0cch                  ;61d4 cc  . 
-    defb 003h                  ;61d5 03  . 
-    defb 010h                  ;61d6 10  . 
-    defb 00dh                  ;61d7 0d  . 
-    defb 005h                  ;61d8 05  . 
-    defb 00dh                  ;61d9 0d  . 
-    defb 0cdh                  ;61da cd  . 
-    defb 002h                  ;61db 02  . 
-    defb 0cch                  ;61dc cc  . 
-    defb 003h                  ;61dd 03  . 
-    defb 00ah                  ;61de 0a  . 
-    defb 005h                  ;61df 05  . 
-    defb 018h                  ;61e0 18  . 
-    defb 004h                  ;61e1 04  . 
-    defb 00dh                  ;61e2 0d  . 
-    defb 005h                  ;61e3 05  . 
-    defb 00fh                  ;61e4 0f  . 
-    defb 0cdh                  ;61e5 cd  . 
-    defb 002h                  ;61e6 02  . 
-    defb 00ch                  ;61e7 0c  . 
-    defb 00dh                  ;61e8 0d  . 
-    defb 005h                  ;61e9 05  . 
-    defb 010h                  ;61ea 10  . 
-    defb 013h                  ;61eb 13  . 
-    defb 017h                  ;61ec 17  . 
-    defb 003h                  ;61ed 03  . 
-    defb 008h                  ;61ee 08  . 
-    defb 00eh                  ;61ef 0e  . 
-    defb 005h                  ;61f0 05  . 
-    defb 01ch                  ;61f1 1c  . 
-    defb 0cah                  ;61f2 ca  . 
-    defb 004h                  ;61f3 04  . 
-    defb 01eh                  ;61f4 1e  . 
-    defb 010h                  ;61f5 10  . 
-    defb 005h                  ;61f6 05  . 
-    defb 006h                  ;61f7 06  . 
-    defb 0cbh                  ;61f8 cb  . 
-    defb 002h                  ;61f9 02  . 
-    defb 004h                  ;61fa 04  . 
-    defb 006h                  ;61fb 06  . 
-    defb 003h                  ;61fc 03  . 
-    defb 006h                  ;61fd 06  . 
-    defb 0cbh                  ;61fe cb  . 
-    defb 002h                  ;61ff 02  . 
-    defb 00ah                  ;6200 0a  . 
-    defb 003h                  ;6201 03  . 
-    defb 00bh                  ;6202 0b  . 
-    defb 00ah                  ;6203 0a  . 
-    defb 00eh                  ;6204 0e  . 
-    defb 003h                  ;6205 03  . 
-    defb 006h                  ;6206 06  . 
-    defb 017h                  ;6207 17  . 
-    defb 012h                  ;6208 12  . 
-    defb 021h                  ;6209 21  ! 
-    defb 01fh                  ;620a 1f  . 
-    defb 0cbh                  ;620b cb  . 
-    defb 002h                  ;620c 02  . 
-    defb 004h                  ;620d 04  . 
-    defb 003h                  ;620e 03  . 
-    defb 006h                  ;620f 06  . 
-    defb 003h                  ;6210 03  . 
-    defb 006h                  ;6211 06  . 
-    defb 003h                  ;6212 03  . 
-    defb 005h                  ;6213 05  . 
-    defb 0d6h                  ;6214 d6  . 
-    defb 002h                  ;6215 02  . 
-    defb 004h                  ;6216 04  . 
-    defb 003h                  ;6217 03  . 
-    defb 006h                  ;6218 06  . 
-    defb 00dh                  ;6219 0d  . 
-    defb 00ah                  ;621a 0a  . 
-    defb 004h                  ;621b 04  . 
-    defb 013h                  ;621c 13  . 
-    defb 007h                  ;621d 07  . 
-    defb 008h                  ;621e 08  . 
-    defb 003h                  ;621f 03  . 
-    defb 0cch                  ;6220 cc  . 
-    defb 002h                  ;6221 02  . 
-    defb 00ch                  ;6222 0c  . 
-    defb 0cbh                  ;6223 cb  . 
-    defb 006h                  ;6224 06  . 
-    defb 009h                  ;6225 09  . 
-    defb 007h                  ;6226 07  . 
-    defb 008h                  ;6227 08  . 
-    defb 005h                  ;6228 05  . 
-    defb 0cbh                  ;6229 cb  . 
-    defb 002h                  ;622a 02  . 
-    defb 005h                  ;622b 05  . 
-    defb 008h                  ;622c 08  . 
-    defb 005h                  ;622d 05  . 
-    defb 00dh                  ;622e 0d  . 
-    defb 0cbh                  ;622f cb  . 
-    defb 002h                  ;6230 02  . 
-    defb 006h                  ;6231 06  . 
-    defb 003h                  ;6232 03  . 
-    defb 007h                  ;6233 07  . 
-    defb 005h                  ;6234 05  . 
-    defb 0cbh                  ;6235 cb  . 
-    defb 006h                  ;6236 06  . 
-    defb 0cch                  ;6237 cc  . 
-    defb 002h                  ;6238 02  . 
-    defb 0cbh                  ;6239 cb  . 
-    defb 002h                  ;623a 02  . 
-    defb 0cch                  ;623b cc  . 
-    defb 002h                  ;623c 02  . 
-    defb 0cbh                  ;623d cb  . 
-    defb 002h                  ;623e 02  . 
-    defb 006h                  ;623f 06  . 
-    defb 004h                  ;6240 04  . 
-    defb 003h                  ;6241 03  . 
-    defb 005h                  ;6242 05  . 
-    defb 003h                  ;6243 03  . 
-    defb 004h                  ;6244 04  . 
-    defb 0cbh                  ;6245 cb  . 
-    defb 005h                  ;6246 05  . 
-    defb 004h                  ;6247 04  . 
-    defb 0cbh                  ;6248 cb  . 
-    defb 002h                  ;6249 02  . 
-    defb 009h                  ;624a 09  . 
-    defb 003h                  ;624b 03  . 
-    defb 004h                  ;624c 04  . 
-    defb 0cdh                  ;624d cd  . 
-    defb 002h                  ;624e 02  . 
-    defb 004h                  ;624f 04  . 
-    defb 003h                  ;6250 03  . 
-    defb 004h                  ;6251 04  . 
-    defb 00ah                  ;6252 0a  . 
-    defb 004h                  ;6253 04  . 
-    defb 003h                  ;6254 03  . 
-    defb 019h                  ;6255 19  . 
-    defb 003h                  ;6256 03  . 
-    defb 004h                  ;6257 04  . 
-    defb 003h                  ;6258 03  . 
-    defb 00eh                  ;6259 0e  . 
-    defb 012h                  ;625a 12  . 
-    defb 003h                  ;625b 03  . 
-    defb 00eh                  ;625c 0e  . 
-    defb 026h                  ;625d 26  & 
-    defb 003h                  ;625e 03  . 
-    defb 00bh                  ;625f 0b  . 
-    defb 0cch                  ;6260 cc  . 
-    defb 002h                  ;6261 02  . 
-    defb 007h                  ;6262 07  . 
-    defb 005h                  ;6263 05  . 
-    defb 00ch                  ;6264 0c  . 
-    defb 006h                  ;6265 06  . 
-    defb 014h                  ;6266 14  . 
-    defb 004h                  ;6267 04  . 
-    defb 003h                  ;6268 03  . 
-    defb 017h                  ;6269 17  . 
-    defb 004h                  ;626a 04  . 
-    defb 0cbh                  ;626b cb  . 
-    defb 002h                  ;626c 02  . 
-    defb 0cch                  ;626d cc  . 
-    defb 002h                  ;626e 02  . 
-    defb 006h                  ;626f 06  . 
-    defb 00dh                  ;6270 0d  . 
-    defb 0cdh                  ;6271 cd  . 
-    defb 002h                  ;6272 02  . 
-    defb 010h                  ;6273 10  . 
-    defb 0cdh                  ;6274 cd  . 
-    defb 003h                  ;6275 03  . 
-    defb 0cch                  ;6276 cc  . 
-    defb 002h                  ;6277 02  . 
-    defb 003h                  ;6278 03  . 
-    defb 004h                  ;6279 04  . 
-    defb 003h                  ;627a 03  . 
-    defb 009h                  ;627b 09  . 
-    defb 008h                  ;627c 08  . 
-    defb 007h                  ;627d 07  . 
-    defb 0cbh                  ;627e cb  . 
-    defb 002h                  ;627f 02  . 
-    defb 00bh                  ;6280 0b  . 
-    defb 003h                  ;6281 03  . 
-    defb 011h                  ;6282 11  . 
-    defb 007h                  ;6283 07  . 
-    defb 011h                  ;6284 11  . 
-    defb 004h                  ;6285 04  . 
-    defb 003h                  ;6286 03  . 
-    defb 027h                  ;6287 27  ' 
-    defb 008h                  ;6288 08  . 
-    defb 003h                  ;6289 03  . 
-    defb 005h                  ;628a 05  . 
-    defb 0cbh                  ;628b cb  . 
-    defb 002h                  ;628c 02  . 
-    defb 005h                  ;628d 05  . 
-    defb 003h                  ;628e 03  . 
-    defb 006h                  ;628f 06  . 
-    defb 004h                  ;6290 04  . 
-    defb 0cbh                  ;6291 cb  . 
-    defb 003h                  ;6292 03  . 
-    defb 004h                  ;6293 04  . 
-    defb 003h                  ;6294 03  . 
-    defb 006h                  ;6295 06  . 
-    defb 003h                  ;6296 03  . 
-    defb 004h                  ;6297 04  . 
-    defb 0cbh                  ;6298 cb  . 
-    defb 002h                  ;6299 02  . 
-    defb 008h                  ;629a 08  . 
-    defb 004h                  ;629b 04  . 
-    defb 006h                  ;629c 06  . 
-    defb 003h                  ;629d 03  . 
-    defb 025h                  ;629e 25  % 
-    defb 003h                  ;629f 03  . 
-    defb 004h                  ;62a0 04  . 
-    defb 0cbh                  ;62a1 cb  . 
-    defb 002h                  ;62a2 02  . 
-    defb 00bh                  ;62a3 0b  . 
-    defb 0cch                  ;62a4 cc  . 
-    defb 003h                  ;62a5 03  . 
-    defb 005h                  ;62a6 05  . 
-    defb 00ch                  ;62a7 0c  . 
-    defb 004h                  ;62a8 04  . 
-    defb 012h                  ;62a9 12  . 
-    defb 014h                  ;62aa 14  . 
-    defb 008h                  ;62ab 08  . 
-    defb 0cch                  ;62ac cc  . 
-    defb 002h                  ;62ad 02  . 
-    defb 003h                  ;62ae 03  . 
-    defb 005h                  ;62af 05  . 
-    defb 003h                  ;62b0 03  . 
-    defb 006h                  ;62b1 06  . 
-    defb 008h                  ;62b2 08  . 
-    defb 00fh                  ;62b3 0f  . 
-    defb 005h                  ;62b4 05  . 
-    defb 01ah                  ;62b5 1a  . 
-    defb 005h                  ;62b6 05  . 
-    defb 007h                  ;62b7 07  . 
-    defb 020h                  ;62b8 20    
-    defb 005h                  ;62b9 05  . 
-    defb 009h                  ;62ba 09  . 
-    defb 007h                  ;62bb 07  . 
-    defb 006h                  ;62bc 06  . 
-    defb 005h                  ;62bd 05  . 
-    defb 00ah                  ;62be 0a  . 
-    defb 008h                  ;62bf 08  . 
-    defb 003h                  ;62c0 03  . 
-    defb 0cch                  ;62c1 cc  . 
-    defb 002h                  ;62c2 02  . 
-    defb 003h                  ;62c3 03  . 
-    defb 006h                  ;62c4 06  . 
-    defb 005h                  ;62c5 05  . 
-    defb 008h                  ;62c6 08  . 
-    defb 00bh                  ;62c7 0b  . 
-    defb 011h                  ;62c8 11  . 
-    defb 015h                  ;62c9 15  . 
-    defb 00ah                  ;62ca 0a  . 
-    defb 08fh                  ;62cb 8f  . 
-    defb 004h                  ;62cc 04  . 
-    defb 008h                  ;62cd 08  . 
-    defb 004h                  ;62ce 04  . 
-    defb 00eh                  ;62cf 0e  . 
-    defb 003h                  ;62d0 03  . 
-    defb 00bh                  ;62d1 0b  . 
-    defb 005h                  ;62d2 05  . 
-    defb 006h                  ;62d3 06  . 
-    defb 008h                  ;62d4 08  . 
-    defb 004h                  ;62d5 04  . 
-    defb 02ch                  ;62d6 2c  , 
-    defb 008h                  ;62d7 08  . 
-    defb 004h                  ;62d8 04  . 
-    defb 01ah                  ;62d9 1a  . 
-    defb 004h                  ;62da 04  . 
-    defb 007h                  ;62db 07  . 
-    defb 005h                  ;62dc 05  . 
-    defb 009h                  ;62dd 09  . 
-    defb 003h                  ;62de 03  . 
-    defb 006h                  ;62df 06  . 
-    defb 007h                  ;62e0 07  . 
-    defb 003h                  ;62e1 03  . 
-    defb 009h                  ;62e2 09  . 
-    defb 017h                  ;62e3 17  . 
-    defb 02ah                  ;62e4 2a  * 
-    defb 008h                  ;62e5 08  . 
-    defb 003h                  ;62e6 03  . 
-    defb 005h                  ;62e7 05  . 
-    defb 003h                  ;62e8 03  . 
-    defb 007h                  ;62e9 07  . 
-    defb 01dh                  ;62ea 1d  . 
-    defb 01ah                  ;62eb 1a  . 
-    defb 00dh                  ;62ec 0d  . 
-    defb 007h                  ;62ed 07  . 
-    defb 02dh                  ;62ee 2d  - 
-    defb 02ah                  ;62ef 2a  * 
-    defb 004h                  ;62f0 04  . 
-    defb 008h                  ;62f1 08  . 
-    defb 005h                  ;62f2 05  . 
-    defb 004h                  ;62f3 04  . 
-    defb 00eh                  ;62f4 0e  . 
-    defb 0cdh                  ;62f5 cd  . 
-    defb 002h                  ;62f6 02  . 
-    defb 00ch                  ;62f7 0c  . 
-    defb 003h                  ;62f8 03  . 
-    defb 021h                  ;62f9 21  ! 
-    defb 005h                  ;62fa 05  . 
-    defb 009h                  ;62fb 09  . 
-    defb 003h                  ;62fc 03  . 
-    defb 018h                  ;62fd 18  . 
-    defb 014h                  ;62fe 14  . 
-    defb 00dh                  ;62ff 0d  . 
-    defb 015h                  ;6300 15  . 
-    defb 003h                  ;6301 03  . 
-    defb 004h                  ;6302 04  . 
-    defb 00ah                  ;6303 0a  . 
-    defb 016h                  ;6304 16  . 
-    defb 00dh                  ;6305 0d  . 
-    defb 003h                  ;6306 03  . 
-    defb 0d1h                  ;6307 d1  . 
-    defb 002h                  ;6308 02  . 
-    defb 003h                  ;6309 03  . 
-    defb 00fh                  ;630a 0f  . 
-    defb 015h                  ;630b 15  . 
-    defb 004h                  ;630c 04  . 
-    defb 005h                  ;630d 05  . 
-    defb 003h                  ;630e 03  . 
-    defb 004h                  ;630f 04  . 
-    defb 003h                  ;6310 03  . 
-    defb 004h                  ;6311 04  . 
-    defb 005h                  ;6312 05  . 
-    defb 011h                  ;6313 11  . 
-    defb 006h                  ;6314 06  . 
-    defb 01fh                  ;6315 1f  . 
-    defb 0cdh                  ;6316 cd  . 
-    defb 002h                  ;6317 02  . 
-    defb 003h                  ;6318 03  . 
-    defb 005h                  ;6319 05  . 
-    defb 003h                  ;631a 03  . 
-    defb 005h                  ;631b 05  . 
-    defb 009h                  ;631c 09  . 
-    defb 005h                  ;631d 05  . 
-    defb 0cbh                  ;631e cb  . 
-    defb 002h                  ;631f 02  . 
-    defb 006h                  ;6320 06  . 
-    defb 007h                  ;6321 07  . 
-    defb 00ch                  ;6322 0c  . 
-    defb 007h                  ;6323 07  . 
-    defb 005h                  ;6324 05  . 
-    defb 010h                  ;6325 10  . 
-    defb 005h                  ;6326 05  . 
-    defb 00ah                  ;6327 0a  . 
-    defb 006h                  ;6328 06  . 
-    defb 003h                  ;6329 03  . 
-    defb 006h                  ;632a 06  . 
-    defb 007h                  ;632b 07  . 
-    defb 000h                  ;632c 00  . 
-    defb 000h                  ;632d 00  . 
-vr_l05547h:
-    defb 001h                  ;632e 01  . 
-    defb 0cah                  ;632f ca  . 
-    defb 00dh                  ;6330 0d  . 
-    defb 006h                  ;6331 06  . 
-    defb 0cah                  ;6332 ca  . 
-    defb 00ah                  ;6333 0a  . 
-    defb 0cbh                  ;6334 cb  . 
-    defb 002h                  ;6335 02  . 
-    defb 004h                  ;6336 04  . 
-    defb 003h                  ;6337 03  . 
-    defb 005h                  ;6338 05  . 
-    defb 008h                  ;6339 08  . 
-    defb 003h                  ;633a 03  . 
-    defb 004h                  ;633b 04  . 
-    defb 003h                  ;633c 03  . 
-    defb 006h                  ;633d 06  . 
-    defb 00ah                  ;633e 0a  . 
-    defb 005h                  ;633f 05  . 
-    defb 003h                  ;6340 03  . 
-    defb 0cfh                  ;6341 cf  . 
-    defb 002h                  ;6342 02  . 
-    defb 0cdh                  ;6343 cd  . 
-    defb 002h                  ;6344 02  . 
-    defb 00ah                  ;6345 0a  . 
-    defb 005h                  ;6346 05  . 
-    defb 006h                  ;6347 06  . 
-    defb 008h                  ;6348 08  . 
-    defb 009h                  ;6349 09  . 
-    defb 007h                  ;634a 07  . 
-    defb 005h                  ;634b 05  . 
-    defb 0d0h                  ;634c d0  . 
-    defb 002h                  ;634d 02  . 
-    defb 009h                  ;634e 09  . 
-    defb 0cbh                  ;634f cb  . 
-    defb 002h                  ;6350 02  . 
-    defb 0d1h                  ;6351 d1  . 
-    defb 002h                  ;6352 02  . 
-    defb 0cbh                  ;6353 cb  . 
-    defb 002h                  ;6354 02  . 
-    defb 0cch                  ;6355 cc  . 
-    defb 002h                  ;6356 02  . 
-    defb 0cbh                  ;6357 cb  . 
-    defb 003h                  ;6358 03  . 
-    defb 00ch                  ;6359 0c  . 
-    defb 0ceh                  ;635a ce  . 
-    defb 003h                  ;635b 03  . 
-    defb 004h                  ;635c 04  . 
-    defb 009h                  ;635d 09  . 
-    defb 0cfh                  ;635e cf  . 
-    defb 002h                  ;635f 02  . 
-    defb 009h                  ;6360 09  . 
-    defb 0cbh                  ;6361 cb  . 
-    defb 008h                  ;6362 08  . 
-    defb 005h                  ;6363 05  . 
-    defb 006h                  ;6364 06  . 
-    defb 004h                  ;6365 04  . 
-    defb 0cbh                  ;6366 cb  . 
-    defb 002h                  ;6367 02  . 
-    defb 007h                  ;6368 07  . 
-    defb 00bh                  ;6369 0b  . 
-    defb 0cbh                  ;636a cb  . 
-    defb 009h                  ;636b 09  . 
-    defb 00ch                  ;636c 0c  . 
-    defb 005h                  ;636d 05  . 
-    defb 0cbh                  ;636e cb  . 
-    defb 002h                  ;636f 02  . 
-    defb 00ah                  ;6370 0a  . 
-    defb 012h                  ;6371 12  . 
-    defb 008h                  ;6372 08  . 
-    defb 0cbh                  ;6373 cb  . 
-    defb 003h                  ;6374 03  . 
-    defb 005h                  ;6375 05  . 
-    defb 00ch                  ;6376 0c  . 
-    defb 008h                  ;6377 08  . 
-    defb 00eh                  ;6378 0e  . 
-    defb 005h                  ;6379 05  . 
-    defb 0cbh                  ;637a cb  . 
-    defb 006h                  ;637b 06  . 
-    defb 0cch                  ;637c cc  . 
-    defb 002h                  ;637d 02  . 
-    defb 009h                  ;637e 09  . 
-    defb 049h                  ;637f 49  I 
-    defb 009h                  ;6380 09  . 
-    defb 00bh                  ;6381 0b  . 
-    defb 00ch                  ;6382 0c  . 
-    defb 01ch                  ;6383 1c  . 
-    defb 00bh                  ;6384 0b  . 
-    defb 0d7h                  ;6385 d7  . 
-    defb 002h                  ;6386 02  . 
-    defb 00ch                  ;6387 0c  . 
-    defb 0cbh                  ;6388 cb  . 
-    defb 002h                  ;6389 02  . 
-    defb 006h                  ;638a 06  . 
-    defb 00bh                  ;638b 0b  . 
-    defb 006h                  ;638c 06  . 
-    defb 008h                  ;638d 08  . 
-    defb 005h                  ;638e 05  . 
-    defb 017h                  ;638f 17  . 
-    defb 009h                  ;6390 09  . 
-    defb 00bh                  ;6391 0b  . 
-    defb 00ch                  ;6392 0c  . 
-    defb 005h                  ;6393 05  . 
-    defb 004h                  ;6394 04  . 
-    defb 005h                  ;6395 05  . 
-    defb 008h                  ;6396 08  . 
-    defb 007h                  ;6397 07  . 
-    defb 009h                  ;6398 09  . 
-    defb 008h                  ;6399 08  . 
-    defb 003h                  ;639a 03  . 
-    defb 013h                  ;639b 13  . 
-    defb 004h                  ;639c 04  . 
-    defb 0cbh                  ;639d cb  . 
-    defb 005h                  ;639e 05  . 
-    defb 005h                  ;639f 05  . 
-    defb 0cbh                  ;63a0 cb  . 
-    defb 002h                  ;63a1 02  . 
-    defb 00ch                  ;63a2 0c  . 
-    defb 009h                  ;63a3 09  . 
-    defb 005h                  ;63a4 05  . 
-    defb 0d2h                  ;63a5 d2  . 
-    defb 002h                  ;63a6 02  . 
-    defb 004h                  ;63a7 04  . 
-    defb 016h                  ;63a8 16  . 
-    defb 00ch                  ;63a9 0c  . 
-    defb 008h                  ;63aa 08  . 
-    defb 003h                  ;63ab 03  . 
-    defb 009h                  ;63ac 09  . 
-    defb 006h                  ;63ad 06  . 
-    defb 0cbh                  ;63ae cb  . 
-    defb 003h                  ;63af 03  . 
-    defb 00fh                  ;63b0 0f  . 
-    defb 005h                  ;63b1 05  . 
-    defb 00bh                  ;63b2 0b  . 
-    defb 00eh                  ;63b3 0e  . 
-    defb 007h                  ;63b4 07  . 
-    defb 004h                  ;63b5 04  . 
-    defb 00ah                  ;63b6 0a  . 
-    defb 003h                  ;63b7 03  . 
-    defb 0dbh                  ;63b8 db  . 
-    defb 002h                  ;63b9 02  . 
-    defb 011h                  ;63ba 11  . 
-    defb 026h                  ;63bb 26  & 
-    defb 009h                  ;63bc 09  . 
-    defb 005h                  ;63bd 05  . 
-    defb 003h                  ;63be 03  . 
-    defb 00eh                  ;63bf 0e  . 
-    defb 007h                  ;63c0 07  . 
-    defb 005h                  ;63c1 05  . 
-    defb 004h                  ;63c2 04  . 
-    defb 005h                  ;63c3 05  . 
-    defb 007h                  ;63c4 07  . 
-    defb 006h                  ;63c5 06  . 
-    defb 004h                  ;63c6 04  . 
-    defb 007h                  ;63c7 07  . 
-    defb 004h                  ;63c8 04  . 
-    defb 010h                  ;63c9 10  . 
-    defb 005h                  ;63ca 05  . 
-    defb 023h                  ;63cb 23  # 
-    defb 021h                  ;63cc 21  ! 
-    defb 004h                  ;63cd 04  . 
-    defb 005h                  ;63ce 05  . 
-    defb 01eh                  ;63cf 1e  . 
-    defb 003h                  ;63d0 03  . 
-    defb 00eh                  ;63d1 0e  . 
-    defb 0cch                  ;63d2 cc  . 
-    defb 002h                  ;63d3 02  . 
-    defb 00dh                  ;63d4 0d  . 
-    defb 005h                  ;63d5 05  . 
-    defb 006h                  ;63d6 06  . 
-    defb 0cbh                  ;63d7 cb  . 
-    defb 004h                  ;63d8 04  . 
-    defb 00ah                  ;63d9 0a  . 
-    defb 003h                  ;63da 03  . 
-    defb 011h                  ;63db 11  . 
-    defb 003h                  ;63dc 03  . 
-    defb 005h                  ;63dd 05  . 
-    defb 0cbh                  ;63de cb  . 
-    defb 002h                  ;63df 02  . 
-    defb 007h                  ;63e0 07  . 
-    defb 003h                  ;63e1 03  . 
-    defb 008h                  ;63e2 08  . 
-    defb 0cbh                  ;63e3 cb  . 
-    defb 002h                  ;63e4 02  . 
-    defb 004h                  ;63e5 04  . 
-    defb 003h                  ;63e6 03  . 
-    defb 00ah                  ;63e7 0a  . 
-    defb 0cbh                  ;63e8 cb  . 
-    defb 002h                  ;63e9 02  . 
-    defb 004h                  ;63ea 04  . 
-    defb 0cbh                  ;63eb cb  . 
-    defb 002h                  ;63ec 02  . 
-    defb 005h                  ;63ed 05  . 
-    defb 003h                  ;63ee 03  . 
-    defb 01ch                  ;63ef 1c  . 
-    defb 00eh                  ;63f0 0e  . 
-    defb 0cbh                  ;63f1 cb  . 
-    defb 003h                  ;63f2 03  . 
-    defb 004h                  ;63f3 04  . 
-    defb 00ah                  ;63f4 0a  . 
-    defb 003h                  ;63f5 03  . 
-    defb 004h                  ;63f6 04  . 
-    defb 003h                  ;63f7 03  . 
-    defb 00ah                  ;63f8 0a  . 
-    defb 004h                  ;63f9 04  . 
-    defb 007h                  ;63fa 07  . 
-    defb 008h                  ;63fb 08  . 
-    defb 005h                  ;63fc 05  . 
-    defb 007h                  ;63fd 07  . 
-    defb 0d0h                  ;63fe d0  . 
-    defb 002h                  ;63ff 02  . 
-    defb 0cdh                  ;6400 cd  . 
-    defb 002h                  ;6401 02  . 
-    defb 0cbh                  ;6402 cb  . 
-    defb 003h                  ;6403 03  . 
-    defb 004h                  ;6404 04  . 
-    defb 0cbh                  ;6405 cb  . 
-    defb 003h                  ;6406 03  . 
-    defb 005h                  ;6407 05  . 
-    defb 004h                  ;6408 04  . 
-    defb 003h                  ;6409 03  . 
-    defb 00ah                  ;640a 0a  . 
-    defb 005h                  ;640b 05  . 
-    defb 00bh                  ;640c 0b  . 
-    defb 0cbh                  ;640d cb  . 
-    defb 002h                  ;640e 02  . 
-    defb 006h                  ;640f 06  . 
-    defb 005h                  ;6410 05  . 
-    defb 006h                  ;6411 06  . 
-l6412h:
-    defb 008h                  ;6412 08  . 
-    defb 0cbh                  ;6413 cb  . 
-    defb 002h                  ;6414 02  . 
-    defb 008h                  ;6415 08  . 
-    defb 006h                  ;6416 06  . 
-    defb 003h                  ;6417 03  . 
-    defb 006h                  ;6418 06  . 
-    defb 0cbh                  ;6419 cb  . 
-    defb 002h                  ;641a 02  . 
-    defb 00ah                  ;641b 0a  . 
-    defb 005h                  ;641c 05  . 
-    defb 00fh                  ;641d 0f  . 
-    defb 00eh                  ;641e 0e  . 
-    defb 009h                  ;641f 09  . 
-    defb 0cbh                  ;6420 cb  . 
-    defb 003h                  ;6421 03  . 
-    defb 018h                  ;6422 18  . 
-    defb 003h                  ;6423 03  . 
-    defb 00fh                  ;6424 0f  . 
-    defb 0cfh                  ;6425 cf  . 
-    defb 003h                  ;6426 03  . 
-    defb 006h                  ;6427 06  . 
-    defb 003h                  ;6428 03  . 
-    defb 009h                  ;6429 09  . 
-    defb 0d5h                  ;642a d5  . 
-    defb 002h                  ;642b 02  . 
-    defb 012h                  ;642c 12  . 
-    defb 007h                  ;642d 07  . 
-    defb 00ch                  ;642e 0c  . 
-    defb 009h                  ;642f 09  . 
-    defb 029h                  ;6430 29  ) 
-    defb 005h                  ;6431 05  . 
-    defb 00eh                  ;6432 0e  . 
-    defb 00dh                  ;6433 0d  . 
-    defb 004h                  ;6434 04  . 
-    defb 00dh                  ;6435 0d  . 
-    defb 003h                  ;6436 03  . 
-    defb 005h                  ;6437 05  . 
-    defb 019h                  ;6438 19  . 
-    defb 028h                  ;6439 28  ( 
-    defb 008h                  ;643a 08  . 
-    defb 00eh                  ;643b 0e  . 
-    defb 0cch                  ;643c cc  . 
-    defb 002h                  ;643d 02  . 
-    defb 009h                  ;643e 09  . 
-    defb 0d3h                  ;643f d3  . 
-    defb 002h                  ;6440 02  . 
-    defb 004h                  ;6441 04  . 
-    defb 0cbh                  ;6442 cb  . 
-    defb 003h                  ;6443 03  . 
-    defb 009h                  ;6444 09  . 
-    defb 008h                  ;6445 08  . 
-    defb 003h                  ;6446 03  . 
-    defb 042h                  ;6447 42  B 
-    defb 007h                  ;6448 07  . 
-    defb 0d1h                  ;6449 d1  . 
-    defb 002h                  ;644a 02  . 
-    defb 005h                  ;644b 05  . 
-    defb 01fh                  ;644c 1f  . 
-    defb 008h                  ;644d 08  . 
-    defb 006h                  ;644e 06  . 
-    defb 00ch                  ;644f 0c  . 
-    defb 005h                  ;6450 05  . 
-    defb 029h                  ;6451 29  ) 
-    defb 050h                  ;6452 50  P 
-    defb 004h                  ;6453 04  . 
-    defb 03ah                  ;6454 3a  : 
-    defb 007h                  ;6455 07  . 
-    defb 0cbh                  ;6456 cb  . 
-    defb 003h                  ;6457 03  . 
-    defb 005h                  ;6458 05  . 
-    defb 00eh                  ;6459 0e  . 
-    defb 007h                  ;645a 07  . 
-    defb 013h                  ;645b 13  . 
-    defb 010h                  ;645c 10  . 
-    defb 00dh                  ;645d 0d  . 
-    defb 010h                  ;645e 10  . 
-    defb 003h                  ;645f 03  . 
-    defb 00ah                  ;6460 0a  . 
-    defb 005h                  ;6461 05  . 
-    defb 01dh                  ;6462 1d  . 
-    defb 009h                  ;6463 09  . 
-    defb 008h                  ;6464 08  . 
-    defb 003h                  ;6465 03  . 
-    defb 006h                  ;6466 06  . 
-    defb 003h                  ;6467 03  . 
-    defb 007h                  ;6468 07  . 
-    defb 028h                  ;6469 28  ( 
-    defb 00bh                  ;646a 0b  . 
-    defb 003h                  ;646b 03  . 
-    defb 008h                  ;646c 08  . 
-    defb 003h                  ;646d 03  . 
-    defb 0ceh                  ;646e ce  . 
-    defb 002h                  ;646f 02  . 
-    defb 009h                  ;6470 09  . 
-    defb 005h                  ;6471 05  . 
-    defb 003h                  ;6472 03  . 
-    defb 006h                  ;6473 06  . 
-    defb 003h                  ;6474 03  . 
-    defb 008h                  ;6475 08  . 
-    defb 0cbh                  ;6476 cb  . 
-    defb 004h                  ;6477 04  . 
-    defb 006h                  ;6478 06  . 
-    defb 005h                  ;6479 05  . 
-    defb 00dh                  ;647a 0d  . 
-    defb 003h                  ;647b 03  . 
-    defb 007h                  ;647c 07  . 
-    defb 004h                  ;647d 04  . 
-    defb 005h                  ;647e 05  . 
-    defb 009h                  ;647f 09  . 
-    defb 005h                  ;6480 05  . 
-    defb 0d3h                  ;6481 d3  . 
-    defb 002h                  ;6482 02  . 
-    defb 008h                  ;6483 08  . 
-    defb 00ch                  ;6484 0c  . 
-    defb 005h                  ;6485 05  . 
-    defb 003h                  ;6486 03  . 
-    defb 005h                  ;6487 05  . 
-    defb 00dh                  ;6488 0d  . 
-    defb 00bh                  ;6489 0b  . 
-    defb 008h                  ;648a 08  . 
-    defb 00ch                  ;648b 0c  . 
-    defb 005h                  ;648c 05  . 
-    defb 003h                  ;648d 03  . 
-    defb 005h                  ;648e 05  . 
-    defb 010h                  ;648f 10  . 
-    defb 0cbh                  ;6490 cb  . 
-    defb 002h                  ;6491 02  . 
-    defb 005h                  ;6492 05  . 
-    defb 003h                  ;6493 03  . 
-    defb 009h                  ;6494 09  . 
-    defb 0cbh                  ;6495 cb  . 
-    defb 003h                  ;6496 03  . 
-    defb 005h                  ;6497 05  . 
-    defb 00bh                  ;6498 0b  . 
-    defb 0cbh                  ;6499 cb  . 
-    defb 002h                  ;649a 02  . 
-    defb 00bh                  ;649b 0b  . 
-    defb 003h                  ;649c 03  . 
-    defb 006h                  ;649d 06  . 
-    defb 00ah                  ;649e 0a  . 
-    defb 003h                  ;649f 03  . 
-    defb 004h                  ;64a0 04  . 
-    defb 003h                  ;64a1 03  . 
-    defb 006h                  ;64a2 06  . 
-    defb 004h                  ;64a3 04  . 
-    defb 008h                  ;64a4 08  . 
-    defb 003h                  ;64a5 03  . 
-    defb 006h                  ;64a6 06  . 
-    defb 005h                  ;64a7 05  . 
-    defb 004h                  ;64a8 04  . 
-    defb 0cbh                  ;64a9 cb  . 
-    defb 002h                  ;64aa 02  . 
-    defb 03dh                  ;64ab 3d  = 
-    defb 00fh                  ;64ac 0f  . 
-    defb 01eh                  ;64ad 1e  . 
-    defb 025h                  ;64ae 25  % 
-    defb 00fh                  ;64af 0f  . 
-    defb 003h                  ;64b0 03  . 
-    defb 008h                  ;64b1 08  . 
-    defb 009h                  ;64b2 09  . 
-    defb 0cbh                  ;64b3 cb  . 
-    defb 002h                  ;64b4 02  . 
-    defb 005h                  ;64b5 05  . 
-    defb 0cbh                  ;64b6 cb  . 
-    defb 002h                  ;64b7 02  . 
-    defb 005h                  ;64b8 05  . 
-    defb 006h                  ;64b9 06  . 
-    defb 003h                  ;64ba 03  . 
-    defb 005h                  ;64bb 05  . 
-    defb 0cbh                  ;64bc cb  . 
-    defb 002h                  ;64bd 02  . 
-    defb 008h                  ;64be 08  . 
-    defb 0cbh                  ;64bf cb  . 
-    defb 002h                  ;64c0 02  . 
-    defb 004h                  ;64c1 04  . 
-    defb 0cbh                  ;64c2 cb  . 
-    defb 002h                  ;64c3 02  . 
-    defb 009h                  ;64c4 09  . 
-    defb 003h                  ;64c5 03  . 
-    defb 004h                  ;64c6 04  . 
-    defb 008h                  ;64c7 08  . 
-    defb 00ch                  ;64c8 0c  . 
-    defb 004h                  ;64c9 04  . 
-    defb 018h                  ;64ca 18  . 
-    defb 0cbh                  ;64cb cb  . 
-    defb 004h                  ;64cc 04  . 
-    defb 004h                  ;64cd 04  . 
-    defb 005h                  ;64ce 05  . 
-    defb 008h                  ;64cf 08  . 
-    defb 00fh                  ;64d0 0f  . 
-    defb 00eh                  ;64d1 0e  . 
-    defb 020h                  ;64d2 20    
-    defb 003h                  ;64d3 03  . 
-    defb 005h                  ;64d4 05  . 
-    defb 0cbh                  ;64d5 cb  . 
-    defb 002h                  ;64d6 02  . 
-    defb 010h                  ;64d7 10  . 
-    defb 005h                  ;64d8 05  . 
-    defb 011h                  ;64d9 11  . 
-    defb 00ah                  ;64da 0a  . 
-    defb 004h                  ;64db 04  . 
-    defb 00ah                  ;64dc 0a  . 
-    defb 020h                  ;64dd 20    
-    defb 005h                  ;64de 05  . 
-    defb 010h                  ;64df 10  . 
-    defb 0cbh                  ;64e0 cb  . 
-    defb 002h                  ;64e1 02  . 
-    defb 0cdh                  ;64e2 cd  . 
-    defb 002h                  ;64e3 02  . 
-    defb 009h                  ;64e4 09  . 
-    defb 0cfh                  ;64e5 cf  . 
-    defb 002h                  ;64e6 02  . 
-    defb 02ah                  ;64e7 2a  * 
-    defb 004h                  ;64e8 04  . 
-    defb 0cbh                  ;64e9 cb  . 
-    defb 006h                  ;64ea 06  . 
-    defb 006h                  ;64eb 06  . 
-    defb 008h                  ;64ec 08  . 
-    defb 0cbh                  ;64ed cb  . 
-    defb 003h                  ;64ee 03  . 
-    defb 004h                  ;64ef 04  . 
-    defb 00ch                  ;64f0 0c  . 
-    defb 00fh                  ;64f1 0f  . 
-    defb 003h                  ;64f2 03  . 
-    defb 00eh                  ;64f3 0e  . 
-    defb 01bh                  ;64f4 1b  . 
-    defb 003h                  ;64f5 03  . 
-    defb 01fh                  ;64f6 1f  . 
-    defb 007h                  ;64f7 07  . 
-    defb 025h                  ;64f8 25  % 
-    defb 0ceh                  ;64f9 ce  . 
-    defb 002h                  ;64fa 02  . 
-    defb 00dh                  ;64fb 0d  . 
-    defb 008h                  ;64fc 08  . 
-    defb 013h                  ;64fd 13  . 
-    defb 003h                  ;64fe 03  . 
-    defb 005h                  ;64ff 05  . 
-    defb 013h                  ;6500 13  . 
-    defb 010h                  ;6501 10  . 
-    defb 003h                  ;6502 03  . 
-    defb 00eh                  ;6503 0e  . 
-    defb 04eh                  ;6504 4e  N 
-    defb 004h                  ;6505 04  . 
-    defb 00fh                  ;6506 0f  . 
-    defb 013h                  ;6507 13  . 
-    defb 024h                  ;6508 24  $ 
-    defb 003h                  ;6509 03  . 
-    defb 005h                  ;650a 05  . 
-    defb 00ah                  ;650b 0a  . 
-    defb 005h                  ;650c 05  . 
-    defb 004h                  ;650d 04  . 
-    defb 00dh                  ;650e 0d  . 
-    defb 0cdh                  ;650f cd  . 
-    defb 003h                  ;6510 03  . 
-    defb 0cbh                  ;6511 cb  . 
-    defb 002h                  ;6512 02  . 
-    defb 017h                  ;6513 17  . 
-    defb 007h                  ;6514 07  . 
-    defb 010h                  ;6515 10  . 
-    defb 0d2h                  ;6516 d2  . 
-    defb 002h                  ;6517 02  . 
-    defb 003h                  ;6518 03  . 
-    defb 00ah                  ;6519 0a  . 
-    defb 00ch                  ;651a 0c  . 
-    defb 005h                  ;651b 05  . 
-    defb 0cch                  ;651c cc  . 
-    defb 002h                  ;651d 02  . 
-    defb 020h                  ;651e 20    
-    defb 003h                  ;651f 03  . 
-    defb 049h                  ;6520 49  I 
-    defb 008h                  ;6521 08  . 
-    defb 009h                  ;6522 09  . 
-    defb 020h                  ;6523 20    
-    defb 003h                  ;6524 03  . 
-    defb 00bh                  ;6525 0b  . 
-    defb 003h                  ;6526 03  . 
-    defb 009h                  ;6527 09  . 
-    defb 008h                  ;6528 08  . 
-    defb 00bh                  ;6529 0b  . 
-    defb 012h                  ;652a 12  . 
-    defb 00ah                  ;652b 0a  . 
-    defb 006h                  ;652c 06  . 
-    defb 017h                  ;652d 17  . 
-    defb 003h                  ;652e 03  . 
-    defb 00bh                  ;652f 0b  . 
-    defb 013h                  ;6530 13  . 
-    defb 003h                  ;6531 03  . 
-    defb 006h                  ;6532 06  . 
-    defb 00bh                  ;6533 0b  . 
-    defb 008h                  ;6534 08  . 
-    defb 00bh                  ;6535 0b  . 
-    defb 009h                  ;6536 09  . 
-    defb 007h                  ;6537 07  . 
-    defb 008h                  ;6538 08  . 
-    defb 004h                  ;6539 04  . 
-    defb 005h                  ;653a 05  . 
-    defb 004h                  ;653b 04  . 
-    defb 011h                  ;653c 11  . 
-    defb 049h                  ;653d 49  I 
-    defb 009h                  ;653e 09  . 
-    defb 00ch                  ;653f 0c  . 
-    defb 003h                  ;6540 03  . 
-    defb 004h                  ;6541 04  . 
-    defb 050h                  ;6542 50  P 
-    defb 00ah                  ;6543 0a  . 
-    defb 02bh                  ;6544 2b  + 
-    defb 022h                  ;6545 22  " 
-    defb 00fh                  ;6546 0f  . 
-    defb 00bh                  ;6547 0b  . 
-    defb 009h                  ;6548 09  . 
-    defb 003h                  ;6549 03  . 
-    defb 006h                  ;654a 06  . 
-    defb 003h                  ;654b 03  . 
-    defb 004h                  ;654c 04  . 
-    defb 005h                  ;654d 05  . 
-    defb 009h                  ;654e 09  . 
-    defb 005h                  ;654f 05  . 
-    defb 004h                  ;6550 04  . 
-    defb 005h                  ;6551 05  . 
-    defb 00bh                  ;6552 0b  . 
-    defb 014h                  ;6553 14  . 
-    defb 004h                  ;6554 04  . 
-    defb 00bh                  ;6555 0b  . 
-    defb 00eh                  ;6556 0e  . 
-    defb 00ah                  ;6557 0a  . 
-    defb 006h                  ;6558 06  . 
-    defb 003h                  ;6559 03  . 
-    defb 009h                  ;655a 09  . 
-    defb 01ah                  ;655b 1a  . 
-    defb 009h                  ;655c 09  . 
-    defb 00eh                  ;655d 0e  . 
-    defb 015h                  ;655e 15  . 
-    defb 0cch                  ;655f cc  . 
-    defb 002h                  ;6560 02  . 
-    defb 00dh                  ;6561 0d  . 
-    defb 00bh                  ;6562 0b  . 
-    defb 021h                  ;6563 21  ! 
-    defb 00eh                  ;6564 0e  . 
-    defb 009h                  ;6565 09  . 
-    defb 065h                  ;6566 65  e 
-    defb 017h                  ;6567 17  . 
-    defb 00eh                  ;6568 0e  . 
-    defb 03bh                  ;6569 3b                        ; 
-    defb 0cdh                  ;656a cd  . 
-    defb 002h                  ;656b 02  . 
-    defb 003h                  ;656c 03  . 
-    defb 00bh                  ;656d 0b  . 
-    defb 00eh                  ;656e 0e  . 
-    defb 004h                  ;656f 04  . 
-    defb 007h                  ;6570 07  . 
-    defb 00ch                  ;6571 0c  . 
-    defb 005h                  ;6572 05  . 
-    defb 013h                  ;6573 13  . 
-    defb 01bh                  ;6574 1b  . 
-    defb 004h                  ;6575 04  . 
-    defb 006h                  ;6576 06  . 
-    defb 00fh                  ;6577 0f  . 
-    defb 0cbh                  ;6578 cb  . 
-    defb 003h                  ;6579 03  . 
-    defb 006h                  ;657a 06  . 
-    defb 00ch                  ;657b 0c  . 
-    defb 029h                  ;657c 29  ) 
-    defb 009h                  ;657d 09  . 
-    defb 00dh                  ;657e 0d  . 
-    defb 004h                  ;657f 04  . 
-    defb 003h                  ;6580 03  . 
-    defb 004h                  ;6581 04  . 
-    defb 006h                  ;6582 06  . 
-    defb 0cbh                  ;6583 cb  . 
-    defb 002h                  ;6584 02  . 
-    defb 008h                  ;6585 08  . 
-    defb 009h                  ;6586 09  . 
-    defb 0ceh                  ;6587 ce  . 
-    defb 002h                  ;6588 02  . 
-    defb 00bh                  ;6589 0b  . 
-    defb 012h                  ;658a 12  . 
-    defb 009h                  ;658b 09  . 
-    defb 023h                  ;658c 23  # 
-    defb 011h                  ;658d 11  . 
-    defb 005h                  ;658e 05  . 
-    defb 006h                  ;658f 06  . 
-    defb 008h                  ;6590 08  . 
-    defb 0ceh                  ;6591 ce  . 
-    defb 002h                  ;6592 02  . 
-    defb 005h                  ;6593 05  . 
-    defb 020h                  ;6594 20    
-    defb 014h                  ;6595 14  . 
-    defb 01dh                  ;6596 1d  . 
-    defb 004h                  ;6597 04  . 
-    defb 014h                  ;6598 14  . 
-    defb 00bh                  ;6599 0b  . 
-    defb 00eh                  ;659a 0e  . 
-    defb 0cbh                  ;659b cb  . 
-    defb 006h                  ;659c 06  . 
-    defb 01bh                  ;659d 1b  . 
-    defb 0cbh                  ;659e cb  . 
-    defb 002h                  ;659f 02  . 
-    defb 0cdh                  ;65a0 cd  . 
-    defb 002h                  ;65a1 02  . 
-    defb 003h                  ;65a2 03  . 
-    defb 00ah                  ;65a3 0a  . 
-    defb 0cbh                  ;65a4 cb  . 
-    defb 006h                  ;65a5 06  . 
-    defb 006h                  ;65a6 06  . 
-    defb 008h                  ;65a7 08  . 
-    defb 010h                  ;65a8 10  . 
-    defb 009h                  ;65a9 09  . 
-    defb 006h                  ;65aa 06  . 
-    defb 011h                  ;65ab 11  . 
-    defb 008h                  ;65ac 08  . 
-    defb 012h                  ;65ad 12  . 
-    defb 006h                  ;65ae 06  . 
-    defb 00dh                  ;65af 0d  . 
-    defb 004h                  ;65b0 04  . 
-    defb 0cbh                  ;65b1 cb  . 
-    defb 007h                  ;65b2 07  . 
+include 'relocationTable.asm'
+
+
 
 ; BLOCK 'logo_image' (start 0x65b3 end 0x66f4)
     defb 000h, 000h, 07fh, 0ffh, 0ffh, 0ffh, 0fch, 0dch, 0a8h, 000h, 0e0h, 0f8h, 0fch, 0fch, 0feh, 076h
@@ -1724,8 +578,14 @@ l6412h:
     defb 0feh, 02ah, 05ch, 07fh, 07fh, 03fh, 03fh, 01fh, 007h, 015h, 02eh, 07fh, 0ffh, 0feh, 0feh, 0fch
     defb 0f0h, 02ah, 00dh, 000h, 07fh, 0ffh, 0ffh, 0ffh, 07fh, 0a8h, 0deh, 07eh, 0feh, 0feh, 0fch, 0fch
     defb 0f0h
+
+org 2356
+
 ENTRY_POINT_WITH_MONITOR:
     jp v_l7cc9h-BA1            ;66f4 c3 09 1f  . . . 
+
+
+
 
 ; BLOCK 'data_66f7' (start 0x66f7 end 0x6898)
 v_l5dc3h:
@@ -1972,6 +832,7 @@ v_l5ddfh:
     defb 0e5h                  ;67e3 e5  . 
     defb 011h                  ;67e4 11  . 
     defb 0d4h                  ;67e5 d4  . 
+l067e6h:
     defb 002h                  ;67e6 02  . 
     defb 0c0h                  ;67e7 c0  . 
     defb 05dh                  ;67e8 5d  ] 
@@ -2051,6 +912,7 @@ v_l5ee5h:
     defb 000h                  ;6830 00  . 
     defb 000h                  ;6831 00  . 
     defb 0d3h                  ;6832 d3  . 
+l06833h:
     defb 002h                  ;6833 02  . 
     defb 000h                  ;6834 00  . 
     defb 000h                  ;6835 00  . 
@@ -2077,7 +939,9 @@ v_l5ee5h:
     defb 000h                  ;684a 00  . 
     defb 000h                  ;684b 00  . 
     defb 0d2h                  ;684c d2  . 
+l0684dh:
     defb 002h                  ;684d 02  . 
+l0684eh:
     defb 000h                  ;684e 00  . 
     defb 000h                  ;684f 00  . 
     defb 000h                  ;6850 00  . 
@@ -2130,6 +994,7 @@ v_l5f33h:
     defb 000h                  ;687e 00  . 
     defb 000h                  ;687f 00  . 
     defb 0cch                  ;6880 cc  . 
+l06881h:
     defb 001h                  ;6881 01  . 
     defb 000h                  ;6882 00  . 
     defb 000h                  ;6883 00  . 
@@ -2166,7 +1031,7 @@ v_sub_5f64h:
 v_l5f74h:
     di                         ;68a8 f3  .                         (flow (mon) from: 6015 7bd2)  5f74 di 
     call v_sub_7800h-BA1       ;68a9 cd 40 1a  . @ .               (flow (mon) from: 5f74)  5f75 call 7800 
-    ld sp,08ba1h-BA            ;68ac 31 e1 2d  1 . -               (flow (mon) from: 7804)  5f78 ld sp,8ba1 
+        ld sp,l094d5h-BA1                                      ;68ac 31 e1 2d  1 . -                                                   (flow (mon) from: 7804)  5f78 ld sp,8ba1                            (flow (mon) from: 7804)  5f78 ld sp,8ba1 
     call v_sub_665ah-BA1       ;68af cd 9a 08  . . .               (flow (mon) from: 5f78)  5f7b call 665a 
     ld hl,inputBufferStart-BA1                                 ;68b2 21 3f 2d  ! ? -                                                   (flow (mon) from: 82e5)  5f7e ld hl,8aff 
     ld (hl),0c6h               ;68b5 36 c6  6 .                    (flow (mon) from: 5f7e)  5f81 ld (hl),c6 
@@ -2187,10 +1052,10 @@ l68cah:
     call v_sub_6669h-BA1       ;68cd cd a9 08  . . .               (flow (mon) from: 5f98)  5f99 call 6669 
     ld a,080h                  ;68d0 3e 80  > .                    (flow (mon) from: 85db)  5f9c ld a,80 
     ld (inputBufferStart-BA1),a                                ;68d2 32 3f 2d  2 ? -                                                   (flow (mon) from: 5f9c)  5f9e ld (8aff),a 
-    ld hl,02fafh               ;68d5 21 af 2f  ! . /               (flow (mon) from: 5f9e)  5fa1 ld hl,8d6f 
+        ld hl,l095f9h+170-BA1                                  ;68d5 21 af 2f  ! . /                                                   (flow (mon) from: 5f9e)  5fa1 ld hl,8d6f                            (flow (mon) from: 5f9e)  5fa1 ld hl,8d6f 
     ld (vr_l08750h+1-BA1),hl   ;68d8 22 91 29  " . )               (flow (mon) from: 5fa1)  5fa4 ld (8751),hl 
     ld hl,v_l89f4h-BA1         ;68db 21 34 2c  ! 4 ,               (flow (mon) from: 5fa4)  5fa7 ld hl,89f4 
-    ld (080a0h-BA),hl          ;68de 22 e0 22  " . "               (flow (mon) from: 5fa7)  5faa ld (80a0),hl 
+        ld (l089d3h+1-BA1),hl                                  ;68de 22 e0 22  " . "                                                   (flow (mon) from: 5fa7)  5faa ld (80a0),hl                          (flow (mon) from: 5fa7)  5faa ld (80a0),hl 
     ld hl,v_l82dbh-BA1         ;68e1 21 1b 25  ! . %               (flow (mon) from: 5faa)  5fad ld hl,82db 
     ld (vr_l080a2h+1-BA1),hl   ;68e4 22 e3 22  " . "               (flow (mon) from: 5fad)  5fb0 ld (80a3),hl 
     ld hl,v_l7ccfh-BA1         ;68e7 21 0f 1f  ! . .               (flow (mon) from: 5fb0)  5fb3 ld hl,7ccf 
@@ -2201,7 +1066,7 @@ l68cah:
     call v_sub_8608h-BA1       ;68f4 cd 48 28  . H (               (flow (mon) from: 6d99)  5fc0 call 8608 
     call v_sub_6113h-BA1       ;68f7 cd 53 03  . S .               (flow (mon) from: 8610)  5fc3 call 6113 
     call v_sub_85f8h-BA1       ;68fa cd 38 28  . 8 (               (flow (mon) from: 611c)  5fc6 call 85f8 
-    ld hl,(0603bh-BA)          ;68fd 2a 7b 02  * { .               (flow (mon) from: 8607)  5fc9 ld hl,(603b) 
+        ld hl,(l0696eh+1-BA1)                                  ;68fd 2a 7b 02  * { .                                                   (flow (mon) from: 8607)  5fc9 ld hl,(603b)                          (flow (mon) from: 8607)  5fc9 ld hl,(603b) 
     ld e,020h                  ;6900 1e 20  .                      (flow (mon) from: 5fc9)  5fcc ld e,20 
     cp 071h                    ;6902 fe 71  . q                    (flow (mon) from: 5fcc)  5fce cp 71 
     jp z,v_l7cc9h-BA1          ;6904 ca 09 1f  . . .               (flow (mon) from: 5fce)  5fd0 jp z,7cc9 
@@ -2232,7 +1097,7 @@ l6929h:
     jp v_l6480h-BA1            ;6936 c3 c0 06  . . . 
 l6939h:
     push hl                    ;6939 e5  .                         (flow (mon) from: 5ffd)  6005 push hl 
-    ld hl,(0603bh-BA)          ;693a 2a 7b 02  * { .               (flow (mon) from: 6005)  6006 ld hl,(603b) 
+        ld hl,(l0696eh+1-BA1)                                  ;693a 2a 7b 02  * { .                                                   (flow (mon) from: 6005)  6006 ld hl,(603b)                          (flow (mon) from: 6005)  6006 ld hl,(603b) 
     ret                        ;693d c9  .                         (flow (mon) from: 6006)  6009 ret 
 v_l600ah:
     call v_sub_60c3h-BA1       ;693e cd 03 03  . . . 
@@ -2241,7 +1106,7 @@ v_l600ah:
     inc hl                     ;6945 23  #                         (flow (mon) from: 6010)  6011 inc hl 
 l6946h:
 v_l6012h:
-    ld (0603bh-BA),hl          ;6946 22 7b 02  " { .               (flow (mon) from: 6011 6046)  6012 ld (603b),hl 
+        ld (l0696eh+1-BA1),hl                                  ;6946 22 7b 02  " { .                                                   (flow (mon) from: 6011 6046)  6012 ld (603b),hl                     (flow (mon) from: 6011 6046)  6012 ld (603b),hl 
     ret                        ;6949 c9  .                         (flow (mon) from: 6012)  6015 ret 
     ld hl,v_l5ee5h-BA1         ;694a 21 25 01  ! % . 
     ld a,(hl)                  ;694d 7e  ~ 
@@ -2265,6 +1130,7 @@ v_l6012h:
     ld a,(hl)                  ;6969 7e  ~ 
     add a,a                    ;696a 87  . 
     call v_sub_6bd8h-BA1       ;696b cd 18 0e  . . . 
+l0696eh:
     ld de,00000h               ;696e 11 00 00  . . . 
     ld (hl),d                  ;6971 72  r 
     dec hl                     ;6972 2b  + 
@@ -2369,7 +1235,7 @@ v_l60d9h:
     ld sp,00000h               ;6a0d 31 00 00  1 . .               (flow (mon) from: 60d5)  60d9 ld sp,8b9b 
     call v_l82dbh-BA1          ;6a10 cd 1b 25  . . %               (flow (mon) from: 60d9)  60dc call 82db 
     ld hl,v_l612dh-BA1         ;6a13 21 6d 03  ! m .               (flow (mon) from: 82e5)  60df ld hl,612d 
-    ld (080a0h-BA),hl          ;6a16 22 e0 22  " . "               (flow (mon) from: 60df)  60e2 ld (80a0),hl 
+        ld (l089d3h+1-BA1),hl                                  ;6a16 22 e0 22  " . "                                                   (flow (mon) from: 60df)  60e2 ld (80a0),hl                          (flow (mon) from: 60df)  60e2 ld (80a0),hl 
     call v_sub_6675h-BA1       ;6a19 cd b5 08  . . .               (flow (mon) from: 60e2)  60e5 call 6675 
     ld hl,inputBufferStart+1-BA1                               ;6a1c 21 40 2d  ! @ - 
     call atHLorNextIfOne-BA1   ;6a1f cd ee 27  . . ' 
@@ -2437,7 +1303,7 @@ l6a89h:
     ret                        ;6a8a c9  . 
     ld hl,v_l6aedh+1-BA1       ;6a8b 21 2e 0d  ! . . 
     jr l6a77h                  ;6a8e 18 e7  . . 
-    ld hl,06a91h-BA            ;6a90 21 d1 0c  ! . . 
+        ld hl,l073c4h+1-BA1                                    ;6a90 21 d1 0c  ! . . 
     ld a,(hl)                  ;6a93 7e  ~ 
     or a                       ;6a94 b7  . 
     jr nz,l6a99h               ;6a95 20 02    . 
@@ -2466,7 +1332,7 @@ v_l6175h:
 l6ab9h:
     call v_sub_66e7h-BA1       ;6ab9 cd 27 09  . ' . 
     call nc,v_sub_6d79h-BA1    ;6abc d4 b9 0f  . . . 
-    ld hl,(0603bh-BA)          ;6abf 2a 7b 02  * { . 
+        ld hl,(l0696eh+1-BA1)                                  ;6abf 2a 7b 02  * { . 
     ld de,00000h               ;6ac2 11 00 00  . . . 
     or a                       ;6ac5 b7  . 
     sbc hl,de                  ;6ac6 ed 52  . R 
@@ -2597,13 +1463,13 @@ l6ba9h:
     ret                        ;6bb2 c9  . 
     ld hl,v_l7332h-BA1         ;6bb3 21 72 15  ! r . 
 l6bb6h:
-    ld (004e4h),hl             ;6bb6 22 e4 04  " . . 
+        ld (l06bd7h+1-BA1),hl                                  ;6bb6 22 e4 04  " . . 
     ld hl,v_l62b6h-BA1         ;6bb9 21 f6 04  ! . . 
     ld (vr_l07e38h+1-BA1),hl   ;6bbc 22 79 20  " y   
     call v_sub_66a8h-BA1       ;6bbf cd e8 08  . . . 
     push hl                    ;6bc2 e5  . 
     ld hl,v_l62b7h-BA1         ;6bc3 21 f7 04  ! . . 
-    ld (080a0h-BA),hl          ;6bc6 22 e0 22  " . " 
+        ld (l089d3h+1-BA1),hl                                  ;6bc6 22 e0 22  " . " 
     pop hl                     ;6bc9 e1  . 
     ex de,hl                   ;6bca eb  . 
 l6bcbh:
@@ -2612,6 +1478,7 @@ l6bcbh:
     call v_sub_6c4ah-BA1       ;6bcf cd 8a 0e  . . . 
     push hl                    ;6bd2 e5  . 
     ld (004f8h),sp             ;6bd3 ed 73 f8 04  . s . . 
+l06bd7h:
     call 00052h                ;6bd7 cd 52 00  . R . 
     di                         ;6bda f3  . 
 l6bdbh:
@@ -2651,7 +1518,7 @@ v_sub_62dch:
     jp v_l7e07h-BA1            ;6c1d c3 47 20  . G   
     cp 077h                    ;6c20 fe 77  . w 
     jr nz,l6c28h               ;6c22 20 04    . 
-    ld (00553h),hl             ;6c24 22 53 05  " S . 
+        ld (l06c46h+1-BA1),hl                                  ;6c24 22 53 05  " S . 
     ret                        ;6c27 c9  . 
 l6c28h:
     push hl                    ;6c28 e5  . 
@@ -2660,12 +1527,13 @@ l6c28h:
     push de                    ;6c2f d5  . 
     call v_sub_631ah-BA1       ;6c30 cd 5a 05  . Z . 
     ld hl,v_l5f74h-BA1         ;6c33 21 b4 01  ! . . 
-    ld (080a0h-BA),hl          ;6c36 22 e0 22  " . " 
+        ld (l089d3h+1-BA1),hl                                  ;6c36 22 e0 22  " . " 
     ld a,0c3h                  ;6c39 3e c3  > . 
     call v_sub_7931h-BA1       ;6c3b cd 71 1b  . q . 
     ld bc,v_l67ach-BA1         ;6c3e 01 ec 09  . . . 
     call v_sub_7962h-BA1       ;6c41 cd a2 1b  . . . 
     ld c,0c3h                  ;6c44 0e c3  . . 
+l06c46h:
     ld de,v_l67ach-BA1         ;6c46 11 ec 09  . . . 
     call 00575h                ;6c49 cd 75 05  . u . 
     pop hl                     ;6c4c e1  . 
@@ -2761,7 +1629,7 @@ l6cd6h:
     push hl                    ;6cd6 e5  . 
     ld l,(hl)                  ;6cd7 6e  n 
     ld h,000h                  ;6cd8 26 00  & . 
-    ld a,(02b49h)              ;6cda 3a 49 2b  : I + 
+        ld a,(l0923ch+1-BA1)                                   ;6cda 3a 49 2b  : I + 
     push bc                    ;6cdd c5  . 
     or a                       ;6cde b7  . 
     jr z,l6cech                ;6cdf 28 0b  ( . 
@@ -2812,7 +1680,7 @@ l6d30h:
     ld (ix+000h),a             ;6d30 dd 77 00  . w . 
     inc ix                     ;6d33 dd 23  . # 
     ret                        ;6d35 c9  . 
-    ld hl,0018dh               ;6d36 21 8d 01  ! . . 
+        ld hl,l06881h-BA1                                      ;6d36 21 8d 01  ! . . 
 l6d39h:
     push hl                    ;6d39 e5  . 
     call v_sub_65c1h-BA1       ;6d3a cd 01 08  . . . 
@@ -2836,7 +1704,7 @@ l6d39h:
     inc (hl)                   ;6d56 34  4 
     jr l6d39h                  ;6d57 18 e0  . . 
     ld a,031h                  ;6d59 3e 31  > 1 
-    ld (01373h),a              ;6d5b 32 73 13  2 s . 
+        ld (l07a67h-BA1),a                                     ;6d5b 32 73 13  2 s . 
     ld b,005h                  ;6d5e 06 05  . . 
     ld hl,v_l64ceh-BA1         ;6d60 21 0e 07  ! . . 
 l6d63h:
@@ -2849,7 +1717,7 @@ l6d63h:
     dec c                      ;6d6f 0d  . 
 l6d70h:
     ld b,l                     ;6d70 45  E 
-    ld hl,01373h               ;6d71 21 73 13  ! s . 
+        ld hl,l07a67h-BA1                                      ;6d71 21 73 13  ! s . 
     inc (hl)                   ;6d74 34  4 
     pop hl                     ;6d75 e1  . 
     ld (hl),b                  ;6d76 70  p 
@@ -2858,7 +1726,7 @@ l6d70h:
     inc hl                     ;6d79 23  # 
     pop bc                     ;6d7a c1  . 
     djnz l6d63h                ;6d7b 10 e6  . . 
-    ld de,(0603bh-BA)          ;6d7d ed 5b 7b 02  . [ { . 
+    ld de,(0027bh)             ;6d7d ed 5b 7b 02  . [ { . 
     inc de                     ;6d81 13  . 
 l6d82h:
     push de                    ;6d82 d5  . 
@@ -2952,7 +1820,7 @@ l6df1h:
     jr l6d82h                  ;6df6 18 8a  . . 
 v_l64c4h:
     jp p,00c00h                ;6df8 f2 00 0c  . . . 
-    ld bc,0013fh               ;6dfb 01 3f 01  . ? . 
+        ld bc,l06833h-BA1                                      ;6dfb 01 3f 01  . ? . 
     ld e,c                     ;6dfe 59  Y 
     ld bc,v_l5f33h-BA1         ;6dff 01 73 01  . s . 
 v_l64ceh:
@@ -3000,7 +1868,7 @@ v_l64feh:
     ld hl,001c5h               ;6e35 21 c5 01  ! . . 
     ld (inputBufferStart-BA1),hl                               ;6e38 22 3f 2d  " ? - 
     ld hl,v_l64f9h-BA1         ;6e3b 21 39 07  ! 9 . 
-    ld (080a0h-BA),hl          ;6e3e 22 e0 22  " . " 
+        ld (l089d3h+1-BA1),hl                                  ;6e3e 22 e0 22  " . " 
     ld (00752h),sp             ;6e41 ed 73 52 07  . s R . 
 l6e45h:
     ld sp,00000h               ;6e45 31 00 00  1 . . 
@@ -3120,7 +1988,7 @@ l6ef9h:
     ld (v_l65edh-BA1),a        ;6efc 32 2d 08  2 - . 
     ld (v_l6608h-BA1),a        ;6eff 32 48 08  2 H . 
     ld a,c                     ;6f02 79  y 
-    ld (0085dh),a              ;6f03 32 5d 08  2 ] . 
+        ld (l06f50h+1-BA1),a                                   ;6f03 32 5d 08  2 ] . 
     call v_sub_6c47h-BA1       ;6f06 cd 87 0e  . . . 
     dec hl                     ;6f09 2b  + 
     ld c,(hl)                  ;6f0a 4e  N 
@@ -3165,6 +2033,7 @@ l6f46h:
     ret z                      ;6f4b c8  . 
     cp 030h                    ;6f4c fe 30  . 0 
     jr c,l6f53h                ;6f4e 38 03  8 . 
+l06f50h:
     cp 035h                    ;6f50 fe 35  . 5 
     ret c                      ;6f52 d8  . 
 l6f53h:
@@ -3273,6 +2142,7 @@ v_l66c6h:
     inc hl                     ;7001 23  # 
     ld (hl),0d0h               ;7002 36 d0  6 . 
     call v_sub_6669h-BA1       ;7004 cd a9 08  . . . 
+l07007h:
     ld a,000h                  ;7007 3e 00  > . 
     ld (v_l6f9bh-BA1),a        ;7009 32 db 11  2 . . 
 v_l66d8h:
@@ -3282,18 +2152,18 @@ v_l66d8h:
     call v_l6175h-BA1          ;7015 cd b5 03  . . . 
     jp v_l5f74h-BA1            ;7018 c3 b4 01  . . . 
 v_sub_66e7h:
-    ld hl,(0603bh-BA)          ;701b 2a 7b 02  * { . 
+        ld hl,(l0696eh+1-BA1)                                  ;701b 2a 7b 02  * { . 
 v_l66eah:
     push hl                    ;701e e5  . 
     call v_sub_6b56h-BA1       ;701f cd 96 0d  . . . 
     ex af,af'                  ;7022 08  . 
     jp nz,v_l5f74h-BA1         ;7023 c2 b4 01  . . . 
-    ld (00a0bh),hl             ;7026 22 0b 0a  " . . 
-    ld (009e8h),hl             ;7029 22 e8 09  " . . 
+        ld (l070feh+1-BA1),hl                                  ;7026 22 0b 0a  " . . 
+        ld (l070dbh+1-BA1),hl                                  ;7029 22 e8 09  " . . 
     ld (00c33h),de             ;702c ed 53 33 0c  . S 3 . 
     push bc                    ;7030 c5  . 
     ld a,(v_l6f9bh-BA1)        ;7031 3a db 11  : . . 
-    ld (00914h),a              ;7034 32 14 09  2 . . 
+        ld (l07007h+1-BA1),a                                   ;7034 32 14 09  2 . . 
     call v_sub_68e2h-BA1       ;7037 cd 22 0b  . " . 
     pop bc                     ;703a c1  . 
     pop de                     ;703b d1  . 
@@ -3309,11 +2179,11 @@ v_l66eah:
     ld hl,v_l6813h-BA1         ;7050 21 53 0a  ! S . 
     call v_sub_6bd8h-BA1       ;7053 cd 18 0e  . . . 
     ld bc,v_l680ah-BA1         ;7056 01 4a 0a  . J . 
-    ld a,(00a08h)              ;7059 3a 08 0a  : . . 
+        ld a,(l070fbh+1-BA1)                                   ;7059 3a 08 0a  : . . 
     call v_sub_6a53h-BA1       ;705c cd 93 0c  . . . 
-    ld (009e8h),hl             ;705f 22 e8 09  " . . 
+        ld (l070dbh+1-BA1),hl                                  ;705f 22 e8 09  " . . 
     ld (00990h),bc             ;7062 ed 43 90 09  . C . . 
-    ld (009e5h),a              ;7066 32 e5 09  2 . . 
+        ld (l070d8h+1-BA1),a                                   ;7066 32 e5 09  2 . . 
 l7069h:
     call v_l6762h-BA1          ;7069 cd a2 09  . . . 
     ex af,af'                  ;706c 08  . 
@@ -3332,7 +2202,7 @@ l7069h:
     or a                       ;7082 b7  . 
     call nz,v_l680ah-BA1       ;7083 c4 4a 0a  . J . 
     exx                        ;7086 d9  . 
-    ld (0603bh-BA),hl          ;7087 22 7b 02  " { . 
+        ld (l0696eh+1-BA1),hl                                  ;7087 22 7b 02  " { . 
     ld hl,(v_l6fb3h-BA1)       ;708a 2a f3 11  * . . 
     add hl,de                  ;708d 19  . 
     ld (v_l6fb3h-BA1),hl       ;708e 22 f3 11  " . . 
@@ -3380,7 +2250,9 @@ v_l678ah:
     push hl                    ;70d4 e5  . 
     push de                    ;70d5 d5  . 
     ld a,001h                  ;70d6 3e 01  > . 
+l070d8h:
     ld de,00000h               ;70d8 11 00 00  . . . 
+l070dbh:
     ld hl,00000h               ;70db 21 00 00  ! . . 
     jr l7102h                  ;70de 18 22  . " 
 v_l67ach:
@@ -3402,7 +2274,9 @@ v_l67adh:
     push hl                    ;70f7 e5  . 
     push de                    ;70f8 d5  . 
     ld a,000h                  ;70f9 3e 00  > . 
+l070fbh:
     ld de,00004h               ;70fb 11 04 00  . . . 
+l070feh:
     ld hl,00000h               ;70fe 21 00 00  ! . . 
     nop                        ;7101 00  . 
 l7102h:
@@ -3460,7 +2334,7 @@ v_l6813h:
     ld hl,v_l8b23h-BA1         ;7147 21 63 2d  ! c - 
     ld e,(hl)                  ;714a 5e  ^ 
     ld (hl),003h               ;714b 36 03  6 . 
-    ld hl,(00a0bh)             ;714d 2a 0b 0a  * . . 
+        ld hl,(l070feh+1-BA1)                                  ;714d 2a 0b 0a  * . . 
     ld d,000h                  ;7150 16 00  . . 
     bit 7,e                    ;7152 cb 7b  . { 
     jr z,l7157h                ;7154 28 01  ( . 
@@ -3475,7 +2349,7 @@ l715bh:
     exx                        ;715f d9  . 
     ld de,(v_l8b23h-BA1)       ;7160 ed 5b 63 2d  . [ c - 
     ld (00a85h),sp             ;7164 ed 73 85 0a  . s . . 
-    ld hl,0018dh               ;7168 21 8d 01  ! . . 
+        ld hl,l06881h-BA1                                      ;7168 21 8d 01  ! . . 
     ld b,(hl)                  ;716b 46  F 
     inc hl                     ;716c 23  # 
     ld sp,hl                   ;716d f9  . 
@@ -3493,7 +2367,7 @@ l7178h:
 v_l6848h:
     nop                        ;717c 00  . 
     add a,008h                 ;717d c6 08  . . 
-    ld hl,00a08h               ;717f 21 08 0a  ! . . 
+        ld hl,l070fbh+1-BA1                                    ;717f 21 08 0a  ! . . 
     inc (hl)                   ;7182 34  4 
     ld bc,v_l67f7h-BA1         ;7183 01 37 0a  . 7 . 
 l7186h:
@@ -3541,7 +2415,7 @@ l71d0h:
 l71d4h:
     xor a                      ;71d4 af  . 
     ld (v_l8b22h-BA1),a        ;71d5 32 62 2d  2 b - 
-    ld (00a0bh),hl             ;71d8 22 0b 0a  " . . 
+        ld (l070feh+1-BA1),hl                                  ;71d8 22 0b 0a  " . . 
     ret                        ;71db c9  . 
     ld bc,v_l6802h-BA1         ;71dc 01 42 0a  . B . 
     ld hl,(v_l6fb1h-BA1)       ;71df 2a f1 11  * . . 
@@ -3551,7 +2425,7 @@ l71d4h:
     ex de,hl                   ;71e5 eb  . 
     jr l71d0h                  ;71e6 18 e8  . . 
 v_sub_68b4h:
-    ld hl,(00a0bh)             ;71e8 2a 0b 0a  * . . 
+        ld hl,(l070feh+1-BA1)                                  ;71e8 2a 0b 0a  * . . 
     and a                      ;71eb a7  . 
     sbc hl,de                  ;71ec ed 52  . R 
     ld b,h                     ;71ee 44  D 
@@ -3643,13 +2517,13 @@ l725ch:
     dec hl                     ;7267 2b  + 
     dec hl                     ;7268 2b  + 
     dec hl                     ;7269 2b  + 
-    ld (00a08h),hl             ;726a 22 08 0a  " . . 
-    ld hl,00159h               ;726d 21 59 01  ! Y . 
+        ld (l070fbh+1-BA1),hl                                  ;726a 22 08 0a  " . . 
+        ld hl,l0684dh-BA1                                      ;726d 21 59 01  ! Y . 
     pop de                     ;7270 d1  . 
     pop bc                     ;7271 c1  . 
     call v_sub_6be8h-BA1       ;7272 cd 28 0e  . ( . 
     jp c,v_l66c4h-BA1          ;7275 da 04 09  . . . 
-    ld hl,0013fh               ;7278 21 3f 01  ! ? . 
+        ld hl,l06833h-BA1                                      ;7278 21 3f 01  ! ? . 
     pop de                     ;727b d1  . 
     pop bc                     ;727c c1  . 
     call v_sub_6be8h-BA1       ;727d cd 28 0e  . ( . 
@@ -3662,12 +2536,12 @@ l7286h:
     ld hl,v_l6fb9h-BA1         ;7286 21 f9 11  ! . . 
     push de                    ;7289 d5  . 
     call v_sub_6992h-BA1       ;728a cd d2 0b  . . . 
-    ld hl,0013fh               ;728d 21 3f 01  ! ? . 
+        ld hl,l06833h-BA1                                      ;728d 21 3f 01  ! ? . 
     call v_sub_6969h-BA1       ;7290 cd a9 0b  . . . 
     ld hl,v_l700bh-BA1         ;7293 21 4b 12  ! K . 
     pop de                     ;7296 d1  . 
     call v_sub_6992h-BA1       ;7297 cd d2 0b  . . . 
-    ld hl,00159h               ;729a 21 59 01  ! Y . 
+        ld hl,l0684dh-BA1                                      ;729a 21 59 01  ! Y . 
 v_sub_6969h:
     ret c                      ;729d d8  . 
     push hl                    ;729e e5  . 
@@ -3767,7 +2641,7 @@ l732ah:
     ld bc,00937h               ;732d 01 37 09  . 7 . 
     jr l733bh                  ;7330 18 09  . . 
 l7332h:
-    ld hl,(00ccah)             ;7332 2a ca 0c  * . . 
+        ld hl,(l073bdh+1-BA1)                                  ;7332 2a ca 0c  * . . 
     ld d,000h                  ;7335 16 00  . . 
     ld e,(hl)                  ;7337 5e  ^ 
     ld bc,00637h               ;7338 01 37 06  . 7 . 
@@ -3775,6 +2649,7 @@ l733bh:
     inc hl                     ;733b 23  # 
     jr l736dh                  ;733c 18 2f  . / 
 v_sub_6a0ah:
+l0733eh:
     ld a,000h                  ;733e 3e 00  > .                    (flow (mon) from: 6e7e)  6a0a ld a,00 
     or a                       ;7340 b7  .                         (flow (mon) from: 6a0a)  6a0c or a 
     jr z,l7352h                ;7341 28 0f  ( .                    (flow (mon) from: 6a0c)  6a0d jr z,6a1e 
@@ -3788,12 +2663,12 @@ l7349h:
     djnz l7349h                ;734b 10 fc  . . 
 v_sub_6a19h:
     xor a                      ;734d af  .                         (flow (mon) from: 6e75)  6a19 xor a 
-    ld (00c4bh),a              ;734e 32 4b 0c  2 K .               (flow (mon) from: 6a19)  6a1a ld (6a0b),a 
+        ld (l0733eh+1-BA1),a                                   ;734e 32 4b 0c  2 K .                                                   (flow (mon) from: 6a19)  6a1a ld (6a0b),a                           (flow (mon) from: 6a19)  6a1a ld (6a0b),a 
     ret                        ;7351 c9  .                         (flow (mon) from: 6a1a)  6a1d ret 
 l7352h:
-    ld (00ccah),hl             ;7352 22 ca 0c  " . .               (flow (mon) from: 6a0d)  6a1e ld (6a8a),hl 
+        ld (l073bdh+1-BA1),hl                                  ;7352 22 ca 0c  " . .                                                   (flow (mon) from: 6a0d)  6a1e ld (6a8a),hl                          (flow (mon) from: 6a0d)  6a1e ld (6a8a),hl 
     ex de,hl                   ;7355 eb  .                         (flow (mon) from: 6a1e)  6a21 ex de,hl 
-    ld hl,000f2h               ;7356 21 f2 00  ! . .               (flow (mon) from: 6a21)  6a22 ld hl,5eb2 
+        ld hl,l067e6h-BA1                                      ;7356 21 f2 00  ! . .                                                   (flow (mon) from: 6a21)  6a22 ld hl,5eb2                            (flow (mon) from: 6a21)  6a22 ld hl,5eb2 
     call v_sub_6c20h-BA1       ;7359 cd 60 0e  . ` .               (flow (mon) from: 6a22)  6a25 call 6c20 
     jr c,l7332h                ;735c 38 d4  8 .                    (flow (mon) from: 6c46)  6a28 jr c,69fe 
     ld hl,v_l5ecch-BA1         ;735e 21 0c 01  ! . .               (flow (mon) from: 6a28)  6a2a ld hl,5ecc 
@@ -3855,11 +2730,13 @@ v_l6a69h:
     jr z,l73bdh                ;73ba 28 01  ( . 
     dec d                      ;73bc 15  . 
 l73bdh:
+l073bdh:
     ld hl,00001h               ;73bd 21 01 00  ! . . 
     inc hl                     ;73c0 23  # 
     inc hl                     ;73c1 23  # 
     add hl,de                  ;73c2 19  . 
     ex de,hl                   ;73c3 eb  . 
+l073c4h:
     ld c,000h                  ;73c4 0e 00  . .                    (flow (mon) from: 6a53)  6a90 ld c,00 
     dec c                      ;73c6 0d  .                         (flow (mon) from: 6a90)  6a92 dec c 
     jr z,l73f2h                ;73c7 28 29  ( )                    (flow (mon) from: 6a92)  6a93 jr z,6abe 
@@ -3879,7 +2756,7 @@ l73d3h:
     ld de,02b31h               ;73e1 11 31 2b  . 1 + 
     call v_sub_6b09h-BA1       ;73e4 cd 49 0d  . I . 
     jr l73f6h                  ;73e7 18 0d  . . 
-    ld hl,(00ccah)             ;73e9 2a ca 0c  * . . 
+        ld hl,(l073bdh+1-BA1)                                  ;73e9 2a ca 0c  * . . 
     ld a,(hl)                  ;73ec 7e  ~ 
     and 038h                   ;73ed e6 38  . 8 
     ld e,a                     ;73ef 5f  _ 
@@ -3894,7 +2771,7 @@ l73f6h:
     call v_sub_8135h-BA1       ;73fe cd 75 23  . u #               (flow (mon) from: 6ac6)  6aca call 8135 
     ld ix,v_l8aa5h-BA1         ;7401 dd 21 e5 2c  . ! . ,          (flow (mon) from: 81b6 81dd 822d)  6acd ld ix,8aa5 
     ld de,(00ccah)             ;7405 ed 5b ca 0c  . [ . .          (flow (mon) from: 6acd)  6ad1 ld de,(6a8a) 
-    ld a,(06a91h-BA)           ;7409 3a d1 0c  : . .               (flow (mon) from: 6ad1)  6ad5 ld a,(6a91) 
+        ld a,(l073c4h+1-BA1)                                   ;7409 3a d1 0c  : . .                                                   (flow (mon) from: 6ad1)  6ad5 ld a,(6a91)                           (flow (mon) from: 6ad1)  6ad5 ld a,(6a91) 
     dec a                      ;740c 3d  =                         (flow (mon) from: 6ad5)  6ad8 dec a 
     jr z,l7421h                ;740d 28 12  ( .                    (flow (mon) from: 6ad8)  6ad9 jr z,6aed 
     call v_sub_6b14h-BA1       ;740f cd 54 0d  . T .               (flow (mon) from: 6ad9)  6adb call 6b14 
@@ -3945,7 +2822,7 @@ v_sub_6b14h:
     push hl                    ;7454 e5  .                         (flow (mon) from: 6b1f)  6b20 push hl 
     add hl,bc                  ;7455 09  .                         (flow (mon) from: 6b20)  6b21 add hl,bc 
     add hl,bc                  ;7456 09  .                         (flow (mon) from: 6b21)  6b22 add hl,bc 
-    ld (00d81h),hl             ;7457 22 81 0d  " . .               (flow (mon) from: 6b22)  6b23 ld (6b41),hl 
+        ld (l07474h+1-BA1),hl                                  ;7457 22 81 0d  " . .                                                   (flow (mon) from: 6b22)  6b23 ld (6b41),hl                          (flow (mon) from: 6b22)  6b23 ld (6b41),hl 
     exx                        ;745a d9  .                         (flow (mon) from: 6b23)  6b26 exx 
     pop hl                     ;745b e1  .                         (flow (mon) from: 6b26)  6b27 pop hl 
     exx                        ;745c d9  .                         (flow (mon) from: 6b27)  6b28 exx 
@@ -3969,6 +2846,7 @@ l746eh:
     ld l,(hl)                  ;7470 6e  n 
     and 03fh                   ;7471 e6 3f  . ? 
     ld h,a                     ;7473 67  g 
+l07474h:
     ld bc,09c38h               ;7474 01 38 9c  . 8 .
     add hl,bc                  ;7477 09  . 
     ld a,(hl)                  ;7478 7e  ~ 
@@ -4057,16 +2935,16 @@ l74e0h:
 l74e4h:
     ld a,001h                  ;74e4 3e 01  > . 
 l74e6h:
-    ld (00c4bh),a              ;74e6 32 4b 0c  2 K .               (flow (mon) from: 6bae)  6bb2 ld (6a0b),a 
+        ld (l0733eh+1-BA1),a                                   ;74e6 32 4b 0c  2 K .                                                   (flow (mon) from: 6bae)  6bb2 ld (6a0b),a                           (flow (mon) from: 6bae)  6bb2 ld (6a0b),a 
     push bc                    ;74e9 c5  .                         (flow (mon) from: 6bb2)  6bb5 push bc 
     call v_sub_831ch-BA1       ;74ea cd 5c 25  . \ %               (flow (mon) from: 6bb5)  6bb6 call 831c 
     ex af,af'                  ;74ed 08  .                         (flow (mon) from: 8376)  6bb9 ex af,af' 
     pop bc                     ;74ee c1  .                         (flow (mon) from: 6bb9)  6bba pop bc 
     ld a,(hl)                  ;74ef 7e  ~                         (flow (mon) from: 6bba)  6bbb ld a,(hl) 
     and 01fh                   ;74f0 e6 1f  . .                    (flow (mon) from: 6bbb)  6bbc and 1f 
-    ld (00a08h),a              ;74f2 32 08 0a  2 . .               (flow (mon) from: 6bbc)  6bbe ld (67c8),a 
+        ld (l070fbh+1-BA1),a                                   ;74f2 32 08 0a  2 . .                                                   (flow (mon) from: 6bbc)  6bbe ld (67c8),a                           (flow (mon) from: 6bbc)  6bbe ld (67c8),a 
     xor a                      ;74f5 af  .                         (flow (mon) from: 6bbe)  6bc1 xor a 
-    ld (00a09h),a              ;74f6 32 09 0a  2 . .               (flow (mon) from: 6bc1)  6bc2 ld (67c9),a 
+        ld (l070fbh+2-BA1),a                                   ;74f6 32 09 0a  2 . .                                                   (flow (mon) from: 6bc1)  6bc2 ld (67c9),a                           (flow (mon) from: 6bc1)  6bc2 ld (67c9),a 
     dec hl                     ;74f9 2b  +                         (flow (mon) from: 6bc2)  6bc5 dec hl 
     dec hl                     ;74fa 2b  +                         (flow (mon) from: 6bc5)  6bc6 dec hl 
     dec hl                     ;74fb 2b  +                         (flow (mon) from: 6bc6)  6bc7 dec hl 
@@ -4089,7 +2967,7 @@ v_sub_6bd8h:
 v_sub_6bddh:
     ld (00e5dh),sp             ;7511 ed 73 5d 0e  . s ] . 
     ld a,002h                  ;7515 3e 02  > . 
-    ld sp,0015ah               ;7517 31 5a 01  1 Z . 
+        ld sp,l0684eh-BA1                                      ;7517 31 5a 01  1 Z . 
     jr l7523h                  ;751a 18 07  . . 
 v_sub_6be8h:
     ld (00e5dh),sp             ;751c ed 73 5d 0e  . s ] . 
@@ -4240,6 +3118,7 @@ l75e7h:
     djnz l75cch                ;75e8 10 e2  . . 
     dec c                      ;75ea 0d  . 
     jr nz,l75cch               ;75eb 20 df    . 
+l075edh:
     ld bc,00000h               ;75ed 01 00 00  . . . 
     ld ix,v_l5dc3h-BA1         ;75f0 dd 21 03 00  . ! . . 
     add ix,bc                  ;75f4 dd 09  . . 
@@ -4272,7 +3151,7 @@ l7623h:
     jr c,l7628h                ;7625 38 01  8 . 
     xor a                      ;7627 af  . 
 l7628h:
-    ld (00efah),a              ;7628 32 fa 0e  2 . . 
+        ld (l075edh+1-BA1),a                                   ;7628 32 fa 0e  2 . . 
     ret                        ;762b c9  . 
 l762ch:
     ld h,(ix+001h)             ;762c dd 66 01  . f . 
@@ -4360,7 +3239,7 @@ v_l6d67h:
     ld a,h                     ;76aa 7c  | 
     jr nz,$+6                  ;76ab 20 04    . 
 v_sub_6d79h:
-    ld hl,(0603bh-BA)          ;76ad 2a 7b 02  * { .               (flow (mon) from: 5fbd)  6d79 ld hl,(603b) 
+        ld hl,(l0696eh+1-BA1)                                  ;76ad 2a 7b 02  * { .                                                   (flow (mon) from: 5fbd)  6d79 ld hl,(603b)                          (flow (mon) from: 5fbd)  6d79 ld hl,(603b) 
 v_sub_6d7ch:
     ld ix,v_l5dd1h-BA1         ;76b0 dd 21 11 00  . ! . .          (flow (mon) from: 6d79)  6d7c ld ix,5dd1 
     ld b,020h                  ;76b4 06 20  .                      (flow (mon) from: 6d7c)  6d80 ld b,20 
@@ -4423,7 +3302,7 @@ l770dh:
     and 01fh                   ;7716 e6 1f  . .                    (flow (mon) from: 6ddf)  6de2 and 1f 
     ld hl,(vr_l08787h+1-BA1)   ;7718 2a c8 29  * . )               (flow (mon) from: 6de2)  6de4 ld hl,(8788) 
 l771bh:
-    ld bc,0112ch               ;771b 01 2c 11  . , .               (flow (mon) from: 6de4 6e41)  6de7 ld bc,6eec 
+        ld bc,l0781eh+2-BA1                                    ;771b 01 2c 11  . , .                                                   (flow (mon) from: 6de4 6e41)  6de7 ld bc,6eec                       (flow (mon) from: 6de4 6e41)  6de7 ld bc,6eec 
     or a                       ;771e b7  .                         (flow (mon) from: 6de7)  6dea or a 
     ret z                      ;771f c8  .                         (flow (mon) from: 6dea)  6deb ret z 
     push af                    ;7720 f5  .                         (flow (mon) from: 6deb)  6dec push af 
@@ -4597,6 +3476,7 @@ l7819h:
     rra                        ;7819 1f  . 
     inc b                      ;781a 04  . 
     ld hl,08022h               ;781b 21 22 80  ! " . 
+l0781eh:
     ld de,00012h               ;781e 11 12 00  . . . 
     ex af,af'                  ;7821 08  . 
     djnz $+32                  ;7822 10 1e  . . 
@@ -5023,6 +3903,7 @@ v_l7066h:
     defb "Wit",0xe8            ;"h"+0x80                       ;7a5b
     defb "T",0xef              ;"o"+0x80                       ;7a5f
     defb "Leade",0xf2          ;"r"+0x80                       ;7a61
+l07a67h:
     defb "1. byte",0xba        ;":"+0x80                       ;7a67
     defb 000h                  ;7a6f 00  . 
     defb 000h                  ;7a70 00  . 
@@ -5069,7 +3950,7 @@ v_l7066h:
     defw invokeClear2-BA1      ;7aaf                           ;key Y
     defw invokeReplace-BA1     ;7ab1                           ;key Z
 invokeK:
-    ld hl,03e68h               ;7ab3 21 68 3e  ! h > 
+        ld hl,l0a55ch-BA1                                      ;7ab3 21 68 3e  ! h > 
 l7ab6h:
     ld (v_sub_826ch+1-BA1),hl                                  ;7ab6 22 ad 24  " . $ 
     ret                        ;7ab9 c9  . 
@@ -5165,7 +4046,7 @@ v_sub_721ah:
     push hl                    ;7b4e e5  . 
     call v_sub_898ah-BA1       ;7b4f cd ca 2b  . . + 
 l7b52h:
-    ld hl,03e68h               ;7b52 21 68 3e  ! h > 
+        ld hl,l0a55ch-BA1                                      ;7b52 21 68 3e  ! h > 
     call v_sub_8a2fh-BA1       ;7b55 cd 6f 2c  . o , 
     jr c,l7b63h                ;7b58 38 09  8 . 
     ld d,h                     ;7b5a 54  T 
@@ -5179,7 +4060,7 @@ l7b63h:
 invokeReplace:
     ld b,03ah                  ;7b65 06 3a  . : 
     call v_sub_7c2ch-BA1       ;7b67 cd 6c 1e  . l . 
-    ld de,015e9h               ;7b6a 11 e9 15  . . . 
+        ld de,l07cdbh+2-BA1                                    ;7b6a 11 e9 15  . . . 
     call z,v_sub_7304h-BA1     ;7b6d cc 44 15  . D . 
     ld ix,(v_sub_826ch+1-BA1)                                  ;7b70 dd 2a ad 24  . * . $ 
     ld (vr_l072ddh+1-BA1),ix   ;7b74 dd 22 1e 15  . " . . 
@@ -5197,7 +4078,7 @@ l7b87h:
     call v_sub_7379h-BA1       ;7b8a cd b9 15  . . . 
     pop de                     ;7b8d d1  . 
     jr nc,l7ba8h               ;7b8e 30 18  0 . 
-    ld hl,015e8h               ;7b90 21 e8 15  ! . . 
+        ld hl,l07cdbh+1-BA1                                    ;7b90 21 e8 15  ! . . 
     ld b,(hl)                  ;7b93 46  F 
 l7b94h:
     inc hl                     ;7b94 23  # 
@@ -5246,7 +4127,7 @@ invokeFind:
     jr nz,l7bf2h               ;7be0 20 10    . 
     xor a                      ;7be2 af  . 
 l7be3h:
-    ld de,03e66h               ;7be3 11 66 3e  . f > 
+        ld de,l0a55ah-BA1                                      ;7be3 11 66 3e  . f > 
     ld (vr_l072ddh+1-BA1),de   ;7be6 ed 53 1e 15  . S . . 
     ld (vr_l072edh+1-BA1),a    ;7bea 32 2e 15  2 . . 
     call v_sub_7c2fh-BA1       ;7bed cd 6f 1e  . o . 
@@ -5269,7 +4150,7 @@ l7c0eh:
     ld (vr_l072fah+1-BA1),hl   ;7c0e 22 3b 15  "               ; . 
 l7c11h:
 vr_l072ddh:
-    ld hl,03e68h               ;7c11 21 68 3e  ! h > 
+        ld hl,l0a55ch-BA1                                      ;7c11 21 68 3e  ! h > 
     call v_sub_8248h-BA1       ;7c14 cd 88 24  . . $ 
     ld (vr_l072ddh+1-BA1),hl   ;7c17 22 1e 15  " . . 
     call v_sub_8a2fh-BA1       ;7c1a cd 6f 2c  . o , 
@@ -5315,7 +4196,7 @@ invokePrint:
     inc a                      ;7c54 3c  < 
 l7c55h:
     ld (vr_l072edh+1-BA1),a    ;7c55 32 2e 15  2 . . 
-    ld hl,03e66h               ;7c58 21 66 3e  ! f > 
+        ld hl,l0a55ah-BA1                                      ;7c58 21 66 3e  ! f > 
     ld (vr_l072ddh+1-BA1),hl   ;7c5b 22 1e 15  " . . 
     ld hl,v_l732fh-BA1         ;7c5e 21 6f 15  ! o . 
     jr l7c0eh                  ;7c61 18 ab  . . 
@@ -5405,6 +4286,7 @@ v_l738eh:
     ex af,af'                  ;7cd8 08  . 
     add a,d                    ;7cd9 82  . 
     ld l,d                     ;7cda 6a  j 
+l07cdbh:
     jp nz,00000h               ;7cdb c2 00 00  . . . 
     nop                        ;7cde 00  . 
     ld (bc),a                  ;7cdf 02  . 
@@ -5611,7 +4493,7 @@ invokeClear2:
     ld b,079h                  ;7e0a 06 79  . y 
     call v_sub_7c2ch-BA1       ;7e0c cd 6c 1e  . l . 
     ret nz                     ;7e0f c0  . 
-    ld hl,03e68h               ;7e10 21 68 3e  ! h > 
+        ld hl,l0a55ch-BA1                                      ;7e10 21 68 3e  ! h > 
     ld (vr_l080e7h+1-BA1),hl   ;7e13 22 28 23  " ( # 
     call v_sub_718eh-BA1       ;7e16 cd ce 13  . . . 
     ld (vr_l080eah+1-BA1),hl   ;7e19 22 2b 23  " + # 
@@ -5620,7 +4502,7 @@ l7e1fh:
     call v_sub_89f2h-BA1       ;7e1f cd 32 2c  . 2 , 
     ld c,0b6h                  ;7e22 0e b6  . . 
     call v_l74c1h-BA1          ;7e24 cd 01 17  . . . 
-    ld hl,03e68h               ;7e27 21 68 3e  ! h > 
+        ld hl,l0a55ch-BA1                                      ;7e27 21 68 3e  ! h > 
     call v_sub_75e9h-BA1       ;7e2a cd 29 18  . ) . 
 l7e2dh:
     jr nc,l7e44h               ;7e2d 30 15  0 . 
@@ -5744,7 +4626,7 @@ l7ed5h:
     ex de,hl                   ;7ede eb  . 
     srl d                      ;7edf cb 3a  . : 
     rr e                       ;7ee1 cb 1b  . . 
-    ld hl,03e68h               ;7ee3 21 68 3e  ! h > 
+        ld hl,l0a55ch-BA1                                      ;7ee3 21 68 3e  ! h > 
     call v_sub_75e9h-BA1       ;7ee6 cd 29 18  . ) . 
 l7ee9h:
     jr nc,l7f08h               ;7ee9 30 1d  0 . 
@@ -5832,7 +4714,7 @@ l7f54h:
     ld hl,(vr_l087d6h+1-BA1)   ;7f62 2a 17 2a  * . * 
     ld de,0fff4h               ;7f65 11 f4 ff  . . . 
     add hl,de                  ;7f68 19  . 
-    ld de,03e68h               ;7f69 11 68 3e  . h > 
+        ld de,l0a55ch-BA1                                      ;7f69 11 68 3e  . h > 
     jr l7f75h                  ;7f6c 18 07  . . 
 l7f6eh:
     call v_sub_080e7h-BA1      ;7f6e cd 27 23  . ' # 
@@ -5844,7 +4726,7 @@ l7f75h:
     or a                       ;7f7a b7  . 
     sbc hl,de                  ;7f7b ed 52  . R 
     push hl                    ;7f7d e5  . 
-    ld (0192eh),hl             ;7f7e 22 2e 19  " . . 
+        ld (l08021h+1-BA1),hl                                  ;7f7e 22 2e 19  " . . 
     ld (050efh),hl             ;7f81 22 ef 50  " . P 
     ld hl,(vr_l08819h+1-BA1)   ;7f84 2a 5a 2a  * Z * 
     ld de,(vr_l087d6h+1-BA1)   ;7f87 ed 5b 17 2a  . [ . * 
@@ -5940,6 +4822,7 @@ invokeVerify:
     xor a                      ;801b af  . 
     dec a                      ;801c 3d  = 
     ld ix,00000h               ;801d dd 21 00 00  . ! . . 
+l08021h:
     ld de,00000h               ;8021 11 00 00  . . . 
     call v_sub_770ah-BA1       ;8024 cd 4a 19  . J . 
     ld ix,(018c1h)             ;8027 dd 2a c1 18  . * . . 
@@ -6109,7 +4992,7 @@ l8154h:
     inc hl                     ;8157 23  # 
     ld (v_l7953h+1-BA1),hl     ;8158 22 94 1b  " . . 
     ld (vr_l07934h+1-BA1),hl   ;815b 22 75 1b  " u . 
-    ld hl,03e68h               ;815e 21 68 3e  ! h > 
+        ld hl,l0a55ch-BA1                                      ;815e 21 68 3e  ! h > 
 l8161h:
     call v_sub_8a2fh-BA1       ;8161 cd 6f 2c  . o , 
     jr nc,l8184h               ;8164 30 1e  0 . 
@@ -6152,7 +5035,7 @@ l819bh:
     jr nz,l81b1h               ;81a4 20 0b    . 
     call v_sub_7a98h-BA1       ;81a6 cd d8 1c  . . . 
     ld (vr_l07cc3h+1-BA1),hl   ;81a9 22 04 1f  " . . 
-    ld hl,01ef9h               ;81ac 21 f9 1e  ! . . 
+        ld hl,l085ech+1-BA1                                    ;81ac 21 f9 1e  ! . . 
     dec (hl)                   ;81af 35  5 
     ret                        ;81b0 c9  . 
 l81b1h:
@@ -6779,7 +5662,7 @@ v_sub_7c33h:
     ret                        ;856c c9  .                         (flow (mon) from: 7c37)  7c38 ret 
 v_l7c39h:
 invokeH:
-    ld hl,02b49h               ;856d 21 49 2b  ! I + 
+        ld hl,l0923ch+1-BA1                                    ;856d 21 49 2b  ! I + 
     jr l8575h                  ;8570 18 03  . . 
 v_sub_7c3eh:
 invokeW:
@@ -6868,8 +5751,9 @@ l85dah:
     ret                        ;85e3 c9  .                         (flow from: 7cad)  7caf ret 
 invokeRun:
     ld a,001h                  ;85e4 3e 01  > . 
-    ld (01ef9h),a              ;85e6 32 f9 1e  2 . . 
+        ld (l085ech+1-BA1),a                                   ;85e6 32 f9 1e  2 . . 
     call v_sub_7805h-BA1       ;85e9 cd 45 1a  . E . 
+l085ech:
     ld a,000h                  ;85ec 3e 00  > . 
     or a                       ;85ee b7  . 
     ld a,013h                  ;85ef 3e 13  > . 
@@ -6900,7 +5784,7 @@ v_l7cdah:
     ld (hl),080h               ;8620 36 80  6 .                    (flow from: 7ceb)  7cec ld (hl),80 
 l8622h:
 v_l7ceeh:
-    ld sp,08ba1h-BA            ;8622 31 e1 2d  1 . -               (flow from: 7c7c 7cec 7d36 7d43)  7cee ld sp,8ba1 
+        ld sp,l094d5h-BA1                                      ;8622 31 e1 2d  1 . -                                                   (flow from: 7c7c 7cec 7d36 7d43)  7cee ld sp,8ba1                   (flow from: 7c7c 7cec 7d36 7d43)  7cee ld sp,8ba1 
     call v_sub_826ch-BA1       ;8625 cd ac 24  . . $               (flow from: 7cee)  7cf1 call 826c 
 l8628h:
     call v_sub_85beh-BA1       ;8628 cd fe 27  . . '               (flow from: 7d71 828e)  7cf4 call 85be 
@@ -7128,7 +6012,7 @@ l87a6h:
 l87a8h:
     cp 005h                    ;87a8 fe 05  . .                    (flow from: 7e61)  7e74 cp 05 
     jr nz,l87b5h               ;87aa 20 09    .                    (flow from: 7e74)  7e76 jr nz,7e81 
-    ld hl,028aeh               ;87ac 21 ae 28  ! . (               (flow from: 7e76)  7e78 ld hl,866e 
+        ld hl,l08fa1h+1-BA1                                    ;87ac 21 ae 28  ! . (                                                   (flow from: 7e76)  7e78 ld hl,866e                                  (flow from: 7e76)  7e78 ld hl,866e 
     ld a,0f7h                  ;87af 3e f7  > .                    (flow from: 7e78)  7e7b ld a,f7 
     sub (hl)                   ;87b1 96  .                         (flow from: 7e7b)  7e7d sub (hl) 
     ld (hl),a                  ;87b2 77  w                         (flow from: 7e7d)  7e7e ld (hl),a 
@@ -7476,6 +6360,7 @@ v_l809ah:
     ex af,af'                  ;89ce 08  . 
     call v_sub_8713h-BA1       ;89cf cd 53 29  . S ) 
     ex af,af'                  ;89d2 08  . 
+l089d3h:
     call v_l89f4h-BA1          ;89d3 cd 34 2c  . 4 , 
 v_l80a2h:
 vr_l080a2h:
@@ -7499,7 +6384,7 @@ vr_l080bfh:
     ld (vr_l080bfh+1-BA1),hl   ;89fc 22 00 23  " . # 
     pop af                     ;89ff f1  . 
 l8a00h:
-    ld hl,08ba1h-BA            ;8a00 21 e1 2d  ! . -               (flow from: 80bc)  80cc ld hl,8ba1 
+        ld hl,l094d5h-BA1                                      ;8a00 21 e1 2d  ! . -                                                   (flow from: 80bc)  80cc ld hl,8ba1                                  (flow from: 80bc)  80cc ld hl,8ba1 
 l8a03h:
     bit 7,(hl)                 ;8a03 cb 7e  . ~                    (flow from: 80cc 80d2 80d5)  80cf bit 7,(hl) 
     inc hl                     ;8a05 23  #                         (flow from: 80cf)  80d1 inc hl 
@@ -7520,9 +6405,9 @@ v_l80e1h:
     defb "Symbo",0xec          ;"l"+0x80                       ;8a15
 v_sub_080e7h:
 vr_l080e7h:
-    ld hl,03e68h               ;8a1b 21 68 3e  ! h >               (flow from: 80f8)  80e7 ld hl,9c28 
+        ld hl,l0a55ch-BA1                                      ;8a1b 21 68 3e  ! h >                                                   (flow from: 80f8)  80e7 ld hl,9c28                                  (flow from: 80f8)  80e7 ld hl,9c28 
 vr_l080eah:
-    ld de,03e68h               ;8a1e 11 68 3e  . h >               (flow from: 80e7)  80ea ld de,9c28 
+        ld de,l0a55ch-BA1                                      ;8a1e 11 68 3e  . h >                                                   (flow from: 80e7)  80ea ld de,9c28                                  (flow from: 80e7)  80ea ld de,9c28 
     push hl                    ;8a21 e5  .                         (flow from: 80ea)  80ed push hl 
     xor a                      ;8a22 af  .                         (flow from: 80ed)  80ee xor a 
     sbc hl,de                  ;8a23 ed 52  . R                    (flow from: 80ee)  80ef sbc hl,de 
@@ -7786,7 +6671,7 @@ v_sub_8262h:
     ret z                      ;8b9c c8  .                         (flow from: 8266)  8268 ret z 
     call v_sub_7bbch-BA1       ;8b9d cd fc 1d  . . . 
 v_sub_826ch:
-    ld hl,03e68h               ;8ba0 21 68 3e  ! h >               (flow from: 7cf1)  826c ld hl,b24c 
+        ld hl,l0a55ch-BA1                                      ;8ba0 21 68 3e  ! h >                                                   (flow from: 7cf1)  826c ld hl,b24c                                  (flow from: 7cf1)  826c ld hl,b24c 
     ld b,00dh                  ;8ba3 06 0d  . .                    (flow from: 826c)  826f ld b,0d 
 l8ba5h:
     call v_sub_8235h-BA1       ;8ba5 cd 75 24  . u $               (flow from: 826f 8274)  8271 call 8235 
@@ -7905,7 +6790,7 @@ v_sub_831ch:
     set 5,c                    ;8c60 cb e9  . .                    (flow from: 832a)  832c set 5,c 
 l8c62h:
     ld (vr_lO8373h+1-BA1),a    ;8c62 32 b4 25  2 . %               (flow from: 8323 8327 832c)  832e ld (8374),a 
-    ld hl,03796h               ;8c65 21 96 37  ! . 7               (flow from: 832e)  8331 ld hl,9556 
+        ld hl,l0977eh+1804-BA1                                 ;8c65 21 96 37  ! . 7                                                   (flow from: 832e)  8331 ld hl,9556                                  (flow from: 832e)  8331 ld hl,9556 
     exx                        ;8c68 d9  .                         (flow from: 8331)  8334 exx 
     ld b,00bh                  ;8c69 06 0b  . .                    (flow from: 8334)  8335 ld b,0b 
 l8c6bh:
@@ -8389,7 +7274,7 @@ v_sub_85b5h:
     inc hl                     ;8eef 23  #                         (flow from: 85ba)  85bb inc hl 
     jr l8ee9h                  ;8ef0 18 f7  . .                    (flow from: 85bb)  85bc jr 85b5 
 v_sub_85beh:
-    ld hl,02fafh               ;8ef2 21 af 2f  ! . /               (flow from: 7cf4)  85be ld hl,8d6f 
+        ld hl,l095f9h+170-BA1                                  ;8ef2 21 af 2f  ! . /                                                   (flow from: 7cf4)  85be ld hl,8d6f                                  (flow from: 7cf4)  85be ld hl,8d6f 
     ld (vr_l08750h+1-BA1),hl   ;8ef5 22 91 29  " . )               (flow from: 85be)  85c1 ld (8751),hl 
     ld hl,BOTTOM_LINE_VRAM_ADDRESS                             ;8ef8 21 e0 50  ! . P                                                   (flow from: 85c1)  85c4 ld hl,50e0 
 v_l85c7h:
@@ -8410,7 +7295,7 @@ l8f01h:
 l8f15h:
     ld (vr_l07e3bh+1-BA1),hl   ;8f15 22 7c 20  " |                 (flow from: 85d8)  85e1 ld (7e3c),hl 
     push hl                    ;8f18 e5  .                         (flow from: 85e1)  85e4 push hl 
-    ld a,(028aeh)              ;8f19 3a ae 28  : . (               (flow from: 85e4)  85e5 ld a,(866e) 
+        ld a,(l08fa1h+1-BA1)                                   ;8f19 3a ae 28  : . (                                                   (flow from: 85e4)  85e5 ld a,(866e)                                 (flow from: 85e4)  85e5 ld a,(866e) 
     add a,0cch                 ;8f1c c6 cc  . .                    (flow from: 85e5)  85e8 add a,cc 
     call v_sub_8769h-BA1       ;8f1e cd a9 29  . . )               (flow from: 85e8)  85ea call 8769 
     pop hl                     ;8f21 e1  .                         (flow from: 877e)  85ed pop hl 
@@ -8498,6 +7383,7 @@ l8f99h:
     res 5,a                    ;8f9e cb af  . . 
 l8fa0h:
     ld b,a                     ;8fa0 47  G                         (flow from: 865a)  866c ld b,a 
+l08fa1h:
     ld a,000h                  ;8fa1 3e 00  > .                    (flow from: 866c)  866d ld a,f7 
     or a                       ;8fa3 b7  .                         (flow from: 866d)  866f or a 
     ld a,b                     ;8fa4 78  x                         (flow from: 866f)  8670 ld a,b 
@@ -8782,7 +7668,7 @@ l9102h:
     ex de,hl                   ;9107 eb  .                         (flow from: 87d2)  87d3 ex de,hl 
     set 7,(hl)                 ;9108 cb fe  . .                    (flow from: 87d3)  87d4 set 7,(hl) 
 vr_l087d6h:
-    ld hl,03e76h               ;910a 21 76 3e  ! v >               (flow from: 87d4)  87d6 ld hl,b3b2 
+        ld hl,l0a56ah-BA1                                      ;910a 21 76 3e  ! v >                                                   (flow from: 87d4)  87d6 ld hl,b3b2                                  (flow from: 87d4)  87d6 ld hl,b3b2 
     ld e,(hl)                  ;910d 5e  ^                         (flow from: 87d6)  87d9 ld e,(hl) 
     inc hl                     ;910e 23  #                         (flow from: 87d9)  87da inc hl 
     ld d,(hl)                  ;910f 56  V                         (flow from: 87da)  87db ld d,(hl) 
@@ -8839,7 +7725,7 @@ v_sub_8815h:
     call v_sub_87aah-BA1       ;9149 cd ea 29  . . )               (flow from: 830a 83d8)  8815 call 87aa 
     ret nc                     ;914c d0  .                         (flow from: 880b 8814)  8818 ret nc 
 vr_l08819h:
-    ld hl,03e78h               ;914d 21 78 3e  ! x >               (flow from: 8818)  8819 ld hl,ac31 
+        ld hl,l0a56ch-BA1                                      ;914d 21 78 3e  ! x >                                                   (flow from: 8818)  8819 ld hl,ac31                                  (flow from: 8818)  8819 ld hl,ac31 
     ld bc,0000ch               ;9150 01 0c 00  . . .               (flow from: 8819)  881c ld bc,000c 
     call v_sub_8068h-BA1       ;9153 cd a8 22  . . "               (flow from: 881c)  881f call 8068 
 vr_l08822h:
@@ -9002,6 +7888,7 @@ v_sub_8902h:
     ld c,000h                  ;9236 0e 00  . .                    (flow from: 8a15)  8902 ld c,00 
     ld ix,v_l8ac7h-BA1         ;9238 dd 21 07 2d  . ! . -          (flow from: 8902)  8904 ld ix,8ac7 
 v_sub_8908h:
+l0923ch:
     ld a,000h                  ;923c 3e 00  > .                    (flow from: 8904)  8908 ld a,00 
     or a                       ;923e b7  .                         (flow from: 8908)  890a or a 
     jr z,l925ah                ;923f 28 19  ( .                    (flow from: 890a)  890b jr z,8926 
@@ -9194,7 +8081,7 @@ v_sub_8a1bh:
 v_sub_8a24h:
     push hl                    ;9358 e5  .                         (flow from: 7c6f)  8a24 push hl 
     push de                    ;9359 d5  .                         (flow from: 8a24)  8a25 push de 
-    ld de,03e68h               ;935a 11 68 3e  . h >               (flow from: 8a25)  8a26 ld de,9c28 
+        ld de,l0a55ch-BA1                                      ;935a 11 68 3e  . h >                                                   (flow from: 8a25)  8a26 ld de,9c28                                  (flow from: 8a25)  8a26 ld de,9c28 
     and a                      ;935d a7  .                         (flow from: 8a26)  8a29 and a 
     sbc hl,de                  ;935e ed 52  . R                    (flow from: 8a29)  8a2a sbc hl,de 
     pop de                     ;9360 d1  .                         (flow from: 8a2a)  8a2c pop de 
@@ -9542,6 +8429,7 @@ v_l8b28h:
     defb 07dh                  ;94d2 7d  } 
     defb 0cfh                  ;94d3 cf  . 
     defb 07ch                  ;94d4 7c  | 
+l094d5h:
     defb 080h                  ;94d5 80  . 
     defb "Bad mnemoni",0xe3    ;"c"+0x80                       ;94d6
     defb "Bad operan",0xe4     ;"d"+0x80                       ;94e2
@@ -9642,6 +8530,7 @@ v_l8c76h:
     defb 0eah                  ;95f6 ea  . 
     defb 0edh                  ;95f7 ed  . 
     defb 0bbh                  ;95f8 bb  . 
+l095f9h:
     defb "c", 0xF0             ;cp                             ;95f9
     defb "d", 0xE9             ;di
     defb "e", 0xE9             ;ei
@@ -9854,6 +8743,7 @@ operationLabels:
     defb 04fh                  ;977c 4f  O 
     defb 053h                  ;977d 53  S 
 operationLabelAssembly:
+l0977eh:
     defb "ASSEMBL", 0xD9       ;977e                           ;ASSEMBLY
 operationLabelBasic:
     defb "BASI", 0xC3          ;BASIC
@@ -9890,1413 +8780,9 @@ operationLabelClear:
 operationLabelReplace:
     defb "REPLAC", 0xC5        ;REPLACE
 
-; =====================================================================
-;   instructions table               
-; =====================================================================
-;
-; - instruction code
-; - instruction type, operand type
-;   - bit 7 - type CB
-;   - bit 6 - type ED
-;   - bit 5 - type DD
-;   - bit 4 - type FD
-;   - bits 0-3 - operand type
-;     - 0 - instruction has no operand
-;     - 1 - one byte
-;     - 2 - two bytes
-;     - 3 - signed byte
-;     - 4 - one byte, type (ix+d)
-;     - 5 - type (ix+d,n)
-;     - 6 - type rst p (p is in operation code)
-;     - 7 - not instruction
-; - mnemonic index (7 bits)
-; - operand 1 index (6 bits)
-;   - index to operandsTable
-;   - 44 = N
-;   - 45 = (N)
-;   - 46 = (ix+d) or (iy+d)
-;   - 63 = ?
-; - operand 2 index (6 bits)
-;   - the same meaning as operand 1
-; - instruction duration in ticks (5 bits)
 
+include 'instructionTable.asm'
 
-instructionsTable:
-; nop   [t=0]
-    defb 0x00, 0x00, 0x42, 0x00, 0x04                          ;97d7
-; empty line   [DD, FD, t=4]
-    defb 0x00, 0x30, 0x00, 0x00, 0x00                          ;97dc
-; rlc b  [CB, t=0]
-    defb 0x00, 0x80, 0x52, 0x50, 0x08                          ;97e1
-; ld bc,N  [op. type: NN, t=8]
-    defb 0x01, 0x02, 0x14, 0xb5, 0x8a                          ;97e6
-; comment   [op. type: not instruction, DD, FD, t=10]
-    defb 0x01, 0x37, 0x02, 0x00, 0x00                          ;97eb
-; rlc c  [CB, t=0]
-    defb 0x01, 0x80, 0x52, 0x58, 0x08                          ;97f0
-; ld (bc),a  [t=8]
-    defb 0x02, 0x00, 0x15, 0x31, 0x27                          ;97f5
-; ent N  [op. type: not instruction, DD, FD, t=7]
-    defb 0x02, 0x37, 0x31, 0x60, 0x00                          ;97fa
-; rlc d  [CB, t=0]
-    defb 0x02, 0x80, 0x52, 0x60, 0x08                          ;97ff
-; inc bc  [t=8]
-    defb 0x03, 0x00, 0x36, 0xb0, 0x06                          ;9804
-; equ N  [op. type: not instruction, DD, FD, t=6]
-    defb 0x03, 0x37, 0x33, 0x60, 0x00                          ;9809
-; rlc e  [CB, t=0]
-    defb 0x03, 0x80, 0x52, 0x68, 0x08                          ;980e
-; inc b  [t=8]
-    defb 0x04, 0x00, 0x36, 0x50, 0x04                          ;9813
-; org N  [op. type: not instruction, DD, FD, t=4]
-    defb 0x04, 0x37, 0x45, 0x60, 0x00                          ;9818
-; rlc h  [CB, t=0]
-    defb 0x04, 0x80, 0x52, 0x70, 0x08                          ;981d
-; dec b  [t=8]
-    defb 0x05, 0x00, 0x2e, 0x50, 0x04                          ;9822
-; put N  [op. type: not instruction, DD, FD, t=4]
-    defb 0x05, 0x37, 0x4b, 0x60, 0x00                          ;9827
-; rlc l  [CB, t=0]
-    defb 0x05, 0x80, 0x52, 0x80, 0x08                          ;982c
-; ld b,N  [op. type: N, t=8]
-    defb 0x06, 0x01, 0x14, 0x55, 0x87                          ;9831
-; defb   [op. type: not instruction, DD, FD, t=7]
-    defb 0x06, 0x37, 0x74, 0x00, 0x00                          ;9836
-; rlc (hl)  [CB, t=0]
-    defb 0x06, 0x80, 0x53, 0x40, 0x0f                          ;983b
-; rlc (ix+d)  [op. type: (ix+d), CB, DD, t=15]
-    defb 0x06, 0xa4, 0x53, 0x70, 0x17                          ;9840
-; rlca   [t=23]
-    defb 0x07, 0x00, 0x96, 0x00, 0x04                          ;9845
-; defm   [op. type: not instruction, DD, FD, t=4]
-    defb 0x07, 0x37, 0x76, 0x00, 0x00                          ;984a
-; rlc a  [CB, t=0]
-    defb 0x07, 0x80, 0x52, 0x48, 0x08                          ;984f
-; ex af,af'  [t=8]
-    defb 0x08, 0x00, 0x0a, 0xac, 0xa4                          ;9854
-; defs   [op. type: not instruction, DD, FD, t=4]
-    defb 0x08, 0x37, 0x78, 0x00, 0x00                          ;9859
-; rrc b  [CB, t=0]
-    defb 0x08, 0x80, 0x58, 0x50, 0x08                          ;985e
-; add hl,bc  [t=8]
-    defb 0x09, 0x00, 0x1e, 0xc2, 0xcb                          ;9863
-; add ix,bc  [DD, t=11]
-    defb 0x09, 0x20, 0x1e, 0xda, 0xcf                          ;9868
-; defw   [op. type: not instruction, DD, FD, t=15]
-    defb 0x09, 0x37, 0x7a, 0x00, 0x00                          ;986d
-; rrc c  [CB, t=0]
-    defb 0x09, 0x80, 0x58, 0x58, 0x08                          ;9872
-; ld a,(bc)  [t=8]
-    defb 0x0a, 0x00, 0x14, 0x4c, 0xc7                          ;9877
-; rrc d  [CB, t=7]
-    defb 0x0a, 0x80, 0x58, 0x60, 0x08                          ;987c
-; dec bc  [t=8]
-    defb 0x0b, 0x00, 0x2e, 0xb0, 0x06                          ;9881
-; rrc e  [CB, t=6]
-    defb 0x0b, 0x80, 0x58, 0x68, 0x08                          ;9886
-; inc c  [t=8]
-    defb 0x0c, 0x00, 0x36, 0x58, 0x04                          ;988b
-; rrc h  [CB, t=4]
-    defb 0x0c, 0x80, 0x58, 0x70, 0x08                          ;9890
-; dec c  [t=8]
-    defb 0x0d, 0x00, 0x2e, 0x58, 0x04                          ;9895
-; rrc l  [CB, t=4]
-    defb 0x0d, 0x80, 0x58, 0x80, 0x08                          ;989a
-; ld c,N  [op. type: N, t=8]
-    defb 0x0e, 0x01, 0x14, 0x5d, 0x87                          ;989f
-; rrc (hl)  [CB, t=7]
-    defb 0x0e, 0x80, 0x59, 0x40, 0x0f                          ;98a4
-; rrc (ix+d)  [op. type: (ix+d), CB, DD, t=15]
-    defb 0x0e, 0xa4, 0x59, 0x70, 0x17                          ;98a9
-; rrca   [t=23]
-    defb 0x0f, 0x00, 0x98, 0x00, 0x04                          ;98ae
-; rrc a  [CB, t=4]
-    defb 0x0f, 0x80, 0x58, 0x48, 0x08                          ;98b3
-; djnz N  [op. type: n, t=8]
-    defb 0x10, 0x03, 0x7d, 0x60, 0x08                          ;98b8
-; rl b  [CB, t=8]
-    defb 0x10, 0x80, 0x18, 0x50, 0x08                          ;98bd
-; ld de,N  [op. type: NN, t=8]
-    defb 0x11, 0x02, 0x14, 0xbd, 0x8a                          ;98c2
-; rl c  [CB, t=10]
-    defb 0x11, 0x80, 0x18, 0x58, 0x08                          ;98c7
-; ld (de),a  [t=8]
-    defb 0x12, 0x00, 0x15, 0x39, 0x27                          ;98cc
-; rl d  [CB, t=7]
-    defb 0x12, 0x80, 0x18, 0x60, 0x08                          ;98d1
-; inc de  [t=8]
-    defb 0x13, 0x00, 0x36, 0xb8, 0x06                          ;98d6
-; rl e  [CB, t=6]
-    defb 0x13, 0x80, 0x18, 0x68, 0x08                          ;98db
-; inc d  [t=8]
-    defb 0x14, 0x00, 0x36, 0x60, 0x04                          ;98e0
-; rl h  [CB, t=4]
-    defb 0x14, 0x80, 0x18, 0x70, 0x08                          ;98e5
-; dec d  [t=8]
-    defb 0x15, 0x00, 0x2e, 0x60, 0x04                          ;98ea
-; rl l  [CB, t=4]
-    defb 0x15, 0x80, 0x18, 0x80, 0x08                          ;98ef
-; ld d,N  [op. type: N, t=8]
-    defb 0x16, 0x01, 0x14, 0x65, 0x87                          ;98f4
-; rl (hl)  [CB, t=7]
-    defb 0x16, 0x80, 0x19, 0x40, 0x0f                          ;98f9
-; rl (ix+d)  [op. type: (ix+d), CB, DD, t=15]
-    defb 0x16, 0xa4, 0x19, 0x70, 0x17                          ;98fe
-; rla   [t=23]
-    defb 0x17, 0x00, 0x50, 0x00, 0x04                          ;9903
-; rl a  [CB, t=4]
-    defb 0x17, 0x80, 0x18, 0x48, 0x08                          ;9908
-; jr N  [op. type: n, t=8]
-    defb 0x18, 0x03, 0x13, 0x60, 0x07                          ;990d
-; rr b  [CB, t=7]
-    defb 0x18, 0x80, 0x1a, 0x50, 0x08                          ;9912
-; add hl,de  [t=8]
-    defb 0x19, 0x00, 0x1e, 0xc2, 0xeb                          ;9917
-; add ix,de  [DD, t=11]
-    defb 0x19, 0x20, 0x1e, 0xda, 0xef                          ;991c
-; rr c  [CB, t=15]
-    defb 0x19, 0x80, 0x1a, 0x58, 0x08                          ;9921
-; ld a,(de)  [t=8]
-    defb 0x1a, 0x00, 0x14, 0x4c, 0xe7                          ;9926
-; rr d  [CB, t=7]
-    defb 0x1a, 0x80, 0x1a, 0x60, 0x08                          ;992b
-; dec de  [t=8]
-    defb 0x1b, 0x00, 0x2e, 0xb8, 0x06                          ;9930
-; rr e  [CB, t=6]
-    defb 0x1b, 0x80, 0x1a, 0x68, 0x08                          ;9935
-; inc e  [t=8]
-    defb 0x1c, 0x00, 0x36, 0x68, 0x04                          ;993a
-; rr h  [CB, t=4]
-    defb 0x1c, 0x80, 0x1a, 0x70, 0x08                          ;993f
-; dec e  [t=8]
-    defb 0x1d, 0x00, 0x2e, 0x68, 0x04                          ;9944
-; rr l  [CB, t=4]
-    defb 0x1d, 0x80, 0x1a, 0x80, 0x08                          ;9949
-; ld e,N  [op. type: N, t=8]
-    defb 0x1e, 0x01, 0x14, 0x6d, 0x87                          ;994e
-; rr (hl)  [CB, t=7]
-    defb 0x1e, 0x80, 0x1b, 0x40, 0x0f                          ;9953
-; rr (ix+d)  [op. type: (ix+d), CB, DD, t=15]
-    defb 0x1e, 0xa4, 0x1b, 0x70, 0x17                          ;9958
-; rra   [t=23]
-    defb 0x1f, 0x00, 0x56, 0x00, 0x04                          ;995d
-; rr a  [CB, t=4]
-    defb 0x1f, 0x80, 0x1a, 0x48, 0x08                          ;9962
-; jr nz,N  [op. type: n, t=8]
-    defb 0x20, 0x03, 0x13, 0x05, 0x87                          ;9967
-; sla b  [CB, t=7]
-    defb 0x20, 0x80, 0x64, 0x50, 0x08                          ;996c
-; ld hl,N  [op. type: NN, t=8]
-    defb 0x21, 0x02, 0x14, 0xc5, 0x8a                          ;9971
-; ld ix,N  [op. type: NN, DD, t=10]
-    defb 0x21, 0x22, 0x14, 0xdd, 0x8e                          ;9976
-; sla c  [CB, t=14]
-    defb 0x21, 0x80, 0x64, 0x58, 0x08                          ;997b
-; ld (N),hl  [op. type: NN, t=8]
-    defb 0x22, 0x02, 0x15, 0x6b, 0x10                          ;9980
-; ld (N),ix  [op. type: NN, DD, t=16]
-    defb 0x22, 0x22, 0x15, 0x6b, 0x74                          ;9985
-; sla d  [CB, t=20]
-    defb 0x22, 0x80, 0x64, 0x60, 0x08                          ;998a
-; inc hl  [t=8]
-    defb 0x23, 0x00, 0x36, 0xc0, 0x06                          ;998f
-; inc ix  [DD, t=6]
-    defb 0x23, 0x20, 0x36, 0xd8, 0x0a                          ;9994
-; sla e  [CB, t=10]
-    defb 0x23, 0x80, 0x64, 0x68, 0x08                          ;9999
-; inc h  [t=8]
-    defb 0x24, 0x00, 0x36, 0x70, 0x04                          ;999e
-; inc hx  [DD, t=4]
-    defb 0x24, 0x20, 0x36, 0xc8, 0x08                          ;99a3
-; sla h  [CB, t=8]
-    defb 0x24, 0x80, 0x64, 0x70, 0x08                          ;99a8
-; dec h  [t=8]
-    defb 0x25, 0x00, 0x2e, 0x70, 0x04                          ;99ad
-; dec hx  [DD, t=4]
-    defb 0x25, 0x20, 0x2e, 0xc8, 0x08                          ;99b2
-; sla l  [CB, t=8]
-    defb 0x25, 0x80, 0x64, 0x80, 0x08                          ;99b7
-; ld h,N  [op. type: N, t=8]
-    defb 0x26, 0x01, 0x14, 0x75, 0x87                          ;99bc
-; ld hx,N  [op. type: N, DD, t=7]
-    defb 0x26, 0x21, 0x14, 0xcd, 0x8b                          ;99c1
-; sla (hl)  [CB, t=11]
-    defb 0x26, 0x80, 0x65, 0x40, 0x0f                          ;99c6
-; sla (ix+d)  [op. type: (ix+d), CB, DD, t=15]
-    defb 0x26, 0xa4, 0x65, 0x70, 0x17                          ;99cb
-; daa   [t=23]
-    defb 0x27, 0x00, 0x2c, 0x00, 0x04                          ;99d0
-; sla a  [CB, t=4]
-    defb 0x27, 0x80, 0x64, 0x48, 0x08                          ;99d5
-; jr z,N  [op. type: n, t=8]
-    defb 0x28, 0x03, 0x12, 0xa5, 0x87                          ;99da
-; sra b  [CB, t=7]
-    defb 0x28, 0x80, 0x66, 0x50, 0x08                          ;99df
-; add hl,hl  [t=8]
-    defb 0x29, 0x00, 0x1e, 0xc3, 0x0b                          ;99e4
-; add ix,ix  [DD, t=11]
-    defb 0x29, 0x20, 0x1e, 0xdb, 0x6f                          ;99e9
-; sra c  [CB, t=15]
-    defb 0x29, 0x80, 0x66, 0x58, 0x08                          ;99ee
-; ld hl,(N)  [op. type: NN, t=8]
-    defb 0x2a, 0x02, 0x14, 0xc5, 0xb0                          ;99f3
-; ld ix,(N)  [op. type: NN, DD, t=16]
-    defb 0x2a, 0x22, 0x14, 0xdd, 0xb4                          ;99f8
-; sra d  [CB, t=20]
-    defb 0x2a, 0x80, 0x66, 0x60, 0x08                          ;99fd
-; dec hl  [t=8]
-    defb 0x2b, 0x00, 0x2e, 0xc0, 0x06                          ;9a02
-; dec ix  [DD, t=6]
-    defb 0x2b, 0x20, 0x2e, 0xd8, 0x0a                          ;9a07
-; sra e  [CB, t=10]
-    defb 0x2b, 0x80, 0x66, 0x68, 0x08                          ;9a0c
-; inc l  [t=8]
-    defb 0x2c, 0x00, 0x36, 0x80, 0x04                          ;9a11
-; inc lx  [DD, t=4]
-    defb 0x2c, 0x20, 0x36, 0xe8, 0x08                          ;9a16
-; sra h  [CB, t=8]
-    defb 0x2c, 0x80, 0x66, 0x70, 0x08                          ;9a1b
-; dec l  [t=8]
-    defb 0x2d, 0x00, 0x2e, 0x80, 0x04                          ;9a20
-; dec lx  [DD, t=4]
-    defb 0x2d, 0x20, 0x2e, 0xe8, 0x08                          ;9a25
-; sra l  [CB, t=8]
-    defb 0x2d, 0x80, 0x66, 0x80, 0x08                          ;9a2a
-; ld l,N  [op. type: N, t=8]
-    defb 0x2e, 0x01, 0x14, 0x85, 0x87                          ;9a2f
-; ld lx,N  [op. type: N, DD, t=7]
-    defb 0x2e, 0x21, 0x14, 0xed, 0x8b                          ;9a34
-; sra (hl)  [CB, t=11]
-    defb 0x2e, 0x80, 0x67, 0x40, 0x0f                          ;9a39
-; sra (ix+d)  [op. type: (ix+d), CB, DD, t=15]
-    defb 0x2e, 0xa4, 0x67, 0x70, 0x17                          ;9a3e
-; cpl   [t=23]
-    defb 0x2f, 0x00, 0x2a, 0x00, 0x04                          ;9a43
-; sra a  [CB, t=4]
-    defb 0x2f, 0x80, 0x66, 0x48, 0x08                          ;9a48
-; jr nc,N  [op. type: n, t=8]
-    defb 0x30, 0x03, 0x12, 0xfd, 0x87                          ;9a4d
-; slia b  [CB, t=7]
-    defb 0x30, 0x80, 0x9a, 0x50, 0x08                          ;9a52
-; ld sp,N  [op. type: NN, t=8]
-    defb 0x31, 0x02, 0x15, 0x1d, 0x8a                          ;9a57
-; slia c  [CB, t=10]
-    defb 0x31, 0x80, 0x9a, 0x58, 0x08                          ;9a5c
-; ld (N),a  [op. type: NN, t=8]
-    defb 0x32, 0x02, 0x15, 0x69, 0x2d                          ;9a61
-; slia d  [CB, t=13]
-    defb 0x32, 0x80, 0x9a, 0x60, 0x08                          ;9a66
-; inc sp  [t=8]
-    defb 0x33, 0x00, 0x37, 0x18, 0x06                          ;9a6b
-; slia e  [CB, t=6]
-    defb 0x33, 0x80, 0x9a, 0x68, 0x08                          ;9a70
-; inc (hl)  [t=8]
-    defb 0x34, 0x00, 0x37, 0x40, 0x0b                          ;9a75
-; inc (ix+d)  [op. type: (ix+d), DD, t=11]
-    defb 0x34, 0x24, 0x37, 0x70, 0x17                          ;9a7a
-; slia h  [CB, t=23]
-    defb 0x34, 0x80, 0x9a, 0x70, 0x08                          ;9a7f
-; dec (hl)  [t=8]
-    defb 0x35, 0x00, 0x2f, 0x40, 0x0b                          ;9a84
-; dec (ix+d)  [op. type: (ix+d), DD, t=11]
-    defb 0x35, 0x24, 0x2f, 0x70, 0x17                          ;9a89
-; slia l  [CB, t=23]
-    defb 0x35, 0x80, 0x9a, 0x80, 0x08                          ;9a8e
-; ld (hl),N  [op. type: N, t=8]
-    defb 0x36, 0x01, 0x15, 0x45, 0x8a                          ;9a93
-; ld (ix+d),N  [op. type: (ix+d),n, DD, t=10]
-    defb 0x36, 0x25, 0x15, 0x75, 0x93                          ;9a98
-; slia (hl)  [CB, t=19]
-    defb 0x36, 0x80, 0x9b, 0x40, 0x0f                          ;9a9d
-; slia (ix+d)  [op. type: (ix+d), CB, DD, t=15]
-    defb 0x36, 0xa4, 0x9b, 0x70, 0x17                          ;9aa2
-; scf   [t=23]
-    defb 0x37, 0x00, 0x60, 0x00, 0x04                          ;9aa7
-; slia a  [CB, t=4]
-    defb 0x37, 0x80, 0x9a, 0x48, 0x08                          ;9aac
-; jr c,N  [op. type: n, t=8]
-    defb 0x38, 0x03, 0x12, 0x5d, 0x87                          ;9ab1
-; srl b  [CB, t=7]
-    defb 0x38, 0x80, 0x68, 0x50, 0x08                          ;9ab6
-; add hl,sp  [t=8]
-    defb 0x39, 0x00, 0x1e, 0xc4, 0x6b                          ;9abb
-; add ix,sp  [DD, t=11]
-    defb 0x39, 0x20, 0x1e, 0xdc, 0x6f                          ;9ac0
-; srl c  [CB, t=15]
-    defb 0x39, 0x80, 0x68, 0x58, 0x08                          ;9ac5
-; ld a,(N)  [op. type: NN, t=8]
-    defb 0x3a, 0x02, 0x14, 0x4d, 0xad                          ;9aca
-; srl d  [CB, t=13]
-    defb 0x3a, 0x80, 0x68, 0x60, 0x08                          ;9acf
-; dec sp  [t=8]
-    defb 0x3b, 0x00, 0x2f, 0x18, 0x06                          ;9ad4
-; srl e  [CB, t=6]
-    defb 0x3b, 0x80, 0x68, 0x68, 0x08                          ;9ad9
-; inc a  [t=8]
-    defb 0x3c, 0x00, 0x36, 0x48, 0x04                          ;9ade
-; srl h  [CB, t=4]
-    defb 0x3c, 0x80, 0x68, 0x70, 0x08                          ;9ae3
-; dec a  [t=8]
-    defb 0x3d, 0x00, 0x2e, 0x48, 0x04                          ;9ae8
-; srl l  [CB, t=4]
-    defb 0x3d, 0x80, 0x68, 0x80, 0x08                          ;9aed
-; ld a,N  [op. type: N, t=8]
-    defb 0x3e, 0x01, 0x14, 0x4d, 0x87                          ;9af2
-; srl (hl)  [CB, t=7]
-    defb 0x3e, 0x80, 0x69, 0x40, 0x0f                          ;9af7
-; srl (ix+d)  [op. type: (ix+d), CB, DD, t=15]
-    defb 0x3e, 0xa4, 0x69, 0x70, 0x17                          ;9afc
-; ccf   [t=23]
-    defb 0x3f, 0x00, 0x24, 0x00, 0x04                          ;9b01
-; srl a  [CB, t=4]
-    defb 0x3f, 0x80, 0x68, 0x48, 0x08                          ;9b06
-; ld b,b  [t=8]
-    defb 0x40, 0x00, 0x14, 0x51, 0x44                          ;9b0b
-; in b,(c)  [ED, t=4]
-    defb 0x40, 0x40, 0x0e, 0x54, 0x8c                          ;9b10
-; bit 0,b  [CB, t=12]
-    defb 0x40, 0x80, 0x22, 0x09, 0x48                          ;9b15
-; ld b,c  [t=8]
-    defb 0x41, 0x00, 0x14, 0x51, 0x64                          ;9b1a
-; out (c),b  [ED, t=4]
-    defb 0x41, 0x40, 0x47, 0x21, 0x4c                          ;9b1f
-; bit 0,c  [CB, t=12]
-    defb 0x41, 0x80, 0x22, 0x09, 0x68                          ;9b24
-; ld b,d  [t=8]
-    defb 0x42, 0x00, 0x14, 0x51, 0x84                          ;9b29
-; sbc hl,bc  [ED, t=4]
-    defb 0x42, 0x40, 0x5e, 0xc2, 0xcf                          ;9b2e
-; bit 0,d  [CB, t=15]
-    defb 0x42, 0x80, 0x22, 0x09, 0x88                          ;9b33
-; ld b,e  [t=8]
-    defb 0x43, 0x00, 0x14, 0x51, 0xa4                          ;9b38
-; ld (N),bc  [op. type: NN, ED, t=4]
-    defb 0x43, 0x42, 0x15, 0x6a, 0xd4                          ;9b3d
-; bit 0,e  [CB, t=20]
-    defb 0x43, 0x80, 0x22, 0x09, 0xa8                          ;9b42
-; ld b,h  [t=8]
-    defb 0x44, 0x00, 0x14, 0x51, 0xc4                          ;9b47
-; ld b,hx  [DD, t=4]
-    defb 0x44, 0x20, 0x14, 0x53, 0x28                          ;9b4c
-; neg   [ED, t=8]
-    defb 0x44, 0x40, 0x40, 0x00, 0x08                          ;9b51
-; bit 0,h  [CB, t=8]
-    defb 0x44, 0x80, 0x22, 0x09, 0xc8                          ;9b56
-; ld b,l  [t=8]
-    defb 0x45, 0x00, 0x14, 0x52, 0x04                          ;9b5b
-; ld b,lx  [DD, t=4]
-    defb 0x45, 0x20, 0x14, 0x53, 0xa8                          ;9b60
-; retn   [ED, t=8]
-    defb 0x45, 0x40, 0x94, 0x00, 0x0e                          ;9b65
-; bit 0,l  [CB, t=14]
-    defb 0x45, 0x80, 0x22, 0x0a, 0x08                          ;9b6a
-; ld b,(hl)  [t=8]
-    defb 0x46, 0x00, 0x14, 0x55, 0x07                          ;9b6f
-; ld b,(ix+d)  [op. type: (ix+d), DD, t=7]
-    defb 0x46, 0x24, 0x14, 0x55, 0xd3                          ;9b74
-; im 0  [ED, t=19]
-    defb 0x46, 0x40, 0x0c, 0x08, 0x08                          ;9b79
-; bit 0,(hl)  [CB, t=8]
-    defb 0x46, 0x80, 0x22, 0x0d, 0x0c                          ;9b7e
-; bit 0,(ix+d)  [op. type: (ix+d), CB, DD, t=12]
-    defb 0x46, 0xa4, 0x22, 0x0d, 0xd4                          ;9b83
-; ld b,a  [t=20]
-    defb 0x47, 0x00, 0x14, 0x51, 0x24                          ;9b88
-; ld i,a  [ED, t=4]
-    defb 0x47, 0x40, 0x14, 0x79, 0x29                          ;9b8d
-; bit 0,a  [CB, t=9]
-    defb 0x47, 0x80, 0x22, 0x09, 0x28                          ;9b92
-; ld c,b  [t=8]
-    defb 0x48, 0x00, 0x14, 0x59, 0x44                          ;9b97
-; in c,(c)  [ED, t=4]
-    defb 0x48, 0x40, 0x0e, 0x5c, 0x8c                          ;9b9c
-; bit 1,b  [CB, t=12]
-    defb 0x48, 0x80, 0x22, 0x11, 0x48                          ;9ba1
-; ld c,c  [t=8]
-    defb 0x49, 0x00, 0x14, 0x59, 0x64                          ;9ba6
-; out (c),c  [ED, t=4]
-    defb 0x49, 0x40, 0x47, 0x21, 0x6c                          ;9bab
-; bit 1,c  [CB, t=12]
-    defb 0x49, 0x80, 0x22, 0x11, 0x68                          ;9bb0
-; ld c,d  [t=8]
-    defb 0x4a, 0x00, 0x14, 0x59, 0x84                          ;9bb5
-; adc hl,bc  [ED, t=4]
-    defb 0x4a, 0x40, 0x1c, 0xc2, 0xcf                          ;9bba
-; bit 1,d  [CB, t=15]
-    defb 0x4a, 0x80, 0x22, 0x11, 0x88                          ;9bbf
-; ld c,e  [t=8]
-    defb 0x4b, 0x00, 0x14, 0x59, 0xa4                          ;9bc4
-; ld bc,(N)  [op. type: NN, ED, t=4]
-    defb 0x4b, 0x42, 0x14, 0xb5, 0xb4                          ;9bc9
-; bit 1,e  [CB, t=20]
-    defb 0x4b, 0x80, 0x22, 0x11, 0xa8                          ;9bce
-; ld c,h  [t=8]
-    defb 0x4c, 0x00, 0x14, 0x59, 0xc4                          ;9bd3
-; ld c,hx  [DD, t=4]
-    defb 0x4c, 0x20, 0x14, 0x5b, 0x28                          ;9bd8
-; bit 1,h  [CB, t=8]
-    defb 0x4c, 0x80, 0x22, 0x11, 0xc8                          ;9bdd
-; ld c,l  [t=8]
-    defb 0x4d, 0x00, 0x14, 0x5a, 0x04                          ;9be2
-; ld c,lx  [DD, t=4]
-    defb 0x4d, 0x20, 0x14, 0x5b, 0xa8                          ;9be7
-; reti   [ED, t=8]
-    defb 0x4d, 0x40, 0x92, 0x00, 0x0e                          ;9bec
-; bit 1,l  [CB, t=14]
-    defb 0x4d, 0x80, 0x22, 0x12, 0x08                          ;9bf1
-; ld c,(hl)  [t=8]
-    defb 0x4e, 0x00, 0x14, 0x5d, 0x07                          ;9bf6
-; ld c,(ix+d)  [op. type: (ix+d), DD, t=7]
-    defb 0x4e, 0x24, 0x14, 0x5d, 0xd3                          ;9bfb
-; bit 1,(hl)  [CB, t=19]
-    defb 0x4e, 0x80, 0x22, 0x15, 0x0c                          ;9c00
-; bit 1,(ix+d)  [op. type: (ix+d), CB, DD, t=12]
-    defb 0x4e, 0xa4, 0x22, 0x15, 0xd4                          ;9c05
-; ld c,a  [t=20]
-    defb 0x4f, 0x00, 0x14, 0x59, 0x24                          ;9c0a
-; ld r,a  [ED, t=4]
-    defb 0x4f, 0x40, 0x14, 0x99, 0x29                          ;9c0f
-; bit 1,a  [CB, t=9]
-    defb 0x4f, 0x80, 0x22, 0x11, 0x28                          ;9c14
-; ld d,b  [t=8]
-    defb 0x50, 0x00, 0x14, 0x61, 0x44                          ;9c19
-; in d,(c)  [ED, t=4]
-    defb 0x50, 0x40, 0x0e, 0x64, 0x8c                          ;9c1e
-; bit 2,b  [CB, t=12]
-    defb 0x50, 0x80, 0x22, 0x19, 0x48                          ;9c23
-l9c28h:
-; ld d,c  [t=8]
-    defb 0x51, 0x00, 0x14, 0x61, 0x64                          ;9c28
-; out (c),d  [ED, t=4]
-    defb 0x51, 0x40, 0x47, 0x21, 0x8c                          ;9c2d
-; bit 2,c  [CB, t=12]
-    defb 0x51, 0x80, 0x22, 0x19, 0x68                          ;9c32
-; ld d,d  [t=8]
-    defb 0x52, 0x00, 0x14, 0x61, 0x84                          ;9c37
-; sbc hl,de  [ED, t=4]
-    defb 0x52, 0x40, 0x5e, 0xc2, 0xef                          ;9c3c
-; bit 2,d  [CB, t=15]
-    defb 0x52, 0x80, 0x22, 0x19, 0x88                          ;9c41
-; ld d,e  [t=8]
-    defb 0x53, 0x00, 0x14, 0x61, 0xa4                          ;9c46
-; ld (N),de  [op. type: NN, ED, t=4]
-    defb 0x53, 0x42, 0x15, 0x6a, 0xf4                          ;9c4b
-; bit 2,e  [CB, t=20]
-    defb 0x53, 0x80, 0x22, 0x19, 0xa8                          ;9c50
-; ld d,h  [t=8]
-    defb 0x54, 0x00, 0x14, 0x61, 0xc4                          ;9c55
-; ld d,hx  [DD, t=4]
-    defb 0x54, 0x20, 0x14, 0x63, 0x28                          ;9c5a
-; bit 2,h  [CB, t=8]
-    defb 0x54, 0x80, 0x22, 0x19, 0xc8                          ;9c5f
-; ld d,l  [t=8]
-    defb 0x55, 0x00, 0x14, 0x62, 0x04                          ;9c64
-; ld d,lx  [DD, t=4]
-    defb 0x55, 0x20, 0x14, 0x63, 0xa8                          ;9c69
-; bit 2,l  [CB, t=8]
-    defb 0x55, 0x80, 0x22, 0x1a, 0x08                          ;9c6e
-; ld d,(hl)  [t=8]
-    defb 0x56, 0x00, 0x14, 0x65, 0x07                          ;9c73
-; ld d,(ix+d)  [op. type: (ix+d), DD, t=7]
-    defb 0x56, 0x24, 0x14, 0x65, 0xd3                          ;9c78
-; im 1  [ED, t=19]
-    defb 0x56, 0x40, 0x0c, 0x10, 0x08                          ;9c7d
-; bit 2,(hl)  [CB, t=8]
-    defb 0x56, 0x80, 0x22, 0x1d, 0x0c                          ;9c82
-; bit 2,(ix+d)  [op. type: (ix+d), CB, DD, t=12]
-    defb 0x56, 0xa4, 0x22, 0x1d, 0xd4                          ;9c87
-; ld d,a  [t=20]
-    defb 0x57, 0x00, 0x14, 0x61, 0x24                          ;9c8c
-; ld a,i  [ED, t=4]
-    defb 0x57, 0x40, 0x14, 0x49, 0xe9                          ;9c91
-; bit 2,a  [CB, t=9]
-    defb 0x57, 0x80, 0x22, 0x19, 0x28                          ;9c96
-; ld e,b  [t=8]
-    defb 0x58, 0x00, 0x14, 0x69, 0x44                          ;9c9b
-; in e,(c)  [ED, t=4]
-    defb 0x58, 0x40, 0x0e, 0x6c, 0x8c                          ;9ca0
-; bit 3,b  [CB, t=12]
-    defb 0x58, 0x80, 0x22, 0x21, 0x48                          ;9ca5
-; ld e,c  [t=8]
-    defb 0x59, 0x00, 0x14, 0x69, 0x64                          ;9caa
-; out (c),e  [ED, t=4]
-    defb 0x59, 0x40, 0x47, 0x21, 0xac                          ;9caf
-; bit 3,c  [CB, t=12]
-    defb 0x59, 0x80, 0x22, 0x21, 0x68                          ;9cb4
-; ld e,d  [t=8]
-    defb 0x5a, 0x00, 0x14, 0x69, 0x84                          ;9cb9
-; adc hl,de  [ED, t=4]
-    defb 0x5a, 0x40, 0x1c, 0xc2, 0xef                          ;9cbe
-; bit 3,d  [CB, t=15]
-    defb 0x5a, 0x80, 0x22, 0x21, 0x88                          ;9cc3
-; ld e,e  [t=8]
-    defb 0x5b, 0x00, 0x14, 0x69, 0xa4                          ;9cc8
-; ld de,(N)  [op. type: NN, ED, t=4]
-    defb 0x5b, 0x42, 0x14, 0xbd, 0xb4                          ;9ccd
-; bit 3,e  [CB, t=20]
-    defb 0x5b, 0x80, 0x22, 0x21, 0xa8                          ;9cd2
-; ld e,h  [t=8]
-    defb 0x5c, 0x00, 0x14, 0x69, 0xc4                          ;9cd7
-; ld e,hx  [DD, t=4]
-    defb 0x5c, 0x20, 0x14, 0x6b, 0x28                          ;9cdc
-; bit 3,h  [CB, t=8]
-    defb 0x5c, 0x80, 0x22, 0x21, 0xc8                          ;9ce1
-; ld e,l  [t=8]
-    defb 0x5d, 0x00, 0x14, 0x6a, 0x04                          ;9ce6
-; ld e,lx  [DD, t=4]
-    defb 0x5d, 0x20, 0x14, 0x6b, 0xa8                          ;9ceb
-; bit 3,l  [CB, t=8]
-    defb 0x5d, 0x80, 0x22, 0x22, 0x08                          ;9cf0
-; ld e,(hl)  [t=8]
-    defb 0x5e, 0x00, 0x14, 0x6d, 0x07                          ;9cf5
-; ld e,(ix+d)  [op. type: (ix+d), DD, t=7]
-    defb 0x5e, 0x24, 0x14, 0x6d, 0xd3                          ;9cfa
-; im 2  [ED, t=19]
-    defb 0x5e, 0x40, 0x0c, 0x18, 0x08                          ;9cff
-; bit 3,(hl)  [CB, t=8]
-    defb 0x5e, 0x80, 0x22, 0x25, 0x0c                          ;9d04
-; bit 3,(ix+d)  [op. type: (ix+d), CB, DD, t=12]
-    defb 0x5e, 0xa4, 0x22, 0x25, 0xd4                          ;9d09
-; ld e,a  [t=20]
-    defb 0x5f, 0x00, 0x14, 0x69, 0x24                          ;9d0e
-; ld a,r  [ED, t=4]
-    defb 0x5f, 0x40, 0x14, 0x4a, 0x69                          ;9d13
-; bit 3,a  [CB, t=9]
-    defb 0x5f, 0x80, 0x22, 0x21, 0x28                          ;9d18
-; ld h,b  [t=8]
-    defb 0x60, 0x00, 0x14, 0x71, 0x44                          ;9d1d
-; ld hx,b  [DD, t=4]
-    defb 0x60, 0x20, 0x14, 0xc9, 0x48                          ;9d22
-; in h,(c)  [ED, t=8]
-    defb 0x60, 0x40, 0x0e, 0x74, 0x8c                          ;9d27
-; bit 4,b  [CB, t=12]
-    defb 0x60, 0x80, 0x22, 0x29, 0x48                          ;9d2c
-; ld h,c  [t=8]
-    defb 0x61, 0x00, 0x14, 0x71, 0x64                          ;9d31
-; ld hx,c  [DD, t=4]
-    defb 0x61, 0x20, 0x14, 0xc9, 0x68                          ;9d36
-; out (c),h  [ED, t=8]
-    defb 0x61, 0x40, 0x47, 0x21, 0xcc                          ;9d3b
-; bit 4,c  [CB, t=12]
-    defb 0x61, 0x80, 0x22, 0x29, 0x68                          ;9d40
-; ld h,d  [t=8]
-    defb 0x62, 0x00, 0x14, 0x71, 0x84                          ;9d45
-; ld hx,d  [DD, t=4]
-    defb 0x62, 0x20, 0x14, 0xc9, 0x88                          ;9d4a
-; sbc hl,hl  [ED, t=8]
-    defb 0x62, 0x40, 0x5e, 0xc3, 0x0f                          ;9d4f
-; bit 4,d  [CB, t=15]
-    defb 0x62, 0x80, 0x22, 0x29, 0x88                          ;9d54
-; ld h,e  [t=8]
-    defb 0x63, 0x00, 0x14, 0x71, 0xa4                          ;9d59
-; ld hx,e  [DD, t=4]
-    defb 0x63, 0x20, 0x14, 0xc9, 0xa8                          ;9d5e
-; ld (N),hl  [op. type: NN, ED, t=8]
-    defb 0x63, 0x42, 0x15, 0x6b, 0x14                          ;9d63
-; bit 4,e  [CB, t=20]
-    defb 0x63, 0x80, 0x22, 0x29, 0xa8                          ;9d68
-; ld h,h  [t=8]
-    defb 0x64, 0x00, 0x14, 0x71, 0xc4                          ;9d6d
-; ld hx,hx  [DD, t=4]
-    defb 0x64, 0x20, 0x14, 0xcb, 0x28                          ;9d72
-; bit 4,h  [CB, t=8]
-    defb 0x64, 0x80, 0x22, 0x29, 0xc8                          ;9d77
-; ld h,l  [t=8]
-    defb 0x65, 0x00, 0x14, 0x72, 0x04                          ;9d7c
-; ld hx,lx  [DD, t=4]
-    defb 0x65, 0x20, 0x14, 0xcb, 0xa8                          ;9d81
-; bit 4,l  [CB, t=8]
-    defb 0x65, 0x80, 0x22, 0x2a, 0x08                          ;9d86
-; ld h,(hl)  [t=8]
-    defb 0x66, 0x00, 0x14, 0x75, 0x07                          ;9d8b
-; ld h,(ix+d)  [op. type: (ix+d), DD, t=7]
-    defb 0x66, 0x24, 0x14, 0x75, 0xd3                          ;9d90
-; bit 4,(hl)  [CB, t=19]
-    defb 0x66, 0x80, 0x22, 0x2d, 0x0c                          ;9d95
-; bit 4,(ix+d)  [op. type: (ix+d), CB, DD, t=12]
-    defb 0x66, 0xa4, 0x22, 0x2d, 0xd4                          ;9d9a
-; ld h,a  [t=20]
-    defb 0x67, 0x00, 0x14, 0x71, 0x24                          ;9d9f
-; ld hx,a  [DD, t=4]
-    defb 0x67, 0x20, 0x14, 0xc9, 0x28                          ;9da4
-; rrd   [ED, t=8]
-    defb 0x67, 0x40, 0x5a, 0x00, 0x12                          ;9da9
-; bit 4,a  [CB, t=18]
-    defb 0x67, 0x80, 0x22, 0x29, 0x28                          ;9dae
-; ld l,b  [t=8]
-    defb 0x68, 0x00, 0x14, 0x81, 0x44                          ;9db3
-; ld lx,b  [DD, t=4]
-    defb 0x68, 0x20, 0x14, 0xe9, 0x48                          ;9db8
-; in l,(c)  [ED, t=8]
-    defb 0x68, 0x40, 0x0e, 0x84, 0x8c                          ;9dbd
-; bit 5,b  [CB, t=12]
-    defb 0x68, 0x80, 0x22, 0x31, 0x48                          ;9dc2
-; ld l,c  [t=8]
-    defb 0x69, 0x00, 0x14, 0x81, 0x64                          ;9dc7
-; ld lx,c  [DD, t=4]
-    defb 0x69, 0x20, 0x14, 0xe9, 0x68                          ;9dcc
-; out (c),l  [ED, t=8]
-    defb 0x69, 0x40, 0x47, 0x22, 0x0c                          ;9dd1
-; bit 5,c  [CB, t=12]
-    defb 0x69, 0x80, 0x22, 0x31, 0x68                          ;9dd6
-; ld l,d  [t=8]
-    defb 0x6a, 0x00, 0x14, 0x81, 0x84                          ;9ddb
-; ld lx,d  [DD, t=4]
-    defb 0x6a, 0x20, 0x14, 0xe9, 0x88                          ;9de0
-; adc hl,hl  [ED, t=8]
-    defb 0x6a, 0x40, 0x1c, 0xc3, 0x0f                          ;9de5
-; bit 5,d  [CB, t=15]
-    defb 0x6a, 0x80, 0x22, 0x31, 0x88                          ;9dea
-; ld l,e  [t=8]
-    defb 0x6b, 0x00, 0x14, 0x81, 0xa4                          ;9def
-; ld lx,e  [DD, t=4]
-    defb 0x6b, 0x20, 0x14, 0xe9, 0xa8                          ;9df4
-; ld hl,(N)  [op. type: NN, ED, t=8]
-    defb 0x6b, 0x42, 0x14, 0xc5, 0xb4                          ;9df9
-; bit 5,e  [CB, t=20]
-    defb 0x6b, 0x80, 0x22, 0x31, 0xa8                          ;9dfe
-; ld l,h  [t=8]
-    defb 0x6c, 0x00, 0x14, 0x81, 0xc4                          ;9e03
-; ld lx,hx  [DD, t=4]
-    defb 0x6c, 0x20, 0x14, 0xeb, 0x28                          ;9e08
-; bit 5,h  [CB, t=8]
-    defb 0x6c, 0x80, 0x22, 0x31, 0xc8                          ;9e0d
-; ld l,l  [t=8]
-    defb 0x6d, 0x00, 0x14, 0x82, 0x04                          ;9e12
-; ld lx,lx  [DD, t=4]
-    defb 0x6d, 0x20, 0x14, 0xeb, 0xa8                          ;9e17
-; bit 5,l  [CB, t=8]
-    defb 0x6d, 0x80, 0x22, 0x32, 0x08                          ;9e1c
-; ld l,(hl)  [t=8]
-    defb 0x6e, 0x00, 0x14, 0x85, 0x07                          ;9e21
-; ld l,(ix+d)  [op. type: (ix+d), DD, t=7]
-    defb 0x6e, 0x24, 0x14, 0x85, 0xd3                          ;9e26
-; bit 5,(hl)  [CB, t=19]
-    defb 0x6e, 0x80, 0x22, 0x35, 0x0c                          ;9e2b
-; bit 5,(ix+d)  [op. type: (ix+d), CB, DD, t=12]
-    defb 0x6e, 0xa4, 0x22, 0x35, 0xd4                          ;9e30
-; ld l,a  [t=20]
-    defb 0x6f, 0x00, 0x14, 0x81, 0x24                          ;9e35
-; ld lx,a  [DD, t=4]
-    defb 0x6f, 0x20, 0x14, 0xe9, 0x28                          ;9e3a
-; rld   [ED, t=8]
-    defb 0x6f, 0x40, 0x54, 0x00, 0x12                          ;9e3f
-; bit 5,a  [CB, t=18]
-    defb 0x6f, 0x80, 0x22, 0x31, 0x28                          ;9e44
-; ld (hl),b  [t=8]
-    defb 0x70, 0x00, 0x15, 0x41, 0x47                          ;9e49
-; ld (ix+d),b  [op. type: (ix+d), DD, t=7]
-    defb 0x70, 0x24, 0x15, 0x71, 0x53                          ;9e4e
-; bit 6,b  [CB, t=19]
-    defb 0x70, 0x80, 0x22, 0x39, 0x48                          ;9e53
-; ld (hl),c  [t=8]
-    defb 0x71, 0x00, 0x15, 0x41, 0x67                          ;9e58
-; ld (ix+d),c  [op. type: (ix+d), DD, t=7]
-    defb 0x71, 0x24, 0x15, 0x71, 0x73                          ;9e5d
-; bit 6,c  [CB, t=19]
-    defb 0x71, 0x80, 0x22, 0x39, 0x68                          ;9e62
-; ld (hl),d  [t=8]
-    defb 0x72, 0x00, 0x15, 0x41, 0x87                          ;9e67
-; ld (ix+d),d  [op. type: (ix+d), DD, t=7]
-    defb 0x72, 0x24, 0x15, 0x71, 0x93                          ;9e6c
-; sbc hl,sp  [ED, t=19]
-    defb 0x72, 0x40, 0x5e, 0xc4, 0x6f                          ;9e71
-; bit 6,d  [CB, t=15]
-    defb 0x72, 0x80, 0x22, 0x39, 0x88                          ;9e76
-; ld (hl),e  [t=8]
-    defb 0x73, 0x00, 0x15, 0x41, 0xa7                          ;9e7b
-; ld (ix+d),e  [op. type: (ix+d), DD, t=7]
-    defb 0x73, 0x24, 0x15, 0x71, 0xb3                          ;9e80
-; ld (N),sp  [op. type: NN, ED, t=19]
-    defb 0x73, 0x42, 0x15, 0x6c, 0x74                          ;9e85
-; bit 6,e  [CB, t=20]
-    defb 0x73, 0x80, 0x22, 0x39, 0xa8                          ;9e8a
-; ld (hl),h  [t=8]
-    defb 0x74, 0x00, 0x15, 0x41, 0xc7                          ;9e8f
-; ld (ix+d),h  [op. type: (ix+d), DD, t=7]
-    defb 0x74, 0x24, 0x15, 0x71, 0xd3                          ;9e94
-; bit 6,h  [CB, t=19]
-    defb 0x74, 0x80, 0x22, 0x39, 0xc8                          ;9e99
-; ld (hl),l  [t=8]
-    defb 0x75, 0x00, 0x15, 0x42, 0x07                          ;9e9e
-; ld (ix+d),l  [op. type: (ix+d), DD, t=7]
-    defb 0x75, 0x24, 0x15, 0x72, 0x13                          ;9ea3
-; bit 6,l  [CB, t=19]
-    defb 0x75, 0x80, 0x22, 0x3a, 0x08                          ;9ea8
-; halt   [t=8]
-    defb 0x76, 0x00, 0x7e, 0x00, 0x04                          ;9ead
-; bit 6,(hl)  [CB, t=4]
-    defb 0x76, 0x80, 0x22, 0x3d, 0x0c                          ;9eb2
-; bit 6,(ix+d)  [op. type: (ix+d), CB, DD, t=12]
-    defb 0x76, 0xa4, 0x22, 0x3d, 0xd4                          ;9eb7
-; ld (hl),a  [t=20]
-    defb 0x77, 0x00, 0x15, 0x41, 0x27                          ;9ebc
-; ld (ix+d),a  [op. type: (ix+d), DD, t=7]
-    defb 0x77, 0x24, 0x15, 0x71, 0x33                          ;9ec1
-; bit 6,a  [CB, t=19]
-    defb 0x77, 0x80, 0x22, 0x39, 0x28                          ;9ec6
-; ld a,b  [t=8]
-    defb 0x78, 0x00, 0x14, 0x49, 0x44                          ;9ecb
-; in a,(c)  [ED, t=4]
-    defb 0x78, 0x40, 0x0e, 0x4c, 0x8c                          ;9ed0
-; bit 7,b  [CB, t=12]
-    defb 0x78, 0x80, 0x22, 0x41, 0x48                          ;9ed5
-; ld a,c  [t=8]
-    defb 0x79, 0x00, 0x14, 0x49, 0x64                          ;9eda
-; out (c),a  [ED, t=4]
-    defb 0x79, 0x40, 0x47, 0x21, 0x2c                          ;9edf
-; bit 7,c  [CB, t=12]
-    defb 0x79, 0x80, 0x22, 0x41, 0x68                          ;9ee4
-; ld a,d  [t=8]
-    defb 0x7a, 0x00, 0x14, 0x49, 0x84                          ;9ee9
-; adc hl,sp  [ED, t=4]
-    defb 0x7a, 0x40, 0x1c, 0xc4, 0x6f                          ;9eee
-; bit 7,d  [CB, t=15]
-    defb 0x7a, 0x80, 0x22, 0x41, 0x88                          ;9ef3
-; ld a,e  [t=8]
-    defb 0x7b, 0x00, 0x14, 0x49, 0xa4                          ;9ef8
-; ld sp,(N)  [op. type: NN, ED, t=4]
-    defb 0x7b, 0x42, 0x15, 0x1d, 0xb4                          ;9efd
-; bit 7,e  [CB, t=20]
-    defb 0x7b, 0x80, 0x22, 0x41, 0xa8                          ;9f02
-; ld a,h  [t=8]
-    defb 0x7c, 0x00, 0x14, 0x49, 0xc4                          ;9f07
-; ld a,hx  [DD, t=4]
-    defb 0x7c, 0x20, 0x14, 0x4b, 0x28                          ;9f0c
-; bit 7,h  [CB, t=8]
-    defb 0x7c, 0x80, 0x22, 0x41, 0xc8                          ;9f11
-; ld a,l  [t=8]
-    defb 0x7d, 0x00, 0x14, 0x4a, 0x04                          ;9f16
-; ld a,lx  [DD, t=4]
-    defb 0x7d, 0x20, 0x14, 0x4b, 0xa8                          ;9f1b
-; bit 7,l  [CB, t=8]
-    defb 0x7d, 0x80, 0x22, 0x42, 0x08                          ;9f20
-; ld a,(hl)  [t=8]
-    defb 0x7e, 0x00, 0x14, 0x4d, 0x07                          ;9f25
-; ld a,(ix+d)  [op. type: (ix+d), DD, t=7]
-    defb 0x7e, 0x24, 0x14, 0x4d, 0xd3                          ;9f2a
-; bit 7,(hl)  [CB, t=19]
-    defb 0x7e, 0x80, 0x22, 0x45, 0x0c                          ;9f2f
-; bit 7,(ix+d)  [op. type: (ix+d), CB, DD, t=12]
-    defb 0x7e, 0xa4, 0x22, 0x45, 0xd4                          ;9f34
-; ld a,a  [t=20]
-    defb 0x7f, 0x00, 0x14, 0x49, 0x24                          ;9f39
-; bit 7,a  [CB, t=4]
-    defb 0x7f, 0x80, 0x22, 0x41, 0x28                          ;9f3e
-; add a,b  [t=8]
-    defb 0x80, 0x00, 0x1e, 0x49, 0x44                          ;9f43
-; res 0,b  [CB, t=4]
-    defb 0x80, 0x80, 0x4c, 0x09, 0x48                          ;9f48
-; add a,c  [t=8]
-    defb 0x81, 0x00, 0x1e, 0x49, 0x64                          ;9f4d
-; res 0,c  [CB, t=4]
-    defb 0x81, 0x80, 0x4c, 0x09, 0x68                          ;9f52
-; add a,d  [t=8]
-    defb 0x82, 0x00, 0x1e, 0x49, 0x84                          ;9f57
-; res 0,d  [CB, t=4]
-    defb 0x82, 0x80, 0x4c, 0x09, 0x88                          ;9f5c
-; add a,e  [t=8]
-    defb 0x83, 0x00, 0x1e, 0x49, 0xa4                          ;9f61
-; res 0,e  [CB, t=4]
-    defb 0x83, 0x80, 0x4c, 0x09, 0xa8                          ;9f66
-; add a,h  [t=8]
-    defb 0x84, 0x00, 0x1e, 0x49, 0xc4                          ;9f6b
-; add a,hx  [DD, t=4]
-    defb 0x84, 0x20, 0x1e, 0x4b, 0x28                          ;9f70
-; res 0,h  [CB, t=8]
-    defb 0x84, 0x80, 0x4c, 0x09, 0xc8                          ;9f75
-; add a,l  [t=8]
-    defb 0x85, 0x00, 0x1e, 0x4a, 0x04                          ;9f7a
-; add a,lx  [DD, t=4]
-    defb 0x85, 0x20, 0x1e, 0x4b, 0xa8                          ;9f7f
-; res 0,l  [CB, t=8]
-    defb 0x85, 0x80, 0x4c, 0x0a, 0x08                          ;9f84
-; add a,(hl)  [t=8]
-    defb 0x86, 0x00, 0x1e, 0x4d, 0x07                          ;9f89
-; add a,(ix+d)  [op. type: (ix+d), DD, t=7]
-    defb 0x86, 0x24, 0x1e, 0x4d, 0xd3                          ;9f8e
-; res 0,(hl)  [CB, t=19]
-    defb 0x86, 0x80, 0x4c, 0x0d, 0x0f                          ;9f93
-; res 0,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-    defb 0x86, 0xa4, 0x4c, 0x0d, 0xd7                          ;9f98
-; add a,a  [t=23]
-    defb 0x87, 0x00, 0x1e, 0x49, 0x24                          ;9f9d
-; res 0,a  [CB, t=4]
-    defb 0x87, 0x80, 0x4c, 0x09, 0x28                          ;9fa2
-; adc a,b  [t=8]
-    defb 0x88, 0x00, 0x1c, 0x49, 0x44                          ;9fa7
-; res 1,b  [CB, t=4]
-    defb 0x88, 0x80, 0x4c, 0x11, 0x48                          ;9fac
-; adc a,c  [t=8]
-    defb 0x89, 0x00, 0x1c, 0x49, 0x64                          ;9fb1
-; res 1,c  [CB, t=4]
-    defb 0x89, 0x80, 0x4c, 0x11, 0x68                          ;9fb6
-; adc a,d  [t=8]
-    defb 0x8a, 0x00, 0x1c, 0x49, 0x84                          ;9fbb
-; res 1,d  [CB, t=4]
-    defb 0x8a, 0x80, 0x4c, 0x11, 0x88                          ;9fc0
-; adc a,e  [t=8]
-    defb 0x8b, 0x00, 0x1c, 0x49, 0xa4                          ;9fc5
-; res 1,e  [CB, t=4]
-    defb 0x8b, 0x80, 0x4c, 0x11, 0xa8                          ;9fca
-; adc a,h  [t=8]
-    defb 0x8c, 0x00, 0x1c, 0x49, 0xc4                          ;9fcf
-; adc a,hx  [DD, t=4]
-    defb 0x8c, 0x20, 0x1c, 0x4b, 0x28                          ;9fd4
-; res 1,h  [CB, t=8]
-    defb 0x8c, 0x80, 0x4c, 0x11, 0xc8                          ;9fd9
-; adc a,l  [t=8]
-    defb 0x8d, 0x00, 0x1c, 0x4a, 0x04                          ;9fde
-; adc a,lx  [DD, t=4]
-    defb 0x8d, 0x20, 0x1c, 0x4b, 0xa8                          ;9fe3
-; res 1,l  [CB, t=8]
-    defb 0x8d, 0x80, 0x4c, 0x12, 0x08                          ;9fe8
-; adc a,(hl)  [t=8]
-    defb 0x8e, 0x00, 0x1c, 0x4d, 0x07                          ;9fed
-; adc a,(ix+d)  [op. type: (ix+d), DD, t=7]
-    defb 0x8e, 0x24, 0x1c, 0x4d, 0xd3                          ;9ff2
-; res 1,(hl)  [CB, t=19]
-    defb 0x8e, 0x80, 0x4c, 0x15, 0x0f                          ;9ff7
-; res 1,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-    defb 0x8e, 0xa4, 0x4c, 0x15, 0xd7                          ;9ffc
-; adc a,a  [t=23]
-    defb 0x8f, 0x00, 0x1c, 0x49, 0x24                          ;a001
-; res 1,a  [CB, t=4]
-    defb 0x8f, 0x80, 0x4c, 0x11, 0x28                          ;a006
-; sub b  [t=8]
-    defb 0x90, 0x00, 0x6a, 0x50, 0x04                          ;a00b
-; res 2,b  [CB, t=4]
-    defb 0x90, 0x80, 0x4c, 0x19, 0x48                          ;a010
-; sub c  [t=8]
-    defb 0x91, 0x00, 0x6a, 0x58, 0x04                          ;a015
-; res 2,c  [CB, t=4]
-    defb 0x91, 0x80, 0x4c, 0x19, 0x68                          ;a01a
-; sub d  [t=8]
-    defb 0x92, 0x00, 0x6a, 0x60, 0x04                          ;a01f
-; res 2,d  [CB, t=4]
-    defb 0x92, 0x80, 0x4c, 0x19, 0x88                          ;a024
-; sub e  [t=8]
-    defb 0x93, 0x00, 0x6a, 0x68, 0x04                          ;a029
-; res 2,e  [CB, t=4]
-    defb 0x93, 0x80, 0x4c, 0x19, 0xa8                          ;a02e
-; sub h  [t=8]
-    defb 0x94, 0x00, 0x6a, 0x70, 0x04                          ;a033
-; sub hx  [DD, t=4]
-    defb 0x94, 0x20, 0x6a, 0xc8, 0x08                          ;a038
-; res 2,h  [CB, t=8]
-    defb 0x94, 0x80, 0x4c, 0x19, 0xc8                          ;a03d
-; sub l  [t=8]
-    defb 0x95, 0x00, 0x6a, 0x80, 0x04                          ;a042
-; sub lx  [DD, t=4]
-    defb 0x95, 0x20, 0x6a, 0xe8, 0x08                          ;a047
-; res 2,l  [CB, t=8]
-    defb 0x95, 0x80, 0x4c, 0x1a, 0x08                          ;a04c
-; sub (hl)  [t=8]
-    defb 0x96, 0x00, 0x6b, 0x40, 0x07                          ;a051
-; sub (ix+d)  [op. type: (ix+d), DD, t=7]
-    defb 0x96, 0x24, 0x6b, 0x70, 0x13                          ;a056
-; res 2,(hl)  [CB, t=19]
-    defb 0x96, 0x80, 0x4c, 0x1d, 0x0f                          ;a05b
-; res 2,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-    defb 0x96, 0xa4, 0x4c, 0x1d, 0xd7                          ;a060
-; sub a  [t=23]
-    defb 0x97, 0x00, 0x6a, 0x48, 0x04                          ;a065
-; res 2,a  [CB, t=4]
-    defb 0x97, 0x80, 0x4c, 0x19, 0x28                          ;a06a
-; sbc a,b  [t=8]
-    defb 0x98, 0x00, 0x5e, 0x49, 0x44                          ;a06f
-; res 3,b  [CB, t=4]
-    defb 0x98, 0x80, 0x4c, 0x21, 0x48                          ;a074
-; sbc a,c  [t=8]
-    defb 0x99, 0x00, 0x5e, 0x49, 0x64                          ;a079
-; res 3,c  [CB, t=4]
-    defb 0x99, 0x80, 0x4c, 0x21, 0x68                          ;a07e
-; sbc a,d  [t=8]
-    defb 0x9a, 0x00, 0x5e, 0x49, 0x84                          ;a083
-; res 3,d  [CB, t=4]
-    defb 0x9a, 0x80, 0x4c, 0x21, 0x88                          ;a088
-; sbc a,e  [t=8]
-    defb 0x9b, 0x00, 0x5e, 0x49, 0xa4                          ;a08d
-; res 3,e  [CB, t=4]
-    defb 0x9b, 0x80, 0x4c, 0x21, 0xa8                          ;a092
-; sbc a,h  [t=8]
-    defb 0x9c, 0x00, 0x5e, 0x49, 0xc4                          ;a097
-; sbc a,hx  [DD, t=4]
-    defb 0x9c, 0x20, 0x5e, 0x4b, 0x28                          ;a09c
-; res 3,h  [CB, t=8]
-    defb 0x9c, 0x80, 0x4c, 0x21, 0xc8                          ;a0a1
-; sbc a,l  [t=8]
-    defb 0x9d, 0x00, 0x5e, 0x4a, 0x04                          ;a0a6
-; sbc a,lx  [DD, t=4]
-    defb 0x9d, 0x20, 0x5e, 0x4b, 0xa8                          ;a0ab
-; res 3,l  [CB, t=8]
-    defb 0x9d, 0x80, 0x4c, 0x22, 0x08                          ;a0b0
-; sbc a,(hl)  [t=8]
-    defb 0x9e, 0x00, 0x5e, 0x4d, 0x07                          ;a0b5
-; sbc a,(ix+d)  [op. type: (ix+d), DD, t=7]
-    defb 0x9e, 0x24, 0x5e, 0x4d, 0xd3                          ;a0ba
-; res 3,(hl)  [CB, t=19]
-    defb 0x9e, 0x80, 0x4c, 0x25, 0x0f                          ;a0bf
-; res 3,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-    defb 0x9e, 0xa4, 0x4c, 0x25, 0xd7                          ;a0c4
-; sbc a,a  [t=23]
-    defb 0x9f, 0x00, 0x5e, 0x49, 0x24                          ;a0c9
-; res 3,a  [CB, t=4]
-    defb 0x9f, 0x80, 0x4c, 0x21, 0x28                          ;a0ce
-; and b  [t=8]
-    defb 0xa0, 0x00, 0x20, 0x50, 0x04                          ;a0d3
-; ldi   [ED, t=4]
-    defb 0xa0, 0x40, 0x3e, 0x00, 0x10                          ;a0d8
-; res 4,b  [CB, t=16]
-    defb 0xa0, 0x80, 0x4c, 0x29, 0x48                          ;a0dd
-; and c  [t=8]
-    defb 0xa1, 0x00, 0x20, 0x58, 0x04                          ;a0e2
-; cpi   [ED, t=4]
-    defb 0xa1, 0x40, 0x28, 0x00, 0x10                          ;a0e7
-; res 4,c  [CB, t=16]
-    defb 0xa1, 0x80, 0x4c, 0x29, 0x68                          ;a0ec
-; and d  [t=8]
-    defb 0xa2, 0x00, 0x20, 0x60, 0x04                          ;a0f1
-; ini   [ED, t=4]
-    defb 0xa2, 0x40, 0x3a, 0x00, 0x10                          ;a0f6
-; res 4,d  [CB, t=16]
-    defb 0xa2, 0x80, 0x4c, 0x29, 0x88                          ;a0fb
-; and e  [t=8]
-    defb 0xa3, 0x00, 0x20, 0x68, 0x04                          ;a100
-; outi   [ED, t=4]
-    defb 0xa3, 0x40, 0x8e, 0x00, 0x10                          ;a105
-; res 4,e  [CB, t=16]
-    defb 0xa3, 0x80, 0x4c, 0x29, 0xa8                          ;a10a
-; and h  [t=8]
-    defb 0xa4, 0x00, 0x20, 0x70, 0x04                          ;a10f
-; and hx  [DD, t=4]
-    defb 0xa4, 0x20, 0x20, 0xc8, 0x08                          ;a114
-; res 4,h  [CB, t=8]
-    defb 0xa4, 0x80, 0x4c, 0x29, 0xc8                          ;a119
-; and l  [t=8]
-    defb 0xa5, 0x00, 0x20, 0x80, 0x04                          ;a11e
-; and lx  [DD, t=4]
-    defb 0xa5, 0x20, 0x20, 0xe8, 0x08                          ;a123
-; res 4,l  [CB, t=8]
-    defb 0xa5, 0x80, 0x4c, 0x2a, 0x08                          ;a128
-; and (hl)  [t=8]
-    defb 0xa6, 0x00, 0x21, 0x40, 0x07                          ;a12d
-; and (ix+d)  [op. type: (ix+d), DD, t=7]
-    defb 0xa6, 0x24, 0x21, 0x70, 0x13                          ;a132
-; res 4,(hl)  [CB, t=19]
-    defb 0xa6, 0x80, 0x4c, 0x2d, 0x0f                          ;a137
-; res 4,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-    defb 0xa6, 0xa4, 0x4c, 0x2d, 0xd7                          ;a13c
-; and a  [t=23]
-    defb 0xa7, 0x00, 0x20, 0x48, 0x04                          ;a141
-; res 4,a  [CB, t=4]
-    defb 0xa7, 0x80, 0x4c, 0x29, 0x28                          ;a146
-; xor b  [t=8]
-    defb 0xa8, 0x00, 0x6c, 0x50, 0x04                          ;a14b
-; ldd   [ED, t=4]
-    defb 0xa8, 0x40, 0x3c, 0x00, 0x10                          ;a150
-; res 5,b  [CB, t=16]
-    defb 0xa8, 0x80, 0x4c, 0x31, 0x48                          ;a155
-; xor c  [t=8]
-    defb 0xa9, 0x00, 0x6c, 0x58, 0x04                          ;a15a
-; cpd   [ED, t=4]
-    defb 0xa9, 0x40, 0x26, 0x00, 0x10                          ;a15f
-; res 5,c  [CB, t=16]
-    defb 0xa9, 0x80, 0x4c, 0x31, 0x68                          ;a164
-; xor d  [t=8]
-    defb 0xaa, 0x00, 0x6c, 0x60, 0x04                          ;a169
-; ind   [ED, t=4]
-    defb 0xaa, 0x40, 0x38, 0x00, 0x10                          ;a16e
-; res 5,d  [CB, t=16]
-    defb 0xaa, 0x80, 0x4c, 0x31, 0x88                          ;a173
-; xor e  [t=8]
-    defb 0xab, 0x00, 0x6c, 0x68, 0x04                          ;a178
-; outd   [ED, t=4]
-    defb 0xab, 0x40, 0x8c, 0x00, 0x10                          ;a17d
-; res 5,e  [CB, t=16]
-    defb 0xab, 0x80, 0x4c, 0x31, 0xa8                          ;a182
-; xor h  [t=8]
-    defb 0xac, 0x00, 0x6c, 0x70, 0x04                          ;a187
-; xor hx  [DD, t=4]
-    defb 0xac, 0x20, 0x6c, 0xc8, 0x08                          ;a18c
-; res 5,h  [CB, t=8]
-    defb 0xac, 0x80, 0x4c, 0x31, 0xc8                          ;a191
-; xor l  [t=8]
-    defb 0xad, 0x00, 0x6c, 0x80, 0x04                          ;a196
-; xor lx  [DD, t=4]
-    defb 0xad, 0x20, 0x6c, 0xe8, 0x08                          ;a19b
-; res 5,l  [CB, t=8]
-    defb 0xad, 0x80, 0x4c, 0x32, 0x08                          ;a1a0
-; xor (hl)  [t=8]
-    defb 0xae, 0x00, 0x6d, 0x40, 0x07                          ;a1a5
-; xor (ix+d)  [op. type: (ix+d), DD, t=7]
-    defb 0xae, 0x24, 0x6d, 0x70, 0x13                          ;a1aa
-; res 5,(hl)  [CB, t=19]
-    defb 0xae, 0x80, 0x4c, 0x35, 0x0f                          ;a1af
-; res 5,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-    defb 0xae, 0xa4, 0x4c, 0x35, 0xd7                          ;a1b4
-; xor a  [t=23]
-    defb 0xaf, 0x00, 0x6c, 0x48, 0x04                          ;a1b9
-; res 5,a  [CB, t=4]
-    defb 0xaf, 0x80, 0x4c, 0x31, 0x28                          ;a1be
-; or b  [t=8]
-    defb 0xb0, 0x00, 0x16, 0x50, 0x04                          ;a1c3
-; ldir   [ED, t=4]
-    defb 0xb0, 0x40, 0x86, 0x00, 0x15                          ;a1c8
-; res 6,b  [CB, t=21]
-    defb 0xb0, 0x80, 0x4c, 0x39, 0x48                          ;a1cd
-; or c  [t=8]
-    defb 0xb1, 0x00, 0x16, 0x58, 0x04                          ;a1d2
-; cpir   [ED, t=4]
-    defb 0xb1, 0x40, 0x72, 0x00, 0x15                          ;a1d7
-; res 6,c  [CB, t=21]
-    defb 0xb1, 0x80, 0x4c, 0x39, 0x68                          ;a1dc
-; or d  [t=8]
-    defb 0xb2, 0x00, 0x16, 0x60, 0x04                          ;a1e1
-; inir   [ED, t=4]
-    defb 0xb2, 0x40, 0x82, 0x00, 0x15                          ;a1e6
-; res 6,d  [CB, t=21]
-    defb 0xb2, 0x80, 0x4c, 0x39, 0x88                          ;a1eb
-; or e  [t=8]
-    defb 0xb3, 0x00, 0x16, 0x68, 0x04                          ;a1f0
-; otir   [ED, t=4]
-    defb 0xb3, 0x40, 0x8a, 0x00, 0x15                          ;a1f5
-; res 6,e  [CB, t=21]
-    defb 0xb3, 0x80, 0x4c, 0x39, 0xa8                          ;a1fa
-; or h  [t=8]
-    defb 0xb4, 0x00, 0x16, 0x70, 0x04                          ;a1ff
-; or hx  [DD, t=4]
-    defb 0xb4, 0x20, 0x16, 0xc8, 0x08                          ;a204
-; res 6,h  [CB, t=8]
-    defb 0xb4, 0x80, 0x4c, 0x39, 0xc8                          ;a209
-; or l  [t=8]
-    defb 0xb5, 0x00, 0x16, 0x80, 0x04                          ;a20e
-; or lx  [DD, t=4]
-    defb 0xb5, 0x20, 0x16, 0xe8, 0x08                          ;a213
-; res 6,l  [CB, t=8]
-    defb 0xb5, 0x80, 0x4c, 0x3a, 0x08                          ;a218
-; or (hl)  [t=8]
-    defb 0xb6, 0x00, 0x17, 0x40, 0x07                          ;a21d
-; or (ix+d)  [op. type: (ix+d), DD, t=7]
-    defb 0xb6, 0x24, 0x17, 0x70, 0x13                          ;a222
-; res 6,(hl)  [CB, t=19]
-    defb 0xb6, 0x80, 0x4c, 0x3d, 0x0f                          ;a227
-; res 6,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-    defb 0xb6, 0xa4, 0x4c, 0x3d, 0xd7                          ;a22c
-; or a  [t=23]
-    defb 0xb7, 0x00, 0x16, 0x48, 0x04                          ;a231
-; res 6,a  [CB, t=4]
-    defb 0xb7, 0x80, 0x4c, 0x39, 0x28                          ;a236
-; cp b  [t=8]
-    defb 0xb8, 0x00, 0x04, 0x50, 0x04                          ;a23b
-; lddr   [ED, t=4]
-    defb 0xb8, 0x40, 0x84, 0x00, 0x15                          ;a240
-; res 7,b  [CB, t=21]
-    defb 0xb8, 0x80, 0x4c, 0x41, 0x48                          ;a245
-; cp c  [t=8]
-    defb 0xb9, 0x00, 0x04, 0x58, 0x04                          ;a24a
-; cpdr   [ED, t=4]
-    defb 0xb9, 0x40, 0x70, 0x00, 0x15                          ;a24f
-; res 7,c  [CB, t=21]
-    defb 0xb9, 0x80, 0x4c, 0x41, 0x68                          ;a254
-; cp d  [t=8]
-    defb 0xba, 0x00, 0x04, 0x60, 0x04                          ;a259
-; indr   [ED, t=4]
-    defb 0xba, 0x40, 0x80, 0x00, 0x15                          ;a25e
-; res 7,d  [CB, t=21]
-    defb 0xba, 0x80, 0x4c, 0x41, 0x88                          ;a263
-; cp e  [t=8]
-    defb 0xbb, 0x00, 0x04, 0x68, 0x04                          ;a268
-; otdr   [ED, t=4]
-    defb 0xbb, 0x40, 0x88, 0x00, 0x15                          ;a26d
-; res 7,e  [CB, t=21]
-    defb 0xbb, 0x80, 0x4c, 0x41, 0xa8                          ;a272
-; cp h  [t=8]
-    defb 0xbc, 0x00, 0x04, 0x70, 0x04                          ;a277
-; cp hx  [DD, t=4]
-    defb 0xbc, 0x20, 0x04, 0xc8, 0x08                          ;a27c
-; res 7,h  [CB, t=8]
-    defb 0xbc, 0x80, 0x4c, 0x41, 0xc8                          ;a281
-; cp l  [t=8]
-    defb 0xbd, 0x00, 0x04, 0x80, 0x04                          ;a286
-; cp lx  [DD, t=4]
-    defb 0xbd, 0x20, 0x04, 0xe8, 0x08                          ;a28b
-; res 7,l  [CB, t=8]
-    defb 0xbd, 0x80, 0x4c, 0x42, 0x08                          ;a290
-; cp (hl)  [t=8]
-    defb 0xbe, 0x00, 0x05, 0x40, 0x07                          ;a295
-; cp (ix+d)  [op. type: (ix+d), DD, t=7]
-    defb 0xbe, 0x24, 0x05, 0x70, 0x13                          ;a29a
-; res 7,(hl)  [CB, t=19]
-    defb 0xbe, 0x80, 0x4c, 0x45, 0x0f                          ;a29f
-; res 7,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-    defb 0xbe, 0xa4, 0x4c, 0x45, 0xd7                          ;a2a4
-; cp a  [t=23]
-    defb 0xbf, 0x00, 0x04, 0x48, 0x04                          ;a2a9
-; res 7,a  [CB, t=4]
-    defb 0xbf, 0x80, 0x4c, 0x41, 0x28                          ;a2ae
-; ret nz  [t=8]
-    defb 0xc0, 0x00, 0x4f, 0x00, 0x05                          ;a2b3
-; set 0,b  [CB, t=5]
-    defb 0xc0, 0x80, 0x62, 0x09, 0x48                          ;a2b8
-; pop bc  [t=8]
-    defb 0xc1, 0x00, 0x48, 0xb0, 0x0a                          ;a2bd
-; set 0,c  [CB, t=10]
-    defb 0xc1, 0x80, 0x62, 0x09, 0x68                          ;a2c2
-; jp nz,N  [op. type: NN, t=8]
-    defb 0xc2, 0x02, 0x11, 0x05, 0x8a                          ;a2c7
-; set 0,d  [CB, t=10]
-    defb 0xc2, 0x80, 0x62, 0x09, 0x88                          ;a2cc
-; jp N  [op. type: NN, t=8]
-    defb 0xc3, 0x02, 0x11, 0x60, 0x0a                          ;a2d1
-; set 0,e  [CB, t=10]
-    defb 0xc3, 0x80, 0x62, 0x09, 0xa8                          ;a2d6
-; call nz,N  [op. type: NN, t=8]
-    defb 0xc4, 0x02, 0x6f, 0x05, 0x89                          ;a2db
-; set 0,h  [CB, t=9]
-    defb 0xc4, 0x80, 0x62, 0x09, 0xc8                          ;a2e0
-; push bc  [t=8]
-    defb 0xc5, 0x00, 0x90, 0xb0, 0x0b                          ;a2e5
-; set 0,l  [CB, t=11]
-    defb 0xc5, 0x80, 0x62, 0x0a, 0x08                          ;a2ea
-; add a,N  [op. type: N, t=8]
-    defb 0xc6, 0x01, 0x1e, 0x4d, 0x87                          ;a2ef
-; set 0,(hl)  [CB, t=7]
-    defb 0xc6, 0x80, 0x62, 0x0d, 0x0f                          ;a2f4
-; set 0,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-    defb 0xc6, 0xa4, 0x62, 0x0d, 0xd7                          ;a2f9
-; rst N  [op. type: rst p, t=23]
-    defb 0xc7, 0x06, 0x5d, 0x60, 0x0b                          ;a2fe
-; set 0,a  [CB, t=11]
-    defb 0xc7, 0x80, 0x62, 0x09, 0x28                          ;a303
-; ret z  [t=8]
-    defb 0xc8, 0x00, 0x4e, 0xa0, 0x05                          ;a308
-; set 1,b  [CB, t=5]
-    defb 0xc8, 0x80, 0x62, 0x11, 0x48                          ;a30d
-; ret   [t=8]
-    defb 0xc9, 0x00, 0x4e, 0x00, 0x05                          ;a312
-; set 1,c  [CB, t=5]
-    defb 0xc9, 0x80, 0x62, 0x11, 0x68                          ;a317
-; jp z,N  [op. type: NN, t=8]
-    defb 0xca, 0x02, 0x10, 0xa5, 0x8a                          ;a31c
-; set 1,d  [CB, t=10]
-    defb 0xca, 0x80, 0x62, 0x11, 0x88                          ;a321
-; set 1,e  [CB, t=8]
-    defb 0xcb, 0x80, 0x62, 0x11, 0xa8                          ;a326
-; call z,N  [op. type: NN, t=8]
-    defb 0xcc, 0x02, 0x6e, 0xa5, 0x89                          ;a32b
-; set 1,h  [CB, t=9]
-    defb 0xcc, 0x80, 0x62, 0x11, 0xc8                          ;a330
-; call N  [op. type: NN, t=8]
-    defb 0xcd, 0x02, 0x6f, 0x60, 0x09                          ;a335
-; set 1,l  [CB, t=9]
-    defb 0xcd, 0x80, 0x62, 0x12, 0x08                          ;a33a
-; adc a,N  [op. type: N, t=8]
-    defb 0xce, 0x01, 0x1c, 0x4d, 0x87                          ;a33f
-; set 1,(hl)  [CB, t=7]
-    defb 0xce, 0x80, 0x62, 0x15, 0x0f                          ;a344
-; set 1,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-    defb 0xce, 0xa4, 0x62, 0x15, 0xd7                          ;a349
-; set 1,a  [CB, t=23]
-    defb 0xcf, 0x80, 0x62, 0x11, 0x28                          ;a34e
-; ret nc  [t=8]
-    defb 0xd0, 0x00, 0x4e, 0xf8, 0x05                          ;a353
-; set 2,b  [CB, t=5]
-    defb 0xd0, 0x80, 0x62, 0x19, 0x48                          ;a358
-; pop de  [t=8]
-    defb 0xd1, 0x00, 0x48, 0xb8, 0x0a                          ;a35d
-; set 2,c  [CB, t=10]
-    defb 0xd1, 0x80, 0x62, 0x19, 0x68                          ;a362
-; jp nc,N  [op. type: NN, t=8]
-    defb 0xd2, 0x02, 0x10, 0xfd, 0x8a                          ;a367
-; set 2,d  [CB, t=10]
-    defb 0xd2, 0x80, 0x62, 0x19, 0x88                          ;a36c
-; out (N),a  [op. type: N, t=8]
-    defb 0xd3, 0x01, 0x47, 0x69, 0x2b                          ;a371
-; set 2,e  [CB, t=11]
-    defb 0xd3, 0x80, 0x62, 0x19, 0xa8                          ;a376
-; call nc,N  [op. type: NN, t=8]
-    defb 0xd4, 0x02, 0x6e, 0xfd, 0x89                          ;a37b
-; set 2,h  [CB, t=9]
-    defb 0xd4, 0x80, 0x62, 0x19, 0xc8                          ;a380
-; push de  [t=8]
-    defb 0xd5, 0x00, 0x90, 0xb8, 0x0b                          ;a385
-; set 2,l  [CB, t=11]
-    defb 0xd5, 0x80, 0x62, 0x1a, 0x08                          ;a38a
-; sub N  [op. type: N, t=8]
-    defb 0xd6, 0x01, 0x6b, 0x60, 0x07                          ;a38f
-; set 2,(hl)  [CB, t=7]
-    defb 0xd6, 0x80, 0x62, 0x1d, 0x0f                          ;a394
-; set 2,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-    defb 0xd6, 0xa4, 0x62, 0x1d, 0xd7                          ;a399
-; set 2,a  [CB, t=23]
-    defb 0xd7, 0x80, 0x62, 0x19, 0x28                          ;a39e
-; ret c  [t=8]
-    defb 0xd8, 0x00, 0x4e, 0x58, 0x05                          ;a3a3
-; set 3,b  [CB, t=5]
-    defb 0xd8, 0x80, 0x62, 0x21, 0x48                          ;a3a8
-; exx   [t=8]
-    defb 0xd9, 0x00, 0x34, 0x00, 0x04                          ;a3ad
-; set 3,c  [CB, t=4]
-    defb 0xd9, 0x80, 0x62, 0x21, 0x68                          ;a3b2
-; jp c,N  [op. type: NN, t=8]
-    defb 0xda, 0x02, 0x10, 0x5d, 0x8a                          ;a3b7
-; set 3,d  [CB, t=10]
-    defb 0xda, 0x80, 0x62, 0x21, 0x88                          ;a3bc
-; in a,(N)  [op. type: N, t=8]
-    defb 0xdb, 0x01, 0x0e, 0x4d, 0xab                          ;a3c1
-; set 3,e  [CB, t=11]
-    defb 0xdb, 0x80, 0x62, 0x21, 0xa8                          ;a3c6
-; call c,N  [op. type: NN, t=8]
-    defb 0xdc, 0x02, 0x6e, 0x5d, 0x89                          ;a3cb
-; set 3,h  [CB, t=9]
-    defb 0xdc, 0x80, 0x62, 0x21, 0xc8                          ;a3d0
-; set 3,l  [CB, t=8]
-    defb 0xdd, 0x80, 0x62, 0x22, 0x08                          ;a3d5
-; sbc a,N  [op. type: N, t=8]
-    defb 0xde, 0x01, 0x5e, 0x4d, 0x87                          ;a3da
-; set 3,(hl)  [CB, t=7]
-    defb 0xde, 0x80, 0x62, 0x25, 0x0f                          ;a3df
-; set 3,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-    defb 0xde, 0xa4, 0x62, 0x25, 0xd7                          ;a3e4
-; set 3,a  [CB, t=23]
-    defb 0xdf, 0x80, 0x62, 0x21, 0x28                          ;a3e9
-; ret po  [t=8]
-    defb 0xe0, 0x00, 0x4f, 0x10, 0x05                          ;a3ee
-; set 4,b  [CB, t=5]
-    defb 0xe0, 0x80, 0x62, 0x29, 0x48                          ;a3f3
-; pop hl  [t=8]
-    defb 0xe1, 0x00, 0x48, 0xc0, 0x0a                          ;a3f8
-; pop ix  [DD, t=10]
-    defb 0xe1, 0x20, 0x48, 0xd8, 0x0e                          ;a3fd
-; set 4,c  [CB, t=14]
-    defb 0xe1, 0x80, 0x62, 0x29, 0x68                          ;a402
-; jp po,N  [op. type: NN, t=8]
-    defb 0xe2, 0x02, 0x11, 0x15, 0x8a                          ;a407
-; set 4,d  [CB, t=10]
-    defb 0xe2, 0x80, 0x62, 0x29, 0x88                          ;a40c
-; ex (sp),hl  [t=8]
-    defb 0xe3, 0x00, 0x0b, 0x5b, 0x13                          ;a411
-; ex (sp),ix  [DD, t=19]
-    defb 0xe3, 0x20, 0x0b, 0x5b, 0x77                          ;a416
-; set 4,e  [CB, t=23]
-    defb 0xe3, 0x80, 0x62, 0x29, 0xa8                          ;a41b
-; call po,N  [op. type: NN, t=8]
-    defb 0xe4, 0x02, 0x6f, 0x15, 0x89                          ;a420
-; set 4,h  [CB, t=9]
-    defb 0xe4, 0x80, 0x62, 0x29, 0xc8                          ;a425
-; push hl  [t=8]
-    defb 0xe5, 0x00, 0x90, 0xc0, 0x0b                          ;a42a
-; push ix  [DD, t=11]
-    defb 0xe5, 0x20, 0x90, 0xd8, 0x0f                          ;a42f
-; set 4,l  [CB, t=15]
-    defb 0xe5, 0x80, 0x62, 0x2a, 0x08                          ;a434
-; and N  [op. type: N, t=8]
-    defb 0xe6, 0x01, 0x21, 0x60, 0x07                          ;a439
-; set 4,(hl)  [CB, t=7]
-    defb 0xe6, 0x80, 0x62, 0x2d, 0x0f                          ;a43e
-; set 4,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-    defb 0xe6, 0xa4, 0x62, 0x2d, 0xd7                          ;a443
-; set 4,a  [CB, t=23]
-    defb 0xe7, 0x80, 0x62, 0x29, 0x28                          ;a448
-; ret pe  [t=8]
-    defb 0xe8, 0x00, 0x4f, 0x08, 0x05                          ;a44d
-; set 5,b  [CB, t=5]
-    defb 0xe8, 0x80, 0x62, 0x31, 0x48                          ;a452
-; jp (hl)  [t=8]
-    defb 0xe9, 0x00, 0x11, 0x40, 0x04                          ;a457
-; jp (ix)  [DD, t=4]
-    defb 0xe9, 0x20, 0x11, 0x48, 0x08                          ;a45c
-; set 5,c  [CB, t=8]
-    defb 0xe9, 0x80, 0x62, 0x31, 0x68                          ;a461
-; jp pe,N  [op. type: NN, t=8]
-    defb 0xea, 0x02, 0x11, 0x0d, 0x8a                          ;a466
-; set 5,d  [CB, t=10]
-    defb 0xea, 0x80, 0x62, 0x31, 0x88                          ;a46b
-; ex de,hl  [t=8]
-    defb 0xeb, 0x00, 0x0a, 0xbb, 0x04                          ;a470
-; set 5,e  [CB, t=4]
-    defb 0xeb, 0x80, 0x62, 0x31, 0xa8                          ;a475
-; call pe,N  [op. type: NN, t=8]
-    defb 0xec, 0x02, 0x6f, 0x0d, 0x89                          ;a47a
-; set 5,h  [CB, t=9]
-    defb 0xec, 0x80, 0x62, 0x31, 0xc8                          ;a47f
-; set 5,l  [CB, t=8]
-    defb 0xed, 0x80, 0x62, 0x32, 0x08                          ;a484
-; xor N  [op. type: N, t=8]
-    defb 0xee, 0x01, 0x6d, 0x60, 0x07                          ;a489
-; set 5,(hl)  [CB, t=7]
-    defb 0xee, 0x80, 0x62, 0x35, 0x0f                          ;a48e
-; set 5,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-    defb 0xee, 0xa4, 0x62, 0x35, 0xd7                          ;a493
-; set 5,a  [CB, t=23]
-    defb 0xef, 0x80, 0x62, 0x31, 0x28                          ;a498
-; ret p  [t=8]
-    defb 0xf0, 0x00, 0x4e, 0x90, 0x05                          ;a49d
-; set 6,b  [CB, t=5]
-    defb 0xf0, 0x80, 0x62, 0x39, 0x48                          ;a4a2
-; pop af  [t=8]
-    defb 0xf1, 0x00, 0x48, 0xa8, 0x0a                          ;a4a7
-; set 6,c  [CB, t=10]
-    defb 0xf1, 0x80, 0x62, 0x39, 0x68                          ;a4ac
-; jp p,N  [op. type: NN, t=8]
-    defb 0xf2, 0x02, 0x10, 0x95, 0x8a                          ;a4b1
-; set 6,d  [CB, t=10]
-    defb 0xf2, 0x80, 0x62, 0x39, 0x88                          ;a4b6
-; di   [t=8]
-    defb 0xf3, 0x00, 0x06, 0x00, 0x04                          ;a4bb
-; set 6,e  [CB, t=4]
-    defb 0xf3, 0x80, 0x62, 0x39, 0xa8                          ;a4c0
-; call p,N  [op. type: NN, t=8]
-    defb 0xf4, 0x02, 0x6e, 0x95, 0x89                          ;a4c5
-; set 6,h  [CB, t=9]
-    defb 0xf4, 0x80, 0x62, 0x39, 0xc8                          ;a4ca
-; push af  [t=8]
-    defb 0xf5, 0x00, 0x90, 0xa8, 0x0b                          ;a4cf
-; set 6,l  [CB, t=11]
-    defb 0xf5, 0x80, 0x62, 0x3a, 0x08                          ;a4d4
-; or N  [op. type: N, t=8]
-    defb 0xf6, 0x01, 0x17, 0x60, 0x07                          ;a4d9
-; set 6,(hl)  [CB, t=7]
-    defb 0xf6, 0x80, 0x62, 0x3d, 0x0f                          ;a4de
-; set 6,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-    defb 0xf6, 0xa4, 0x62, 0x3d, 0xd7                          ;a4e3
-; set 6,a  [CB, t=23]
-    defb 0xf7, 0x80, 0x62, 0x39, 0x28                          ;a4e8
-; ret m  [t=8]
-    defb 0xf8, 0x00, 0x4e, 0x88, 0x05                          ;a4ed
-; set 7,b  [CB, t=5]
-    defb 0xf8, 0x80, 0x62, 0x41, 0x48                          ;a4f2
-; ld sp,hl  [t=8]
-    defb 0xf9, 0x00, 0x15, 0x1b, 0x06                          ;a4f7
-; ld sp,ix  [DD, t=6]
-    defb 0xf9, 0x20, 0x15, 0x1b, 0x6a                          ;a4fc
-; set 7,c  [CB, t=10]
-    defb 0xf9, 0x80, 0x62, 0x41, 0x68                          ;a501
-; jp m,N  [op. type: NN, t=8]
-    defb 0xfa, 0x02, 0x10, 0x8d, 0x8a                          ;a506
-; set 7,d  [CB, t=10]
-    defb 0xfa, 0x80, 0x62, 0x41, 0x88                          ;a50b
-; ei   [t=8]
-    defb 0xfb, 0x00, 0x08, 0x00, 0x04                          ;a510
-; set 7,e  [CB, t=4]
-    defb 0xfb, 0x80, 0x62, 0x41, 0xa8                          ;a515
-; call m,N  [op. type: NN, t=8]
-    defb 0xfc, 0x02, 0x6e, 0x8d, 0x89                          ;a51a
-; set 7,h  [CB, t=9]
-    defb 0xfc, 0x80, 0x62, 0x41, 0xc8                          ;a51f
-; set 7,l  [CB, t=8]
-    defb 0xfd, 0x80, 0x62, 0x42, 0x08                          ;a524
-; cp N  [op. type: N, t=8]
-    defb 0xfe, 0x01, 0x05, 0x60, 0x07                          ;a529
-; set 7,(hl)  [CB, t=7]
-    defb 0xfe, 0x80, 0x62, 0x45, 0x0f                          ;a52e
-; set 7,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-    defb 0xfe, 0xa4, 0x62, 0x45, 0xd7                          ;a533
-; set 7,a  [CB, t=23]
-    defb 0xff, 0x80, 0x62, 0x41, 0x28                          ;a538
-; ? *63*,*63*  [op. type: not instruction, CB, ED, DD, FD, t=8]
-    defb 0xff, 0xff, 0xff, 0xff, 0xff                          ;a53d
     defb 000h                  ;a542 00  . 
     defb 030h                  ;a543 30  0 
     defb 000h                  ;a544 00  . 
@@ -11321,8 +8807,10 @@ l9c28h:
     defb 030h                  ;a557 30  0 
     defb 000h                  ;a558 00  . 
     defb 030h                  ;a559 30  0 
+l0a55ah:
     defb 000h                  ;a55a 00  . 
     defb 030h                  ;a55b 30  0 
+l0a55ch:
     defb 000h                  ;a55c 00  . 
     defb 030h                  ;a55d 30  0 
     defb 000h                  ;a55e 00  . 
@@ -11337,8 +8825,10 @@ l9c28h:
     defb 030h                  ;a567 30  0 
     defb 000h                  ;a568 00  . 
     defb 030h                  ;a569 30  0 
+l0a56ah:
     defb 000h                  ;a56a 00  . 
     defb 000h                  ;a56b 00  . 
+l0a56ch:
     defb 000h                  ;a56c 00  . 
     defb 000h                  ;a56d 00  . 
     defb 000h                  ;a56e 00  . 

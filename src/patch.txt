@@ -1,6 +1,6 @@
 ;5dc0 <
 
-BA: 		equ 24000
+; BA: 		equ 24000
 BA1: 		equ 24000+2356
 VR: 		equ 0xde7
 ATTRIBUTES_ADDRESS: 		equ 0x5800
@@ -30,6 +30,11 @@ HIGHLIGHT_COLOR:		equ 0x30 ; yellow paper, black color
 BOTTOM_LINE_VRAM_ADDRESS:		equ 0x50e0
 
 start:
+-
+;6139 >
+
+include 'relocationTable.asm'
+
 -
 ;65b3 ;66f3 =
 	defb 000h, 000h, 07fh, 0ffh, 0ffh, 0ffh, 0fch, 0dch, 0a8h, 000h, 0e0h, 0f8h, 0fch, 0fch, 0feh, 076h
@@ -6198,13 +6203,11 @@ s/04ca8h/v_laa68h-BA1
 -
 s/04dc8h/v_lab88h-BA1
 -
-s/02de1h/08ba1h-BA
+s/03715h/08ba1h-BA1
 -
 s/00b33h/v_l68f2h+1-BA1
 -
-s/0027bh/0603bh-BA
--
-s/0027bh/0603bh-BA
+s/00bafh/0603bh-BA1
 -
 s/0088dh/v_sub_664ch+1-BA1
 -
@@ -6214,13 +6217,13 @@ s/01c04h/v_l79c3h+1-BA1
 -
 s/0031ah/v_l60d9h+1-BA1
 -
-s/022e0h/080a0h-BA
+s/02c14h/080a0h-BA1
 -
 s/01b94h/v_l7953h+1-BA1
 -
 s/00d2eh/v_l6aedh+1-BA1
 -
-s/00cd1h/06a91h-BA
+s/01605h/06a91h-BA1
 -
 ;8632 <
 l08632h:
@@ -6851,2791 +6854,6 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 	jp 	v_l7cc9h-BA1	;7a7c 
 
 -
-;97d7 ;97db = 
-
-; =====================================================================
-;   instructions table               
-; =====================================================================
-;
-; Every instruction is described by 5 bytes:
-; - instruction code
-; - instruction type, operand type
-;   - bit 7 - type CB
-;   - bit 6 - type ED
-;   - bit 5 - type DD
-;   - bit 4 - type FD
-;   - bits 0-3 - operand type
-;     - 0 - instruction has no operand
-;     - 1 - one byte
-;     - 2 - two bytes
-;     - 3 - signed byte
-;     - 4 - one byte, type (ix+d)
-;     - 5 - type (ix+d,n)
-;     - 6 - type rst p (p is in operation code)
-;     - 7 - not instruction
-; - mnemonic index (7 bits)
-; - operand 1 index (6 bits)
-;   - index to operandsTable
-;   - 44 = N
-;   - 45 = (N)
-;   - 46 = (ix+d) or (iy+d)
-;   - 63 = ?
-; - operand 2 index (6 bits)
-;   - the same meaning as operand 1
-; - instruction duration in ticks (5 bits)
-
-
-instructionsTable:
-; nop   [t=0]
-	defb 0x00, 0x00, 0x42, 0x00, 0x04 ;97d7
--
-;97dc ;97e0 = 
-; empty line   [DD, FD, t=4]
-	defb 0x00, 0x30, 0x00, 0x00, 0x00 ;97dc
--
-;97e1 ;97e5 = 
-; rlc b  [CB, t=0]
-	defb 0x00, 0x80, 0x52, 0x50, 0x08 ;97e1
--
-;97e6 ;97ea = 
-; ld bc,N  [op. type: NN, t=8]
-	defb 0x01, 0x02, 0x14, 0xb5, 0x8a ;97e6
--
-;97eb ;97ef = 
-; comment   [op. type: not instruction, DD, FD, t=10]
-	defb 0x01, 0x37, 0x02, 0x00, 0x00 ;97eb
--
-;97f0 ;97f4 = 
-; rlc c  [CB, t=0]
-	defb 0x01, 0x80, 0x52, 0x58, 0x08 ;97f0
--
-;97f5 ;97f9 = 
-; ld (bc),a  [t=8]
-	defb 0x02, 0x00, 0x15, 0x31, 0x27 ;97f5
--
-;97fa ;97fe = 
-; ent N  [op. type: not instruction, DD, FD, t=7]
-	defb 0x02, 0x37, 0x31, 0x60, 0x00 ;97fa
--
-;97ff ;9803 = 
-; rlc d  [CB, t=0]
-	defb 0x02, 0x80, 0x52, 0x60, 0x08 ;97ff
--
-;9804 ;9808 = 
-; inc bc  [t=8]
-	defb 0x03, 0x00, 0x36, 0xb0, 0x06 ;9804
--
-;9809 ;980d = 
-; equ N  [op. type: not instruction, DD, FD, t=6]
-	defb 0x03, 0x37, 0x33, 0x60, 0x00 ;9809
--
-;980e ;9812 = 
-; rlc e  [CB, t=0]
-	defb 0x03, 0x80, 0x52, 0x68, 0x08 ;980e
--
-;9813 ;9817 = 
-; inc b  [t=8]
-	defb 0x04, 0x00, 0x36, 0x50, 0x04 ;9813
--
-;9818 ;981c = 
-; org N  [op. type: not instruction, DD, FD, t=4]
-	defb 0x04, 0x37, 0x45, 0x60, 0x00 ;9818
--
-;981d ;9821 = 
-; rlc h  [CB, t=0]
-	defb 0x04, 0x80, 0x52, 0x70, 0x08 ;981d
--
-;9822 ;9826 = 
-; dec b  [t=8]
-	defb 0x05, 0x00, 0x2e, 0x50, 0x04 ;9822
--
-;9827 ;982b = 
-; put N  [op. type: not instruction, DD, FD, t=4]
-	defb 0x05, 0x37, 0x4b, 0x60, 0x00 ;9827
--
-;982c ;9830 = 
-; rlc l  [CB, t=0]
-	defb 0x05, 0x80, 0x52, 0x80, 0x08 ;982c
--
-;9831 ;9835 = 
-; ld b,N  [op. type: N, t=8]
-	defb 0x06, 0x01, 0x14, 0x55, 0x87 ;9831
--
-;9836 ;983a = 
-; defb   [op. type: not instruction, DD, FD, t=7]
-	defb 0x06, 0x37, 0x74, 0x00, 0x00 ;9836
--
-;983b ;983f = 
-; rlc (hl)  [CB, t=0]
-	defb 0x06, 0x80, 0x53, 0x40, 0x0f ;983b
--
-;9840 ;9844 = 
-; rlc (ix+d)  [op. type: (ix+d), CB, DD, t=15]
-	defb 0x06, 0xa4, 0x53, 0x70, 0x17 ;9840
--
-;9845 ;9849 = 
-; rlca   [t=23]
-	defb 0x07, 0x00, 0x96, 0x00, 0x04 ;9845
--
-;984a ;984e = 
-; defm   [op. type: not instruction, DD, FD, t=4]
-	defb 0x07, 0x37, 0x76, 0x00, 0x00 ;984a
--
-;984f ;9853 = 
-; rlc a  [CB, t=0]
-	defb 0x07, 0x80, 0x52, 0x48, 0x08 ;984f
--
-;9854 ;9858 = 
-; ex af,af'  [t=8]
-	defb 0x08, 0x00, 0x0a, 0xac, 0xa4 ;9854
--
-;9859 ;985d = 
-; defs   [op. type: not instruction, DD, FD, t=4]
-	defb 0x08, 0x37, 0x78, 0x00, 0x00 ;9859
--
-;985e ;9862 = 
-; rrc b  [CB, t=0]
-	defb 0x08, 0x80, 0x58, 0x50, 0x08 ;985e
--
-;9863 ;9867 = 
-; add hl,bc  [t=8]
-	defb 0x09, 0x00, 0x1e, 0xc2, 0xcb ;9863
--
-;9868 ;986c = 
-; add ix,bc  [DD, t=11]
-	defb 0x09, 0x20, 0x1e, 0xda, 0xcf ;9868
--
-;986d ;9871 = 
-; defw   [op. type: not instruction, DD, FD, t=15]
-	defb 0x09, 0x37, 0x7a, 0x00, 0x00 ;986d
--
-;9872 ;9876 = 
-; rrc c  [CB, t=0]
-	defb 0x09, 0x80, 0x58, 0x58, 0x08 ;9872
--
-;9877 ;987b = 
-; ld a,(bc)  [t=8]
-	defb 0x0a, 0x00, 0x14, 0x4c, 0xc7 ;9877
--
-;987c ;9880 = 
-; rrc d  [CB, t=7]
-	defb 0x0a, 0x80, 0x58, 0x60, 0x08 ;987c
--
-;9881 ;9885 = 
-; dec bc  [t=8]
-	defb 0x0b, 0x00, 0x2e, 0xb0, 0x06 ;9881
--
-;9886 ;988a = 
-; rrc e  [CB, t=6]
-	defb 0x0b, 0x80, 0x58, 0x68, 0x08 ;9886
--
-;988b ;988f = 
-; inc c  [t=8]
-	defb 0x0c, 0x00, 0x36, 0x58, 0x04 ;988b
--
-;9890 ;9894 = 
-; rrc h  [CB, t=4]
-	defb 0x0c, 0x80, 0x58, 0x70, 0x08 ;9890
--
-;9895 ;9899 = 
-; dec c  [t=8]
-	defb 0x0d, 0x00, 0x2e, 0x58, 0x04 ;9895
--
-;989a ;989e = 
-; rrc l  [CB, t=4]
-	defb 0x0d, 0x80, 0x58, 0x80, 0x08 ;989a
--
-;989f ;98a3 = 
-; ld c,N  [op. type: N, t=8]
-	defb 0x0e, 0x01, 0x14, 0x5d, 0x87 ;989f
--
-;98a4 ;98a8 = 
-; rrc (hl)  [CB, t=7]
-	defb 0x0e, 0x80, 0x59, 0x40, 0x0f ;98a4
--
-;98a9 ;98ad = 
-; rrc (ix+d)  [op. type: (ix+d), CB, DD, t=15]
-	defb 0x0e, 0xa4, 0x59, 0x70, 0x17 ;98a9
--
-;98ae ;98b2 = 
-; rrca   [t=23]
-	defb 0x0f, 0x00, 0x98, 0x00, 0x04 ;98ae
--
-;98b3 ;98b7 = 
-; rrc a  [CB, t=4]
-	defb 0x0f, 0x80, 0x58, 0x48, 0x08 ;98b3
--
-;98b8 ;98bc = 
-; djnz N  [op. type: n, t=8]
-	defb 0x10, 0x03, 0x7d, 0x60, 0x08 ;98b8
--
-;98bd ;98c1 = 
-; rl b  [CB, t=8]
-	defb 0x10, 0x80, 0x18, 0x50, 0x08 ;98bd
--
-;98c2 ;98c6 = 
-; ld de,N  [op. type: NN, t=8]
-	defb 0x11, 0x02, 0x14, 0xbd, 0x8a ;98c2
--
-;98c7 ;98cb = 
-; rl c  [CB, t=10]
-	defb 0x11, 0x80, 0x18, 0x58, 0x08 ;98c7
--
-;98cc ;98d0 = 
-; ld (de),a  [t=8]
-	defb 0x12, 0x00, 0x15, 0x39, 0x27 ;98cc
--
-;98d1 ;98d5 = 
-; rl d  [CB, t=7]
-	defb 0x12, 0x80, 0x18, 0x60, 0x08 ;98d1
--
-;98d6 ;98da = 
-; inc de  [t=8]
-	defb 0x13, 0x00, 0x36, 0xb8, 0x06 ;98d6
--
-;98db ;98df = 
-; rl e  [CB, t=6]
-	defb 0x13, 0x80, 0x18, 0x68, 0x08 ;98db
--
-;98e0 ;98e4 = 
-; inc d  [t=8]
-	defb 0x14, 0x00, 0x36, 0x60, 0x04 ;98e0
--
-;98e5 ;98e9 = 
-; rl h  [CB, t=4]
-	defb 0x14, 0x80, 0x18, 0x70, 0x08 ;98e5
--
-;98ea ;98ee = 
-; dec d  [t=8]
-	defb 0x15, 0x00, 0x2e, 0x60, 0x04 ;98ea
--
-;98ef ;98f3 = 
-; rl l  [CB, t=4]
-	defb 0x15, 0x80, 0x18, 0x80, 0x08 ;98ef
--
-;98f4 ;98f8 = 
-; ld d,N  [op. type: N, t=8]
-	defb 0x16, 0x01, 0x14, 0x65, 0x87 ;98f4
--
-;98f9 ;98fd = 
-; rl (hl)  [CB, t=7]
-	defb 0x16, 0x80, 0x19, 0x40, 0x0f ;98f9
--
-;98fe ;9902 = 
-; rl (ix+d)  [op. type: (ix+d), CB, DD, t=15]
-	defb 0x16, 0xa4, 0x19, 0x70, 0x17 ;98fe
--
-;9903 ;9907 = 
-; rla   [t=23]
-	defb 0x17, 0x00, 0x50, 0x00, 0x04 ;9903
--
-;9908 ;990c = 
-; rl a  [CB, t=4]
-	defb 0x17, 0x80, 0x18, 0x48, 0x08 ;9908
--
-;990d ;9911 = 
-; jr N  [op. type: n, t=8]
-	defb 0x18, 0x03, 0x13, 0x60, 0x07 ;990d
--
-;9912 ;9916 = 
-; rr b  [CB, t=7]
-	defb 0x18, 0x80, 0x1a, 0x50, 0x08 ;9912
--
-;9917 ;991b = 
-; add hl,de  [t=8]
-	defb 0x19, 0x00, 0x1e, 0xc2, 0xeb ;9917
--
-;991c ;9920 = 
-; add ix,de  [DD, t=11]
-	defb 0x19, 0x20, 0x1e, 0xda, 0xef ;991c
--
-;9921 ;9925 = 
-; rr c  [CB, t=15]
-	defb 0x19, 0x80, 0x1a, 0x58, 0x08 ;9921
--
-;9926 ;992a = 
-; ld a,(de)  [t=8]
-	defb 0x1a, 0x00, 0x14, 0x4c, 0xe7 ;9926
--
-;992b ;992f = 
-; rr d  [CB, t=7]
-	defb 0x1a, 0x80, 0x1a, 0x60, 0x08 ;992b
--
-;9930 ;9934 = 
-; dec de  [t=8]
-	defb 0x1b, 0x00, 0x2e, 0xb8, 0x06 ;9930
--
-;9935 ;9939 = 
-; rr e  [CB, t=6]
-	defb 0x1b, 0x80, 0x1a, 0x68, 0x08 ;9935
--
-;993a ;993e = 
-; inc e  [t=8]
-	defb 0x1c, 0x00, 0x36, 0x68, 0x04 ;993a
--
-;993f ;9943 = 
-; rr h  [CB, t=4]
-	defb 0x1c, 0x80, 0x1a, 0x70, 0x08 ;993f
--
-;9944 ;9948 = 
-; dec e  [t=8]
-	defb 0x1d, 0x00, 0x2e, 0x68, 0x04 ;9944
--
-;9949 ;994d = 
-; rr l  [CB, t=4]
-	defb 0x1d, 0x80, 0x1a, 0x80, 0x08 ;9949
--
-;994e ;9952 = 
-; ld e,N  [op. type: N, t=8]
-	defb 0x1e, 0x01, 0x14, 0x6d, 0x87 ;994e
--
-;9953 ;9957 = 
-; rr (hl)  [CB, t=7]
-	defb 0x1e, 0x80, 0x1b, 0x40, 0x0f ;9953
--
-;9958 ;995c = 
-; rr (ix+d)  [op. type: (ix+d), CB, DD, t=15]
-	defb 0x1e, 0xa4, 0x1b, 0x70, 0x17 ;9958
--
-;995d ;9961 = 
-; rra   [t=23]
-	defb 0x1f, 0x00, 0x56, 0x00, 0x04 ;995d
--
-;9962 ;9966 = 
-; rr a  [CB, t=4]
-	defb 0x1f, 0x80, 0x1a, 0x48, 0x08 ;9962
--
-;9967 ;996b = 
-; jr nz,N  [op. type: n, t=8]
-	defb 0x20, 0x03, 0x13, 0x05, 0x87 ;9967
--
-;996c ;9970 = 
-; sla b  [CB, t=7]
-	defb 0x20, 0x80, 0x64, 0x50, 0x08 ;996c
--
-;9971 ;9975 = 
-; ld hl,N  [op. type: NN, t=8]
-	defb 0x21, 0x02, 0x14, 0xc5, 0x8a ;9971
--
-;9976 ;997a = 
-; ld ix,N  [op. type: NN, DD, t=10]
-	defb 0x21, 0x22, 0x14, 0xdd, 0x8e ;9976
--
-;997b ;997f = 
-; sla c  [CB, t=14]
-	defb 0x21, 0x80, 0x64, 0x58, 0x08 ;997b
--
-;9980 ;9984 = 
-; ld (N),hl  [op. type: NN, t=8]
-	defb 0x22, 0x02, 0x15, 0x6b, 0x10 ;9980
--
-;9985 ;9989 = 
-; ld (N),ix  [op. type: NN, DD, t=16]
-	defb 0x22, 0x22, 0x15, 0x6b, 0x74 ;9985
--
-;998a ;998e = 
-; sla d  [CB, t=20]
-	defb 0x22, 0x80, 0x64, 0x60, 0x08 ;998a
--
-;998f ;9993 = 
-; inc hl  [t=8]
-	defb 0x23, 0x00, 0x36, 0xc0, 0x06 ;998f
--
-;9994 ;9998 = 
-; inc ix  [DD, t=6]
-	defb 0x23, 0x20, 0x36, 0xd8, 0x0a ;9994
--
-;9999 ;999d = 
-; sla e  [CB, t=10]
-	defb 0x23, 0x80, 0x64, 0x68, 0x08 ;9999
--
-;999e ;99a2 = 
-; inc h  [t=8]
-	defb 0x24, 0x00, 0x36, 0x70, 0x04 ;999e
--
-;99a3 ;99a7 = 
-; inc hx  [DD, t=4]
-	defb 0x24, 0x20, 0x36, 0xc8, 0x08 ;99a3
--
-;99a8 ;99ac = 
-; sla h  [CB, t=8]
-	defb 0x24, 0x80, 0x64, 0x70, 0x08 ;99a8
--
-;99ad ;99b1 = 
-; dec h  [t=8]
-	defb 0x25, 0x00, 0x2e, 0x70, 0x04 ;99ad
--
-;99b2 ;99b6 = 
-; dec hx  [DD, t=4]
-	defb 0x25, 0x20, 0x2e, 0xc8, 0x08 ;99b2
--
-;99b7 ;99bb = 
-; sla l  [CB, t=8]
-	defb 0x25, 0x80, 0x64, 0x80, 0x08 ;99b7
--
-;99bc ;99c0 = 
-; ld h,N  [op. type: N, t=8]
-	defb 0x26, 0x01, 0x14, 0x75, 0x87 ;99bc
--
-;99c1 ;99c5 = 
-; ld hx,N  [op. type: N, DD, t=7]
-	defb 0x26, 0x21, 0x14, 0xcd, 0x8b ;99c1
--
-;99c6 ;99ca = 
-; sla (hl)  [CB, t=11]
-	defb 0x26, 0x80, 0x65, 0x40, 0x0f ;99c6
--
-;99cb ;99cf = 
-; sla (ix+d)  [op. type: (ix+d), CB, DD, t=15]
-	defb 0x26, 0xa4, 0x65, 0x70, 0x17 ;99cb
--
-;99d0 ;99d4 = 
-; daa   [t=23]
-	defb 0x27, 0x00, 0x2c, 0x00, 0x04 ;99d0
--
-;99d5 ;99d9 = 
-; sla a  [CB, t=4]
-	defb 0x27, 0x80, 0x64, 0x48, 0x08 ;99d5
--
-;99da ;99de = 
-; jr z,N  [op. type: n, t=8]
-	defb 0x28, 0x03, 0x12, 0xa5, 0x87 ;99da
--
-;99df ;99e3 = 
-; sra b  [CB, t=7]
-	defb 0x28, 0x80, 0x66, 0x50, 0x08 ;99df
--
-;99e4 ;99e8 = 
-; add hl,hl  [t=8]
-	defb 0x29, 0x00, 0x1e, 0xc3, 0x0b ;99e4
--
-;99e9 ;99ed = 
-; add ix,ix  [DD, t=11]
-	defb 0x29, 0x20, 0x1e, 0xdb, 0x6f ;99e9
--
-;99ee ;99f2 = 
-; sra c  [CB, t=15]
-	defb 0x29, 0x80, 0x66, 0x58, 0x08 ;99ee
--
-;99f3 ;99f7 = 
-; ld hl,(N)  [op. type: NN, t=8]
-	defb 0x2a, 0x02, 0x14, 0xc5, 0xb0 ;99f3
--
-;99f8 ;99fc = 
-; ld ix,(N)  [op. type: NN, DD, t=16]
-	defb 0x2a, 0x22, 0x14, 0xdd, 0xb4 ;99f8
--
-;99fd ;9a01 = 
-; sra d  [CB, t=20]
-	defb 0x2a, 0x80, 0x66, 0x60, 0x08 ;99fd
--
-;9a02 ;9a06 = 
-; dec hl  [t=8]
-	defb 0x2b, 0x00, 0x2e, 0xc0, 0x06 ;9a02
--
-;9a07 ;9a0b = 
-; dec ix  [DD, t=6]
-	defb 0x2b, 0x20, 0x2e, 0xd8, 0x0a ;9a07
--
-;9a0c ;9a10 = 
-; sra e  [CB, t=10]
-	defb 0x2b, 0x80, 0x66, 0x68, 0x08 ;9a0c
--
-;9a11 ;9a15 = 
-; inc l  [t=8]
-	defb 0x2c, 0x00, 0x36, 0x80, 0x04 ;9a11
--
-;9a16 ;9a1a = 
-; inc lx  [DD, t=4]
-	defb 0x2c, 0x20, 0x36, 0xe8, 0x08 ;9a16
--
-;9a1b ;9a1f = 
-; sra h  [CB, t=8]
-	defb 0x2c, 0x80, 0x66, 0x70, 0x08 ;9a1b
--
-;9a20 ;9a24 = 
-; dec l  [t=8]
-	defb 0x2d, 0x00, 0x2e, 0x80, 0x04 ;9a20
--
-;9a25 ;9a29 = 
-; dec lx  [DD, t=4]
-	defb 0x2d, 0x20, 0x2e, 0xe8, 0x08 ;9a25
--
-;9a2a ;9a2e = 
-; sra l  [CB, t=8]
-	defb 0x2d, 0x80, 0x66, 0x80, 0x08 ;9a2a
--
-;9a2f ;9a33 = 
-; ld l,N  [op. type: N, t=8]
-	defb 0x2e, 0x01, 0x14, 0x85, 0x87 ;9a2f
--
-;9a34 ;9a38 = 
-; ld lx,N  [op. type: N, DD, t=7]
-	defb 0x2e, 0x21, 0x14, 0xed, 0x8b ;9a34
--
-;9a39 ;9a3d = 
-; sra (hl)  [CB, t=11]
-	defb 0x2e, 0x80, 0x67, 0x40, 0x0f ;9a39
--
-;9a3e ;9a42 = 
-; sra (ix+d)  [op. type: (ix+d), CB, DD, t=15]
-	defb 0x2e, 0xa4, 0x67, 0x70, 0x17 ;9a3e
--
-;9a43 ;9a47 = 
-; cpl   [t=23]
-	defb 0x2f, 0x00, 0x2a, 0x00, 0x04 ;9a43
--
-;9a48 ;9a4c = 
-; sra a  [CB, t=4]
-	defb 0x2f, 0x80, 0x66, 0x48, 0x08 ;9a48
--
-;9a4d ;9a51 = 
-; jr nc,N  [op. type: n, t=8]
-	defb 0x30, 0x03, 0x12, 0xfd, 0x87 ;9a4d
--
-;9a52 ;9a56 = 
-; slia b  [CB, t=7]
-	defb 0x30, 0x80, 0x9a, 0x50, 0x08 ;9a52
--
-;9a57 ;9a5b = 
-; ld sp,N  [op. type: NN, t=8]
-	defb 0x31, 0x02, 0x15, 0x1d, 0x8a ;9a57
--
-;9a5c ;9a60 = 
-; slia c  [CB, t=10]
-	defb 0x31, 0x80, 0x9a, 0x58, 0x08 ;9a5c
--
-;9a61 ;9a65 = 
-; ld (N),a  [op. type: NN, t=8]
-	defb 0x32, 0x02, 0x15, 0x69, 0x2d ;9a61
--
-;9a66 ;9a6a = 
-; slia d  [CB, t=13]
-	defb 0x32, 0x80, 0x9a, 0x60, 0x08 ;9a66
--
-;9a6b ;9a6f = 
-; inc sp  [t=8]
-	defb 0x33, 0x00, 0x37, 0x18, 0x06 ;9a6b
--
-;9a70 ;9a74 = 
-; slia e  [CB, t=6]
-	defb 0x33, 0x80, 0x9a, 0x68, 0x08 ;9a70
--
-;9a75 ;9a79 = 
-; inc (hl)  [t=8]
-	defb 0x34, 0x00, 0x37, 0x40, 0x0b ;9a75
--
-;9a7a ;9a7e = 
-; inc (ix+d)  [op. type: (ix+d), DD, t=11]
-	defb 0x34, 0x24, 0x37, 0x70, 0x17 ;9a7a
--
-;9a7f ;9a83 = 
-; slia h  [CB, t=23]
-	defb 0x34, 0x80, 0x9a, 0x70, 0x08 ;9a7f
--
-;9a84 ;9a88 = 
-; dec (hl)  [t=8]
-	defb 0x35, 0x00, 0x2f, 0x40, 0x0b ;9a84
--
-;9a89 ;9a8d = 
-; dec (ix+d)  [op. type: (ix+d), DD, t=11]
-	defb 0x35, 0x24, 0x2f, 0x70, 0x17 ;9a89
--
-;9a8e ;9a92 = 
-; slia l  [CB, t=23]
-	defb 0x35, 0x80, 0x9a, 0x80, 0x08 ;9a8e
--
-;9a93 ;9a97 = 
-; ld (hl),N  [op. type: N, t=8]
-	defb 0x36, 0x01, 0x15, 0x45, 0x8a ;9a93
--
-;9a98 ;9a9c = 
-; ld (ix+d),N  [op. type: (ix+d),n, DD, t=10]
-	defb 0x36, 0x25, 0x15, 0x75, 0x93 ;9a98
--
-;9a9d ;9aa1 = 
-; slia (hl)  [CB, t=19]
-	defb 0x36, 0x80, 0x9b, 0x40, 0x0f ;9a9d
--
-;9aa2 ;9aa6 = 
-; slia (ix+d)  [op. type: (ix+d), CB, DD, t=15]
-	defb 0x36, 0xa4, 0x9b, 0x70, 0x17 ;9aa2
--
-;9aa7 ;9aab = 
-; scf   [t=23]
-	defb 0x37, 0x00, 0x60, 0x00, 0x04 ;9aa7
--
-;9aac ;9ab0 = 
-; slia a  [CB, t=4]
-	defb 0x37, 0x80, 0x9a, 0x48, 0x08 ;9aac
--
-;9ab1 ;9ab5 = 
-; jr c,N  [op. type: n, t=8]
-	defb 0x38, 0x03, 0x12, 0x5d, 0x87 ;9ab1
--
-;9ab6 ;9aba = 
-; srl b  [CB, t=7]
-	defb 0x38, 0x80, 0x68, 0x50, 0x08 ;9ab6
--
-;9abb ;9abf = 
-; add hl,sp  [t=8]
-	defb 0x39, 0x00, 0x1e, 0xc4, 0x6b ;9abb
--
-;9ac0 ;9ac4 = 
-; add ix,sp  [DD, t=11]
-	defb 0x39, 0x20, 0x1e, 0xdc, 0x6f ;9ac0
--
-;9ac5 ;9ac9 = 
-; srl c  [CB, t=15]
-	defb 0x39, 0x80, 0x68, 0x58, 0x08 ;9ac5
--
-;9aca ;9ace = 
-; ld a,(N)  [op. type: NN, t=8]
-	defb 0x3a, 0x02, 0x14, 0x4d, 0xad ;9aca
--
-;9acf ;9ad3 = 
-; srl d  [CB, t=13]
-	defb 0x3a, 0x80, 0x68, 0x60, 0x08 ;9acf
--
-;9ad4 ;9ad8 = 
-; dec sp  [t=8]
-	defb 0x3b, 0x00, 0x2f, 0x18, 0x06 ;9ad4
--
-;9ad9 ;9add = 
-; srl e  [CB, t=6]
-	defb 0x3b, 0x80, 0x68, 0x68, 0x08 ;9ad9
--
-;9ade ;9ae2 = 
-; inc a  [t=8]
-	defb 0x3c, 0x00, 0x36, 0x48, 0x04 ;9ade
--
-;9ae3 ;9ae7 = 
-; srl h  [CB, t=4]
-	defb 0x3c, 0x80, 0x68, 0x70, 0x08 ;9ae3
--
-;9ae8 ;9aec = 
-; dec a  [t=8]
-	defb 0x3d, 0x00, 0x2e, 0x48, 0x04 ;9ae8
--
-;9aed ;9af1 = 
-; srl l  [CB, t=4]
-	defb 0x3d, 0x80, 0x68, 0x80, 0x08 ;9aed
--
-;9af2 ;9af6 = 
-; ld a,N  [op. type: N, t=8]
-	defb 0x3e, 0x01, 0x14, 0x4d, 0x87 ;9af2
--
-;9af7 ;9afb = 
-; srl (hl)  [CB, t=7]
-	defb 0x3e, 0x80, 0x69, 0x40, 0x0f ;9af7
--
-;9afc ;9b00 = 
-; srl (ix+d)  [op. type: (ix+d), CB, DD, t=15]
-	defb 0x3e, 0xa4, 0x69, 0x70, 0x17 ;9afc
--
-;9b01 ;9b05 = 
-; ccf   [t=23]
-	defb 0x3f, 0x00, 0x24, 0x00, 0x04 ;9b01
--
-;9b06 ;9b0a = 
-; srl a  [CB, t=4]
-	defb 0x3f, 0x80, 0x68, 0x48, 0x08 ;9b06
--
-;9b0b ;9b0f = 
-; ld b,b  [t=8]
-	defb 0x40, 0x00, 0x14, 0x51, 0x44 ;9b0b
--
-;9b10 ;9b14 = 
-; in b,(c)  [ED, t=4]
-	defb 0x40, 0x40, 0x0e, 0x54, 0x8c ;9b10
--
-;9b15 ;9b19 = 
-; bit 0,b  [CB, t=12]
-	defb 0x40, 0x80, 0x22, 0x09, 0x48 ;9b15
--
-;9b1a ;9b1e = 
-; ld b,c  [t=8]
-	defb 0x41, 0x00, 0x14, 0x51, 0x64 ;9b1a
--
-;9b1f ;9b23 = 
-; out (c),b  [ED, t=4]
-	defb 0x41, 0x40, 0x47, 0x21, 0x4c ;9b1f
--
-;9b24 ;9b28 = 
-; bit 0,c  [CB, t=12]
-	defb 0x41, 0x80, 0x22, 0x09, 0x68 ;9b24
--
-;9b29 ;9b2d = 
-; ld b,d  [t=8]
-	defb 0x42, 0x00, 0x14, 0x51, 0x84 ;9b29
--
-;9b2e ;9b32 = 
-; sbc hl,bc  [ED, t=4]
-	defb 0x42, 0x40, 0x5e, 0xc2, 0xcf ;9b2e
--
-;9b33 ;9b37 = 
-; bit 0,d  [CB, t=15]
-	defb 0x42, 0x80, 0x22, 0x09, 0x88 ;9b33
--
-;9b38 ;9b3c = 
-; ld b,e  [t=8]
-	defb 0x43, 0x00, 0x14, 0x51, 0xa4 ;9b38
--
-;9b3d ;9b41 = 
-; ld (N),bc  [op. type: NN, ED, t=4]
-	defb 0x43, 0x42, 0x15, 0x6a, 0xd4 ;9b3d
--
-;9b42 ;9b46 = 
-; bit 0,e  [CB, t=20]
-	defb 0x43, 0x80, 0x22, 0x09, 0xa8 ;9b42
--
-;9b47 ;9b4b = 
-; ld b,h  [t=8]
-	defb 0x44, 0x00, 0x14, 0x51, 0xc4 ;9b47
--
-;9b4c ;9b50 = 
-; ld b,hx  [DD, t=4]
-	defb 0x44, 0x20, 0x14, 0x53, 0x28 ;9b4c
--
-;9b51 ;9b55 = 
-; neg   [ED, t=8]
-	defb 0x44, 0x40, 0x40, 0x00, 0x08 ;9b51
--
-;9b56 ;9b5a = 
-; bit 0,h  [CB, t=8]
-	defb 0x44, 0x80, 0x22, 0x09, 0xc8 ;9b56
--
-;9b5b ;9b5f = 
-; ld b,l  [t=8]
-	defb 0x45, 0x00, 0x14, 0x52, 0x04 ;9b5b
--
-;9b60 ;9b64 = 
-; ld b,lx  [DD, t=4]
-	defb 0x45, 0x20, 0x14, 0x53, 0xa8 ;9b60
--
-;9b65 ;9b69 = 
-; retn   [ED, t=8]
-	defb 0x45, 0x40, 0x94, 0x00, 0x0e ;9b65
--
-;9b6a ;9b6e = 
-; bit 0,l  [CB, t=14]
-	defb 0x45, 0x80, 0x22, 0x0a, 0x08 ;9b6a
--
-;9b6f ;9b73 = 
-; ld b,(hl)  [t=8]
-	defb 0x46, 0x00, 0x14, 0x55, 0x07 ;9b6f
--
-;9b74 ;9b78 = 
-; ld b,(ix+d)  [op. type: (ix+d), DD, t=7]
-	defb 0x46, 0x24, 0x14, 0x55, 0xd3 ;9b74
--
-;9b79 ;9b7d = 
-; im 0  [ED, t=19]
-	defb 0x46, 0x40, 0x0c, 0x08, 0x08 ;9b79
--
-;9b7e ;9b82 = 
-; bit 0,(hl)  [CB, t=8]
-	defb 0x46, 0x80, 0x22, 0x0d, 0x0c ;9b7e
--
-;9b83 ;9b87 = 
-; bit 0,(ix+d)  [op. type: (ix+d), CB, DD, t=12]
-	defb 0x46, 0xa4, 0x22, 0x0d, 0xd4 ;9b83
--
-;9b88 ;9b8c = 
-; ld b,a  [t=20]
-	defb 0x47, 0x00, 0x14, 0x51, 0x24 ;9b88
--
-;9b8d ;9b91 = 
-; ld i,a  [ED, t=4]
-	defb 0x47, 0x40, 0x14, 0x79, 0x29 ;9b8d
--
-;9b92 ;9b96 = 
-; bit 0,a  [CB, t=9]
-	defb 0x47, 0x80, 0x22, 0x09, 0x28 ;9b92
--
-;9b97 ;9b9b = 
-; ld c,b  [t=8]
-	defb 0x48, 0x00, 0x14, 0x59, 0x44 ;9b97
--
-;9b9c ;9ba0 = 
-; in c,(c)  [ED, t=4]
-	defb 0x48, 0x40, 0x0e, 0x5c, 0x8c ;9b9c
--
-;9ba1 ;9ba5 = 
-; bit 1,b  [CB, t=12]
-	defb 0x48, 0x80, 0x22, 0x11, 0x48 ;9ba1
--
-;9ba6 ;9baa = 
-; ld c,c  [t=8]
-	defb 0x49, 0x00, 0x14, 0x59, 0x64 ;9ba6
--
-;9bab ;9baf = 
-; out (c),c  [ED, t=4]
-	defb 0x49, 0x40, 0x47, 0x21, 0x6c ;9bab
--
-;9bb0 ;9bb4 = 
-; bit 1,c  [CB, t=12]
-	defb 0x49, 0x80, 0x22, 0x11, 0x68 ;9bb0
--
-;9bb5 ;9bb9 = 
-; ld c,d  [t=8]
-	defb 0x4a, 0x00, 0x14, 0x59, 0x84 ;9bb5
--
-;9bba ;9bbe = 
-; adc hl,bc  [ED, t=4]
-	defb 0x4a, 0x40, 0x1c, 0xc2, 0xcf ;9bba
--
-;9bbf ;9bc3 = 
-; bit 1,d  [CB, t=15]
-	defb 0x4a, 0x80, 0x22, 0x11, 0x88 ;9bbf
--
-;9bc4 ;9bc8 = 
-; ld c,e  [t=8]
-	defb 0x4b, 0x00, 0x14, 0x59, 0xa4 ;9bc4
--
-;9bc9 ;9bcd = 
-; ld bc,(N)  [op. type: NN, ED, t=4]
-	defb 0x4b, 0x42, 0x14, 0xb5, 0xb4 ;9bc9
--
-;9bce ;9bd2 = 
-; bit 1,e  [CB, t=20]
-	defb 0x4b, 0x80, 0x22, 0x11, 0xa8 ;9bce
--
-;9bd3 ;9bd7 = 
-; ld c,h  [t=8]
-	defb 0x4c, 0x00, 0x14, 0x59, 0xc4 ;9bd3
--
-;9bd8 ;9bdc = 
-; ld c,hx  [DD, t=4]
-	defb 0x4c, 0x20, 0x14, 0x5b, 0x28 ;9bd8
--
-;9bdd ;9be1 = 
-; bit 1,h  [CB, t=8]
-	defb 0x4c, 0x80, 0x22, 0x11, 0xc8 ;9bdd
--
-;9be2 ;9be6 = 
-; ld c,l  [t=8]
-	defb 0x4d, 0x00, 0x14, 0x5a, 0x04 ;9be2
--
-;9be7 ;9beb = 
-; ld c,lx  [DD, t=4]
-	defb 0x4d, 0x20, 0x14, 0x5b, 0xa8 ;9be7
--
-;9bec ;9bf0 = 
-; reti   [ED, t=8]
-	defb 0x4d, 0x40, 0x92, 0x00, 0x0e ;9bec
--
-;9bf1 ;9bf5 = 
-; bit 1,l  [CB, t=14]
-	defb 0x4d, 0x80, 0x22, 0x12, 0x08 ;9bf1
--
-;9bf6 ;9bfa = 
-; ld c,(hl)  [t=8]
-	defb 0x4e, 0x00, 0x14, 0x5d, 0x07 ;9bf6
--
-;9bfb ;9bff = 
-; ld c,(ix+d)  [op. type: (ix+d), DD, t=7]
-	defb 0x4e, 0x24, 0x14, 0x5d, 0xd3 ;9bfb
--
-;9c00 ;9c04 = 
-; bit 1,(hl)  [CB, t=19]
-	defb 0x4e, 0x80, 0x22, 0x15, 0x0c ;9c00
--
-;9c05 ;9c09 = 
-; bit 1,(ix+d)  [op. type: (ix+d), CB, DD, t=12]
-	defb 0x4e, 0xa4, 0x22, 0x15, 0xd4 ;9c05
--
-;9c0a ;9c0e = 
-; ld c,a  [t=20]
-	defb 0x4f, 0x00, 0x14, 0x59, 0x24 ;9c0a
--
-;9c0f ;9c13 = 
-; ld r,a  [ED, t=4]
-	defb 0x4f, 0x40, 0x14, 0x99, 0x29 ;9c0f
--
-;9c14 ;9c18 = 
-; bit 1,a  [CB, t=9]
-	defb 0x4f, 0x80, 0x22, 0x11, 0x28 ;9c14
--
-;9c19 ;9c1d = 
-; ld d,b  [t=8]
-	defb 0x50, 0x00, 0x14, 0x61, 0x44 ;9c19
--
-;9c1e ;9c22 = 
-; in d,(c)  [ED, t=4]
-	defb 0x50, 0x40, 0x0e, 0x64, 0x8c ;9c1e
--
-;9c23 ;9c27 = 
-; bit 2,b  [CB, t=12]
-	defb 0x50, 0x80, 0x22, 0x19, 0x48 ;9c23
--
-;9c28 ;9c2c = 
-; ld d,c  [t=8]
-	defb 0x51, 0x00, 0x14, 0x61, 0x64 ;9c28
--
-;9c2d ;9c31 = 
-; out (c),d  [ED, t=4]
-	defb 0x51, 0x40, 0x47, 0x21, 0x8c ;9c2d
--
-;9c32 ;9c36 = 
-; bit 2,c  [CB, t=12]
-	defb 0x51, 0x80, 0x22, 0x19, 0x68 ;9c32
--
-;9c37 ;9c3b = 
-; ld d,d  [t=8]
-	defb 0x52, 0x00, 0x14, 0x61, 0x84 ;9c37
--
-;9c3c ;9c40 = 
-; sbc hl,de  [ED, t=4]
-	defb 0x52, 0x40, 0x5e, 0xc2, 0xef ;9c3c
--
-;9c41 ;9c45 = 
-; bit 2,d  [CB, t=15]
-	defb 0x52, 0x80, 0x22, 0x19, 0x88 ;9c41
--
-;9c46 ;9c4a = 
-; ld d,e  [t=8]
-	defb 0x53, 0x00, 0x14, 0x61, 0xa4 ;9c46
--
-;9c4b ;9c4f = 
-; ld (N),de  [op. type: NN, ED, t=4]
-	defb 0x53, 0x42, 0x15, 0x6a, 0xf4 ;9c4b
--
-;9c50 ;9c54 = 
-; bit 2,e  [CB, t=20]
-	defb 0x53, 0x80, 0x22, 0x19, 0xa8 ;9c50
--
-;9c55 ;9c59 = 
-; ld d,h  [t=8]
-	defb 0x54, 0x00, 0x14, 0x61, 0xc4 ;9c55
--
-;9c5a ;9c5e = 
-; ld d,hx  [DD, t=4]
-	defb 0x54, 0x20, 0x14, 0x63, 0x28 ;9c5a
--
-;9c5f ;9c63 = 
-; bit 2,h  [CB, t=8]
-	defb 0x54, 0x80, 0x22, 0x19, 0xc8 ;9c5f
--
-;9c64 ;9c68 = 
-; ld d,l  [t=8]
-	defb 0x55, 0x00, 0x14, 0x62, 0x04 ;9c64
--
-;9c69 ;9c6d = 
-; ld d,lx  [DD, t=4]
-	defb 0x55, 0x20, 0x14, 0x63, 0xa8 ;9c69
--
-;9c6e ;9c72 = 
-; bit 2,l  [CB, t=8]
-	defb 0x55, 0x80, 0x22, 0x1a, 0x08 ;9c6e
--
-;9c73 ;9c77 = 
-; ld d,(hl)  [t=8]
-	defb 0x56, 0x00, 0x14, 0x65, 0x07 ;9c73
--
-;9c78 ;9c7c = 
-; ld d,(ix+d)  [op. type: (ix+d), DD, t=7]
-	defb 0x56, 0x24, 0x14, 0x65, 0xd3 ;9c78
--
-;9c7d ;9c81 = 
-; im 1  [ED, t=19]
-	defb 0x56, 0x40, 0x0c, 0x10, 0x08 ;9c7d
--
-;9c82 ;9c86 = 
-; bit 2,(hl)  [CB, t=8]
-	defb 0x56, 0x80, 0x22, 0x1d, 0x0c ;9c82
--
-;9c87 ;9c8b = 
-; bit 2,(ix+d)  [op. type: (ix+d), CB, DD, t=12]
-	defb 0x56, 0xa4, 0x22, 0x1d, 0xd4 ;9c87
--
-;9c8c ;9c90 = 
-; ld d,a  [t=20]
-	defb 0x57, 0x00, 0x14, 0x61, 0x24 ;9c8c
--
-;9c91 ;9c95 = 
-; ld a,i  [ED, t=4]
-	defb 0x57, 0x40, 0x14, 0x49, 0xe9 ;9c91
--
-;9c96 ;9c9a = 
-; bit 2,a  [CB, t=9]
-	defb 0x57, 0x80, 0x22, 0x19, 0x28 ;9c96
--
-;9c9b ;9c9f = 
-; ld e,b  [t=8]
-	defb 0x58, 0x00, 0x14, 0x69, 0x44 ;9c9b
--
-;9ca0 ;9ca4 = 
-; in e,(c)  [ED, t=4]
-	defb 0x58, 0x40, 0x0e, 0x6c, 0x8c ;9ca0
--
-;9ca5 ;9ca9 = 
-; bit 3,b  [CB, t=12]
-	defb 0x58, 0x80, 0x22, 0x21, 0x48 ;9ca5
--
-;9caa ;9cae = 
-; ld e,c  [t=8]
-	defb 0x59, 0x00, 0x14, 0x69, 0x64 ;9caa
--
-;9caf ;9cb3 = 
-; out (c),e  [ED, t=4]
-	defb 0x59, 0x40, 0x47, 0x21, 0xac ;9caf
--
-;9cb4 ;9cb8 = 
-; bit 3,c  [CB, t=12]
-	defb 0x59, 0x80, 0x22, 0x21, 0x68 ;9cb4
--
-;9cb9 ;9cbd = 
-; ld e,d  [t=8]
-	defb 0x5a, 0x00, 0x14, 0x69, 0x84 ;9cb9
--
-;9cbe ;9cc2 = 
-; adc hl,de  [ED, t=4]
-	defb 0x5a, 0x40, 0x1c, 0xc2, 0xef ;9cbe
--
-;9cc3 ;9cc7 = 
-; bit 3,d  [CB, t=15]
-	defb 0x5a, 0x80, 0x22, 0x21, 0x88 ;9cc3
--
-;9cc8 ;9ccc = 
-; ld e,e  [t=8]
-	defb 0x5b, 0x00, 0x14, 0x69, 0xa4 ;9cc8
--
-;9ccd ;9cd1 = 
-; ld de,(N)  [op. type: NN, ED, t=4]
-	defb 0x5b, 0x42, 0x14, 0xbd, 0xb4 ;9ccd
--
-;9cd2 ;9cd6 = 
-; bit 3,e  [CB, t=20]
-	defb 0x5b, 0x80, 0x22, 0x21, 0xa8 ;9cd2
--
-;9cd7 ;9cdb = 
-; ld e,h  [t=8]
-	defb 0x5c, 0x00, 0x14, 0x69, 0xc4 ;9cd7
--
-;9cdc ;9ce0 = 
-; ld e,hx  [DD, t=4]
-	defb 0x5c, 0x20, 0x14, 0x6b, 0x28 ;9cdc
--
-;9ce1 ;9ce5 = 
-; bit 3,h  [CB, t=8]
-	defb 0x5c, 0x80, 0x22, 0x21, 0xc8 ;9ce1
--
-;9ce6 ;9cea = 
-; ld e,l  [t=8]
-	defb 0x5d, 0x00, 0x14, 0x6a, 0x04 ;9ce6
--
-;9ceb ;9cef = 
-; ld e,lx  [DD, t=4]
-	defb 0x5d, 0x20, 0x14, 0x6b, 0xa8 ;9ceb
--
-;9cf0 ;9cf4 = 
-; bit 3,l  [CB, t=8]
-	defb 0x5d, 0x80, 0x22, 0x22, 0x08 ;9cf0
--
-;9cf5 ;9cf9 = 
-; ld e,(hl)  [t=8]
-	defb 0x5e, 0x00, 0x14, 0x6d, 0x07 ;9cf5
--
-;9cfa ;9cfe = 
-; ld e,(ix+d)  [op. type: (ix+d), DD, t=7]
-	defb 0x5e, 0x24, 0x14, 0x6d, 0xd3 ;9cfa
--
-;9cff ;9d03 = 
-; im 2  [ED, t=19]
-	defb 0x5e, 0x40, 0x0c, 0x18, 0x08 ;9cff
--
-;9d04 ;9d08 = 
-; bit 3,(hl)  [CB, t=8]
-	defb 0x5e, 0x80, 0x22, 0x25, 0x0c ;9d04
--
-;9d09 ;9d0d = 
-; bit 3,(ix+d)  [op. type: (ix+d), CB, DD, t=12]
-	defb 0x5e, 0xa4, 0x22, 0x25, 0xd4 ;9d09
--
-;9d0e ;9d12 = 
-; ld e,a  [t=20]
-	defb 0x5f, 0x00, 0x14, 0x69, 0x24 ;9d0e
--
-;9d13 ;9d17 = 
-; ld a,r  [ED, t=4]
-	defb 0x5f, 0x40, 0x14, 0x4a, 0x69 ;9d13
--
-;9d18 ;9d1c = 
-; bit 3,a  [CB, t=9]
-	defb 0x5f, 0x80, 0x22, 0x21, 0x28 ;9d18
--
-;9d1d ;9d21 = 
-; ld h,b  [t=8]
-	defb 0x60, 0x00, 0x14, 0x71, 0x44 ;9d1d
--
-;9d22 ;9d26 = 
-; ld hx,b  [DD, t=4]
-	defb 0x60, 0x20, 0x14, 0xc9, 0x48 ;9d22
--
-;9d27 ;9d2b = 
-; in h,(c)  [ED, t=8]
-	defb 0x60, 0x40, 0x0e, 0x74, 0x8c ;9d27
--
-;9d2c ;9d30 = 
-; bit 4,b  [CB, t=12]
-	defb 0x60, 0x80, 0x22, 0x29, 0x48 ;9d2c
--
-;9d31 ;9d35 = 
-; ld h,c  [t=8]
-	defb 0x61, 0x00, 0x14, 0x71, 0x64 ;9d31
--
-;9d36 ;9d3a = 
-; ld hx,c  [DD, t=4]
-	defb 0x61, 0x20, 0x14, 0xc9, 0x68 ;9d36
--
-;9d3b ;9d3f = 
-; out (c),h  [ED, t=8]
-	defb 0x61, 0x40, 0x47, 0x21, 0xcc ;9d3b
--
-;9d40 ;9d44 = 
-; bit 4,c  [CB, t=12]
-	defb 0x61, 0x80, 0x22, 0x29, 0x68 ;9d40
--
-;9d45 ;9d49 = 
-; ld h,d  [t=8]
-	defb 0x62, 0x00, 0x14, 0x71, 0x84 ;9d45
--
-;9d4a ;9d4e = 
-; ld hx,d  [DD, t=4]
-	defb 0x62, 0x20, 0x14, 0xc9, 0x88 ;9d4a
--
-;9d4f ;9d53 = 
-; sbc hl,hl  [ED, t=8]
-	defb 0x62, 0x40, 0x5e, 0xc3, 0x0f ;9d4f
--
-;9d54 ;9d58 = 
-; bit 4,d  [CB, t=15]
-	defb 0x62, 0x80, 0x22, 0x29, 0x88 ;9d54
--
-;9d59 ;9d5d = 
-; ld h,e  [t=8]
-	defb 0x63, 0x00, 0x14, 0x71, 0xa4 ;9d59
--
-;9d5e ;9d62 = 
-; ld hx,e  [DD, t=4]
-	defb 0x63, 0x20, 0x14, 0xc9, 0xa8 ;9d5e
--
-;9d63 ;9d67 = 
-; ld (N),hl  [op. type: NN, ED, t=8]
-	defb 0x63, 0x42, 0x15, 0x6b, 0x14 ;9d63
--
-;9d68 ;9d6c = 
-; bit 4,e  [CB, t=20]
-	defb 0x63, 0x80, 0x22, 0x29, 0xa8 ;9d68
--
-;9d6d ;9d71 = 
-; ld h,h  [t=8]
-	defb 0x64, 0x00, 0x14, 0x71, 0xc4 ;9d6d
--
-;9d72 ;9d76 = 
-; ld hx,hx  [DD, t=4]
-	defb 0x64, 0x20, 0x14, 0xcb, 0x28 ;9d72
--
-;9d77 ;9d7b = 
-; bit 4,h  [CB, t=8]
-	defb 0x64, 0x80, 0x22, 0x29, 0xc8 ;9d77
--
-;9d7c ;9d80 = 
-; ld h,l  [t=8]
-	defb 0x65, 0x00, 0x14, 0x72, 0x04 ;9d7c
--
-;9d81 ;9d85 = 
-; ld hx,lx  [DD, t=4]
-	defb 0x65, 0x20, 0x14, 0xcb, 0xa8 ;9d81
--
-;9d86 ;9d8a = 
-; bit 4,l  [CB, t=8]
-	defb 0x65, 0x80, 0x22, 0x2a, 0x08 ;9d86
--
-;9d8b ;9d8f = 
-; ld h,(hl)  [t=8]
-	defb 0x66, 0x00, 0x14, 0x75, 0x07 ;9d8b
--
-;9d90 ;9d94 = 
-; ld h,(ix+d)  [op. type: (ix+d), DD, t=7]
-	defb 0x66, 0x24, 0x14, 0x75, 0xd3 ;9d90
--
-;9d95 ;9d99 = 
-; bit 4,(hl)  [CB, t=19]
-	defb 0x66, 0x80, 0x22, 0x2d, 0x0c ;9d95
--
-;9d9a ;9d9e = 
-; bit 4,(ix+d)  [op. type: (ix+d), CB, DD, t=12]
-	defb 0x66, 0xa4, 0x22, 0x2d, 0xd4 ;9d9a
--
-;9d9f ;9da3 = 
-; ld h,a  [t=20]
-	defb 0x67, 0x00, 0x14, 0x71, 0x24 ;9d9f
--
-;9da4 ;9da8 = 
-; ld hx,a  [DD, t=4]
-	defb 0x67, 0x20, 0x14, 0xc9, 0x28 ;9da4
--
-;9da9 ;9dad = 
-; rrd   [ED, t=8]
-	defb 0x67, 0x40, 0x5a, 0x00, 0x12 ;9da9
--
-;9dae ;9db2 = 
-; bit 4,a  [CB, t=18]
-	defb 0x67, 0x80, 0x22, 0x29, 0x28 ;9dae
--
-;9db3 ;9db7 = 
-; ld l,b  [t=8]
-	defb 0x68, 0x00, 0x14, 0x81, 0x44 ;9db3
--
-;9db8 ;9dbc = 
-; ld lx,b  [DD, t=4]
-	defb 0x68, 0x20, 0x14, 0xe9, 0x48 ;9db8
--
-;9dbd ;9dc1 = 
-; in l,(c)  [ED, t=8]
-	defb 0x68, 0x40, 0x0e, 0x84, 0x8c ;9dbd
--
-;9dc2 ;9dc6 = 
-; bit 5,b  [CB, t=12]
-	defb 0x68, 0x80, 0x22, 0x31, 0x48 ;9dc2
--
-;9dc7 ;9dcb = 
-; ld l,c  [t=8]
-	defb 0x69, 0x00, 0x14, 0x81, 0x64 ;9dc7
--
-;9dcc ;9dd0 = 
-; ld lx,c  [DD, t=4]
-	defb 0x69, 0x20, 0x14, 0xe9, 0x68 ;9dcc
--
-;9dd1 ;9dd5 = 
-; out (c),l  [ED, t=8]
-	defb 0x69, 0x40, 0x47, 0x22, 0x0c ;9dd1
--
-;9dd6 ;9dda = 
-; bit 5,c  [CB, t=12]
-	defb 0x69, 0x80, 0x22, 0x31, 0x68 ;9dd6
--
-;9ddb ;9ddf = 
-; ld l,d  [t=8]
-	defb 0x6a, 0x00, 0x14, 0x81, 0x84 ;9ddb
--
-;9de0 ;9de4 = 
-; ld lx,d  [DD, t=4]
-	defb 0x6a, 0x20, 0x14, 0xe9, 0x88 ;9de0
--
-;9de5 ;9de9 = 
-; adc hl,hl  [ED, t=8]
-	defb 0x6a, 0x40, 0x1c, 0xc3, 0x0f ;9de5
--
-;9dea ;9dee = 
-; bit 5,d  [CB, t=15]
-	defb 0x6a, 0x80, 0x22, 0x31, 0x88 ;9dea
--
-;9def ;9df3 = 
-; ld l,e  [t=8]
-	defb 0x6b, 0x00, 0x14, 0x81, 0xa4 ;9def
--
-;9df4 ;9df8 = 
-; ld lx,e  [DD, t=4]
-	defb 0x6b, 0x20, 0x14, 0xe9, 0xa8 ;9df4
--
-;9df9 ;9dfd = 
-; ld hl,(N)  [op. type: NN, ED, t=8]
-	defb 0x6b, 0x42, 0x14, 0xc5, 0xb4 ;9df9
--
-;9dfe ;9e02 = 
-; bit 5,e  [CB, t=20]
-	defb 0x6b, 0x80, 0x22, 0x31, 0xa8 ;9dfe
--
-;9e03 ;9e07 = 
-; ld l,h  [t=8]
-	defb 0x6c, 0x00, 0x14, 0x81, 0xc4 ;9e03
--
-;9e08 ;9e0c = 
-; ld lx,hx  [DD, t=4]
-	defb 0x6c, 0x20, 0x14, 0xeb, 0x28 ;9e08
--
-;9e0d ;9e11 = 
-; bit 5,h  [CB, t=8]
-	defb 0x6c, 0x80, 0x22, 0x31, 0xc8 ;9e0d
--
-;9e12 ;9e16 = 
-; ld l,l  [t=8]
-	defb 0x6d, 0x00, 0x14, 0x82, 0x04 ;9e12
--
-;9e17 ;9e1b = 
-; ld lx,lx  [DD, t=4]
-	defb 0x6d, 0x20, 0x14, 0xeb, 0xa8 ;9e17
--
-;9e1c ;9e20 = 
-; bit 5,l  [CB, t=8]
-	defb 0x6d, 0x80, 0x22, 0x32, 0x08 ;9e1c
--
-;9e21 ;9e25 = 
-; ld l,(hl)  [t=8]
-	defb 0x6e, 0x00, 0x14, 0x85, 0x07 ;9e21
--
-;9e26 ;9e2a = 
-; ld l,(ix+d)  [op. type: (ix+d), DD, t=7]
-	defb 0x6e, 0x24, 0x14, 0x85, 0xd3 ;9e26
--
-;9e2b ;9e2f = 
-; bit 5,(hl)  [CB, t=19]
-	defb 0x6e, 0x80, 0x22, 0x35, 0x0c ;9e2b
--
-;9e30 ;9e34 = 
-; bit 5,(ix+d)  [op. type: (ix+d), CB, DD, t=12]
-	defb 0x6e, 0xa4, 0x22, 0x35, 0xd4 ;9e30
--
-;9e35 ;9e39 = 
-; ld l,a  [t=20]
-	defb 0x6f, 0x00, 0x14, 0x81, 0x24 ;9e35
--
-;9e3a ;9e3e = 
-; ld lx,a  [DD, t=4]
-	defb 0x6f, 0x20, 0x14, 0xe9, 0x28 ;9e3a
--
-;9e3f ;9e43 = 
-; rld   [ED, t=8]
-	defb 0x6f, 0x40, 0x54, 0x00, 0x12 ;9e3f
--
-;9e44 ;9e48 = 
-; bit 5,a  [CB, t=18]
-	defb 0x6f, 0x80, 0x22, 0x31, 0x28 ;9e44
--
-;9e49 ;9e4d = 
-; ld (hl),b  [t=8]
-	defb 0x70, 0x00, 0x15, 0x41, 0x47 ;9e49
--
-;9e4e ;9e52 = 
-; ld (ix+d),b  [op. type: (ix+d), DD, t=7]
-	defb 0x70, 0x24, 0x15, 0x71, 0x53 ;9e4e
--
-;9e53 ;9e57 = 
-; bit 6,b  [CB, t=19]
-	defb 0x70, 0x80, 0x22, 0x39, 0x48 ;9e53
--
-;9e58 ;9e5c = 
-; ld (hl),c  [t=8]
-	defb 0x71, 0x00, 0x15, 0x41, 0x67 ;9e58
--
-;9e5d ;9e61 = 
-; ld (ix+d),c  [op. type: (ix+d), DD, t=7]
-	defb 0x71, 0x24, 0x15, 0x71, 0x73 ;9e5d
--
-;9e62 ;9e66 = 
-; bit 6,c  [CB, t=19]
-	defb 0x71, 0x80, 0x22, 0x39, 0x68 ;9e62
--
-;9e67 ;9e6b = 
-; ld (hl),d  [t=8]
-	defb 0x72, 0x00, 0x15, 0x41, 0x87 ;9e67
--
-;9e6c ;9e70 = 
-; ld (ix+d),d  [op. type: (ix+d), DD, t=7]
-	defb 0x72, 0x24, 0x15, 0x71, 0x93 ;9e6c
--
-;9e71 ;9e75 = 
-; sbc hl,sp  [ED, t=19]
-	defb 0x72, 0x40, 0x5e, 0xc4, 0x6f ;9e71
--
-;9e76 ;9e7a = 
-; bit 6,d  [CB, t=15]
-	defb 0x72, 0x80, 0x22, 0x39, 0x88 ;9e76
--
-;9e7b ;9e7f = 
-; ld (hl),e  [t=8]
-	defb 0x73, 0x00, 0x15, 0x41, 0xa7 ;9e7b
--
-;9e80 ;9e84 = 
-; ld (ix+d),e  [op. type: (ix+d), DD, t=7]
-	defb 0x73, 0x24, 0x15, 0x71, 0xb3 ;9e80
--
-;9e85 ;9e89 = 
-; ld (N),sp  [op. type: NN, ED, t=19]
-	defb 0x73, 0x42, 0x15, 0x6c, 0x74 ;9e85
--
-;9e8a ;9e8e = 
-; bit 6,e  [CB, t=20]
-	defb 0x73, 0x80, 0x22, 0x39, 0xa8 ;9e8a
--
-;9e8f ;9e93 = 
-; ld (hl),h  [t=8]
-	defb 0x74, 0x00, 0x15, 0x41, 0xc7 ;9e8f
--
-;9e94 ;9e98 = 
-; ld (ix+d),h  [op. type: (ix+d), DD, t=7]
-	defb 0x74, 0x24, 0x15, 0x71, 0xd3 ;9e94
--
-;9e99 ;9e9d = 
-; bit 6,h  [CB, t=19]
-	defb 0x74, 0x80, 0x22, 0x39, 0xc8 ;9e99
--
-;9e9e ;9ea2 = 
-; ld (hl),l  [t=8]
-	defb 0x75, 0x00, 0x15, 0x42, 0x07 ;9e9e
--
-;9ea3 ;9ea7 = 
-; ld (ix+d),l  [op. type: (ix+d), DD, t=7]
-	defb 0x75, 0x24, 0x15, 0x72, 0x13 ;9ea3
--
-;9ea8 ;9eac = 
-; bit 6,l  [CB, t=19]
-	defb 0x75, 0x80, 0x22, 0x3a, 0x08 ;9ea8
--
-;9ead ;9eb1 = 
-; halt   [t=8]
-	defb 0x76, 0x00, 0x7e, 0x00, 0x04 ;9ead
--
-;9eb2 ;9eb6 = 
-; bit 6,(hl)  [CB, t=4]
-	defb 0x76, 0x80, 0x22, 0x3d, 0x0c ;9eb2
--
-;9eb7 ;9ebb = 
-; bit 6,(ix+d)  [op. type: (ix+d), CB, DD, t=12]
-	defb 0x76, 0xa4, 0x22, 0x3d, 0xd4 ;9eb7
--
-;9ebc ;9ec0 = 
-; ld (hl),a  [t=20]
-	defb 0x77, 0x00, 0x15, 0x41, 0x27 ;9ebc
--
-;9ec1 ;9ec5 = 
-; ld (ix+d),a  [op. type: (ix+d), DD, t=7]
-	defb 0x77, 0x24, 0x15, 0x71, 0x33 ;9ec1
--
-;9ec6 ;9eca = 
-; bit 6,a  [CB, t=19]
-	defb 0x77, 0x80, 0x22, 0x39, 0x28 ;9ec6
--
-;9ecb ;9ecf = 
-; ld a,b  [t=8]
-	defb 0x78, 0x00, 0x14, 0x49, 0x44 ;9ecb
--
-;9ed0 ;9ed4 = 
-; in a,(c)  [ED, t=4]
-	defb 0x78, 0x40, 0x0e, 0x4c, 0x8c ;9ed0
--
-;9ed5 ;9ed9 = 
-; bit 7,b  [CB, t=12]
-	defb 0x78, 0x80, 0x22, 0x41, 0x48 ;9ed5
--
-;9eda ;9ede = 
-; ld a,c  [t=8]
-	defb 0x79, 0x00, 0x14, 0x49, 0x64 ;9eda
--
-;9edf ;9ee3 = 
-; out (c),a  [ED, t=4]
-	defb 0x79, 0x40, 0x47, 0x21, 0x2c ;9edf
--
-;9ee4 ;9ee8 = 
-; bit 7,c  [CB, t=12]
-	defb 0x79, 0x80, 0x22, 0x41, 0x68 ;9ee4
--
-;9ee9 ;9eed = 
-; ld a,d  [t=8]
-	defb 0x7a, 0x00, 0x14, 0x49, 0x84 ;9ee9
--
-;9eee ;9ef2 = 
-; adc hl,sp  [ED, t=4]
-	defb 0x7a, 0x40, 0x1c, 0xc4, 0x6f ;9eee
--
-;9ef3 ;9ef7 = 
-; bit 7,d  [CB, t=15]
-	defb 0x7a, 0x80, 0x22, 0x41, 0x88 ;9ef3
--
-;9ef8 ;9efc = 
-; ld a,e  [t=8]
-	defb 0x7b, 0x00, 0x14, 0x49, 0xa4 ;9ef8
--
-;9efd ;9f01 = 
-; ld sp,(N)  [op. type: NN, ED, t=4]
-	defb 0x7b, 0x42, 0x15, 0x1d, 0xb4 ;9efd
--
-;9f02 ;9f06 = 
-; bit 7,e  [CB, t=20]
-	defb 0x7b, 0x80, 0x22, 0x41, 0xa8 ;9f02
--
-;9f07 ;9f0b = 
-; ld a,h  [t=8]
-	defb 0x7c, 0x00, 0x14, 0x49, 0xc4 ;9f07
--
-;9f0c ;9f10 = 
-; ld a,hx  [DD, t=4]
-	defb 0x7c, 0x20, 0x14, 0x4b, 0x28 ;9f0c
--
-;9f11 ;9f15 = 
-; bit 7,h  [CB, t=8]
-	defb 0x7c, 0x80, 0x22, 0x41, 0xc8 ;9f11
--
-;9f16 ;9f1a = 
-; ld a,l  [t=8]
-	defb 0x7d, 0x00, 0x14, 0x4a, 0x04 ;9f16
--
-;9f1b ;9f1f = 
-; ld a,lx  [DD, t=4]
-	defb 0x7d, 0x20, 0x14, 0x4b, 0xa8 ;9f1b
--
-;9f20 ;9f24 = 
-; bit 7,l  [CB, t=8]
-	defb 0x7d, 0x80, 0x22, 0x42, 0x08 ;9f20
--
-;9f25 ;9f29 = 
-; ld a,(hl)  [t=8]
-	defb 0x7e, 0x00, 0x14, 0x4d, 0x07 ;9f25
--
-;9f2a ;9f2e = 
-; ld a,(ix+d)  [op. type: (ix+d), DD, t=7]
-	defb 0x7e, 0x24, 0x14, 0x4d, 0xd3 ;9f2a
--
-;9f2f ;9f33 = 
-; bit 7,(hl)  [CB, t=19]
-	defb 0x7e, 0x80, 0x22, 0x45, 0x0c ;9f2f
--
-;9f34 ;9f38 = 
-; bit 7,(ix+d)  [op. type: (ix+d), CB, DD, t=12]
-	defb 0x7e, 0xa4, 0x22, 0x45, 0xd4 ;9f34
--
-;9f39 ;9f3d = 
-; ld a,a  [t=20]
-	defb 0x7f, 0x00, 0x14, 0x49, 0x24 ;9f39
--
-;9f3e ;9f42 = 
-; bit 7,a  [CB, t=4]
-	defb 0x7f, 0x80, 0x22, 0x41, 0x28 ;9f3e
--
-;9f43 ;9f47 = 
-; add a,b  [t=8]
-	defb 0x80, 0x00, 0x1e, 0x49, 0x44 ;9f43
--
-;9f48 ;9f4c = 
-; res 0,b  [CB, t=4]
-	defb 0x80, 0x80, 0x4c, 0x09, 0x48 ;9f48
--
-;9f4d ;9f51 = 
-; add a,c  [t=8]
-	defb 0x81, 0x00, 0x1e, 0x49, 0x64 ;9f4d
--
-;9f52 ;9f56 = 
-; res 0,c  [CB, t=4]
-	defb 0x81, 0x80, 0x4c, 0x09, 0x68 ;9f52
--
-;9f57 ;9f5b = 
-; add a,d  [t=8]
-	defb 0x82, 0x00, 0x1e, 0x49, 0x84 ;9f57
--
-;9f5c ;9f60 = 
-; res 0,d  [CB, t=4]
-	defb 0x82, 0x80, 0x4c, 0x09, 0x88 ;9f5c
--
-;9f61 ;9f65 = 
-; add a,e  [t=8]
-	defb 0x83, 0x00, 0x1e, 0x49, 0xa4 ;9f61
--
-;9f66 ;9f6a = 
-; res 0,e  [CB, t=4]
-	defb 0x83, 0x80, 0x4c, 0x09, 0xa8 ;9f66
--
-;9f6b ;9f6f = 
-; add a,h  [t=8]
-	defb 0x84, 0x00, 0x1e, 0x49, 0xc4 ;9f6b
--
-;9f70 ;9f74 = 
-; add a,hx  [DD, t=4]
-	defb 0x84, 0x20, 0x1e, 0x4b, 0x28 ;9f70
--
-;9f75 ;9f79 = 
-; res 0,h  [CB, t=8]
-	defb 0x84, 0x80, 0x4c, 0x09, 0xc8 ;9f75
--
-;9f7a ;9f7e = 
-; add a,l  [t=8]
-	defb 0x85, 0x00, 0x1e, 0x4a, 0x04 ;9f7a
--
-;9f7f ;9f83 = 
-; add a,lx  [DD, t=4]
-	defb 0x85, 0x20, 0x1e, 0x4b, 0xa8 ;9f7f
--
-;9f84 ;9f88 = 
-; res 0,l  [CB, t=8]
-	defb 0x85, 0x80, 0x4c, 0x0a, 0x08 ;9f84
--
-;9f89 ;9f8d = 
-; add a,(hl)  [t=8]
-	defb 0x86, 0x00, 0x1e, 0x4d, 0x07 ;9f89
--
-;9f8e ;9f92 = 
-; add a,(ix+d)  [op. type: (ix+d), DD, t=7]
-	defb 0x86, 0x24, 0x1e, 0x4d, 0xd3 ;9f8e
--
-;9f93 ;9f97 = 
-; res 0,(hl)  [CB, t=19]
-	defb 0x86, 0x80, 0x4c, 0x0d, 0x0f ;9f93
--
-;9f98 ;9f9c = 
-; res 0,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-	defb 0x86, 0xa4, 0x4c, 0x0d, 0xd7 ;9f98
--
-;9f9d ;9fa1 = 
-; add a,a  [t=23]
-	defb 0x87, 0x00, 0x1e, 0x49, 0x24 ;9f9d
--
-;9fa2 ;9fa6 = 
-; res 0,a  [CB, t=4]
-	defb 0x87, 0x80, 0x4c, 0x09, 0x28 ;9fa2
--
-;9fa7 ;9fab = 
-; adc a,b  [t=8]
-	defb 0x88, 0x00, 0x1c, 0x49, 0x44 ;9fa7
--
-;9fac ;9fb0 = 
-; res 1,b  [CB, t=4]
-	defb 0x88, 0x80, 0x4c, 0x11, 0x48 ;9fac
--
-;9fb1 ;9fb5 = 
-; adc a,c  [t=8]
-	defb 0x89, 0x00, 0x1c, 0x49, 0x64 ;9fb1
--
-;9fb6 ;9fba = 
-; res 1,c  [CB, t=4]
-	defb 0x89, 0x80, 0x4c, 0x11, 0x68 ;9fb6
--
-;9fbb ;9fbf = 
-; adc a,d  [t=8]
-	defb 0x8a, 0x00, 0x1c, 0x49, 0x84 ;9fbb
--
-;9fc0 ;9fc4 = 
-; res 1,d  [CB, t=4]
-	defb 0x8a, 0x80, 0x4c, 0x11, 0x88 ;9fc0
--
-;9fc5 ;9fc9 = 
-; adc a,e  [t=8]
-	defb 0x8b, 0x00, 0x1c, 0x49, 0xa4 ;9fc5
--
-;9fca ;9fce = 
-; res 1,e  [CB, t=4]
-	defb 0x8b, 0x80, 0x4c, 0x11, 0xa8 ;9fca
--
-;9fcf ;9fd3 = 
-; adc a,h  [t=8]
-	defb 0x8c, 0x00, 0x1c, 0x49, 0xc4 ;9fcf
--
-;9fd4 ;9fd8 = 
-; adc a,hx  [DD, t=4]
-	defb 0x8c, 0x20, 0x1c, 0x4b, 0x28 ;9fd4
--
-;9fd9 ;9fdd = 
-; res 1,h  [CB, t=8]
-	defb 0x8c, 0x80, 0x4c, 0x11, 0xc8 ;9fd9
--
-;9fde ;9fe2 = 
-; adc a,l  [t=8]
-	defb 0x8d, 0x00, 0x1c, 0x4a, 0x04 ;9fde
--
-;9fe3 ;9fe7 = 
-; adc a,lx  [DD, t=4]
-	defb 0x8d, 0x20, 0x1c, 0x4b, 0xa8 ;9fe3
--
-;9fe8 ;9fec = 
-; res 1,l  [CB, t=8]
-	defb 0x8d, 0x80, 0x4c, 0x12, 0x08 ;9fe8
--
-;9fed ;9ff1 = 
-; adc a,(hl)  [t=8]
-	defb 0x8e, 0x00, 0x1c, 0x4d, 0x07 ;9fed
--
-;9ff2 ;9ff6 = 
-; adc a,(ix+d)  [op. type: (ix+d), DD, t=7]
-	defb 0x8e, 0x24, 0x1c, 0x4d, 0xd3 ;9ff2
--
-;9ff7 ;9ffb = 
-; res 1,(hl)  [CB, t=19]
-	defb 0x8e, 0x80, 0x4c, 0x15, 0x0f ;9ff7
--
-;9ffc ;a000 = 
-; res 1,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-	defb 0x8e, 0xa4, 0x4c, 0x15, 0xd7 ;9ffc
--
-;a001 ;a005 = 
-; adc a,a  [t=23]
-	defb 0x8f, 0x00, 0x1c, 0x49, 0x24 ;a001
--
-;a006 ;a00a = 
-; res 1,a  [CB, t=4]
-	defb 0x8f, 0x80, 0x4c, 0x11, 0x28 ;a006
--
-;a00b ;a00f = 
-; sub b  [t=8]
-	defb 0x90, 0x00, 0x6a, 0x50, 0x04 ;a00b
--
-;a010 ;a014 = 
-; res 2,b  [CB, t=4]
-	defb 0x90, 0x80, 0x4c, 0x19, 0x48 ;a010
--
-;a015 ;a019 = 
-; sub c  [t=8]
-	defb 0x91, 0x00, 0x6a, 0x58, 0x04 ;a015
--
-;a01a ;a01e = 
-; res 2,c  [CB, t=4]
-	defb 0x91, 0x80, 0x4c, 0x19, 0x68 ;a01a
--
-;a01f ;a023 = 
-; sub d  [t=8]
-	defb 0x92, 0x00, 0x6a, 0x60, 0x04 ;a01f
--
-;a024 ;a028 = 
-; res 2,d  [CB, t=4]
-	defb 0x92, 0x80, 0x4c, 0x19, 0x88 ;a024
--
-;a029 ;a02d = 
-; sub e  [t=8]
-	defb 0x93, 0x00, 0x6a, 0x68, 0x04 ;a029
--
-;a02e ;a032 = 
-; res 2,e  [CB, t=4]
-	defb 0x93, 0x80, 0x4c, 0x19, 0xa8 ;a02e
--
-;a033 ;a037 = 
-; sub h  [t=8]
-	defb 0x94, 0x00, 0x6a, 0x70, 0x04 ;a033
--
-;a038 ;a03c = 
-; sub hx  [DD, t=4]
-	defb 0x94, 0x20, 0x6a, 0xc8, 0x08 ;a038
--
-;a03d ;a041 = 
-; res 2,h  [CB, t=8]
-	defb 0x94, 0x80, 0x4c, 0x19, 0xc8 ;a03d
--
-;a042 ;a046 = 
-; sub l  [t=8]
-	defb 0x95, 0x00, 0x6a, 0x80, 0x04 ;a042
--
-;a047 ;a04b = 
-; sub lx  [DD, t=4]
-	defb 0x95, 0x20, 0x6a, 0xe8, 0x08 ;a047
--
-;a04c ;a050 = 
-; res 2,l  [CB, t=8]
-	defb 0x95, 0x80, 0x4c, 0x1a, 0x08 ;a04c
--
-;a051 ;a055 = 
-; sub (hl)  [t=8]
-	defb 0x96, 0x00, 0x6b, 0x40, 0x07 ;a051
--
-;a056 ;a05a = 
-; sub (ix+d)  [op. type: (ix+d), DD, t=7]
-	defb 0x96, 0x24, 0x6b, 0x70, 0x13 ;a056
--
-;a05b ;a05f = 
-; res 2,(hl)  [CB, t=19]
-	defb 0x96, 0x80, 0x4c, 0x1d, 0x0f ;a05b
--
-;a060 ;a064 = 
-; res 2,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-	defb 0x96, 0xa4, 0x4c, 0x1d, 0xd7 ;a060
--
-;a065 ;a069 = 
-; sub a  [t=23]
-	defb 0x97, 0x00, 0x6a, 0x48, 0x04 ;a065
--
-;a06a ;a06e = 
-; res 2,a  [CB, t=4]
-	defb 0x97, 0x80, 0x4c, 0x19, 0x28 ;a06a
--
-;a06f ;a073 = 
-; sbc a,b  [t=8]
-	defb 0x98, 0x00, 0x5e, 0x49, 0x44 ;a06f
--
-;a074 ;a078 = 
-; res 3,b  [CB, t=4]
-	defb 0x98, 0x80, 0x4c, 0x21, 0x48 ;a074
--
-;a079 ;a07d = 
-; sbc a,c  [t=8]
-	defb 0x99, 0x00, 0x5e, 0x49, 0x64 ;a079
--
-;a07e ;a082 = 
-; res 3,c  [CB, t=4]
-	defb 0x99, 0x80, 0x4c, 0x21, 0x68 ;a07e
--
-;a083 ;a087 = 
-; sbc a,d  [t=8]
-	defb 0x9a, 0x00, 0x5e, 0x49, 0x84 ;a083
--
-;a088 ;a08c = 
-; res 3,d  [CB, t=4]
-	defb 0x9a, 0x80, 0x4c, 0x21, 0x88 ;a088
--
-;a08d ;a091 = 
-; sbc a,e  [t=8]
-	defb 0x9b, 0x00, 0x5e, 0x49, 0xa4 ;a08d
--
-;a092 ;a096 = 
-; res 3,e  [CB, t=4]
-	defb 0x9b, 0x80, 0x4c, 0x21, 0xa8 ;a092
--
-;a097 ;a09b = 
-; sbc a,h  [t=8]
-	defb 0x9c, 0x00, 0x5e, 0x49, 0xc4 ;a097
--
-;a09c ;a0a0 = 
-; sbc a,hx  [DD, t=4]
-	defb 0x9c, 0x20, 0x5e, 0x4b, 0x28 ;a09c
--
-;a0a1 ;a0a5 = 
-; res 3,h  [CB, t=8]
-	defb 0x9c, 0x80, 0x4c, 0x21, 0xc8 ;a0a1
--
-;a0a6 ;a0aa = 
-; sbc a,l  [t=8]
-	defb 0x9d, 0x00, 0x5e, 0x4a, 0x04 ;a0a6
--
-;a0ab ;a0af = 
-; sbc a,lx  [DD, t=4]
-	defb 0x9d, 0x20, 0x5e, 0x4b, 0xa8 ;a0ab
--
-;a0b0 ;a0b4 = 
-; res 3,l  [CB, t=8]
-	defb 0x9d, 0x80, 0x4c, 0x22, 0x08 ;a0b0
--
-;a0b5 ;a0b9 = 
-; sbc a,(hl)  [t=8]
-	defb 0x9e, 0x00, 0x5e, 0x4d, 0x07 ;a0b5
--
-;a0ba ;a0be = 
-; sbc a,(ix+d)  [op. type: (ix+d), DD, t=7]
-	defb 0x9e, 0x24, 0x5e, 0x4d, 0xd3 ;a0ba
--
-;a0bf ;a0c3 = 
-; res 3,(hl)  [CB, t=19]
-	defb 0x9e, 0x80, 0x4c, 0x25, 0x0f ;a0bf
--
-;a0c4 ;a0c8 = 
-; res 3,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-	defb 0x9e, 0xa4, 0x4c, 0x25, 0xd7 ;a0c4
--
-;a0c9 ;a0cd = 
-; sbc a,a  [t=23]
-	defb 0x9f, 0x00, 0x5e, 0x49, 0x24 ;a0c9
--
-;a0ce ;a0d2 = 
-; res 3,a  [CB, t=4]
-	defb 0x9f, 0x80, 0x4c, 0x21, 0x28 ;a0ce
--
-;a0d3 ;a0d7 = 
-; and b  [t=8]
-	defb 0xa0, 0x00, 0x20, 0x50, 0x04 ;a0d3
--
-;a0d8 ;a0dc = 
-; ldi   [ED, t=4]
-	defb 0xa0, 0x40, 0x3e, 0x00, 0x10 ;a0d8
--
-;a0dd ;a0e1 = 
-; res 4,b  [CB, t=16]
-	defb 0xa0, 0x80, 0x4c, 0x29, 0x48 ;a0dd
--
-;a0e2 ;a0e6 = 
-; and c  [t=8]
-	defb 0xa1, 0x00, 0x20, 0x58, 0x04 ;a0e2
--
-;a0e7 ;a0eb = 
-; cpi   [ED, t=4]
-	defb 0xa1, 0x40, 0x28, 0x00, 0x10 ;a0e7
--
-;a0ec ;a0f0 = 
-; res 4,c  [CB, t=16]
-	defb 0xa1, 0x80, 0x4c, 0x29, 0x68 ;a0ec
--
-;a0f1 ;a0f5 = 
-; and d  [t=8]
-	defb 0xa2, 0x00, 0x20, 0x60, 0x04 ;a0f1
--
-;a0f6 ;a0fa = 
-; ini   [ED, t=4]
-	defb 0xa2, 0x40, 0x3a, 0x00, 0x10 ;a0f6
--
-;a0fb ;a0ff = 
-; res 4,d  [CB, t=16]
-	defb 0xa2, 0x80, 0x4c, 0x29, 0x88 ;a0fb
--
-;a100 ;a104 = 
-; and e  [t=8]
-	defb 0xa3, 0x00, 0x20, 0x68, 0x04 ;a100
--
-;a105 ;a109 = 
-; outi   [ED, t=4]
-	defb 0xa3, 0x40, 0x8e, 0x00, 0x10 ;a105
--
-;a10a ;a10e = 
-; res 4,e  [CB, t=16]
-	defb 0xa3, 0x80, 0x4c, 0x29, 0xa8 ;a10a
--
-;a10f ;a113 = 
-; and h  [t=8]
-	defb 0xa4, 0x00, 0x20, 0x70, 0x04 ;a10f
--
-;a114 ;a118 = 
-; and hx  [DD, t=4]
-	defb 0xa4, 0x20, 0x20, 0xc8, 0x08 ;a114
--
-;a119 ;a11d = 
-; res 4,h  [CB, t=8]
-	defb 0xa4, 0x80, 0x4c, 0x29, 0xc8 ;a119
--
-;a11e ;a122 = 
-; and l  [t=8]
-	defb 0xa5, 0x00, 0x20, 0x80, 0x04 ;a11e
--
-;a123 ;a127 = 
-; and lx  [DD, t=4]
-	defb 0xa5, 0x20, 0x20, 0xe8, 0x08 ;a123
--
-;a128 ;a12c = 
-; res 4,l  [CB, t=8]
-	defb 0xa5, 0x80, 0x4c, 0x2a, 0x08 ;a128
--
-;a12d ;a131 = 
-; and (hl)  [t=8]
-	defb 0xa6, 0x00, 0x21, 0x40, 0x07 ;a12d
--
-;a132 ;a136 = 
-; and (ix+d)  [op. type: (ix+d), DD, t=7]
-	defb 0xa6, 0x24, 0x21, 0x70, 0x13 ;a132
--
-;a137 ;a13b = 
-; res 4,(hl)  [CB, t=19]
-	defb 0xa6, 0x80, 0x4c, 0x2d, 0x0f ;a137
--
-;a13c ;a140 = 
-; res 4,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-	defb 0xa6, 0xa4, 0x4c, 0x2d, 0xd7 ;a13c
--
-;a141 ;a145 = 
-; and a  [t=23]
-	defb 0xa7, 0x00, 0x20, 0x48, 0x04 ;a141
--
-;a146 ;a14a = 
-; res 4,a  [CB, t=4]
-	defb 0xa7, 0x80, 0x4c, 0x29, 0x28 ;a146
--
-;a14b ;a14f = 
-; xor b  [t=8]
-	defb 0xa8, 0x00, 0x6c, 0x50, 0x04 ;a14b
--
-;a150 ;a154 = 
-; ldd   [ED, t=4]
-	defb 0xa8, 0x40, 0x3c, 0x00, 0x10 ;a150
--
-;a155 ;a159 = 
-; res 5,b  [CB, t=16]
-	defb 0xa8, 0x80, 0x4c, 0x31, 0x48 ;a155
--
-;a15a ;a15e = 
-; xor c  [t=8]
-	defb 0xa9, 0x00, 0x6c, 0x58, 0x04 ;a15a
--
-;a15f ;a163 = 
-; cpd   [ED, t=4]
-	defb 0xa9, 0x40, 0x26, 0x00, 0x10 ;a15f
--
-;a164 ;a168 = 
-; res 5,c  [CB, t=16]
-	defb 0xa9, 0x80, 0x4c, 0x31, 0x68 ;a164
--
-;a169 ;a16d = 
-; xor d  [t=8]
-	defb 0xaa, 0x00, 0x6c, 0x60, 0x04 ;a169
--
-;a16e ;a172 = 
-; ind   [ED, t=4]
-	defb 0xaa, 0x40, 0x38, 0x00, 0x10 ;a16e
--
-;a173 ;a177 = 
-; res 5,d  [CB, t=16]
-	defb 0xaa, 0x80, 0x4c, 0x31, 0x88 ;a173
--
-;a178 ;a17c = 
-; xor e  [t=8]
-	defb 0xab, 0x00, 0x6c, 0x68, 0x04 ;a178
--
-;a17d ;a181 = 
-; outd   [ED, t=4]
-	defb 0xab, 0x40, 0x8c, 0x00, 0x10 ;a17d
--
-;a182 ;a186 = 
-; res 5,e  [CB, t=16]
-	defb 0xab, 0x80, 0x4c, 0x31, 0xa8 ;a182
--
-;a187 ;a18b = 
-; xor h  [t=8]
-	defb 0xac, 0x00, 0x6c, 0x70, 0x04 ;a187
--
-;a18c ;a190 = 
-; xor hx  [DD, t=4]
-	defb 0xac, 0x20, 0x6c, 0xc8, 0x08 ;a18c
--
-;a191 ;a195 = 
-; res 5,h  [CB, t=8]
-	defb 0xac, 0x80, 0x4c, 0x31, 0xc8 ;a191
--
-;a196 ;a19a = 
-; xor l  [t=8]
-	defb 0xad, 0x00, 0x6c, 0x80, 0x04 ;a196
--
-;a19b ;a19f = 
-; xor lx  [DD, t=4]
-	defb 0xad, 0x20, 0x6c, 0xe8, 0x08 ;a19b
--
-;a1a0 ;a1a4 = 
-; res 5,l  [CB, t=8]
-	defb 0xad, 0x80, 0x4c, 0x32, 0x08 ;a1a0
--
-;a1a5 ;a1a9 = 
-; xor (hl)  [t=8]
-	defb 0xae, 0x00, 0x6d, 0x40, 0x07 ;a1a5
--
-;a1aa ;a1ae = 
-; xor (ix+d)  [op. type: (ix+d), DD, t=7]
-	defb 0xae, 0x24, 0x6d, 0x70, 0x13 ;a1aa
--
-;a1af ;a1b3 = 
-; res 5,(hl)  [CB, t=19]
-	defb 0xae, 0x80, 0x4c, 0x35, 0x0f ;a1af
--
-;a1b4 ;a1b8 = 
-; res 5,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-	defb 0xae, 0xa4, 0x4c, 0x35, 0xd7 ;a1b4
--
-;a1b9 ;a1bd = 
-; xor a  [t=23]
-	defb 0xaf, 0x00, 0x6c, 0x48, 0x04 ;a1b9
--
-;a1be ;a1c2 = 
-; res 5,a  [CB, t=4]
-	defb 0xaf, 0x80, 0x4c, 0x31, 0x28 ;a1be
--
-;a1c3 ;a1c7 = 
-; or b  [t=8]
-	defb 0xb0, 0x00, 0x16, 0x50, 0x04 ;a1c3
--
-;a1c8 ;a1cc = 
-; ldir   [ED, t=4]
-	defb 0xb0, 0x40, 0x86, 0x00, 0x15 ;a1c8
--
-;a1cd ;a1d1 = 
-; res 6,b  [CB, t=21]
-	defb 0xb0, 0x80, 0x4c, 0x39, 0x48 ;a1cd
--
-;a1d2 ;a1d6 = 
-; or c  [t=8]
-	defb 0xb1, 0x00, 0x16, 0x58, 0x04 ;a1d2
--
-;a1d7 ;a1db = 
-; cpir   [ED, t=4]
-	defb 0xb1, 0x40, 0x72, 0x00, 0x15 ;a1d7
--
-;a1dc ;a1e0 = 
-; res 6,c  [CB, t=21]
-	defb 0xb1, 0x80, 0x4c, 0x39, 0x68 ;a1dc
--
-;a1e1 ;a1e5 = 
-; or d  [t=8]
-	defb 0xb2, 0x00, 0x16, 0x60, 0x04 ;a1e1
--
-;a1e6 ;a1ea = 
-; inir   [ED, t=4]
-	defb 0xb2, 0x40, 0x82, 0x00, 0x15 ;a1e6
--
-;a1eb ;a1ef = 
-; res 6,d  [CB, t=21]
-	defb 0xb2, 0x80, 0x4c, 0x39, 0x88 ;a1eb
--
-;a1f0 ;a1f4 = 
-; or e  [t=8]
-	defb 0xb3, 0x00, 0x16, 0x68, 0x04 ;a1f0
--
-;a1f5 ;a1f9 = 
-; otir   [ED, t=4]
-	defb 0xb3, 0x40, 0x8a, 0x00, 0x15 ;a1f5
--
-;a1fa ;a1fe = 
-; res 6,e  [CB, t=21]
-	defb 0xb3, 0x80, 0x4c, 0x39, 0xa8 ;a1fa
--
-;a1ff ;a203 = 
-; or h  [t=8]
-	defb 0xb4, 0x00, 0x16, 0x70, 0x04 ;a1ff
--
-;a204 ;a208 = 
-; or hx  [DD, t=4]
-	defb 0xb4, 0x20, 0x16, 0xc8, 0x08 ;a204
--
-;a209 ;a20d = 
-; res 6,h  [CB, t=8]
-	defb 0xb4, 0x80, 0x4c, 0x39, 0xc8 ;a209
--
-;a20e ;a212 = 
-; or l  [t=8]
-	defb 0xb5, 0x00, 0x16, 0x80, 0x04 ;a20e
--
-;a213 ;a217 = 
-; or lx  [DD, t=4]
-	defb 0xb5, 0x20, 0x16, 0xe8, 0x08 ;a213
--
-;a218 ;a21c = 
-; res 6,l  [CB, t=8]
-	defb 0xb5, 0x80, 0x4c, 0x3a, 0x08 ;a218
--
-;a21d ;a221 = 
-; or (hl)  [t=8]
-	defb 0xb6, 0x00, 0x17, 0x40, 0x07 ;a21d
--
-;a222 ;a226 = 
-; or (ix+d)  [op. type: (ix+d), DD, t=7]
-	defb 0xb6, 0x24, 0x17, 0x70, 0x13 ;a222
--
-;a227 ;a22b = 
-; res 6,(hl)  [CB, t=19]
-	defb 0xb6, 0x80, 0x4c, 0x3d, 0x0f ;a227
--
-;a22c ;a230 = 
-; res 6,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-	defb 0xb6, 0xa4, 0x4c, 0x3d, 0xd7 ;a22c
--
-;a231 ;a235 = 
-; or a  [t=23]
-	defb 0xb7, 0x00, 0x16, 0x48, 0x04 ;a231
--
-;a236 ;a23a = 
-; res 6,a  [CB, t=4]
-	defb 0xb7, 0x80, 0x4c, 0x39, 0x28 ;a236
--
-;a23b ;a23f = 
-; cp b  [t=8]
-	defb 0xb8, 0x00, 0x04, 0x50, 0x04 ;a23b
--
-;a240 ;a244 = 
-; lddr   [ED, t=4]
-	defb 0xb8, 0x40, 0x84, 0x00, 0x15 ;a240
--
-;a245 ;a249 = 
-; res 7,b  [CB, t=21]
-	defb 0xb8, 0x80, 0x4c, 0x41, 0x48 ;a245
--
-;a24a ;a24e = 
-; cp c  [t=8]
-	defb 0xb9, 0x00, 0x04, 0x58, 0x04 ;a24a
--
-;a24f ;a253 = 
-; cpdr   [ED, t=4]
-	defb 0xb9, 0x40, 0x70, 0x00, 0x15 ;a24f
--
-;a254 ;a258 = 
-; res 7,c  [CB, t=21]
-	defb 0xb9, 0x80, 0x4c, 0x41, 0x68 ;a254
--
-;a259 ;a25d = 
-; cp d  [t=8]
-	defb 0xba, 0x00, 0x04, 0x60, 0x04 ;a259
--
-;a25e ;a262 = 
-; indr   [ED, t=4]
-	defb 0xba, 0x40, 0x80, 0x00, 0x15 ;a25e
--
-;a263 ;a267 = 
-; res 7,d  [CB, t=21]
-	defb 0xba, 0x80, 0x4c, 0x41, 0x88 ;a263
--
-;a268 ;a26c = 
-; cp e  [t=8]
-	defb 0xbb, 0x00, 0x04, 0x68, 0x04 ;a268
--
-;a26d ;a271 = 
-; otdr   [ED, t=4]
-	defb 0xbb, 0x40, 0x88, 0x00, 0x15 ;a26d
--
-;a272 ;a276 = 
-; res 7,e  [CB, t=21]
-	defb 0xbb, 0x80, 0x4c, 0x41, 0xa8 ;a272
--
-;a277 ;a27b = 
-; cp h  [t=8]
-	defb 0xbc, 0x00, 0x04, 0x70, 0x04 ;a277
--
-;a27c ;a280 = 
-; cp hx  [DD, t=4]
-	defb 0xbc, 0x20, 0x04, 0xc8, 0x08 ;a27c
--
-;a281 ;a285 = 
-; res 7,h  [CB, t=8]
-	defb 0xbc, 0x80, 0x4c, 0x41, 0xc8 ;a281
--
-;a286 ;a28a = 
-; cp l  [t=8]
-	defb 0xbd, 0x00, 0x04, 0x80, 0x04 ;a286
--
-;a28b ;a28f = 
-; cp lx  [DD, t=4]
-	defb 0xbd, 0x20, 0x04, 0xe8, 0x08 ;a28b
--
-;a290 ;a294 = 
-; res 7,l  [CB, t=8]
-	defb 0xbd, 0x80, 0x4c, 0x42, 0x08 ;a290
--
-;a295 ;a299 = 
-; cp (hl)  [t=8]
-	defb 0xbe, 0x00, 0x05, 0x40, 0x07 ;a295
--
-;a29a ;a29e = 
-; cp (ix+d)  [op. type: (ix+d), DD, t=7]
-	defb 0xbe, 0x24, 0x05, 0x70, 0x13 ;a29a
--
-;a29f ;a2a3 = 
-; res 7,(hl)  [CB, t=19]
-	defb 0xbe, 0x80, 0x4c, 0x45, 0x0f ;a29f
--
-;a2a4 ;a2a8 = 
-; res 7,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-	defb 0xbe, 0xa4, 0x4c, 0x45, 0xd7 ;a2a4
--
-;a2a9 ;a2ad = 
-; cp a  [t=23]
-	defb 0xbf, 0x00, 0x04, 0x48, 0x04 ;a2a9
--
-;a2ae ;a2b2 = 
-; res 7,a  [CB, t=4]
-	defb 0xbf, 0x80, 0x4c, 0x41, 0x28 ;a2ae
--
-;a2b3 ;a2b7 = 
-; ret nz  [t=8]
-	defb 0xc0, 0x00, 0x4f, 0x00, 0x05 ;a2b3
--
-;a2b8 ;a2bc = 
-; set 0,b  [CB, t=5]
-	defb 0xc0, 0x80, 0x62, 0x09, 0x48 ;a2b8
--
-;a2bd ;a2c1 = 
-; pop bc  [t=8]
-	defb 0xc1, 0x00, 0x48, 0xb0, 0x0a ;a2bd
--
-;a2c2 ;a2c6 = 
-; set 0,c  [CB, t=10]
-	defb 0xc1, 0x80, 0x62, 0x09, 0x68 ;a2c2
--
-;a2c7 ;a2cb = 
-; jp nz,N  [op. type: NN, t=8]
-	defb 0xc2, 0x02, 0x11, 0x05, 0x8a ;a2c7
--
-;a2cc ;a2d0 = 
-; set 0,d  [CB, t=10]
-	defb 0xc2, 0x80, 0x62, 0x09, 0x88 ;a2cc
--
-;a2d1 ;a2d5 = 
-; jp N  [op. type: NN, t=8]
-	defb 0xc3, 0x02, 0x11, 0x60, 0x0a ;a2d1
--
-;a2d6 ;a2da = 
-; set 0,e  [CB, t=10]
-	defb 0xc3, 0x80, 0x62, 0x09, 0xa8 ;a2d6
--
-;a2db ;a2df = 
-; call nz,N  [op. type: NN, t=8]
-	defb 0xc4, 0x02, 0x6f, 0x05, 0x89 ;a2db
--
-;a2e0 ;a2e4 = 
-; set 0,h  [CB, t=9]
-	defb 0xc4, 0x80, 0x62, 0x09, 0xc8 ;a2e0
--
-;a2e5 ;a2e9 = 
-; push bc  [t=8]
-	defb 0xc5, 0x00, 0x90, 0xb0, 0x0b ;a2e5
--
-;a2ea ;a2ee = 
-; set 0,l  [CB, t=11]
-	defb 0xc5, 0x80, 0x62, 0x0a, 0x08 ;a2ea
--
-;a2ef ;a2f3 = 
-; add a,N  [op. type: N, t=8]
-	defb 0xc6, 0x01, 0x1e, 0x4d, 0x87 ;a2ef
--
-;a2f4 ;a2f8 = 
-; set 0,(hl)  [CB, t=7]
-	defb 0xc6, 0x80, 0x62, 0x0d, 0x0f ;a2f4
--
-;a2f9 ;a2fd = 
-; set 0,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-	defb 0xc6, 0xa4, 0x62, 0x0d, 0xd7 ;a2f9
--
-;a2fe ;a302 = 
-; rst N  [op. type: rst p, t=23]
-	defb 0xc7, 0x06, 0x5d, 0x60, 0x0b ;a2fe
--
-;a303 ;a307 = 
-; set 0,a  [CB, t=11]
-	defb 0xc7, 0x80, 0x62, 0x09, 0x28 ;a303
--
-;a308 ;a30c = 
-; ret z  [t=8]
-	defb 0xc8, 0x00, 0x4e, 0xa0, 0x05 ;a308
--
-;a30d ;a311 = 
-; set 1,b  [CB, t=5]
-	defb 0xc8, 0x80, 0x62, 0x11, 0x48 ;a30d
--
-;a312 ;a316 = 
-; ret   [t=8]
-	defb 0xc9, 0x00, 0x4e, 0x00, 0x05 ;a312
--
-;a317 ;a31b = 
-; set 1,c  [CB, t=5]
-	defb 0xc9, 0x80, 0x62, 0x11, 0x68 ;a317
--
-;a31c ;a320 = 
-; jp z,N  [op. type: NN, t=8]
-	defb 0xca, 0x02, 0x10, 0xa5, 0x8a ;a31c
--
-;a321 ;a325 = 
-; set 1,d  [CB, t=10]
-	defb 0xca, 0x80, 0x62, 0x11, 0x88 ;a321
--
-;a326 ;a32a = 
-; set 1,e  [CB, t=8]
-	defb 0xcb, 0x80, 0x62, 0x11, 0xa8 ;a326
--
-;a32b ;a32f = 
-; call z,N  [op. type: NN, t=8]
-	defb 0xcc, 0x02, 0x6e, 0xa5, 0x89 ;a32b
--
-;a330 ;a334 = 
-; set 1,h  [CB, t=9]
-	defb 0xcc, 0x80, 0x62, 0x11, 0xc8 ;a330
--
-;a335 ;a339 = 
-; call N  [op. type: NN, t=8]
-	defb 0xcd, 0x02, 0x6f, 0x60, 0x09 ;a335
--
-;a33a ;a33e = 
-; set 1,l  [CB, t=9]
-	defb 0xcd, 0x80, 0x62, 0x12, 0x08 ;a33a
--
-;a33f ;a343 = 
-; adc a,N  [op. type: N, t=8]
-	defb 0xce, 0x01, 0x1c, 0x4d, 0x87 ;a33f
--
-;a344 ;a348 = 
-; set 1,(hl)  [CB, t=7]
-	defb 0xce, 0x80, 0x62, 0x15, 0x0f ;a344
--
-;a349 ;a34d = 
-; set 1,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-	defb 0xce, 0xa4, 0x62, 0x15, 0xd7 ;a349
--
-;a34e ;a352 = 
-; set 1,a  [CB, t=23]
-	defb 0xcf, 0x80, 0x62, 0x11, 0x28 ;a34e
--
-;a353 ;a357 = 
-; ret nc  [t=8]
-	defb 0xd0, 0x00, 0x4e, 0xf8, 0x05 ;a353
--
-;a358 ;a35c = 
-; set 2,b  [CB, t=5]
-	defb 0xd0, 0x80, 0x62, 0x19, 0x48 ;a358
--
-;a35d ;a361 = 
-; pop de  [t=8]
-	defb 0xd1, 0x00, 0x48, 0xb8, 0x0a ;a35d
--
-;a362 ;a366 = 
-; set 2,c  [CB, t=10]
-	defb 0xd1, 0x80, 0x62, 0x19, 0x68 ;a362
--
-;a367 ;a36b = 
-; jp nc,N  [op. type: NN, t=8]
-	defb 0xd2, 0x02, 0x10, 0xfd, 0x8a ;a367
--
-;a36c ;a370 = 
-; set 2,d  [CB, t=10]
-	defb 0xd2, 0x80, 0x62, 0x19, 0x88 ;a36c
--
-;a371 ;a375 = 
-; out (N),a  [op. type: N, t=8]
-	defb 0xd3, 0x01, 0x47, 0x69, 0x2b ;a371
--
-;a376 ;a37a = 
-; set 2,e  [CB, t=11]
-	defb 0xd3, 0x80, 0x62, 0x19, 0xa8 ;a376
--
-;a37b ;a37f = 
-; call nc,N  [op. type: NN, t=8]
-	defb 0xd4, 0x02, 0x6e, 0xfd, 0x89 ;a37b
--
-;a380 ;a384 = 
-; set 2,h  [CB, t=9]
-	defb 0xd4, 0x80, 0x62, 0x19, 0xc8 ;a380
--
-;a385 ;a389 = 
-; push de  [t=8]
-	defb 0xd5, 0x00, 0x90, 0xb8, 0x0b ;a385
--
-;a38a ;a38e = 
-; set 2,l  [CB, t=11]
-	defb 0xd5, 0x80, 0x62, 0x1a, 0x08 ;a38a
--
-;a38f ;a393 = 
-; sub N  [op. type: N, t=8]
-	defb 0xd6, 0x01, 0x6b, 0x60, 0x07 ;a38f
--
-;a394 ;a398 = 
-; set 2,(hl)  [CB, t=7]
-	defb 0xd6, 0x80, 0x62, 0x1d, 0x0f ;a394
--
-;a399 ;a39d = 
-; set 2,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-	defb 0xd6, 0xa4, 0x62, 0x1d, 0xd7 ;a399
--
-;a39e ;a3a2 = 
-; set 2,a  [CB, t=23]
-	defb 0xd7, 0x80, 0x62, 0x19, 0x28 ;a39e
--
-;a3a3 ;a3a7 = 
-; ret c  [t=8]
-	defb 0xd8, 0x00, 0x4e, 0x58, 0x05 ;a3a3
--
-;a3a8 ;a3ac = 
-; set 3,b  [CB, t=5]
-	defb 0xd8, 0x80, 0x62, 0x21, 0x48 ;a3a8
--
-;a3ad ;a3b1 = 
-; exx   [t=8]
-	defb 0xd9, 0x00, 0x34, 0x00, 0x04 ;a3ad
--
-;a3b2 ;a3b6 = 
-; set 3,c  [CB, t=4]
-	defb 0xd9, 0x80, 0x62, 0x21, 0x68 ;a3b2
--
-;a3b7 ;a3bb = 
-; jp c,N  [op. type: NN, t=8]
-	defb 0xda, 0x02, 0x10, 0x5d, 0x8a ;a3b7
--
-;a3bc ;a3c0 = 
-; set 3,d  [CB, t=10]
-	defb 0xda, 0x80, 0x62, 0x21, 0x88 ;a3bc
--
-;a3c1 ;a3c5 = 
-; in a,(N)  [op. type: N, t=8]
-	defb 0xdb, 0x01, 0x0e, 0x4d, 0xab ;a3c1
--
-;a3c6 ;a3ca = 
-; set 3,e  [CB, t=11]
-	defb 0xdb, 0x80, 0x62, 0x21, 0xa8 ;a3c6
--
-;a3cb ;a3cf = 
-; call c,N  [op. type: NN, t=8]
-	defb 0xdc, 0x02, 0x6e, 0x5d, 0x89 ;a3cb
--
-;a3d0 ;a3d4 = 
-; set 3,h  [CB, t=9]
-	defb 0xdc, 0x80, 0x62, 0x21, 0xc8 ;a3d0
--
-;a3d5 ;a3d9 = 
-; set 3,l  [CB, t=8]
-	defb 0xdd, 0x80, 0x62, 0x22, 0x08 ;a3d5
--
-;a3da ;a3de = 
-; sbc a,N  [op. type: N, t=8]
-	defb 0xde, 0x01, 0x5e, 0x4d, 0x87 ;a3da
--
-;a3df ;a3e3 = 
-; set 3,(hl)  [CB, t=7]
-	defb 0xde, 0x80, 0x62, 0x25, 0x0f ;a3df
--
-;a3e4 ;a3e8 = 
-; set 3,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-	defb 0xde, 0xa4, 0x62, 0x25, 0xd7 ;a3e4
--
-;a3e9 ;a3ed = 
-; set 3,a  [CB, t=23]
-	defb 0xdf, 0x80, 0x62, 0x21, 0x28 ;a3e9
--
-;a3ee ;a3f2 = 
-; ret po  [t=8]
-	defb 0xe0, 0x00, 0x4f, 0x10, 0x05 ;a3ee
--
-;a3f3 ;a3f7 = 
-; set 4,b  [CB, t=5]
-	defb 0xe0, 0x80, 0x62, 0x29, 0x48 ;a3f3
--
-;a3f8 ;a3fc = 
-; pop hl  [t=8]
-	defb 0xe1, 0x00, 0x48, 0xc0, 0x0a ;a3f8
--
-;a3fd ;a401 = 
-; pop ix  [DD, t=10]
-	defb 0xe1, 0x20, 0x48, 0xd8, 0x0e ;a3fd
--
-;a402 ;a406 = 
-; set 4,c  [CB, t=14]
-	defb 0xe1, 0x80, 0x62, 0x29, 0x68 ;a402
--
-;a407 ;a40b = 
-; jp po,N  [op. type: NN, t=8]
-	defb 0xe2, 0x02, 0x11, 0x15, 0x8a ;a407
--
-;a40c ;a410 = 
-; set 4,d  [CB, t=10]
-	defb 0xe2, 0x80, 0x62, 0x29, 0x88 ;a40c
--
-;a411 ;a415 = 
-; ex (sp),hl  [t=8]
-	defb 0xe3, 0x00, 0x0b, 0x5b, 0x13 ;a411
--
-;a416 ;a41a = 
-; ex (sp),ix  [DD, t=19]
-	defb 0xe3, 0x20, 0x0b, 0x5b, 0x77 ;a416
--
-;a41b ;a41f = 
-; set 4,e  [CB, t=23]
-	defb 0xe3, 0x80, 0x62, 0x29, 0xa8 ;a41b
--
-;a420 ;a424 = 
-; call po,N  [op. type: NN, t=8]
-	defb 0xe4, 0x02, 0x6f, 0x15, 0x89 ;a420
--
-;a425 ;a429 = 
-; set 4,h  [CB, t=9]
-	defb 0xe4, 0x80, 0x62, 0x29, 0xc8 ;a425
--
-;a42a ;a42e = 
-; push hl  [t=8]
-	defb 0xe5, 0x00, 0x90, 0xc0, 0x0b ;a42a
--
-;a42f ;a433 = 
-; push ix  [DD, t=11]
-	defb 0xe5, 0x20, 0x90, 0xd8, 0x0f ;a42f
--
-;a434 ;a438 = 
-; set 4,l  [CB, t=15]
-	defb 0xe5, 0x80, 0x62, 0x2a, 0x08 ;a434
--
-;a439 ;a43d = 
-; and N  [op. type: N, t=8]
-	defb 0xe6, 0x01, 0x21, 0x60, 0x07 ;a439
--
-;a43e ;a442 = 
-; set 4,(hl)  [CB, t=7]
-	defb 0xe6, 0x80, 0x62, 0x2d, 0x0f ;a43e
--
-;a443 ;a447 = 
-; set 4,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-	defb 0xe6, 0xa4, 0x62, 0x2d, 0xd7 ;a443
--
-;a448 ;a44c = 
-; set 4,a  [CB, t=23]
-	defb 0xe7, 0x80, 0x62, 0x29, 0x28 ;a448
--
-;a44d ;a451 = 
-; ret pe  [t=8]
-	defb 0xe8, 0x00, 0x4f, 0x08, 0x05 ;a44d
--
-;a452 ;a456 = 
-; set 5,b  [CB, t=5]
-	defb 0xe8, 0x80, 0x62, 0x31, 0x48 ;a452
--
-;a457 ;a45b = 
-; jp (hl)  [t=8]
-	defb 0xe9, 0x00, 0x11, 0x40, 0x04 ;a457
--
-;a45c ;a460 = 
-; jp (ix)  [DD, t=4]
-	defb 0xe9, 0x20, 0x11, 0x48, 0x08 ;a45c
--
-;a461 ;a465 = 
-; set 5,c  [CB, t=8]
-	defb 0xe9, 0x80, 0x62, 0x31, 0x68 ;a461
--
-;a466 ;a46a = 
-; jp pe,N  [op. type: NN, t=8]
-	defb 0xea, 0x02, 0x11, 0x0d, 0x8a ;a466
--
-;a46b ;a46f = 
-; set 5,d  [CB, t=10]
-	defb 0xea, 0x80, 0x62, 0x31, 0x88 ;a46b
--
-;a470 ;a474 = 
-; ex de,hl  [t=8]
-	defb 0xeb, 0x00, 0x0a, 0xbb, 0x04 ;a470
--
-;a475 ;a479 = 
-; set 5,e  [CB, t=4]
-	defb 0xeb, 0x80, 0x62, 0x31, 0xa8 ;a475
--
-;a47a ;a47e = 
-; call pe,N  [op. type: NN, t=8]
-	defb 0xec, 0x02, 0x6f, 0x0d, 0x89 ;a47a
--
-;a47f ;a483 = 
-; set 5,h  [CB, t=9]
-	defb 0xec, 0x80, 0x62, 0x31, 0xc8 ;a47f
--
-;a484 ;a488 = 
-; set 5,l  [CB, t=8]
-	defb 0xed, 0x80, 0x62, 0x32, 0x08 ;a484
--
-;a489 ;a48d = 
-; xor N  [op. type: N, t=8]
-	defb 0xee, 0x01, 0x6d, 0x60, 0x07 ;a489
--
-;a48e ;a492 = 
-; set 5,(hl)  [CB, t=7]
-	defb 0xee, 0x80, 0x62, 0x35, 0x0f ;a48e
--
-;a493 ;a497 = 
-; set 5,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-	defb 0xee, 0xa4, 0x62, 0x35, 0xd7 ;a493
--
-;a498 ;a49c = 
-; set 5,a  [CB, t=23]
-	defb 0xef, 0x80, 0x62, 0x31, 0x28 ;a498
--
-;a49d ;a4a1 = 
-; ret p  [t=8]
-	defb 0xf0, 0x00, 0x4e, 0x90, 0x05 ;a49d
--
-;a4a2 ;a4a6 = 
-; set 6,b  [CB, t=5]
-	defb 0xf0, 0x80, 0x62, 0x39, 0x48 ;a4a2
--
-;a4a7 ;a4ab = 
-; pop af  [t=8]
-	defb 0xf1, 0x00, 0x48, 0xa8, 0x0a ;a4a7
--
-;a4ac ;a4b0 = 
-; set 6,c  [CB, t=10]
-	defb 0xf1, 0x80, 0x62, 0x39, 0x68 ;a4ac
--
-;a4b1 ;a4b5 = 
-; jp p,N  [op. type: NN, t=8]
-	defb 0xf2, 0x02, 0x10, 0x95, 0x8a ;a4b1
--
-;a4b6 ;a4ba = 
-; set 6,d  [CB, t=10]
-	defb 0xf2, 0x80, 0x62, 0x39, 0x88 ;a4b6
--
-;a4bb ;a4bf = 
-; di   [t=8]
-	defb 0xf3, 0x00, 0x06, 0x00, 0x04 ;a4bb
--
-;a4c0 ;a4c4 = 
-; set 6,e  [CB, t=4]
-	defb 0xf3, 0x80, 0x62, 0x39, 0xa8 ;a4c0
--
-;a4c5 ;a4c9 = 
-; call p,N  [op. type: NN, t=8]
-	defb 0xf4, 0x02, 0x6e, 0x95, 0x89 ;a4c5
--
-;a4ca ;a4ce = 
-; set 6,h  [CB, t=9]
-	defb 0xf4, 0x80, 0x62, 0x39, 0xc8 ;a4ca
--
-;a4cf ;a4d3 = 
-; push af  [t=8]
-	defb 0xf5, 0x00, 0x90, 0xa8, 0x0b ;a4cf
--
-;a4d4 ;a4d8 = 
-; set 6,l  [CB, t=11]
-	defb 0xf5, 0x80, 0x62, 0x3a, 0x08 ;a4d4
--
-;a4d9 ;a4dd = 
-; or N  [op. type: N, t=8]
-	defb 0xf6, 0x01, 0x17, 0x60, 0x07 ;a4d9
--
-;a4de ;a4e2 = 
-; set 6,(hl)  [CB, t=7]
-	defb 0xf6, 0x80, 0x62, 0x3d, 0x0f ;a4de
--
-;a4e3 ;a4e7 = 
-; set 6,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-	defb 0xf6, 0xa4, 0x62, 0x3d, 0xd7 ;a4e3
--
-;a4e8 ;a4ec = 
-; set 6,a  [CB, t=23]
-	defb 0xf7, 0x80, 0x62, 0x39, 0x28 ;a4e8
--
-;a4ed ;a4f1 = 
-; ret m  [t=8]
-	defb 0xf8, 0x00, 0x4e, 0x88, 0x05 ;a4ed
--
-;a4f2 ;a4f6 = 
-; set 7,b  [CB, t=5]
-	defb 0xf8, 0x80, 0x62, 0x41, 0x48 ;a4f2
--
-;a4f7 ;a4fb = 
-; ld sp,hl  [t=8]
-	defb 0xf9, 0x00, 0x15, 0x1b, 0x06 ;a4f7
--
-;a4fc ;a500 = 
-; ld sp,ix  [DD, t=6]
-	defb 0xf9, 0x20, 0x15, 0x1b, 0x6a ;a4fc
--
-;a501 ;a505 = 
-; set 7,c  [CB, t=10]
-	defb 0xf9, 0x80, 0x62, 0x41, 0x68 ;a501
--
-;a506 ;a50a = 
-; jp m,N  [op. type: NN, t=8]
-	defb 0xfa, 0x02, 0x10, 0x8d, 0x8a ;a506
--
-;a50b ;a50f = 
-; set 7,d  [CB, t=10]
-	defb 0xfa, 0x80, 0x62, 0x41, 0x88 ;a50b
--
-;a510 ;a514 = 
-; ei   [t=8]
-	defb 0xfb, 0x00, 0x08, 0x00, 0x04 ;a510
--
-;a515 ;a519 = 
-; set 7,e  [CB, t=4]
-	defb 0xfb, 0x80, 0x62, 0x41, 0xa8 ;a515
--
-;a51a ;a51e = 
-; call m,N  [op. type: NN, t=8]
-	defb 0xfc, 0x02, 0x6e, 0x8d, 0x89 ;a51a
--
-;a51f ;a523 = 
-; set 7,h  [CB, t=9]
-	defb 0xfc, 0x80, 0x62, 0x41, 0xc8 ;a51f
--
-;a524 ;a528 = 
-; set 7,l  [CB, t=8]
-	defb 0xfd, 0x80, 0x62, 0x42, 0x08 ;a524
--
-;a529 ;a52d = 
-; cp N  [op. type: N, t=8]
-	defb 0xfe, 0x01, 0x05, 0x60, 0x07 ;a529
--
-;a52e ;a532 = 
-; set 7,(hl)  [CB, t=7]
-	defb 0xfe, 0x80, 0x62, 0x45, 0x0f ;a52e
--
-;a533 ;a537 = 
-; set 7,(ix+d)  [op. type: (ix+d), CB, DD, t=15]
-	defb 0xfe, 0xa4, 0x62, 0x45, 0xd7 ;a533
--
-;a538 ;a53c = 
-; set 7,a  [CB, t=23]
-	defb 0xff, 0x80, 0x62, 0x41, 0x28 ;a538
--
-;a53d ;a541 = 
-; ? *63*,*63*  [op. type: not instruction, CB, ED, DD, FD, t=8]
-	defb 0xff, 0xff, 0xff, 0xff, 0xff ;a53d
--
-;=======================================================================
-;
--
 s/v_sub_85aeh/atHLorNextIfOne
 -
 ;88cf ;88d2 = 
@@ -9702,3 +6920,349 @@ s/02926h/varc9019+1-BA1
 -
 ;9019 <
 varc9019:
+-
+;a542 <
+include 'instructionTable.asm'
+
+-
+;7b6a =
+        ld de,l07cdbh+2-BA1               ;7b6a 11 e9 15  . . . 
+-
+;7cdb <
+l07cdbh:
+-
+;7be3 =
+        ld de,l0a55ah-BA1               ;7be3 11 66 3e  . f > 
+-
+;a55a <
+l0a55ah:
+-
+;7f69 =
+        ld de,l0a55ch-BA1               ;7f69 11 68 3e  . h > 
+-
+;a55c <
+l0a55ch:
+-
+;8a1e =
+        ld de,l0a55ch-BA1               ;8a1e 11 68 3e  . h >               (flow from: 80e7)  80ea ld de,9c28 
+-
+;935a =
+        ld de,l0a55ch-BA1               ;935a 11 68 3e  . h >               (flow from: 8a25)  8a26 ld de,9c28 
+-
+;68d5 =
+        ld hl,l095f9h+170-BA1               ;68d5 21 af 2f  ! . /               (flow (mon) from: 5f9e)  5fa1 ld hl,8d6f 
+-
+;95f9 <
+l095f9h:
+-
+;6a90 =
+        ld hl,l073c4h+1-BA1               ;6a90 21 d1 0c  ! . . 
+-
+;73c4 <
+l073c4h:
+-
+;6d36 =
+        ld hl,l06881h-BA1               ;6d36 21 8d 01  ! . . 
+-
+;6881 <
+l06881h:
+-
+;6d71 =
+        ld hl,l07a67h-BA1               ;6d71 21 73 13  ! s . 
+-
+;7a67 <
+l07a67h:
+-
+;7168 =
+        ld hl,l06881h-BA1               ;7168 21 8d 01  ! . . 
+-
+;717f =
+        ld hl,l070fbh+1-BA1               ;717f 21 08 0a  ! . . 
+-
+;70fb <
+l070fbh:
+-
+;726d =
+        ld hl,l0684dh-BA1               ;726d 21 59 01  ! Y . 
+-
+;684d <
+l0684dh:
+-
+;7278 =
+        ld hl,l06833h-BA1               ;7278 21 3f 01  ! ? . 
+-
+;6833 <
+l06833h:
+-
+;728d =
+        ld hl,l06833h-BA1               ;728d 21 3f 01  ! ? . 
+-
+;729a =
+        ld hl,l0684dh-BA1               ;729a 21 59 01  ! Y . 
+-
+;7356 =
+        ld hl,l067e6h-BA1               ;7356 21 f2 00  ! . .               (flow (mon) from: 6a21)  6a22 ld hl,5eb2 
+-
+;67e6 <
+l067e6h:
+-
+;7ab3 =
+        ld hl,l0a55ch-BA1               ;7ab3 21 68 3e  ! h > 
+-
+;7b52 =
+        ld hl,l0a55ch-BA1               ;7b52 21 68 3e  ! h > 
+-
+;7b90 =
+        ld hl,l07cdbh+1-BA1               ;7b90 21 e8 15  ! . . 
+-
+;7c11 =
+        ld hl,l0a55ch-BA1               ;7c11 21 68 3e  ! h > 
+-
+;7c58 =
+        ld hl,l0a55ah-BA1               ;7c58 21 66 3e  ! f > 
+-
+;7e10 =
+        ld hl,l0a55ch-BA1               ;7e10 21 68 3e  ! h > 
+-
+;7e27 =
+        ld hl,l0a55ch-BA1               ;7e27 21 68 3e  ! h > 
+-
+;7ee3 =
+        ld hl,l0a55ch-BA1               ;7ee3 21 68 3e  ! h > 
+-
+;815e =
+        ld hl,l0a55ch-BA1               ;815e 21 68 3e  ! h > 
+-
+;81ac =
+        ld hl,l085ech+1-BA1               ;81ac 21 f9 1e  ! . . 
+-
+;85ec <
+l085ech:
+-
+;856d =
+        ld hl,l0923ch+1-BA1               ;856d 21 49 2b  ! I + 
+-
+;923c <
+l0923ch:
+-
+;87ac =
+        ld hl,l08fa1h+1-BA1               ;87ac 21 ae 28  ! . (               (flow from: 7e76)  7e78 ld hl,866e 
+-
+;8fa1 <
+l08fa1h:
+-
+;8a00 =
+        ld hl,l094d5h-BA1               ;8a00 21 e1 2d  ! . -               (flow from: 80bc)  80cc ld hl,8ba1 
+-
+;94d5 <
+l094d5h:
+-
+;8a1b =
+        ld hl,l0a55ch-BA1               ;8a1b 21 68 3e  ! h >               (flow from: 80f8)  80e7 ld hl,9c28 
+-
+;8ba0 =
+        ld hl,l0a55ch-BA1               ;8ba0 21 68 3e  ! h >               (flow from: 7cf1)  826c ld hl,b24c 
+-
+;8c65 =
+        ld hl,l0977eh+1804-BA1               ;8c65 21 96 37  ! . 7               (flow from: 832e)  8331 ld hl,9556 
+-
+;977e <
+l0977eh:
+-
+;8ef2 =
+        ld hl,l095f9h+170-BA1               ;8ef2 21 af 2f  ! . /               (flow from: 7cf4)  85be ld hl,8d6f 
+-
+;910a =
+        ld hl,l0a56ah-BA1               ;910a 21 76 3e  ! v >               (flow from: 87d4)  87d6 ld hl,b3b2 
+-
+;a56a <
+l0a56ah:
+-
+;914d =
+        ld hl,l0a56ch-BA1               ;914d 21 78 3e  ! x >               (flow from: 8818)  8819 ld hl,ac31 
+-
+;a56c <
+l0a56ch:
+-
+;68ac =
+        ld sp,l094d5h-BA1               ;68ac 31 e1 2d  1 . -               (flow (mon) from: 7804)  5f78 ld sp,8ba1 
+-
+;7517 =
+        ld sp,l0684eh-BA1               ;7517 31 5a 01  1 Z . 
+-
+;684e <
+l0684eh:
+-
+;8622 =
+        ld sp,l094d5h-BA1               ;8622 31 e1 2d  1 . -               (flow from: 7c7c 7cec 7d36 7d43)  7cee ld sp,8ba1 
+-
+;6dfb =
+        ld bc,l06833h-BA1               ;6dfb 01 3f 01  . ? . 
+-
+;771b =
+        ld bc,l0781eh+2-BA1               ;771b 01 2c 11  . , .               (flow (mon) from: 6de4 6e41)  6de7 ld bc,6eec 
+-
+;781e <
+l0781eh:
+-
+;6cda =
+        ld a,(l0923ch+1-BA1)              ;6cda 3a 49 2b  : I + 
+-
+;7059 =
+        ld a,(l070fbh+1-BA1)              ;7059 3a 08 0a  : . . 
+-
+;7409 =
+        ld a,(l073c4h+1-BA1)              ;7409 3a d1 0c  : . .               (flow (mon) from: 6ad1)  6ad5 ld a,(6a91) 
+-
+;8f19 =
+        ld a,(l08fa1h+1-BA1)              ;8f19 3a ae 28  : . (               (flow from: 85e4)  85e5 ld a,(866e) 
+-
+;68de =
+        ld (l089d3h+1-BA1),hl             ;68de 22 e0 22  " . "               (flow (mon) from: 5fa7)  5faa ld (80a0),hl 
+-
+;89d3 <
+l089d3h:
+-
+;6946 =
+        ld (l0696eh+1-BA1),hl             ;6946 22 7b 02  " { .               (flow (mon) from: 6011 6046)  6012 ld (603b),hl 
+-
+;696e <
+l0696eh:
+-
+;6a16 =
+        ld (l089d3h+1-BA1),hl             ;6a16 22 e0 22  " . "               (flow (mon) from: 60df)  60e2 ld (80a0),hl 
+-
+;6bb6 =
+        ld (l06bd7h+1-BA1),hl             ;6bb6 22 e4 04  " . . 
+-
+;6bd7 <
+l06bd7h:
+-
+;6bc6 =
+        ld (l089d3h+1-BA1),hl             ;6bc6 22 e0 22  " . " 
+-
+;6c24 =
+        ld (l06c46h+1-BA1),hl             ;6c24 22 53 05  " S . 
+-
+;6c46 <
+l06c46h:
+-
+;6c36 =
+        ld (l089d3h+1-BA1),hl             ;6c36 22 e0 22  " . " 
+-
+;6d5b =
+        ld (l07a67h-BA1),a              ;6d5b 32 73 13  2 s . 
+-
+;6e3e =
+        ld (l089d3h+1-BA1),hl             ;6e3e 22 e0 22  " . " 
+-
+;6f03 =
+        ld (l06f50h+1-BA1),a              ;6f03 32 5d 08  2 ] . 
+-
+;6f50 <
+l06f50h:
+-
+;7026 =
+        ld (l070feh+1-BA1),hl             ;7026 22 0b 0a  " . . 
+-
+;70fe <
+l070feh:
+-
+;7029 =
+        ld (l070dbh+1-BA1),hl             ;7029 22 e8 09  " . . 
+-
+;70db <
+l070dbh:
+-
+;7034 =
+        ld (l07007h+1-BA1),a              ;7034 32 14 09  2 . . 
+-
+;7007 <
+l07007h:
+-
+;705f =
+        ld (l070dbh+1-BA1),hl             ;705f 22 e8 09  " . . 
+-
+;7066 =
+        ld (l070d8h+1-BA1),a              ;7066 32 e5 09  2 . . 
+-
+;70d8 <
+l070d8h:
+-
+;7087 =
+        ld (l0696eh+1-BA1),hl             ;7087 22 7b 02  " { . 
+-
+;71d8 =
+        ld (l070feh+1-BA1),hl             ;71d8 22 0b 0a  " . . 
+-
+;726a =
+        ld (l070fbh+1-BA1),hl             ;726a 22 08 0a  " . . 
+-
+;734e =
+        ld (l0733eh+1-BA1),a              ;734e 32 4b 0c  2 K .               (flow (mon) from: 6a19)  6a1a ld (6a0b),a 
+-
+;733e <
+l0733eh:
+-
+;7352 =
+        ld (l073bdh+1-BA1),hl             ;7352 22 ca 0c  " . .               (flow (mon) from: 6a0d)  6a1e ld (6a8a),hl 
+-
+;73bd <
+l073bdh:
+-
+;7457 =
+        ld (l07474h+1-BA1),hl             ;7457 22 81 0d  " . .               (flow (mon) from: 6b22)  6b23 ld (6b41),hl 
+-
+;7474 <
+l07474h:
+-
+;74e6 =
+        ld (l0733eh+1-BA1),a              ;74e6 32 4b 0c  2 K .               (flow (mon) from: 6bae)  6bb2 ld (6a0b),a 
+-
+;74f2 =
+        ld (l070fbh+1-BA1),a              ;74f2 32 08 0a  2 . .               (flow (mon) from: 6bbc)  6bbe ld (67c8),a 
+-
+;74f6 =
+        ld (l070fbh+2-BA1),a              ;74f6 32 09 0a  2 . .               (flow (mon) from: 6bc1)  6bc2 ld (67c9),a 
+-
+;7628 =
+        ld (l075edh+1-BA1),a              ;7628 32 fa 0e  2 . . 
+-
+;75ed <
+l075edh:
+-
+;7f7e =
+        ld (l08021h+1-BA1),hl             ;7f7e 22 2e 19  " . . 
+-
+;8021 <
+l08021h:
+-
+;85e6 =
+        ld (l085ech+1-BA1),a              ;85e6 32 f9 1e  2 . . 
+-
+;68fd =
+        ld hl,(l0696eh+1-BA1)             ;68fd 2a 7b 02  * { .               (flow (mon) from: 8607)  5fc9 ld hl,(603b) 
+-
+;693a =
+        ld hl,(l0696eh+1-BA1)             ;693a 2a 7b 02  * { .               (flow (mon) from: 6005)  6006 ld hl,(603b) 
+-
+;6abf =
+        ld hl,(l0696eh+1-BA1)             ;6abf 2a 7b 02  * { . 
+-
+;701b =
+        ld hl,(l0696eh+1-BA1)             ;701b 2a 7b 02  * { . 
+-
+;714d =
+        ld hl,(l070feh+1-BA1)             ;714d 2a 0b 0a  * . . 
+-
+;71e8 =
+        ld hl,(l070feh+1-BA1)             ;71e8 2a 0b 0a  * . . 
+-
+;7332 =
+        ld hl,(l073bdh+1-BA1)             ;7332 2a ca 0c  * . . 
+-
+;73e9 =
+        ld hl,(l073bdh+1-BA1)             ;73e9 2a ca 0c  * . . 
+-
+;76ad =
+        ld hl,(l0696eh+1-BA1)             ;76ad 2a 7b 02  * { .               (flow (mon) from: 5fbd)  6d79 ld hl,(603b) 
