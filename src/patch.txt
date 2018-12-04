@@ -7282,3 +7282,150 @@ l06c69h:
 ;8e83 =
     defw v_l8db4h-BA1               ;8e83 
     defb 0x0c                       ;8e85
+-
+;6718 ;6719 =
+	defw l078e4h-BA1
+-
+;671f ;6720 =
+	defw l078deh-BA1
+-
+;6726 ;6727 =
+	defw l078ddh-BA1
+-
+;672d ;672e =
+	defw l078e0h-BA1
+-
+;6734 ;6735 =
+	defw l078dfh-BA1
+-
+;673b ;673c =
+	defw l078e2h-BA1
+-
+;6742 ;6743 =
+	defw l078e1h-BA1
+-
+;6749 ;674a =
+	defw l078d0h-BA1
+-
+;6750 ;6751 =
+	defw l078cfh-BA1
+-
+;6757 ;6758 =
+	defw l078dch-BA1
+-
+;675e ;675f =
+	defw l078dbh-BA1
+-
+;6765 ;6766 =
+	defw l078dah-BA1
+-
+;676c ;676d =
+	defw l078d9h-BA1
+-
+;6773 ;6774 =
+	defw l078e3h-BA1
+-
+;677a ;677b =
+	defw l078e3h-BA1
+-
+;6781 ;6782 =
+	defw l078ddh-BA1
+-
+;6788 ;6789 =
+	defw l078dfh-BA1
+-
+;678f ;6790 =
+	defw l078e1h-BA1
+-
+;6796 ;6797 =
+	defw l078e5h-BA1
+-
+;679d ;679e =
+	defw l078dbh-BA1
+-
+;67a4 ;67a5 =
+	defw l078d9h-BA1
+-
+;67ab ;67ac =
+	defw l078e7h-BA1
+-
+;67b2 ;67b3 =
+	defw l078e9h-BA1
+-
+;67b9 ;67ba =
+	defw l078ebh-BA1
+-
+;67c0 ;67c1 =
+	defw l078ddh-BA1
+-
+;67c7 ;67c8 =
+	defw l078dfh-BA1
+-
+;67ce ;67cf =
+	defw l078e1h-BA1
+-
+;67d5 ;67d6 =
+	defw l078e5h-BA1
+-
+;67dc ;67dd =
+	defw l078dbh-BA1
+-
+;67e3 ;67e4 =
+	defw l078d9h-BA1
+-
+;7998 ;7999 =
+	defw ENTRY_POINT_WITH_MONITOR+2-BA1
+-
+;78cf <
+l078cfh:
+-
+;78d0 <
+l078d0h:
+-
+;78d9 <
+l078d9h:
+-
+;78da <
+l078dah:
+-
+;78db <
+l078dbh:
+-
+;78dc <
+l078dch:
+-
+;78dd <
+l078ddh:
+-
+;78de <
+l078deh:
+-
+;78df <
+l078dfh:
+-
+;78e0 <
+l078e0h:
+-
+;78e1 <
+l078e1h:
+-
+;78e2 <
+l078e2h:
+-
+;78e3 <
+l078e3h:
+-
+;78e4 <
+l078e4h:
+-
+;78e5 <
+l078e5h:
+-
+;78e7 <
+l078e7h:
+-
+;78e9 <
+l078e9h:
+-
+;78eb <
+l078ebh:
