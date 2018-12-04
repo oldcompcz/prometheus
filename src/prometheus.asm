@@ -1529,7 +1529,7 @@ l6c28h:
     ld c,0c3h                  ;6c44 0e c3  . . 
 l06c46h:
     ld de,v_l67ach-BA1         ;6c46 11 ec 09  . . . 
-    call 00575h                ;6c49 cd 75 05  . u . 
+    call l06c69h-BA1                                           ;6c49 cd 75 05  . u . 
     pop hl                     ;6c4c e1  . 
     pop de                     ;6c4d d1  . 
 v_sub_631ah:
@@ -1550,8 +1550,9 @@ v_l632bh:
     nop                        ;6c61 00  . 
     call v_sub_60c3h-BA1       ;6c62 cd 03 03  . . . 
     call z,v_l6cabh-BA1        ;6c65 cc eb 0e  . . . 
-    call 014cdh                ;6c68 cd cd 14  . . . 
-    dec bc                     ;6c6b 0b  . 
+    defb 0xcd
+l06c69h:
+    call v_sub_68d4h-BA1
     ld (hl),c                  ;6c6c 71  q 
     inc hl                     ;6c6d 23  # 
     ld (hl),e                  ;6c6e 73  s 
@@ -7168,14 +7169,15 @@ l8e6eh:
     scf                        ;8e77 37  7                         (flow from: 8541)  8543 scf 
     ret                        ;8e78 c9  .                         (flow from: 8543)  8544 ret 
 v_l8545h:
-    or (hl)                    ;8e79 b6  . 
-    ld l,001h                  ;8e7a 2e 01  . . 
+    defw v_l8c76h-BA1                                          ;8e79 
+    defb 0x01                                                  ;8e7b
     ld bc,0020ch               ;8e7c 01 0c 02  . . . 
     add hl,hl                  ;8e7f 29  ) 
     ld c,017h                  ;8e80 0e 17  . . 
     scf                        ;8e82 37  7 
 v_l854fh:
-    call p,00c2fh              ;8e83 f4 2f 0c  . / . 
+    defw v_l8db4h-BA1                                          ;8e83 
+    defb 0x0c                                                  ;8e85
     add hl,bc                  ;8e86 09  . 
     rrca                       ;8e87 0f  . 
     dec d                      ;8e88 15  . 

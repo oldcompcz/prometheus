@@ -33,7 +33,7 @@ start:
 -
 ;6139 >
 
-include 'relocationTable.asm'
+include "relocationTable.asm"
 
 -
 ;65b3 ;66f3 =
@@ -6922,7 +6922,7 @@ s/02926h/varc9019+1-BA1
 varc9019:
 -
 ;a542 <
-include 'instructionTable.asm'
+include "instructionTable.asm"
 
 -
 ;7b6a =
@@ -7266,3 +7266,19 @@ l08021h:
 -
 ;76ad =
         ld hl,(l0696eh+1-BA1)             ;76ad 2a 7b 02  * { .               (flow (mon) from: 5fbd)  6d79 ld hl,(603b) 
+-
+;6c68 ;6c6b =
+	defb	0xcd
+l06c69h:
+    call v_sub_68d4h-BA1
+-
+;6c49 =
+    call l06c69h-BA1                ;6c49 cd 75 05  . u . 
+-
+;8e79 ;8e7a =
+    defw v_l8c76h-BA1               ;8e79 
+    defb 0x01                       ;8e7b
+-
+;8e83 =
+    defw v_l8db4h-BA1               ;8e83 
+    defb 0x0c                       ;8e85
