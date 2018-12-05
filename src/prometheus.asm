@@ -620,181 +620,181 @@ v_l5ddfh:
     defb 0c1h                  ;6715 c1  . 
     defb 0b2h                  ;6716 b2  . 
     defb 001h                  ;6717 01  . 
-    defw l078e4h-BA1
+    defw l078e4h-BA1           ;6718
     defb 020h                  ;671a 20    
     defb 050h                  ;671b 50  P 
     defb 0c2h                  ;671c c2  . 
     defb 092h                  ;671d 92  . 
     defb 001h                  ;671e 01  . 
-    defw l078deh-BA1
+    defw l078deh-BA1           ;671f
     defb 040h                  ;6721 40  @ 
     defb 050h                  ;6722 50  P 
     defb 0c3h                  ;6723 c3  . 
     defb 092h                  ;6724 92  . 
     defb 001h                  ;6725 01  . 
-    defw l078ddh-BA1
+    defw l078ddh-BA1           ;6726
     defb 060h                  ;6728 60  ` 
     defb 050h                  ;6729 50  P 
     defb 0c4h                  ;672a c4  . 
     defb 092h                  ;672b 92  . 
     defb 001h                  ;672c 01  . 
-    defw l078e0h-BA1
+    defw l078e0h-BA1           ;672d
     defb 080h                  ;672f 80  . 
     defb 050h                  ;6730 50  P 
     defb 0c5h                  ;6731 c5  . 
     defb 092h                  ;6732 92  . 
     defb 001h                  ;6733 01  . 
-    defw l078dfh-BA1
+    defw l078dfh-BA1           ;6734
     defb 0a0h                  ;6736 a0  . 
     defb 050h                  ;6737 50  P 
     defb 0c8h                  ;6738 c8  . 
     defb 092h                  ;6739 92  . 
     defb 001h                  ;673a 01  . 
-    defw l078e2h-BA1
+    defw l078e2h-BA1           ;673b
     defb 0c0h                  ;673d c0  . 
     defb 050h                  ;673e 50  P 
     defb 0cch                  ;673f cc  . 
     defb 092h                  ;6740 92  . 
     defb 001h                  ;6741 01  . 
-    defw l078e1h-BA1
+    defw l078e1h-BA1           ;6742
     defb 080h                  ;6744 80  . 
     defb 048h                  ;6745 48  H 
     defb 0c9h                  ;6746 c9  . 
     defb 082h                  ;6747 82  . 
     defb 000h                  ;6748 00  . 
-    defw l078d0h-BA1
+    defw l078d0h-BA1           ;6749
     defb 0c8h                  ;674b c8  . 
     defb 050h                  ;674c 50  P 
     defb 0d2h                  ;674d d2  . 
     defb 082h                  ;674e 82  . 
     defb 001h                  ;674f 01  . 
-    defw l078cfh-BA1
+    defw l078cfh-BA1           ;6750
     defb 000h                  ;6752 00  . 
     defb 048h                  ;6753 48  H 
     defb 019h                  ;6754 19  . 
     defb 082h                  ;6755 82  . 
     defb 000h                  ;6756 00  . 
-    defw l078dch-BA1
+    defw l078dch-BA1           ;6757
     defb 020h                  ;6759 20    
     defb 048h                  ;675a 48  H 
     defb 01dh                  ;675b 1d  . 
     defb 082h                  ;675c 82  . 
     defb 000h                  ;675d 00  . 
-    defw l078dbh-BA1
+    defw l078dbh-BA1           ;675e
     defb 040h                  ;6760 40  @ 
     defb 048h                  ;6761 48  H 
     defb 01ah                  ;6762 1a  . 
     defb 082h                  ;6763 82  . 
     defb 000h                  ;6764 00  . 
-    defw l078dah-BA1
+    defw l078dah-BA1           ;6765
     defb 060h                  ;6767 60  ` 
     defb 048h                  ;6768 48  H 
     defb 01eh                  ;6769 1e  . 
     defb 082h                  ;676a 82  . 
     defb 000h                  ;676b 00  . 
-    defw l078d9h-BA1
+    defw l078d9h-BA1           ;676c
     defb 0ceh                  ;676e ce  . 
     defb 050h                  ;676f 50  P 
     defb 0c6h                  ;6770 c6  . 
     defb 000h                  ;6771 00  . 
     defb 001h                  ;6772 01  . 
-    defw l078e3h-BA1
+    defw l078e3h-BA1           ;6773
     defb 0e0h                  ;6775 e0  . 
     defb 040h                  ;6776 40  @ 
     defb 015h                  ;6777 15  . 
     defb 08ah                  ;6778 8a  . 
     defb 000h                  ;6779 00  . 
-    defw l078e3h-BA1
+    defw l078e3h-BA1           ;677a
     defb 049h                  ;677c 49  I 
     defb 050h                  ;677d 50  P 
     defb 016h                  ;677e 16  . 
     defb 08ah                  ;677f 8a  . 
     defb 001h                  ;6780 01  . 
-    defw l078ddh-BA1
+    defw l078ddh-BA1           ;6781
     defb 069h                  ;6783 69  i 
     defb 050h                  ;6784 50  P 
     defb 017h                  ;6785 17  . 
     defb 08ah                  ;6786 8a  . 
     defb 001h                  ;6787 01  . 
-    defw l078dfh-BA1
+    defw l078dfh-BA1           ;6788
     defb 089h                  ;678a 89  . 
     defb 050h                  ;678b 50  P 
     defb 018h                  ;678c 18  . 
     defb 08ah                  ;678d 8a  . 
     defb 001h                  ;678e 01  . 
-    defw l078e1h-BA1
+    defw l078e1h-BA1           ;678f
     defb 052h                  ;6791 52  R 
     defb 050h                  ;6792 50  P 
     defb 023h                  ;6793 23  # 
     defb 08ah                  ;6794 8a  . 
     defb 001h                  ;6795 01  . 
-    defw l078e5h-BA1
+    defw l078e5h-BA1           ;6796
     defb 072h                  ;6798 72  r 
     defb 050h                  ;6799 50  P 
     defb 01bh                  ;679a 1b  . 
     defb 08ah                  ;679b 8a  . 
     defb 001h                  ;679c 01  . 
-    defw l078dbh-BA1
+    defw l078dbh-BA1           ;679d 
     defb 092h                  ;679f 92  . 
     defb 050h                  ;67a0 50  P 
     defb 01ch                  ;67a1 1c  . 
     defb 08ah                  ;67a2 8a  . 
     defb 001h                  ;67a3 01  . 
-    defw l078d9h-BA1
+    defw l078d9h-BA1           ;67a4
     defb 0d9h                  ;67a6 d9  . 
     defb 050h                  ;67a7 50  P 
     defb 0d4h                  ;67a8 d4  . 
     defb 08ah                  ;67a9 8a  . 
     defb 001h                  ;67aa 01  . 
-    defw l078e7h-BA1
+    defw l078e7h-BA1           ;67ab
     defb 0a0h                  ;67ad a0  . 
     defb 048h                  ;67ae 48  H 
     defb 0d8h                  ;67af d8  . 
     defb 081h                  ;67b0 81  . 
     defb 0e0h                  ;67b1 e0  . 
-    defw l078e9h-BA1
+    defw l078e9h-BA1           ;67b2
     defb 0b1h                  ;67b4 b1  . 
     defb 048h                  ;67b5 48  H 
     defb 0d9h                  ;67b6 d9  . 
     defb 081h                  ;67b7 81  . 
     defb 0e0h                  ;67b8 e0  . 
-    defw l078ebh-BA1
+    defw l078ebh-BA1           ;67b9
     defb 008h                  ;67bb 08  . 
     defb 048h                  ;67bc 48  H 
     defb 026h                  ;67bd 26  & 
     defb 081h                  ;67be 81  . 
     defb 0e0h                  ;67bf e0  . 
-    defw l078ddh-BA1
+    defw l078ddh-BA1           ;67c0
     defb 028h                  ;67c2 28  ( 
     defb 048h                  ;67c3 48  H 
     defb 027h                  ;67c4 27  ' 
     defb 081h                  ;67c5 81  . 
     defb 0e0h                  ;67c6 e0  . 
-    defw l078dfh-BA1
+    defw l078dfh-BA1           ;67c7
     defb 048h                  ;67c9 48  H 
     defb 048h                  ;67ca 48  H 
     defb 028h                  ;67cb 28  ( 
     defb 081h                  ;67cc 81  . 
     defb 0e0h                  ;67cd e0  . 
-    defw l078e1h-BA1
+    defw l078e1h-BA1           ;67ce
     defb 016h                  ;67d0 16  . 
     defb 050h                  ;67d1 50  P 
     defb 02bh                  ;67d2 2b  + 
     defb 08dh                  ;67d3 8d  . 
     defb 0e5h                  ;67d4 e5  . 
-    defw l078e5h-BA1
+    defw l078e5h-BA1           ;67d5
     defb 068h                  ;67d7 68  h 
     defb 048h                  ;67d8 48  H 
     defb 029h                  ;67d9 29  ) 
     defb 081h                  ;67da 81  . 
     defb 0e0h                  ;67db e0  . 
-    defw l078dbh-BA1
+    defw l078dbh-BA1           ;67dc
     defb 088h                  ;67de 88  . 
     defb 048h                  ;67df 48  H 
     defb 02ah                  ;67e0 2a  * 
     defb 081h                  ;67e1 81  . 
     defb 0e0h                  ;67e2 e0  . 
-    defw l078d9h-BA1
+    defw l078d9h-BA1           ;67e3
     defb 0d4h                  ;67e5 d4  . 
 l067e6h:
     defb 002h                  ;67e6 02  . 
@@ -1104,10 +1104,10 @@ l0696eh:
     call v_sub_6b56h-BA1       ;6977 cd 96 0d  . . .               (flow (mon) from: 6009)  6043 call 6b56 
     jr l6946h                  ;697a 18 ca  . .                    (flow (mon) from: 6bda)  6046 jr 6012 
     call v_sub_60c3h-BA1       ;697c cd 03 03  . . . 
-    jp nz,l87cdh               ;697f c2 cd 87  . . . 
-    ld c,0cdh                  ;6982 0e cd  . . 
-    ld c,d                     ;6984 4a  J 
-    inc c                      ;6985 0c  . 
+    defb 0xc2, 0xcd            ;697f
+    defw v_sub_6c47h-BA1       ;6981
+    defb 0xcd                  ;6983
+    defw l0733eh-BA1           ;6984
     call v_sub_5f64h-BA1       ;6986 cd a4 01  . . . 
     jr $-6                     ;6989 18 f8  . . 
     ld ix,v_l5dcah-BA1         ;698b dd 21 0a 00  . ! . . 
@@ -1784,10 +1784,11 @@ l6df1h:
     ret z                      ;6df5 c8  . 
     jr l6d82h                  ;6df6 18 8a  . . 
 v_l64c4h:
-    jp p,00c00h                ;6df8 f2 00 0c  . . . 
+    defw l067e6h-BA1           ;6df8
+    defb 0x0c
         ld bc,l06833h-BA1                                      ;6dfb 01 3f 01  . ? . 
-    ld e,c                     ;6dfe 59  Y 
-    ld bc,v_l5f33h-BA1         ;6dff 01 73 01  . s . 
+    defw l0684dh-BA1           ;6dfe
+    defb 0x73, 0x01
 v_l64ceh:
     nop                        ;6e02 00  . 
     nop                        ;6e03 00  . 
@@ -2072,8 +2073,7 @@ l6fc4h:
 v_sub_669bh:
     call v_sub_60c3h-BA1       ;6fcf cd 03 03  . . . 
     jp nz,0cde5h               ;6fd2 c2 e5 cd  . . . 
-    inc bc                     ;6fd5 03  . 
-    inc bc                     ;6fd6 03  . 
+    defw v_sub_60c3h-BA1       ;6fd5
     pop bc                     ;6fd7 c1  . 
     pop de                     ;6fd8 d1  . 
     add hl,de                  ;6fd9 19  . 
@@ -2082,8 +2082,7 @@ v_sub_669bh:
 v_sub_66a8h:
     call v_sub_60c3h-BA1       ;6fdc cd 03 03  . . . 
     jp nz,0cde5h               ;6fdf c2 e5 cd  . . . 
-    inc bc                     ;6fe2 03  . 
-    inc bc                     ;6fe3 03  . 
+    defw v_sub_60c3h-BA1       ;6fd5
     jp 0c9d1h                  ;6fe4 c3 d1 c9  . . . 
 v_sub_66b3h:
     pop af                     ;6fe7 f1  . 
@@ -3789,7 +3788,7 @@ v_l700bh:
     defb 006h                  ;7995 06  . 
     defb 082h                  ;7996 82  . 
     defb 0ffh                  ;7997 ff  . 
-    defw ENTRY_POINT_WITH_MONITOR+2-BA1
+    defw ENTRY_POINT_WITH_MONITOR+2-BA1                        ;7998
 v_l7066h:
     defb 00eh                  ;799a 0e  . 
     defb 0ffh                  ;799b ff  . 
