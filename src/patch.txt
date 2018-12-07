@@ -7096,9 +7096,6 @@ l0684eh:
 ;8622 =
         ld sp,l094d5h-BA1               ;8622 31 e1 2d  1 . -               (flow from: 7c7c 7cec 7d36 7d43)  7cee ld sp,8ba1 
 -
-;6dfb =
-        ld bc,l06833h-BA1               ;6dfb 01 3f 01  . ? . 
--
 ;771b =
         ld bc,l0781eh+2-BA1               ;771b 01 2c 11  . , .               (flow (mon) from: 6de4 6e41)  6de7 ld bc,6eec 
 -
@@ -7270,7 +7267,7 @@ l08021h:
 ;6c68 ;6c6b =
 	defb	0xcd
 l06c69h:
-    call v_sub_68d4h-BA1
+    call v_sub_68d4h-BA1	;6c69
 -
 ;6c49 =
     call l06c69h-BA1                ;6c49 cd 75 05  . u . 
@@ -7433,21 +7430,113 @@ l078ebh:
 ;6984 ;6985 =
 	defw l0733eh-BA1	;6984
 -
-;6df8 =
-	defw l067e6h-BA1	;6df8
-	defb 0x0c
--
 ;6dfe ;6dff =
 	defw l0684dh-BA1	;6dfe
-	defb 0x73, 0x01
+	defw v_l5f33h-BA1	;6e00
 -
 ;6fd5 ;6fd6 =
 	defw v_sub_60c3h-BA1	;6fd5
 -
 ;6fe2 ;6fe3 =
-	defw v_sub_60c3h-BA1	;6fd5
+	defw v_sub_60c3h-BA1	;6fe2
 -
 ;697f ;6982 =
 	defb 0xc2, 0xcd	;697f
 	defw v_sub_6c47h-BA1	;6981
 	defb 0xcd	;6983
+-
+;6ab5 ;6ab8 =
+	defb 0xc3, 0x22	;6ab5
+	defw l06ac2h+1-BA1	;6ab7
+-
+;6ac2 <
+l06ac2h:
+-
+;6b4c =
+   ld ix,l093dch-BA1               ;6b4c dd 21 e8 2c  . ! . , 
+-
+;93dc <
+l093dch:
+-
+;6bd3 =
+    ld (l06bebh+1-BA1),sp             ;6bd3 ed 73 f8 04  . s . . 
+-
+;6beb <
+l06bebh:
+-
+;6cc1 ;6cc4 =
+    defb 0xc2, 0xcd	;6cc1
+    defw v_sub_6c47h-BA1               ;6cc3 
+    defb 0xdd                       ;6cc4
+-
+;6d06 ;6d09 =
+    defb 0xc2, 0xcd	;6d06
+    defw v_sub_6c47h-BA1               ;6d08 
+    defb 0xdd                       ;6d0a
+-
+;6d7d =
+    ld de,(l0696eh+1-BA1)             ;6d7d ed 5b 7b 02  . [ { . 
+-
+;6df8 ;6dfb =
+	defw l067e6h-BA1	;6df8
+    defw v_l5ecch-BA1               ;6dfa
+    defw l06833h-BA1               ;6dfc
+-
+;6e41 =
+    ld (l6e45h+1-BA1),sp             ;6e41 ed 73 52 07  . s R . 
+-
+;6ea6 ;6ea9 =
+	defb 0x01, 0x11	;6ea6
+    defw v_l6fafh-BA1	;6ea8
+    defb 0x1a, 0xae	;6eaa
+-
+;702c =
+    ld (l07326h+1-BA1),de             ;702c ed 53 33 0c  . S 3 . 
+-
+;7326 <
+l07326h:
+-
+;7062 =
+    ld (l07083h+1-BA1),bc             ;7062 ed 43 90 09  . C . . 
+-
+;7083 <
+l07083h:
+-
+;709b =
+    ld (l07114h+1-BA1),sp             ;709b ed 73 21 0a  . s ! . 
+-
+;7114 <
+l07114h:
+-
+;712e =
+    ld de,(l070feh+1-BA1)             ;712e ed 5b 0b 0a  . [ . . 
+-
+;7164 =
+   ld (l7178h+1-BA1),sp             ;7164 ed 73 85 0a  . s . . 
+-
+;7405 =
+    ld de,(l073bdh+1-BA1)             ;7405 ed 5b ca 0c  . [ . .  
+-
+;7511 =
+   ld (l7550h+1-BA1),sp             ;7511 ed 73 5d 0e  . s ] . 
+-
+;751c =
+   ld (l7550h+1-BA1),sp             ;751c ed 73 5d 0e  . s ] . 
+-
+;7554 =
+    ld (l7577h+1-BA1),sp             ;7554 ed 73 84 0e  . s . . 
+-
+;7f76 =
+    ld (l0801dh+2-BA1),de             ;7f76 ed 53 2b 19  . S + . 
+-
+;801d <
+l0801dh:
+-
+;7f8e =
+    ld (l07fb3h+2-BA1),de             ;7f8e ed 53 c1 18  . S . . 
+-
+;7fb3 <
+l07fb3h:
+-
+;8027 =
+    ld ix,(l07fb3h+2-BA1)             ;8027 dd 2a c1 18  . * . . 
