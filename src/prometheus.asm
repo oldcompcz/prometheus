@@ -5,7 +5,7 @@
 
 
 BA1:     equ 0
-VR:      equ 0xde7
+VR:      equ 0x0
 ATTRIBUTES_ADDRESS:      equ 0x5800
 
 ; ROM routines
@@ -51,8 +51,10 @@ start:
     add hl,bc                  ;5dde 09  .                         (flow from: 5ddb)  5dde add hl,bc 
     ld bc,007cdh               ;5ddf 01 cd 07  . . .               (flow from: 5dde)  5ddf ld bc,07cd 
     ldir                       ;5de2 ed b0  . .                    (flow from: 5ddf 5de2)  5de2 ldir 
-    jp vr_l05000h-VR           ;5de4 c3 00 50  . . P               (flow from: 5de2)  5de4 jp 5000 
-vr_l05000h:
+    jp 05000h                  ;5de4 c3 00 50  . . P               (flow from: 5de2)  5de4 jp 5000 
+
+    org 0x5000
+
     ld de,04026h               ;5de7 11 26 40  . & @               (ghost flow from: 5de4)   5000 ld de,4026 
     call vr_sub_05342h-VR      ;5dea cd 42 53  . B S               (ghost flow from: 5000)   5003 call 5342 
     ld e,046h                  ;5ded 1e 46  . F                    (ghost flow from: 5352)   5006 ld e,46 
@@ -1154,7 +1156,7 @@ v_l6063h:
     dec d                      ;69c3 15  . 
     ld a,c                     ;69c4 79  y 
     ld l,c                     ;69c5 69  i 
-    ld hl,(l6412h)             ;69c6 2a 12 64  * . d 
+    ld hl,(06412h)                                             ;69c6 2a 12 64  * . d 
     ld b,e                     ;69c9 43  C 
     ld e,h                     ;69ca 5c  \ 
     ld hl,(00877h)             ;69cb 2a 77 08  * w . 

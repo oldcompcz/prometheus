@@ -1,7 +1,7 @@
 ;5dc0 <
 
 BA1: 		equ 0
-VR: 		equ 0xde7
+VR: 		equ 0x0
 ATTRIBUTES_ADDRESS: 		equ 0x5800
 
 ; ROM routines
@@ -6242,6 +6242,9 @@ s/02327h/v_sub_080e7h-BA1
 s/05000h/vr_l05000h-VR
 -
 ;5de7 <
+
+	org 0x5000
+
 vr_l05000h:
 -
 s/05342h/vr_sub_05342h-VR
@@ -7555,3 +7558,9 @@ l07fb3h:
 -
 ;9312 =
      ld hl,09c28h               ;9312 21 28 9c  ! ( .
+-
+;5de4 =
+	jp 05000h		;5de4	c3 00 50 	. . P 
+-
+;69c6 =
+    ld hl,(06412h)             ;69c6 2a 12 64  * . d 
