@@ -4,8 +4,7 @@
     org 05dc0h
 
 
-; BA:    equ 24000
-BA1:     equ 24000+2356
+BA1:     equ 0
 VR:      equ 0xde7
 ATTRIBUTES_ADDRESS:      equ 0x5800
 
@@ -444,7 +443,7 @@ l609dh:
     ld de,00938h               ;60b8 11 38 09  . 8 . 
     ret pe                     ;60bb e8  . 
     ret p                      ;60bc f0  . 
-    jp nc,l9404h               ;60bd d2 04 94  . . . 
+    jp nc,09404h                                               ;60bd d2 04 94  . . .           ;data? 
     rst 30h                    ;60c0 f7  . 
     ld e,l                     ;60c1 5d  ] 
     ret m                      ;60c2 f8  . 
@@ -578,6 +577,9 @@ include "relocationTable.asm"
     defb 0feh, 02ah, 05ch, 07fh, 07fh, 03fh, 03fh, 01fh, 007h, 015h, 02eh, 07fh, 0ffh, 0feh, 0feh, 0fch
     defb 0f0h, 02ah, 00dh, 000h, 07fh, 0ffh, 0ffh, 0ffh, 07fh, 0a8h, 0deh, 07eh, 0feh, 0feh, 0fch, 0fch
     defb 0f0h
+
+    org 0
+
 ENTRY_POINT_WITH_MONITOR:
     jp v_l7cc9h-BA1            ;66f4 c3 09 1f  . . . 
 
@@ -3008,7 +3010,7 @@ l7571h:
     ccf                        ;7574 3f  ?                         (flow (mon) from: 6c3e)  6c40 ccf 
     jr nc,l7565h               ;7575 30 ee  0 .                    (flow (mon) from: 6c40)  6c41 jr nc,6c31 
 l7577h:
-    ld sp,l8b91h               ;7577 31 91 8b  1 . .               (flow (mon) from: 6c32)  6c43 ld sp,8b91 
+    ld sp,08b91h                                               ;7577 31 91 8b  1 . .                                                   (flow (mon) from: 6c32)  6c43 ld sp,8b91 
     ret                        ;757a c9  .                         (flow (mon) from: 6c43)  6c46 ret 
 v_sub_6c47h:
     call v_sub_6a0fh-BA1       ;757b cd 4f 0c  . O . 
@@ -3911,6 +3913,7 @@ l07a67h:
 
 ; =====================================================================
 ;ENTRY_POINT_WITHOUT_MONITOR
+
     jp  v_l7cc9h-BA1           ;7a7c 
 
     defw invokeAssembly-BA1    ;7a7f
@@ -7558,7 +7561,7 @@ v_sub_874ah:
     push hl                    ;9082 e5  .                         (flow from: 874c)  874e push hl 
     push de                    ;9083 d5  .                         (flow from: 874e)  874f push de 
 vr_l08750h:
-    ld hl,l8d6fh               ;9084 21 6f 8d  ! o .               (flow from: 874f)  8750 ld hl,8d6f 
+    ld hl,08d6fh                                               ;9084 21 6f 8d  ! o .                                                   (flow from: 874f)  8750 ld hl,8d6f 
     ld d,000h                  ;9087 16 00  . .                    (flow from: 8750)  8753 ld d,00 
     ld e,a                     ;9089 5f  _                         (flow from: 8753)  8755 ld e,a 
     add hl,de                  ;908a 19  .                         (flow from: 8755)  8756 add hl,de 
@@ -8031,7 +8034,7 @@ v_sub_89dah:
     inc hl                     ;9310 23  #                         (flow from: 89db)  89dc inc hl 
     ld d,(hl)                  ;9311 56  V                         (flow from: 89dc)  89dd ld d,(hl) 
 vr_l089deh:
-    ld hl,l9c28h               ;9312 21 28 9c  ! ( .               (flow from: 89dd)  89de ld hl,b24c 
+     ld hl,09c28h                                              ;9312 21 28 9c  ! ( .                                                   (flow from: 89dd)  89de ld hl,b24c 
     and a                      ;9315 a7  .                         (flow from: 89de)  89e1 and a 
     sbc hl,de                  ;9316 ed 52  . R                    (flow from: 89e1)  89e2 sbc hl,de 
     pop hl                     ;9318 e1  .                         (flow from: 89e2)  89e4 pop hl 
@@ -8210,7 +8213,6 @@ v_l8ac8h:
     defb 000h                  ;9401 00  . 
     defb 000h                  ;9402 00  . 
     defb 000h                  ;9403 00  . 
-l9404h:
     defb 000h                  ;9404 00  . 
 v_l8ad1h:
     defb 000h                  ;9405 00  . 

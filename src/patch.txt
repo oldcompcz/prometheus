@@ -1,7 +1,6 @@
 ;5dc0 <
 
-; BA: 		equ 24000
-BA1: 		equ 24000+2356
+BA1: 		equ 0
 VR: 		equ 0xde7
 ATTRIBUTES_ADDRESS: 		equ 0x5800
 
@@ -375,6 +374,9 @@ operationLabelReplace:
 	defb "Symbo",0xec ;"l"+0x80	;8a15
 -
 ;66f4 <
+
+	org 0
+
 v_l5dc0h:
 -
 ;66f7 <
@@ -6851,6 +6853,7 @@ s/v_l5dc0h/ENTRY_POINT_WITH_MONITOR
 
 ; =====================================================================
 ;ENTRY_POINT_WITHOUT_MONITOR
+
 	jp 	v_l7cc9h-BA1	;7a7c 
 
 -
@@ -7540,3 +7543,15 @@ l07fb3h:
 -
 ;8027 =
     ld ix,(l07fb3h+2-BA1)             ;8027 dd 2a c1 18  . * . . 
+-
+;60bd =
+    jp nc,09404h               ;60bd d2 04 94  . . . ;data? 
+-
+;7577 =
+    ld sp,08b91h               ;7577 31 91 8b  1 . .
+-
+;9084 =
+    ld hl,08d6fh               ;9084 21 6f 8d  ! o .      
+-
+;9312 =
+     ld hl,09c28h               ;9312 21 28 9c  ! ( .
