@@ -1507,7 +1507,7 @@ l06c46h:
     pop hl                     ;6c4c e1  . 
     pop de                     ;6c4d d1  . 
 v_sub_631ah:
-    ld bc,v_l5dc3h             ;6c4e 01 03 00  . . . 
+    ld bc,0003                 ;6c4e 01 03 00  . . . 
     ldir                       ;6c51 ed b0  . . 
     ld a,0ffh                  ;6c53 3e ff  > . 
 v_sub_6321h:
@@ -1523,7 +1523,7 @@ v_l632bh:
     nop                        ;6c60 00  . 
     nop                        ;6c61 00  . 
     call v_sub_60c3h           ;6c62 cd 03 03  . . . 
-    call z,v_l6cabh            ;6c65 cc eb 0e  . . . 
+    call z,0eebh               ;6c65 cc eb 0e  . . . 
     defb 0xcd
 l06c69h:
     call v_sub_68d4h           ;6c69
@@ -3052,7 +3052,7 @@ l75b0h:
     ret                        ;75b6 c9  .                         (flow (mon) from: 6c81)  6c82 ret 
 v_l6c83h:
     ld hl,ATTRIBUTES_ADDRESS   ;75b7 21 00 58  ! . X 
-    ld bc,v_l5dc3h             ;75ba 01 03 00  . . . 
+    ld bc,00003h               ;75ba 01 03 00  . . . 
     push hl                    ;75bd e5  . 
     push bc                    ;75be c5  . 
 l75bfh:
@@ -3079,7 +3079,6 @@ l75d5h:
     sub 007h                   ;75db d6 07  . . 
     jr l75d5h                  ;75dd 18 f6  . . 
 l75dfh:
-v_l6cabh:
     ld e,008h                  ;75df 1e 08  . . 
 l75e1h:
     ld (hl),a                  ;75e1 77  w 
@@ -4700,7 +4699,7 @@ l7f4fh:
 l7f54h:
     ld hl,v_l76d5h             ;7f54 21 15 19  ! . . 
     ld de,050e1h               ;7f57 11 e1 50  . . P 
-    ld bc,v_l5dcah             ;7f5a 01 0a 00  . . . 
+    ld bc,0000ah               ;7f5a 01 0a 00  . . . 
     ldir                       ;7f5d ed b0  . . 
     pop af                     ;7f5f f1  . 
     jr z,l7f6eh                ;7f60 28 0c  ( . 
@@ -4772,7 +4771,7 @@ l7fd5h:
     cpl                        ;7fd8 2f  / 
     and 01fh                   ;7fd9 e6 1f  . . 
     jr z,l7fd5h                ;7fdb 28 f8  ( . 
-    ld de,v_l5dd1h             ;7fdd 11 11 00  . . . 
+    ld de,00011h               ;7fdd 11 11 00  . . . 
     xor a                      ;7fe0 af  . 
     call ROM_SaveControl_4c6   ;7fe1 cd c6 04  . . . 
 l7fe4h:
@@ -5595,7 +5594,7 @@ invokeQuit:
 l8510h:
 v_sub_7bdch:
     ld ix,BOTTOM_LINE_VRAM_ADDRESS                             ;8510 dd 21 e0 50  . ! . P                                              (flow from: 77d1)  7bdc ld ix,50e0 
-    ld de,v_l5dd1h             ;8514 11 11 00  . . .               (flow from: 7bdc)  7be0 ld de,0011 
+    ld de,00011h               ;8514 11 11 00  . . .               (flow from: 7bdc)  7be0 ld de,0011 
     xor a                      ;8517 af  .                         (flow from: 7be0)  7be3 xor a 
     scf                        ;8518 37  7                         (flow from: 7be3)  7be4 scf 
     call v_sub_7bb1h           ;8519 cd f1 1d  . . .               (flow from: 7be4)  7be5 call 7bb1 
@@ -5736,7 +5735,7 @@ v_sub_7c9bh:
 v_sub_7ca1h:
     ld e,020h                  ;85d5 1e 20  .                      (flow (mon) from: 7bcf)  7ca1 ld e,20 
 v_l7ca3h:
-    ld bc,v_l5dc3h             ;85d7 01 03 00  . . .               (flow from: 7ccc)  7ca3 ld bc,0003 
+    ld bc,00003h               ;85d7 01 03 00  . . .               (flow from: 7ccc)  7ca3 ld bc,0003 
 l85dah:
     ld a,e                     ;85da 7b  {                         (flow from: 7ca3 7caa 7cad)  7ca6 ld a,e 
     call v_sub_8769h           ;85db cd a9 29  . . )               (flow from: 7ca6)  7ca7 call 8769 
@@ -6102,7 +6101,6 @@ l8840h:
     ld a,(hl)                  ;884e 7e  ~                         (flow from: 7f17)  7f1a ld a,(hl) 
     or a                       ;884f b7  .                         (flow from: 7f1a)  7f1b or a 
     jr z,l8863h                ;8850 28 11  ( .                    (flow from: 7f1b)  7f1c jr z,7f2f 
-vr_l07f1eh:
     push hl                    ;8852 e5  .                         (flow from: 7f1c)  7f1e push hl 
     call lengthUpToZero        ;8853 cd 5f 27  . _ '               (flow from: 7f1e)  7f1f call 851f 
     ld hl,v_l8545h             ;8856 21 85 27  ! . '               (flow from: 8522)  7f22 ld hl,8545 
@@ -7500,7 +7498,7 @@ varc9019:
     inc d                      ;9038 14  . 
     ld a,h                     ;9039 7c  | 
     ld a,(00d20h)              ;903a 3a 20 0d  :   . 
-    ld (vr_l07f1eh+1),hl       ;903d 22 5f 21  " _ ! 
+    ld (0215fh),hl             ;903d 22 5f 21  " _ ! 
     dec d                      ;9040 15  . 
     ld a,(hl)                  ;9041 7e  ~ 
     nop                        ;9042 00  . 
