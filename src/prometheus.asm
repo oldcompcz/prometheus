@@ -1,10 +1,10 @@
 ; z80dasm 1.1.3
 ; command line: z80dasm -a -t -l -g 24000 -b blocks.txt prometheus.bin
 
-    org 05dc0h
-
-
+INSTALLATION_ADDRESS:          equ 0x5dc0 ; 24000
+VRAM_ADDRESS:                  equ 0x4000
 ATTRIBUTES_ADDRESS:            equ 0x5800
+LOADER_ADDRESS:                equ 0x5000
 
 ; ROM routines
 
@@ -18,6 +18,7 @@ ROM_LD_MARKER:                 equ 0x05c8
 ROM_ChannelOpen:               equ 0x1601
 ROM_PixelAddress_22b0:         equ 0x22b0
 ROM_NEWCommandRoutine:         equ 0x11b7
+ROM_ImmediateRET:              equ 0x0052
 
 ; system variables
 
@@ -27,36 +28,41 @@ SYSVAR_ERR_SP:                 equ 05c3dh  ; Address of item on machine stack to
 
 INSTRUCTIONS_TABLE_SIZE:       equ 687  
 LEFT_BOTTOM_ATTRIBUTE_ADDRESS: equ 0x5ae0
-HIGHLIGHT_COLOR:               equ 0x30     ; yellow paper, black color
+HIGHLIGHT_COLOR:               equ 0x30    ; yellow paper, black color
 BOTTOM_LINE_VRAM_ADDRESS:      equ 0x50e0
+
+    org INSTALLATION_ADDRESS
 
 start:
     di                         ;5dc0 f3  .                         (flow from: 34bb 52ad)  5dc0 jp 7cc9 
-    ld hl,04000h               ;5dc1 21 00 40  ! . @               (flow from: 5dc0)  5dc1 ld hl,4000 
-    ld de,04001h               ;5dc4 11 01 40  . . @               (flow from: 5dc1)  5dc4 ld de,4001 
+    ld hl,VRAM_ADDRESS         ;5dc1 21 00 40  ! . @               (flow from: 5dc0)  5dc1 ld hl,4000 
+    ld de,VRAM_ADDRESS+1       ;5dc4 11 01 40  . . @               (flow from: 5dc1)  5dc4 ld de,4001 
     ld bc,00fffh               ;5dc7 01 ff 0f  . . .               (flow from: 5dc4)  5dc7 ld bc,0fff 
     ld (hl),l                  ;5dca 75  u                         (flow from: 5dc7)  5dca ld (hl),l 
     ldir                       ;5dcb ed b0  . .                    (flow from: 5dca 5dcb)  5dcb ldir 
-    call 00052h                ;5dcd cd 52 00  . R .               (flow from: 5dcb)  5dcd call 0052 
+    ; jump to ROM where a RET instruction is. Used to obtain the calling address from the stack
+    call ROM_ImmediateRET      ;5dcd cd 52 00  . R .               (flow from: 5dcb)  5dcd call 0052 
+romRETCallReturn:
     dec sp                     ;5dd0 3b                            (flow from: 0052)  5dd0 dec sp 
     dec sp                     ;5dd1 3b                            (flow from: 5dd0)  5dd1 dec sp 
     pop bc                     ;5dd2 c1  .                         (flow from: 5dd1)  5dd2 pop bc 
-    ld hl,0fff0h               ;5dd3 21 f0 ff  ! . .               (flow from: 5dd2)  5dd3 ld hl,fff0 
+    ld hl,start-romRETCallReturn  ;5dd3 21 f0 ff  ! . .            (flow from: 5dd2)  5dd3 ld hl,fff0 
     add hl,bc                  ;5dd6 09  .                         (flow from: 5dd3)  5dd6 add hl,bc 
-    ld sp,04020h               ;5dd7 31 20 40  1   @               (flow from: 5dd6)  5dd7 ld sp,4020 
+    ld sp,VRAM_ADDRESS+0x20    ;5dd7 31 20 40  1   @               (flow from: 5dd6)  5dd7 ld sp,4020 
     push hl                    ;5dda e5  .                         (flow from: 5dd7)  5dda push hl 
     ld hl,00017h               ;5ddb 21 17 00  ! . .               (flow from: 5dda)  5ddb ld hl,0017 
     add hl,bc                  ;5dde 09  .                         (flow from: 5ddb)  5dde add hl,bc 
     ld bc,007cdh               ;5ddf 01 cd 07  . . .               (flow from: 5dde)  5ddf ld bc,07cd 
     ldir                       ;5de2 ed b0  . .                    (flow from: 5ddf 5de2)  5de2 ldir 
-    jp 05000h                  ;5de4 c3 00 50  . . P               (flow from: 5de2)  5de4 jp 5000 
+    jp LOADER_ADDRESS          ;5de4 c3 00 50  . . P               (flow from: 5de2)  5de4 jp 5000 
 
-    org 0x5000
+    org LOADER_ADDRESS
 
-    ld de,04026h               ;5de7 11 26 40  . & @               (ghost flow from: 5de4)   5000 ld de,4026 
-    call vr_sub_05342h         ;5dea cd 42 53  . B S               (ghost flow from: 5000)   5003 call 5342 
+loaderStart:
+    ld de,VRAM_ADDRESS+0x26    ;5de7 11 26 40  . & @               (ghost flow from: 5de4)   5000 ld de,4026 
+    call drawLogoLine          ;5dea cd 42 53  . B S               (ghost flow from: 5000)   5003 call 5342 
     ld e,046h                  ;5ded 1e 46  . F                    (ghost flow from: 5352)   5006 ld e,46 
-    call vr_sub_05342h         ;5def cd 42 53  . B S               (ghost flow from: 5006)   5008 call 5342 
+    call drawLogoLine          ;5def cd 42 53  . B S               (ghost flow from: 5006)   5008 call 5342 
     ex (sp),hl                 ;5df2 e3  .                         (ghost flow from: 5352)   500b ex (sp),hl 
     ld bc,vr_l050a1h           ;5df3 01 a1 50  . . P               (ghost flow from: 500b)   500c ld bc,50a1 
     ld de,02710h               ;5df6 11 10 27  . . '               (ghost flow from: 500c)   500f ld de,2710 
@@ -71,46 +77,39 @@ start:
     call vr_sub_052b4h         ;5e0f cd b4 52  . . R               (ghost flow from: 5026)   5028 call 52b4 
 vr_l0502bh:
     ld hl,04082h               ;5e12 21 82 40  ! . @               (ghost flow from: 52bf)   502b ld hl,4082 
-    call vr_sub_052e6h         ;5e15 cd e6 52  . . R               (ghost flow from: 502b)   502e call 52e6 
-
-; BLOCK 'intro1_string' (start 0x5e18 end 0x5e34)
+    call loaderPrintString     ;5e15 cd e6 52  . . R               (ghost flow from: 502b)   502e call 52e6 
     defb "Spectrum Z80 Turbo Assemble",0xf2 ;"r"+0x80              ;5e18
+
     ld hl,040c7h               ;5e34 21 c7 40  ! . @               (ghost flow from: 531b)   504d ld hl,40c7 
-    call vr_sub_052e6h         ;5e37 cd e6 52  . . R               (ghost flow from: 504d)   5050 call 52e6 
-
-; BLOCK 'intro2_string' (start 0x5e3a end 0x5e4c)
+    call loaderPrintString     ;5e37 cd e6 52  . . R               (ghost flow from: 504d)   5050 call 52e6 
     defb "(C) 1990 UNIVERSU",0xcd ;"M"+0x80                        ;5e3a
+
     ld hl,048e2h               ;5e4c 21 e2 48  ! . H               (ghost flow from: 531b)   5065 ld hl,48e2 
-    call vr_sub_052e6h         ;5e4f cd e6 52  . . R               (ghost flow from: 5065)   5068 call 52e6 
-
-; BLOCK 'intro3_string' (start 0x5e52 end 0x5e6e)
+    call loaderPrintString     ;5e4f cd e6 52  . . R               (ghost flow from: 5065)   5068 call 52e6 
     defb "Press ENTER to run Assemble",0xf2 ;"r"+0x80              ;5e52
-    ld hl,04883h               ;5e6e 21 83 48  ! . H               (ghost flow from: 531b)   5087 ld hl,4883 
-    call vr_sub_052e6h         ;5e71 cd e6 52  . . R               (ghost flow from: 5087)   508a call 52e6 
 
-; BLOCK 'intro4_string' (start 0x5e74 end 0x5e8f)
+    ld hl,04883h               ;5e6e 21 83 48  ! . H               (ghost flow from: 531b)   5087 ld hl,4883 
+    call loaderPrintString     ;5e71 cd e6 52  . . R               (ghost flow from: 5087)   508a call 52e6 
     defb "Instalation address:"
 vr_l050a1h:
     defb "00000_",0xa0 ;" "+0x80                                   ;5e88
-    ld hl,0484bh               ;5e8f 21 4b 48  ! K H               (ghost flow from: 531b)   50a8 ld hl,484b 
-    call vr_sub_052e6h         ;5e92 cd e6 52  . . R               (ghost flow from: 50a8)   50ab call 52e6 
 
-; BLOCK 'intro5_string' (start 0x5e95 end 0x5e9d)
+    ld hl,0484bh               ;5e8f 21 4b 48  ! K H               (ghost flow from: 531b)   50a8 ld hl,484b 
+    call loaderPrintString     ;5e92 cd e6 52  . . R               (ghost flow from: 50a8)   50ab call 52e6 
     defb "Monitor",0xba ;":"+0x80                                  ;5e95
+
     ld a,04dh                  ;5e9d 3e 4d  > M                    (ghost flow from: 531b)   50b6 ld a,4d 
     or a                       ;5e9f b7  .                         (ghost flow from: 50b6)   50b8 or a 
     ld hl,04853h               ;5ea0 21 53 48  ! S H               (ghost flow from: 50b8)   50b9 ld hl,4853 
     jr z,l5eadh                ;5ea3 28 08  ( .                    (ghost flow from: 50b9)   50bc jr z,50c6 
-    call vr_sub_052e6h         ;5ea5 cd e6 52  . . R               (ghost flow from: 50bc)   50be call 52e6 
-
-; BLOCK 'intro_yes_string' (start 0x5ea8 end 0x5eab)
+    call loaderPrintString         ;5ea5 cd e6 52  . . R               (ghost flow from: 50bc)   50be call 52e6 
     defb "Ye",0xf3;"s"+0x80    ;5ea8
+
     jr intro_no_string_end     ;5eab 18 06  . .                    (ghost flow from: 531b)   50c4 jr 50cc 
 l5eadh:
-    call vr_sub_052e6h         ;5ead cd e6 52  . . R 
-
-; BLOCK 'intro_no_string' (start 0x5eb0 end 0x5eb3)
+    call loaderPrintString         ;5ead cd e6 52  . . R 
     defb "No",0xa0             ;" "+0x80                           ;5eb0
+
 intro_no_string_end:
     ld hl,ATTRIBUTES_ADDRESS   ;5eb3 21 00 58  ! . X               (ghost flow from: 50c4)   50cc ld hl,5800 
     ld de,ATTRIBUTES_ADDRESS+1 ;5eb6 11 01 58  . . X               (ghost flow from: 50cc)   50cf ld de,5801 
@@ -380,7 +379,7 @@ l6062h:
     push af                    ;6067 f5  .                         (ghost flow from: 527f)   5280 push af 
     jr nc,l6077h               ;6068 30 0d  0 .                    (ghost flow from: 5280)   5281 jr nc,5290 
     ld hl,vr_l05353h           ;606a 21 53 53  ! S S               (ghost flow from: 5281)   5283 ld hl,5353 
-    call vr_sub_0531ch         ;606d cd 1c 53  . . S               (ghost flow from: 5283)   5286 call 531c 
+    call doRelocation          ;606d cd 1c 53  . . S               (ghost flow from: 5283)   5286 call 531c 
     ld hl,001c8h               ;6070 21 c8 01  ! . .               (ghost flow from: 531e)   5289 ld hl,01c8 
     add hl,de                  ;6073 19  .                         (ghost flow from: 5289)   528c add hl,de 
     ex de,hl                   ;6074 eb  .                         (ghost flow from: 528c)   528d ex de,hl 
@@ -392,7 +391,7 @@ l6077h:
     ld c,l                     ;607c 4d  M 
 l607dh:
     ld hl,vr_l05547h           ;607d 21 47 55  ! G U               (ghost flow from: 528e)   5296 ld hl,5547 
-    call vr_sub_0531ch         ;6080 cd 1c 53  . . S               (ghost flow from: 5296)   5299 call 531c 
+    call doRelocation          ;6080 cd 1c 53  . . S               (ghost flow from: 5296)   5299 call 531c 
     ld hl,0f136h               ;6083 21 36 f1  ! 6 .               (ghost flow from: 531e)   529c ld hl,f136 
     add hl,de                  ;6086 19  .                         (ghost flow from: 529c)   529f add hl,de 
     pop af                     ;6087 f1  .                         (ghost flow from: 529f)   52a0 pop af 
@@ -457,8 +456,14 @@ l60c6h:
     and 007h                   ;60c9 e6 07  . .                    (ghost flow from: 52e1)   52e2 and 07 
     or b                       ;60cb b0  .                         (ghost flow from: 52e2)   52e4 or b 
     ret                        ;60cc c9  .                         (ghost flow from: 52e4)   52e5 ret 
-vr_sub_052e6h:
-    ld (05303h),hl             ;60cd 22 03 53  " . S               (ghost flow from: 502e 5050 5068 508a 50ab 50be)   52e6 ld (5303),hl 
+
+
+loaderPrintString:
+    ; print string at the VRAM address specified in HL. The string must be specified after the call
+    ; of this routine. The routine takes the call address from the stack and after the printing 
+    ; of the string, it jumps at the address following the string. It takes the font from ROM (0x3D00)
+    
+    ld (varcStringDestination+1-loaderStart+LOADER_ADDRESS),hl     ;60cd 22 03 53 (ghost flow from: 502e 5050 5068 508a 50ab 50be)   52e6 ld (5303),hl 
     pop hl                     ;60d0 e1  .                         (ghost flow from: 52e6)   52e9 pop hl 
 l60d1h:
     ld a,(hl)                  ;60d1 7e  ~                         (ghost flow from: 52e9 5319)   52ea ld a,(hl) 
@@ -478,6 +483,7 @@ l60e3h:
     ld l,a                     ;60e6 6f  o                         (ghost flow from: 52fd)   52ff ld l,a 
     add hl,hl                  ;60e7 29  )                         (ghost flow from: 52ff)   5300 add hl,hl 
     add hl,hl                  ;60e8 29  )                         (ghost flow from: 5300)   5301 add hl,hl 
+varcStringDestination:
     ld de,04000h               ;60e9 11 00 40  . . @               (ghost flow from: 5301)   5302 ld de,4855 
     push de                    ;60ec d5  .                         (ghost flow from: 5302)   5305 push de 
     ld b,008h                  ;60ed 06 08  . .                    (ghost flow from: 5305)   5306 ld b,08 
@@ -492,14 +498,16 @@ vr_l05309h:
     djnz l60efh                ;60f5 10 f8  . .                    (ghost flow from: 530d)   530e djnz 5308 
     pop hl                     ;60f7 e1  .                         (ghost flow from: 530e)   5310 pop hl 
     inc l                      ;60f8 2c  ,                         (ghost flow from: 5310)   5311 inc l 
-    ld (05303h),hl             ;60f9 22 03 53  " . S               (ghost flow from: 5311)   5312 ld (5303),hl 
+    ld (varcStringDestination+1-loaderStart+LOADER_ADDRESS),hl     ;60f9 22 03 53 (ghost flow from: 5311)   5312 ld (5303),hl 
     exx                        ;60fc d9  .                         (ghost flow from: 5312)   5315 exx 
     ld a,(hl)                  ;60fd 7e  ~                         (ghost flow from: 5315)   5316 ld a,(hl) 
     inc hl                     ;60fe 23  #                         (ghost flow from: 5316)   5317 inc hl 
     rlca                       ;60ff 07  .                         (ghost flow from: 5317)   5318 rlca 
     jr nc,l60d1h               ;6100 30 cf  0 .                    (ghost flow from: 5318)   5319 jr nc,52ea 
     jp (hl)                    ;6102 e9  .                         (ghost flow from: 5319)   531b jp hl 
-vr_sub_0531ch:
+
+
+doRelocation:
     ld a,(hl)                  ;6103 7e  ~                         (ghost flow from: 5286 5299 5340)   531c ld a,(hl) 
     or a                       ;6104 b7  .                         (ghost flow from: 531c)   531d or a 
     ret z                      ;6105 c8  .                         (ghost flow from: 531d)   531e ret z 
@@ -532,8 +540,10 @@ l6115h:
     dec (hl)                   ;6123 35  5                         (ghost flow from: 533b)   533c dec (hl) 
     jr nz,l610fh               ;6124 20 e9    .                    (ghost flow from: 533c)   533d jr nz,5328 
     inc hl                     ;6126 23  #                         (ghost flow from: 533d)   533f inc hl 
-    jr vr_sub_0531ch                  ;6127 18 da  . .                    (ghost flow from: 533f)   5340 jr 531c 
-vr_sub_05342h:
+    jr doRelocation           ;6127 18 da  . .                    (ghost flow from: 533f)   5340 jr 531c 
+
+
+drawLogoLine:
     ld c,014h                  ;6129 0e 14  . .                    (ghost flow from: 5003 5008)   5342 ld c,14 
 l612bh:
     ld b,008h                  ;612b 06 08  . .                    (ghost flow from: 5342 5350)   5344 ld b,08 
@@ -1018,7 +1028,7 @@ l68cah:
     call v_sub_6669h           ;68cd cd a9 08  . . .               (flow (mon) from: 5f98)  5f99 call 6669 
     ld a,080h                  ;68d0 3e 80  > .                    (flow (mon) from: 85db)  5f9c ld a,80 
     ld (inputBufferStart),a    ;68d2 32 3f 2d  2 ? -               (flow (mon) from: 5f9c)  5f9e ld (8aff),a 
-    ld hl,l095f9h+170          ;68d5 21 af 2f  ! . /               (flow (mon) from: 5f9e)  5fa1 ld hl,8d6f
+    ld hl,mnemonicsTable+170   ;68d5 21 af 2f  ! . /               (flow (mon) from: 5f9e)  5fa1 ld hl,8d6f
     ld (vr_l08750h+1),hl       ;68d8 22 91 29  " . )               (flow (mon) from: 5fa1)  5fa4 ld (8751),hl 
     ld hl,v_l89f4h             ;68db 21 34 2c  ! 4 ,               (flow (mon) from: 5fa4)  5fa7 ld hl,89f4 
     ld (l089d3h+1),hl          ;68de 22 e0 22  " . "               (flow (mon) from: 5fa7)  5faa ld (80a0),hl  
@@ -7242,7 +7252,7 @@ v_sub_85b5h:
     inc hl                     ;8eef 23  #                         (flow from: 85ba)  85bb inc hl 
     jr v_sub_85b5h             ;8ef0 18 f7  . .                    (flow from: 85bb)  85bc jr 85b5 
 v_sub_85beh:
-    ld hl,l095f9h+170          ;8ef2 21 af 2f  ! . /               (flow from: 7cf4)  85be ld hl,8d6f 
+    ld hl,mnemonicsTable+170   ;8ef2 21 af 2f  ! . /               (flow from: 7cf4)  85be ld hl,8d6f 
     ld (vr_l08750h+1),hl       ;8ef5 22 91 29  " . )               (flow from: 85be)  85c1 ld (8751),hl 
     ld hl,BOTTOM_LINE_VRAM_ADDRESS  ;8ef8 21 e0 50  ! . P          (flow from: 85c1)  85c4 ld hl,50e0 
 v_l85c7h:
@@ -8493,7 +8503,7 @@ v_l8c76h:
     defb 0eah                  ;95f6 ea  . 
     defb 0edh                  ;95f7 ed  . 
     defb 0bbh                  ;95f8 bb  . 
-l095f9h:
+mnemonicsTable:
     defb "c", 0xF0             ;cp                             ;95f9
     defb "d", 0xE9             ;di
     defb "e", 0xE9             ;ei
