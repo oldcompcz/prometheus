@@ -103,12 +103,12 @@ varc5e9d:
     or a                       ;5e9f b7  .                         (ghost flow from: 50b6)   50b8 or a 
     ld hl,04853h               ;5ea0 21 53 48  ! S H               (ghost flow from: 50b8)   50b9 ld hl,4853 
     jr z,l5eadh                ;5ea3 28 08  ( .                    (ghost flow from: 50b9)   50bc jr z,50c6 
-    call loaderPrintString         ;5ea5 cd e6 52  . . R               (ghost flow from: 50bc)   50be call 52e6 
+    call loaderPrintString     ;5ea5 cd e6 52  . . R               (ghost flow from: 50bc)   50be call 52e6 
     defb "Ye",0xf3;"s"+0x80    ;5ea8
 
     jr intro_no_string_end     ;5eab 18 06  . .                    (ghost flow from: 531b)   50c4 jr 50cc 
 l5eadh:
-    call loaderPrintString         ;5ead cd e6 52  . . R 
+    call loaderPrintString     ;5ead cd e6 52  . . R 
     defb "No",0xa0             ;" "+0x80                           ;5eb0
 
 intro_no_string_end:
@@ -418,7 +418,6 @@ vr_sub_052afh:
     pop de                     ;6097 d1  .                         (ghost flow from: 52af)   52b0 pop de 
     add hl,de                  ;6098 19  .                         (ghost flow from: 52b0)   52b1 add hl,de 
     push bc                    ;6099 c5  .                         (ghost flow from: 52b1)   52b2 push bc 
-l609ah:
     ret                        ;609a c9  .                         (ghost flow from: 52b2)   52b3 ret 
 vr_sub_052b4h:
     ld a,02fh                  ;609b 3e 2f  > /                    (ghost flow from: 5012 5018 501e 5023 5028)   52b4 ld a,2f 
@@ -431,31 +430,18 @@ l609dh:
     ld (bc),a                  ;60a4 02  .                         (ghost flow from: 52bc)   52bd ld (bc),a 
     inc bc                     ;60a5 03  .                         (ghost flow from: 52bd)   52be inc bc 
     ret                        ;60a6 c9  .                         (ghost flow from: 52be)   52bf ret 
+
+
 l60a7h:
-    adc a,029h                 ;60a7 ce 29  . ) 
-    inc (hl)                   ;60a9 34  4 
-    ei                         ;60aa fb  . 
-    ld c,(hl)                  ;60ab 4e  N 
-    inc b                      ;60ac 04  . 
-    cp h                       ;60ad bc  . 
-    push hl                    ;60ae e5  . 
-    sbc a,b                    ;60af 98  . 
-    rlca                       ;60b0 07  . 
-    jr l60c6h                  ;60b1 18 13  . . 
-    djnz l609ah                ;60b3 10 e5  . . 
-    ld c,000h                  ;60b5 0e 00  . . 
-    ld b,a                     ;60b7 47  G 
-    ld de,00938h               ;60b8 11 38 09  . 8 . 
-    ret pe                     ;60bb e8  . 
-    ret p                      ;60bc f0  . 
-    jp nc,09404h               ;60bd d2 04 94  . . .               ;data? 
-    rst 30h                    ;60c0 f7  . 
-    ld e,l                     ;60c1 5d  ] 
-    ret m                      ;60c2 f8  . 
+    defb 0xce, 0x29, 0x34, 0xfb, 0x4e, 0x04, 0xbc, 0xe5 
+    defb 0x98, 0x07, 0x18, 0x13, 0x10, 0xe5, 0x0e, 0x00 
+    defb 0x47, 0x11, 0x38, 0x09, 0xe8, 0xf0, 0xd2, 0x04 
+    defb 0x94, 0xf7, 0x5d, 0xf8
+
+
 vr_sub_052dch:
     and 0f8h                   ;60c3 e6 f8  . .                    (ghost flow from: 50f9 520e)   52dc and f8 
     ld b,a                     ;60c5 47  G                         (ghost flow from: 52dc)   52de ld b,a 
-l60c6h:
     rrca                       ;60c6 0f  .                         (ghost flow from: 52de)   52df rrca 
     rrca                       ;60c7 0f  .                         (ghost flow from: 52df)   52e0 rrca 
     rrca                       ;60c8 0f  .                         (ghost flow from: 52e0)   52e1 rrca 
