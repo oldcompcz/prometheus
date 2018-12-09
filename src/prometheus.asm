@@ -1,6 +1,12 @@
 ; z80dasm 1.1.3
 ; command line: z80dasm -a -t -l -g 24000 -b blocks.txt prometheus.bin
 
+; Naming convention
+; =================
+; 
+; varc...   - variable stored directly in the code
+;
+
 INSTALLATION_ADDRESS:          equ 0x5dc0 ; 24000
 VRAM_ADDRESS:                  equ 0x4000
 ATTRIBUTES_ADDRESS:            equ 0x5800
@@ -64,7 +70,7 @@ loaderStart:
     ld e,046h                  ;5ded 1e 46  . F                    (ghost flow from: 5352)   5006 ld e,46 
     call drawLogoLine          ;5def cd 42 53  . B S               (ghost flow from: 5006)   5008 call 5342 
     ex (sp),hl                 ;5df2 e3  .                         (ghost flow from: 5352)   500b ex (sp),hl 
-    ld bc,vr_l050a1h           ;5df3 01 a1 50  . . P               (ghost flow from: 500b)   500c ld bc,50a1 
+    ld bc,installationAddressString ;5df3 01 a1 50  . . P           (ghost flow from: 500b)   500c ld bc,50a1 
     ld de,02710h               ;5df6 11 10 27  . . '               (ghost flow from: 500c)   500f ld de,2710 
     call vr_sub_052b4h         ;5df9 cd b4 52  . . R               (ghost flow from: 500f)   5012 call 52b4 
     ld de,003e8h               ;5dfc 11 e8 03  . . .               (ghost flow from: 52bf)   5015 ld de,03e8 
@@ -91,38 +97,46 @@ vr_l0502bh:
     ld hl,04883h               ;5e6e 21 83 48  ! . H               (ghost flow from: 531b)   5087 ld hl,4883 
     call loaderPrintString     ;5e71 cd e6 52  . . R               (ghost flow from: 5087)   508a call 52e6 
     defb "Instalation address:"
-vr_l050a1h:
+installationAddressString:
     defb "00000_",0xa0 ;" "+0x80                                   ;5e88
 
     ld hl,0484bh               ;5e8f 21 4b 48  ! K H               (ghost flow from: 531b)   50a8 ld hl,484b 
     call loaderPrintString     ;5e92 cd e6 52  . . R               (ghost flow from: 50a8)   50ab call 52e6 
     defb "Monitor",0xba ;":"+0x80                                  ;5e95
 
-varc5e9d:
+varcInstallMonitor:
+    ; information if the Monitor will be installed. 0x4d is value of the key M, it is used as non-zero value 
     ld a,04dh                  ;5e9d 3e 4d  > M                    (ghost flow from: 531b)   50b6 ld a,4d 
+    ; is Monitor enabled?
     or a                       ;5e9f b7  .                         (ghost flow from: 50b6)   50b8 or a 
     ld hl,04853h               ;5ea0 21 53 48  ! S H               (ghost flow from: 50b8)   50b9 ld hl,4853 
     jr z,l5eadh                ;5ea3 28 08  ( .                    (ghost flow from: 50b9)   50bc jr z,50c6 
+    ; Monitor enabled, print "Yes"
     call loaderPrintString     ;5ea5 cd e6 52  . . R               (ghost flow from: 50bc)   50be call 52e6 
     defb "Ye",0xf3;"s"+0x80    ;5ea8
 
-    jr intro_no_string_end     ;5eab 18 06  . .                    (ghost flow from: 531b)   50c4 jr 50cc 
+    jr fillLogoWithColors      ;5eab 18 06  . .                    (ghost flow from: 531b)   50c4 jr 50cc 
 l5eadh:
+    ; Monitor disabled, print "No"
     call loaderPrintString     ;5ead cd e6 52  . . R 
     defb "No",0xa0             ;" "+0x80                           ;5eb0
 
-intro_no_string_end:
+fillLogoWithColors:
+    ; fill first logo line
     ld hl,ATTRIBUTES_ADDRESS   ;5eb3 21 00 58  ! . X               (ghost flow from: 50c4)   50cc ld hl,5800 
     ld de,ATTRIBUTES_ADDRESS+1 ;5eb6 11 01 58  . . X               (ghost flow from: 50cc)   50cf ld de,5801 
     ld bc,00020h               ;5eb9 01 20 00  .   .               (ghost flow from: 50cf)   50d2 ld bc,0020 
     ld (hl),l                  ;5ebc 75  u                         (ghost flow from: 50d2)   50d5 ld (hl),l 
     ldir                       ;5ebd ed b0  . .                    (ghost flow from: 50d5 50d6)   50d6 ldir 
+    ; fill second logo line
     ld c,020h                  ;5ebf 0e 20  .                      (ghost flow from: 50d6)   50d8 ld c,20 
     ld (hl),006h               ;5ec1 36 06  6 .                    (ghost flow from: 50d8)   50da ld (hl),06 
     ldir                       ;5ec3 ed b0  . .                    (ghost flow from: 50da 50dc)   50dc ldir 
+    ; fill third logo line
     ld c,020h                  ;5ec5 0e 20  .                      (ghost flow from: 50dc)   50de ld c,20 
     ld (hl),046h               ;5ec7 36 46  6 F                    (ghost flow from: 50de)   50e0 ld (hl),46 
     ldir                       ;5ec9 ed b0  . .                    (ghost flow from: 50e0 50e2)   50e2 ldir 
+    ; fill fourth logo line
     ld c,0a0h                  ;5ecb 0e a0  . .                    (ghost flow from: 50e2)   50e4 ld c,a0 
     ld (hl),007h               ;5ecd 36 07  6 .                    (ghost flow from: 50e4)   50e6 ld (hl),07 
     ldir                       ;5ecf ed b0  . .                    (ghost flow from: 50e6 50e8)   50e8 ldir 
@@ -191,10 +205,12 @@ l5f24h:
     ld (hl),a                  ;5f2c 77  w 
     ret                        ;5f2d c9  . 
 l5f2eh:
+    ; P key?
     cp 050h                    ;5f2e fe 50  . P                    (ghost flow from: 513b)   5147 cp 50 
 l5f30h:
     ld de,00838h               ;5f30 11 38 08  . 8 .               (ghost flow from: 5147)   5149 ld de,0838 
     jr z,l5f24h                ;5f33 28 ef  ( .                    (ghost flow from: 5149)   514c jr z,513d 
+    ; B key?
     cp 042h                    ;5f35 fe 42  . B                    (ghost flow from: 514c)   514e cp 42 
 l5f37h:
     ld de,04040h               ;5f37 11 40 40  . @ @               (ghost flow from: 514e)   5150 ld de,4040 
@@ -206,7 +222,8 @@ l5f37h:
     jr z,l5f30h                ;5f45 28 e9  ( .                    (ghost flow from: 515c)   515e jr z,5149 
     cp 0c2h                    ;5f47 fe c2  . .                    (ghost flow from: 515e)   5160 cp c2 
     jr z,l5f37h                ;5f49 28 ec  ( .                    (ghost flow from: 5160)   5162 jr z,5150 
-    cp 044h                    ;5f4b fe 44  . D                    (ghost flow from: 5162)   5164 cp 44 
+    ; D key?
+    cp 044h                   ;5f4b fe 44  . D                    (ghost flow from: 5162)   5164 cp 44 
     jr nz,l5f57h               ;5f4d 20 08    .                    (ghost flow from: 5164)   5166 jr nz,5170 
     ld hl,vr_l05309h           ;5f4f 21 09 53  ! . S 
     ld a,00fh                  ;5f52 3e 0f  > . 
@@ -215,9 +232,11 @@ l5f54h:
     ld (hl),a                  ;5f55 77  w 
     ret                        ;5f56 c9  . 
 l5f57h:
+    ; M key?
     cp 04dh                    ;5f57 fe 4d  . M                    (ghost flow from: 5166)   5170 cp 4d 
-    ld hl,varc5e9d+1-loaderStart+LOADER_ADDRESS ;5f59 21 b7 50     (ghost flow from: 5170)   5172 ld hl,50b7 
+    ld hl,varcInstallMonitor+1-loaderStart+LOADER_ADDRESS ;5f59 21 b7 50     (ghost flow from: 5170)   5172 ld hl,50b7 
     jr z,l5f54h                ;5f5c 28 f6  ( .                    (ghost flow from: 5172)   5175 jr z,516d 
+    ; X key?
     cp 058h                    ;5f5e fe 58  . X                    (ghost flow from: 5175)   5177 cp 58 
     ld hl,varc5ee8+1-loaderStart+LOADER_ADDRESS ;5f60 21 02 51     (ghost flow from: 5177)   5179 ld hl,5102 
     ld de,0013fh               ;5f63 11 3f 01  . ? .               (ghost flow from: 5179)   517c ld de,013f 
@@ -225,9 +244,11 @@ l5f57h:
     ld d,0ffh                  ;5f68 16 ff  . .                    (ghost flow from: 517f)   5181 ld d,ff 
     cp 0d8h                    ;5f6a fe d8  . .                    (ghost flow from: 5181)   5183 cp d8 
     jr z,l5f24h                ;5f6c 28 b6  ( .                    (ghost flow from: 5183)   5185 jr z,513d 
+    ; C key?
     cp 043h                    ;5f6e fe 43  . C                    (ghost flow from: 5185)   5187 cp 43 
     jr nz,l5f93h               ;5f70 20 21    !                    (ghost flow from: 5187)   5189 jr nz,51ac 
 vr_l0518bh:
+    ; C key is pressed
     ld a,000h                  ;5f72 3e 00  > . 
     inc a                      ;5f74 3c  < 
     cp 003h                    ;5f75 fe 03  . . 
@@ -236,7 +257,7 @@ vr_l0518bh:
 l5f7ah:
     ld (vr_l0518bh+1),a        ;5f7a 32 8c 51  2 . Q 
     add a,a                    ;5f7d 87  . 
-    ld hl,l5f8d-loaderStart+LOADER_ADDRESS  ;5f7e 21 a6 51  ! . Q 
+    ld hl,caseModificationCodeOptions-loaderStart+LOADER_ADDRESS  ;5f7e 21 a6 51  ! . Q 
     ld b,000h                  ;5f81 06 00  . . 
     ld c,a                     ;5f83 4f  O 
     add hl,bc                  ;5f84 09  . 
@@ -244,14 +265,14 @@ l5f7ah:
     inc hl                     ;5f86 23  # 
     ld d,(hl)                  ;5f87 56  V 
     ex de,hl                   ;5f88 eb  . 
-    ld (l60e1h-loaderStart+LOADER_ADDRESS),hl  ;5f89 22 fa 52  " . R 
+    ld (caseModificationCode-loaderStart+LOADER_ADDRESS),hl  ;5f89 22 fa 52  " . R 
     ret                        ;5f8c c9  . 
-l5f8d:
-    and 0ffh                   ;5f8d e6 ff  . . 
-    or 020h                    ;5f8f f6 20  .   
-    and 0dfh                   ;5f91 e6 df  . . 
+caseModificationCodeOptions:
+    and 0ffh                   ;5f8d e6 ff  . .  ; normal
+    or 020h                    ;5f8f f6 20  .    ; lowercase
+    and 0dfh                   ;5f91 e6 df  . .  ; uppercase 
 l5f93h:
-    ld hl,vr_l050a1h+5-loaderStart+LOADER_ADDRESS ;5f93 21 a6 50   (ghost flow from: 5189)   51ac ld hl,50a6 
+    ld hl,installationAddressString+5-loaderStart+LOADER_ADDRESS ;5f93 21 a6 50   (ghost flow from: 5189)   51ac ld hl,50a6 
     cp 0b0h                    ;5f96 fe b0  . .                    (ghost flow from: 51ac)   51af cp b0 
     jr nz,l5fa9h               ;5f98 20 0f    .                    (ghost flow from: 51af)   51b1 jr nz,51c2 
     dec hl                     ;5f9a 2b  + 
@@ -266,6 +287,7 @@ l5fa3h:
     ld (l5f93h+1-loaderStart+LOADER_ADDRESS),hl  ;5fa5 22 ad 51  " . Q 
     ret                        ;5fa8 c9  . 
 l5fa9h:
+    ; 0-9 key?
     cp 030h                    ;5fa9 fe 30  . 0                    (ghost flow from: 51b1)   51c2 cp 30 
     jr c,l5fbah                ;5fab 38 0d  8 .                    (ghost flow from: 51c2)   51c4 jr c,51d3 
     cp 03ah                    ;5fad fe 3a  . : 
@@ -278,8 +300,10 @@ l5fa9h:
     inc hl                     ;5fb7 23  # 
     jr l5fa3h                  ;5fb8 18 e9  . . 
 l5fbah:
+    ; Enter key?
     cp 00dh                    ;5fba fe 0d  . .                    (ghost flow from: 51c4)   51d3 cp 0d 
     ret nz                     ;5fbc c0  .                         (ghost flow from: 51d3)   51d5 ret nz 
+    ; Enter key pressed
     pop af                     ;5fbd f1  .                         (ghost flow from: 51d5)   51d6 pop af 
     pop hl                     ;5fbe e1  .                         (ghost flow from: 51d6)   51d7 pop hl 
     push hl                    ;5fbf e5  .                         (ghost flow from: 51d7)   51d8 push hl 
@@ -288,7 +312,7 @@ l5fbah:
     call vr_sub_052afh         ;5fc7 cd af 52  . . R               (ghost flow from: 51dd)   51e0 call 52af 
     ld a,(vr_l05309h)          ;5fca 3a 09 53  : . S               (ghost flow from: 52b3)   51e3 ld a,(5309) 
     call vr_sub_052aeh         ;5fcd cd ae 52  . . R               (ghost flow from: 51e3)   51e6 call 52ae 
-    ld de,(l60e1h-loaderStart+LOADER_ADDRESS) ;5fd0 ed 5b fa 52    (ghost flow from: 52b3)   51e9 ld de,(52fa) 
+    ld de,(caseModificationCode-loaderStart+LOADER_ADDRESS) ;5fd0 ed 5b fa 52    (ghost flow from: 52b3)   51e9 ld de,(52fa) 
     ld (hl),e                  ;5fd4 73  s                         (ghost flow from: 51e9)   51ed ld (hl),e 
     inc hl                     ;5fd5 23  #                         (ghost flow from: 51ed)   51ee inc hl 
     ld (hl),d                  ;5fd6 72  r                         (ghost flow from: 51ee)   51ef ld (hl),d 
@@ -315,7 +339,7 @@ l5fbah:
 varc600d:
     ld sp,00000h               ;600d 31 00 00  1 . .               (ghost flow from: 5225)   5226 ld sp,401e 
     ld hl,00000h               ;6010 21 00 00  ! . .               (ghost flow from: 5226)   5229 ld hl,0000 
-    ld de,vr_l050a1h           ;6013 11 a1 50  . . P               (ghost flow from: 5229)   522c ld de,50a1 
+    ld de,installationAddressString ;6013 11 a1 50  . . P           (ghost flow from: 5229)   522c ld de,50a1 
 l6016h:
     ld a,(de)                  ;6016 1a  .                         (ghost flow from: 522c 5241)   522f ld a,(de) 
     inc de                     ;6017 13  .                         (ghost flow from: 522f)   5230 inc de 
@@ -335,11 +359,12 @@ l6016h:
 l602ah:
     pop de                     ;602a d1  .                         (ghost flow from: 5233)   5243 pop de 
     ex de,hl                   ;602b eb  .                         (ghost flow from: 5243)   5244 ex de,hl 
-    ld a,(varc5e9d+1-loaderStart+LOADER_ADDRESS)  ;602c 3a b7 50   (ghost flow from: 5244)   5245 ld a,(50b7) 
+    ld a,(varcInstallMonitor+1-loaderStart+LOADER_ADDRESS)  ;602c 3a b7 50   (ghost flow from: 5244)   5245 ld a,(50b7) 
     rrca                       ;602f 0f  .                         (ghost flow from: 5245)   5248 rrca 
     push af                    ;6030 f5  .                         (ghost flow from: 5248)   5249 push af 
-    ld bc,03e80h               ;6031 01 80 3e  . . >               (ghost flow from: 5249)   524a ld bc,3e80 
+    ld bc,03e80h               ;6031 01 80 3e  . . >               (ghost flow from: 5249)   524a ld bc,3e80     
     jr c,l604eh                ;6034 38 18  8 .                    (ghost flow from: 524a)   524d jr c,5267 
+monitorWillNotBeInstalled:
     push hl                    ;6036 e5  . 
     push de                    ;6037 d5  . 
     ld bc,v_sub_7931h+1        ;6038 01 72 1b  . r . 
@@ -411,6 +436,8 @@ l608eh:
     ld sp,hl                   ;6092 f9  .                         (ghost flow from: 52aa)   52ab ld sp,hl 
     push bc                    ;6093 c5  .                         (ghost flow from: 52ab)   52ac push bc 
     ret                        ;6094 c9  .                         (ghost flow from: 52ac)   52ad ret 
+
+
 vr_sub_052aeh:
     ld (hl),a                  ;6095 77  w                         (ghost flow from: 51e6 51f7 51fd 5200 5203 5208 520b 5211 5216 5219 521f 5222)   52ae ld (hl),a 
 vr_sub_052afh:
@@ -419,6 +446,8 @@ vr_sub_052afh:
     add hl,de                  ;6098 19  .                         (ghost flow from: 52b0)   52b1 add hl,de 
     push bc                    ;6099 c5  .                         (ghost flow from: 52b1)   52b2 push bc 
     ret                        ;609a c9  .                         (ghost flow from: 52b2)   52b3 ret 
+
+
 vr_sub_052b4h:
     ld a,02fh                  ;609b 3e 2f  > /                    (ghost flow from: 5012 5018 501e 5023 5028)   52b4 ld a,2f 
 l609dh:
@@ -464,10 +493,12 @@ l60d1h:
     cp 041h                    ;60d5 fe 41  . A                    (ghost flow from: 52ed)   52ee cp 41 
     jr c,l60e3h                ;60d7 38 0a  8 .                    (ghost flow from: 52ee)   52f0 jr c,52fc 
     cp 05bh                    ;60d9 fe 5b  . [                    (ghost flow from: 52f0)   52f2 cp 5b 
-    jr c,l60e1h                ;60db 38 04  8 .                    (ghost flow from: 52f2)   52f4 jr c,52fa 
+    jr c,caseModificationCode  ;60db 38 04  8 .                    (ghost flow from: 52f2)   52f4 jr c,52fa 
     cp 061h                    ;60dd fe 61  . a                    (ghost flow from: 52f4)   52f6 cp 61 
     jr c,l60e3h                ;60df 38 02  8 .                    (ghost flow from: 52f6)   52f8 jr c,52fc 
-l60e1h:
+caseModificationCode:
+    ; the following instruction is modified directly by the program when the C key is pressed.
+    ; It is one of caseModificationCodeOptions
     and 0ffh                   ;60e1 e6 ff  . .                    (ghost flow from: 52f4 52f8)   52fa and ff 
 l60e3h:
     add a,a                    ;60e3 87  .                         (ghost flow from: 52f0 52f8 52fa)   52fc add a,a 
@@ -482,6 +513,8 @@ varcStringDestination:
 l60efh:
     ld a,(hl)                  ;60ef 7e  ~                         (ghost flow from: 5306 530e)   5308 ld a,(hl) 
 vr_l05309h:
+    ; the following instruction is modified directly by the program when the D key is pressed.
+    ; If Bold is active, the NOP is replaced with RRCA (0x0f)
     nop                        ;60f0 00  .                         (ghost flow from: 5308)   5309 nop 
     or (hl)                    ;60f1 b6  .                         (ghost flow from: 5309)   530a or (hl) 
     ld (de),a                  ;60f2 12  .                         (ghost flow from: 530a)   530b ld (de),a 
