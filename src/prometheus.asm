@@ -98,6 +98,7 @@ vr_l050a1h:
     call loaderPrintString     ;5e92 cd e6 52  . . R               (ghost flow from: 50a8)   50ab call 52e6 
     defb "Monitor",0xba ;":"+0x80                                  ;5e95
 
+varc5e9d:
     ld a,04dh                  ;5e9d 3e 4d  > M                    (ghost flow from: 531b)   50b6 ld a,4d 
     or a                       ;5e9f b7  .                         (ghost flow from: 50b6)   50b8 or a 
     ld hl,04853h               ;5ea0 21 53 48  ! S H               (ghost flow from: 50b8)   50b9 ld hl,4853 
@@ -130,6 +131,7 @@ vr_l050edh:
     ld (hl),038h               ;5ed4 36 38  6 8                    (ghost flow from: 50ea)   50ed ld (hl),38 
     ld a,(hl)                  ;5ed6 7e  ~                         (ghost flow from: 50ed)   50ef ld a,(hl) 
     ldir                       ;5ed7 ed b0  . .                    (ghost flow from: 50ef 50f0)   50f0 ldir 
+varc5ed9:
     ld (hl),030h               ;5ed9 36 30  6 0                    (ghost flow from: 50f0)   50f2 ld (hl),30 
     ld bc,00020h               ;5edb 01 20 00  .   .               (ghost flow from: 50f2)   50f4 ld bc,0020 
     ldir                       ;5ede ed b0  . .                    (ghost flow from: 50f4 50f7)   50f7 ldir 
@@ -137,6 +139,7 @@ vr_l050edh:
     ld b,001h                  ;5ee3 06 01  . .                    (ghost flow from: 52e5)   50fc ld b,01 
     ld (hl),a                  ;5ee5 77  w                         (ghost flow from: 50fc)   50fe ld (hl),a 
     ldir                       ;5ee6 ed b0  . .                    (ghost flow from: 50fe 50ff)   50ff ldir 
+varc5ee8:
     ld e,00ah                  ;5ee8 1e 0a  . .                    (ghost flow from: 50ff)   5101 ld e,0a 
     ld hl,0012ch               ;5eea 21 2c 01  ! , .               (ghost flow from: 5101)   5103 ld hl,012c 
     ld a,(vr_l050edh+1)        ;5eed 3a ee 50  : . P               (ghost flow from: 5103)   5106 ld a,(50ee) 
@@ -196,7 +199,7 @@ l5f30h:
 l5f37h:
     ld de,04040h               ;5f37 11 40 40  . @ @               (ghost flow from: 514e)   5150 ld de,4040 
     jr z,l5f24h                ;5f3a 28 e8  ( .                    (ghost flow from: 5150)   5153 jr z,513d 
-    ld hl,050f3h               ;5f3c 21 f3 50  ! . P               (ghost flow from: 5153)   5155 ld hl,50f3 
+    ld hl,varc5ed9+1-loaderStart+LOADER_ADDRESS  ;5f3c 21 f3 50    (ghost flow from: 5153)   5155 ld hl,50f3 
     cp 0c9h                    ;5f3f fe c9  . .                    (ghost flow from: 5155)   5158 cp c9 
     jr z,l5f1fh                ;5f41 28 dc  ( .                    (ghost flow from: 5158)   515a jr z,5138 
     cp 0d0h                    ;5f43 fe d0  . .                    (ghost flow from: 515a)   515c cp d0 
@@ -213,10 +216,10 @@ l5f54h:
     ret                        ;5f56 c9  . 
 l5f57h:
     cp 04dh                    ;5f57 fe 4d  . M                    (ghost flow from: 5166)   5170 cp 4d 
-    ld hl,050b7h               ;5f59 21 b7 50  ! . P               (ghost flow from: 5170)   5172 ld hl,50b7 
+    ld hl,varc5e9d+1-loaderStart+LOADER_ADDRESS ;5f59 21 b7 50     (ghost flow from: 5170)   5172 ld hl,50b7 
     jr z,l5f54h                ;5f5c 28 f6  ( .                    (ghost flow from: 5172)   5175 jr z,516d 
     cp 058h                    ;5f5e fe 58  . X                    (ghost flow from: 5175)   5177 cp 58 
-    ld hl,05102h               ;5f60 21 02 51  ! . Q               (ghost flow from: 5177)   5179 ld hl,5102 
+    ld hl,varc5ee8+1-loaderStart+LOADER_ADDRESS ;5f60 21 02 51     (ghost flow from: 5177)   5179 ld hl,5102 
     ld de,0013fh               ;5f63 11 3f 01  . ? .               (ghost flow from: 5179)   517c ld de,013f 
     jr z,l5f24h                ;5f66 28 bc  ( .                    (ghost flow from: 517c)   517f jr z,513d 
     ld d,0ffh                  ;5f68 16 ff  . .                    (ghost flow from: 517f)   5181 ld d,ff 
@@ -233,7 +236,7 @@ vr_l0518bh:
 l5f7ah:
     ld (vr_l0518bh+1),a        ;5f7a 32 8c 51  2 . Q 
     add a,a                    ;5f7d 87  . 
-    ld hl,051a6h               ;5f7e 21 a6 51  ! . Q 
+    ld hl,l5f8d-loaderStart+LOADER_ADDRESS  ;5f7e 21 a6 51  ! . Q 
     ld b,000h                  ;5f81 06 00  . . 
     ld c,a                     ;5f83 4f  O 
     add hl,bc                  ;5f84 09  . 
@@ -241,13 +244,14 @@ l5f7ah:
     inc hl                     ;5f86 23  # 
     ld d,(hl)                  ;5f87 56  V 
     ex de,hl                   ;5f88 eb  . 
-    ld (052fah),hl             ;5f89 22 fa 52  " . R 
+    ld (l60e1h-loaderStart+LOADER_ADDRESS),hl  ;5f89 22 fa 52  " . R 
     ret                        ;5f8c c9  . 
+l5f8d:
     and 0ffh                   ;5f8d e6 ff  . . 
     or 020h                    ;5f8f f6 20  .   
     and 0dfh                   ;5f91 e6 df  . . 
 l5f93h:
-    ld hl,050a6h               ;5f93 21 a6 50  ! . P               (ghost flow from: 5189)   51ac ld hl,50a6 
+    ld hl,vr_l050a1h+5-loaderStart+LOADER_ADDRESS ;5f93 21 a6 50   (ghost flow from: 5189)   51ac ld hl,50a6 
     cp 0b0h                    ;5f96 fe b0  . .                    (ghost flow from: 51ac)   51af cp b0 
     jr nz,l5fa9h               ;5f98 20 0f    .                    (ghost flow from: 51af)   51b1 jr nz,51c2 
     dec hl                     ;5f9a 2b  + 
@@ -259,7 +263,7 @@ l5f93h:
     dec hl                     ;5fa2 2b  + 
 l5fa3h:
     ld (hl),05fh               ;5fa3 36 5f  6 _ 
-    ld (051adh),hl             ;5fa5 22 ad 51  " . Q 
+    ld (l5f93h+1-loaderStart+LOADER_ADDRESS),hl  ;5fa5 22 ad 51  " . Q 
     ret                        ;5fa8 c9  . 
 l5fa9h:
     cp 030h                    ;5fa9 fe 30  . 0                    (ghost flow from: 51b1)   51c2 cp 30 
@@ -279,18 +283,18 @@ l5fbah:
     pop af                     ;5fbd f1  .                         (ghost flow from: 51d5)   51d6 pop af 
     pop hl                     ;5fbe e1  .                         (ghost flow from: 51d6)   51d7 pop hl 
     push hl                    ;5fbf e5  .                         (ghost flow from: 51d7)   51d8 push hl 
-    ld (05227h),sp             ;5fc0 ed 73 27 52  . s ' R          (ghost flow from: 51d8)   51d9 ld (5227),sp 
-    ld sp,052c0h               ;5fc4 31 c0 52  1 . R               (ghost flow from: 51d9)   51dd ld sp,52c0 
+    ld (varc600d+1-loaderStart+LOADER_ADDRESS),sp ;5fc0 ed 73 27 52(ghost flow from: 51d8)   51d9 ld (5227),sp 
+    ld sp,l60a7h-loaderStart+LOADER_ADDRESS  ;5fc4 31 c0 52        (ghost flow from: 51d9)   51dd ld sp,52c0 
     call vr_sub_052afh         ;5fc7 cd af 52  . . R               (ghost flow from: 51dd)   51e0 call 52af 
     ld a,(vr_l05309h)          ;5fca 3a 09 53  : . S               (ghost flow from: 52b3)   51e3 ld a,(5309) 
     call vr_sub_052aeh         ;5fcd cd ae 52  . . R               (ghost flow from: 51e3)   51e6 call 52ae 
-    ld de,(052fah)             ;5fd0 ed 5b fa 52  . [ . R          (ghost flow from: 52b3)   51e9 ld de,(52fa) 
+    ld de,(l60e1h-loaderStart+LOADER_ADDRESS) ;5fd0 ed 5b fa 52    (ghost flow from: 52b3)   51e9 ld de,(52fa) 
     ld (hl),e                  ;5fd4 73  s                         (ghost flow from: 51e9)   51ed ld (hl),e 
     inc hl                     ;5fd5 23  #                         (ghost flow from: 51ed)   51ee inc hl 
     ld (hl),d                  ;5fd6 72  r                         (ghost flow from: 51ee)   51ef ld (hl),d 
     dec hl                     ;5fd7 2b  +                         (ghost flow from: 51ef)   51f0 dec hl 
     call vr_sub_052afh         ;5fd8 cd af 52  . . R               (ghost flow from: 51f0)   51f1 call 52af 
-    ld a,(05102h)              ;5fdb 3a 02 51  : . Q               (ghost flow from: 52b3)   51f4 ld a,(5102) 
+    ld a,(varc5ee8+1-loaderStart+LOADER_ADDRESS)  ;5fdb 3a 02 51   (ghost flow from: 52b3)   51f4 ld a,(5102) 
     call vr_sub_052aeh         ;5fde cd ae 52  . . R               (ghost flow from: 51f4)   51f7 call 52ae 
     ld a,(vr_l050edh+1)        ;5fe1 3a ee 50  : . P               (ghost flow from: 52b3)   51fa ld a,(50ee) 
     call vr_sub_052aeh         ;5fe4 cd ae 52  . . R               (ghost flow from: 51fa)   51fd call 52ae 
@@ -304,10 +308,11 @@ l5fbah:
     and 007h                   ;5ffb e6 07  . .                    (ghost flow from: 52b3)   5214 and 07 
     call vr_sub_052aeh         ;5ffd cd ae 52  . . R               (ghost flow from: 5214)   5216 call 52ae 
     call vr_sub_052aeh         ;6000 cd ae 52  . . R               (ghost flow from: 52b3)   5219 call 52ae 
-    ld a,(050f3h)              ;6003 3a f3 50  : . P               (ghost flow from: 52b3)   521c ld a,(50f3) 
+    ld a,(varc5ed9+1-loaderStart+LOADER_ADDRESS)  ;6003 3a f3 50   (ghost flow from: 52b3)   521c ld a,(50f3) 
     call vr_sub_052aeh         ;6006 cd ae 52  . . R               (ghost flow from: 521c)   521f call 52ae 
     call vr_sub_052aeh         ;6009 cd ae 52  . . R               (ghost flow from: 52b3)   5222 call 52ae 
     ld (hl),a                  ;600c 77  w                         (ghost flow from: 52b3)   5225 ld (hl),a 
+varc600d:
     ld sp,00000h               ;600d 31 00 00  1 . .               (ghost flow from: 5225)   5226 ld sp,401e 
     ld hl,00000h               ;6010 21 00 00  ! . .               (ghost flow from: 5226)   5229 ld hl,0000 
     ld de,vr_l050a1h           ;6013 11 a1 50  . . P               (ghost flow from: 5229)   522c ld de,50a1 
@@ -330,7 +335,7 @@ l6016h:
 l602ah:
     pop de                     ;602a d1  .                         (ghost flow from: 5233)   5243 pop de 
     ex de,hl                   ;602b eb  .                         (ghost flow from: 5243)   5244 ex de,hl 
-    ld a,(050b7h)              ;602c 3a b7 50  : . P               (ghost flow from: 5244)   5245 ld a,(50b7) 
+    ld a,(varc5e9d+1-loaderStart+LOADER_ADDRESS)  ;602c 3a b7 50   (ghost flow from: 5244)   5245 ld a,(50b7) 
     rrca                       ;602f 0f  .                         (ghost flow from: 5245)   5248 rrca 
     push af                    ;6030 f5  .                         (ghost flow from: 5248)   5249 push af 
     ld bc,03e80h               ;6031 01 80 3e  . . >               (ghost flow from: 5249)   524a ld bc,3e80 
@@ -426,6 +431,7 @@ l609dh:
     ld (bc),a                  ;60a4 02  .                         (ghost flow from: 52bc)   52bd ld (bc),a 
     inc bc                     ;60a5 03  .                         (ghost flow from: 52bd)   52be inc bc 
     ret                        ;60a6 c9  .                         (ghost flow from: 52be)   52bf ret 
+l60a7h:
     adc a,029h                 ;60a7 ce 29  . ) 
     inc (hl)                   ;60a9 34  4 
     ei                         ;60aa fb  . 
