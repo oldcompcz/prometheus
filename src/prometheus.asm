@@ -4,6 +4,7 @@
 ; Naming convention
 ; =================
 ; 
+; var...    - variable
 ; varc...   - variable stored directly in the code
 ;
 
@@ -188,6 +189,7 @@ l5f06h:
 l5f16h:
     ld hl,vr_l0502bh           ;5f16 21 2b 50  ! + P               (ghost flow from: 512b)   512f ld hl,502b 
     push hl                    ;5f19 e5  .                         (ghost flow from: 512f)   5132 push hl 
+    ; I key?
     cp 049h                    ;5f1a fe 49  . I                    (ghost flow from: 5132)   5133 cp 49 
     ld hl,vr_l050edh+1         ;5f1c 21 ee 50  ! . P               (ghost flow from: 5133)   5135 ld hl,50ee 
 l5f1fh:
@@ -839,26 +841,7 @@ l067e6h:
     defb 05dh                  ;67e8 5d  ] 
     defb 038h                  ;67e9 38  8 
     defb 09ch                  ;67ea 9c  . 
-    defb 000h                  ;67eb 00  . 
-    defb 000h                  ;67ec 00  . 
-    defb 000h                  ;67ed 00  . 
-    defb 000h                  ;67ee 00  . 
-    defb 000h                  ;67ef 00  . 
-    defb 000h                  ;67f0 00  . 
-    defb 000h                  ;67f1 00  . 
-    defb 000h                  ;67f2 00  . 
-    defb 000h                  ;67f3 00  . 
-    defb 000h                  ;67f4 00  . 
-    defb 000h                  ;67f5 00  . 
-    defb 000h                  ;67f6 00  . 
-    defb 000h                  ;67f7 00  . 
-    defb 000h                  ;67f8 00  . 
-    defb 000h                  ;67f9 00  . 
-    defb 000h                  ;67fa 00  . 
-    defb 000h                  ;67fb 00  . 
-    defb 000h                  ;67fc 00  . 
-    defb 000h                  ;67fd 00  . 
-    defb 000h                  ;67fe 00  . 
+    defs 20
     defb 0d5h                  ;67ff d5  . 
 v_l5ecch:
     defb 002h                  ;6800 02  . 
@@ -866,159 +849,26 @@ v_l5ecch:
     defb 05dh                  ;6802 5d  ] 
     defb 038h                  ;6803 38  8 
     defb 09ch                  ;6804 9c  . 
-    defb 000h                  ;6805 00  . 
-    defb 000h                  ;6806 00  . 
-    defb 000h                  ;6807 00  . 
-    defb 000h                  ;6808 00  . 
-    defb 000h                  ;6809 00  . 
-    defb 000h                  ;680a 00  . 
-    defb 000h                  ;680b 00  . 
-    defb 000h                  ;680c 00  . 
-    defb 000h                  ;680d 00  . 
-    defb 000h                  ;680e 00  . 
-    defb 000h                  ;680f 00  . 
-    defb 000h                  ;6810 00  . 
-    defb 000h                  ;6811 00  . 
-    defb 000h                  ;6812 00  . 
-    defb 000h                  ;6813 00  . 
-    defb 000h                  ;6814 00  . 
-    defb 000h                  ;6815 00  . 
-    defb 000h                  ;6816 00  . 
-    defb 000h                  ;6817 00  . 
-    defb 000h                  ;6818 00  . 
+    defs 20
 v_l5ee5h:
-    defb 000h                  ;6819 00  . 
-    defb 000h                  ;681a 00  . 
-    defb 000h                  ;681b 00  . 
-    defb 000h                  ;681c 00  . 
-    defb 000h                  ;681d 00  . 
-    defb 000h                  ;681e 00  . 
-    defb 000h                  ;681f 00  . 
-    defb 000h                  ;6820 00  . 
-    defb 000h                  ;6821 00  . 
-    defb 000h                  ;6822 00  . 
-    defb 000h                  ;6823 00  . 
-    defb 000h                  ;6824 00  . 
-    defb 000h                  ;6825 00  . 
-    defb 000h                  ;6826 00  . 
-    defb 000h                  ;6827 00  . 
-    defb 000h                  ;6828 00  . 
-    defb 000h                  ;6829 00  . 
-    defb 000h                  ;682a 00  . 
-    defb 000h                  ;682b 00  . 
-    defb 000h                  ;682c 00  . 
-    defb 000h                  ;682d 00  . 
-    defb 000h                  ;682e 00  . 
-    defb 000h                  ;682f 00  . 
-    defb 000h                  ;6830 00  . 
-    defb 000h                  ;6831 00  . 
+    defs 25
     defb 0d3h                  ;6832 d3  . 
 l06833h:
     defb 002h                  ;6833 02  . 
-    defb 000h                  ;6834 00  . 
-    defb 000h                  ;6835 00  . 
-    defb 000h                  ;6836 00  . 
-    defb 000h                  ;6837 00  . 
-    defb 000h                  ;6838 00  . 
-    defb 000h                  ;6839 00  . 
-    defb 000h                  ;683a 00  . 
-    defb 000h                  ;683b 00  . 
-    defb 000h                  ;683c 00  . 
-    defb 000h                  ;683d 00  . 
-    defb 000h                  ;683e 00  . 
-    defb 000h                  ;683f 00  . 
-    defb 000h                  ;6840 00  . 
-    defb 000h                  ;6841 00  . 
-    defb 000h                  ;6842 00  . 
-    defb 000h                  ;6843 00  . 
-    defb 000h                  ;6844 00  . 
-    defb 000h                  ;6845 00  . 
-    defb 000h                  ;6846 00  . 
-    defb 000h                  ;6847 00  . 
-    defb 000h                  ;6848 00  . 
-    defb 000h                  ;6849 00  . 
-    defb 000h                  ;684a 00  . 
-    defb 000h                  ;684b 00  . 
+    defs 24
     defb 0d2h                  ;684c d2  . 
 l0684dh:
     defb 002h                  ;684d 02  . 
 l0684eh:
-    defb 000h                  ;684e 00  . 
-    defb 000h                  ;684f 00  . 
-    defb 000h                  ;6850 00  . 
-    defb 000h                  ;6851 00  . 
-    defb 000h                  ;6852 00  . 
-    defb 000h                  ;6853 00  . 
-    defb 000h                  ;6854 00  . 
-    defb 000h                  ;6855 00  . 
-    defb 000h                  ;6856 00  . 
-    defb 000h                  ;6857 00  . 
-    defb 000h                  ;6858 00  . 
-    defb 000h                  ;6859 00  . 
-    defb 000h                  ;685a 00  . 
-    defb 000h                  ;685b 00  . 
-    defb 000h                  ;685c 00  . 
-    defb 000h                  ;685d 00  . 
-    defb 000h                  ;685e 00  . 
-    defb 000h                  ;685f 00  . 
-    defb 000h                  ;6860 00  . 
-    defb 000h                  ;6861 00  . 
-    defb 000h                  ;6862 00  . 
-    defb 000h                  ;6863 00  . 
-    defb 000h                  ;6864 00  . 
-    defb 000h                  ;6865 00  . 
+    defs 24
     defb 0d1h                  ;6866 d1  . 
 v_l5f33h:
     defb 002h                  ;6867 02  . 
-    defb 000h                  ;6868 00  . 
-    defb 000h                  ;6869 00  . 
-    defb 000h                  ;686a 00  . 
-    defb 000h                  ;686b 00  . 
-    defb 000h                  ;686c 00  . 
-    defb 000h                  ;686d 00  . 
-    defb 000h                  ;686e 00  . 
-    defb 000h                  ;686f 00  . 
-    defb 000h                  ;6870 00  . 
-    defb 000h                  ;6871 00  . 
-    defb 000h                  ;6872 00  . 
-    defb 000h                  ;6873 00  . 
-    defb 000h                  ;6874 00  . 
-    defb 000h                  ;6875 00  . 
-    defb 000h                  ;6876 00  . 
-    defb 000h                  ;6877 00  . 
-    defb 000h                  ;6878 00  . 
-    defb 000h                  ;6879 00  . 
-    defb 000h                  ;687a 00  . 
-    defb 000h                  ;687b 00  . 
-    defb 000h                  ;687c 00  . 
-    defb 000h                  ;687d 00  . 
-    defb 000h                  ;687e 00  . 
-    defb 000h                  ;687f 00  . 
+    defs 24
     defb 0cch                  ;6880 cc  . 
 l06881h:
     defb 001h                  ;6881 01  . 
-    defb 000h                  ;6882 00  . 
-    defb 000h                  ;6883 00  . 
-    defb 000h                  ;6884 00  . 
-    defb 000h                  ;6885 00  . 
-    defb 000h                  ;6886 00  . 
-    defb 000h                  ;6887 00  . 
-    defb 000h                  ;6888 00  . 
-    defb 000h                  ;6889 00  . 
-    defb 000h                  ;688a 00  . 
-    defb 000h                  ;688b 00  . 
-    defb 000h                  ;688c 00  . 
-    defb 000h                  ;688d 00  . 
-    defb 000h                  ;688e 00  . 
-    defb 000h                  ;688f 00  . 
-    defb 000h                  ;6890 00  . 
-    defb 000h                  ;6891 00  . 
-    defb 000h                  ;6892 00  . 
-    defb 000h                  ;6893 00  . 
-    defb 000h                  ;6894 00  . 
-    defb 000h                  ;6895 00  . 
-    defb 000h                  ;6896 00  . 
-    defb 000h                  ;6897 00  . 
+    defs 22
 v_sub_5f64h:
     call v_sub_6c4ah           ;6898 cd 8a 0e  . . . 
     xor a                      ;689b af  . 
@@ -1827,16 +1677,7 @@ v_l64c4h:
     defw l0684dh               ;6dfe
     defw v_l5f33h              ;6e00
 v_l64ceh:
-    nop                        ;6e02 00  . 
-    nop                        ;6e03 00  . 
-    nop                        ;6e04 00  . 
-    nop                        ;6e05 00  . 
-    nop                        ;6e06 00  . 
-    nop                        ;6e07 00  . 
-    nop                        ;6e08 00  . 
-    nop                        ;6e09 00  . 
-    nop                        ;6e0a 00  . 
-    nop                        ;6e0b 00  . 
+    defs 10
 l6e0ch:
     sub 02eh                   ;6e0c d6 2e  . . 
     cp (hl)                    ;6e0e be  . 
@@ -3593,14 +3434,7 @@ v_l6f9bh:
 l078d0h:
     defb 000h                  ;78d0 00  . 
 v_l6f9dh:
-    defb 000h                  ;78d1 00  . 
-    defb 000h                  ;78d2 00  . 
-    defb 000h                  ;78d3 00  . 
-    defb 000h                  ;78d4 00  . 
-    defb 000h                  ;78d5 00  . 
-    defb 000h                  ;78d6 00  . 
-    defb 000h                  ;78d7 00  . 
-    defb 000h                  ;78d8 00  . 
+    defs 8
 v_l6fa5h:
     defb 03ah                  ;78d9 3a  : 
 vr_l06fa6h:
@@ -3626,17 +3460,13 @@ v_l6fafh:
 l078e4h:
     defb 000h                  ;78e4 00  . 
 v_l6fb1h:
-    defb 000h                  ;78e5 00  . 
-    defb 000h                  ;78e6 00  . 
+    defw 0
 v_l6fb3h:
-    defb 000h                  ;78e7 00  . 
-    defb 000h                  ;78e8 00  . 
+    defw 0
 l078e9h:
-    defb 000h                  ;78e9 00  . 
-    defb 000h                  ;78ea 00  . 
+    defw 0
 l078ebh:
-    defb 000h                  ;78eb 00  . 
-    defb 000h                  ;78ec 00  . 
+    defw 0
 v_l6fb9h:
     defb 01bh                  ;78ed 1b  . 
     defb 0ffh                  ;78ee ff  . 
@@ -3910,19 +3740,7 @@ v_l7066h:
     defb "Leade",0xf2          ;"r"+0x80                       ;7a61
 l07a67h:
     defb "1. byte",0xba        ;":"+0x80                       ;7a67
-    defb 000h                  ;7a6f 00  . 
-    defb 000h                  ;7a70 00  . 
-    defb 000h                  ;7a71 00  . 
-    defb 000h                  ;7a72 00  . 
-    defb 000h                  ;7a73 00  . 
-    defb 000h                  ;7a74 00  . 
-    defb 000h                  ;7a75 00  . 
-    defb 000h                  ;7a76 00  . 
-    defb 000h                  ;7a77 00  . 
-    defb 000h                  ;7a78 00  . 
-    defb 000h                  ;7a79 00  . 
-    defb 000h                  ;7a7a 00  . 
-    defb 000h                  ;7a7b 00  . 
+    defs 13
 
 ; =====================================================================
 ;ENTRY_POINT_WITHOUT_MONITOR
@@ -8172,37 +7990,11 @@ v_l8aa5h:
 v_l8aa7h:
     defb 020h                  ;93db 20    
 l093dch:
-    defb 020h                  ;93dc 20    
-    defb 020h                  ;93dd 20    
-    defb 020h                  ;93de 20    
-    defb 020h                  ;93df 20    
-    defb 020h                  ;93e0 20    
+    defs 5, 020h   
 v_l8aadh:
     defb 020h                  ;93e1 20    
     defb 001h                  ;93e2 01  . 
-    defb 000h                  ;93e3 00  . 
-    defb 000h                  ;93e4 00  . 
-    defb 000h                  ;93e5 00  . 
-    defb 000h                  ;93e6 00  . 
-    defb 000h                  ;93e7 00  . 
-    defb 000h                  ;93e8 00  . 
-    defb 000h                  ;93e9 00  . 
-    defb 000h                  ;93ea 00  . 
-    defb 000h                  ;93eb 00  . 
-    defb 000h                  ;93ec 00  . 
-    defb 000h                  ;93ed 00  . 
-    defb 000h                  ;93ee 00  . 
-    defb 000h                  ;93ef 00  . 
-    defb 000h                  ;93f0 00  . 
-    defb 000h                  ;93f1 00  . 
-    defb 000h                  ;93f2 00  . 
-    defb 000h                  ;93f3 00  . 
-    defb 000h                  ;93f4 00  . 
-    defb 000h                  ;93f5 00  . 
-    defb 000h                  ;93f6 00  . 
-    defb 000h                  ;93f7 00  . 
-    defb 000h                  ;93f8 00  . 
-    defb 000h                  ;93f9 00  . 
+    defs 23 
 v_l8ac6h:
     defb 000h                  ;93fa 00  . 
 v_l8ac7h:
@@ -8212,34 +8004,15 @@ v_l8ac8h:
     defb 035h                  ;93fd 35  5 
     defb 033h                  ;93fe 33  3 
     defb 035h                  ;93ff 35  5 
-    defb 000h                  ;9400 00  . 
-    defb 000h                  ;9401 00  . 
-    defb 000h                  ;9402 00  . 
-    defb 000h                  ;9403 00  . 
-    defb 000h                  ;9404 00  . 
+    defs 5 
 v_l8ad1h:
     defb 000h                  ;9405 00  . 
 v_l8ad2h:
-    defb 000h                  ;9406 00  . 
-    defb 000h                  ;9407 00  . 
-    defb 000h                  ;9408 00  . 
-    defb 000h                  ;9409 00  . 
-    defb 000h                  ;940a 00  . 
-    defb 000h                  ;940b 00  . 
-    defb 000h                  ;940c 00  . 
-    defb 000h                  ;940d 00  . 
-    defb 000h                  ;940e 00  . 
-    defb 000h                  ;940f 00  . 
+    defs 10
 v_l8adch:
-    defb 000h                  ;9410 00  . 
-    defb 000h                  ;9411 00  . 
+    defw 0
 v_l8adeh:
-    defb 000h                  ;9412 00  . 
-    defb 000h                  ;9413 00  . 
-    defb 000h                  ;9414 00  . 
-    defb 000h                  ;9415 00  . 
-    defb 000h                  ;9416 00  . 
-    defb 000h                  ;9417 00  . 
+    defs 6
 v_l8ae4h:
     defb 000h                  ;9418 00  . 
 varLowercasedOperands:
@@ -8247,156 +8020,37 @@ varLowercasedOperands:
 v_l8af8h:
     defb 000h                  ;942c 00  . 
 v_l8af9h:
-    defb 000h                  ;942d 00  . 
-    defb 000h                  ;942e 00  . 
-    defb 000h                  ;942f 00  . 
-    defb 000h                  ;9430 00  . 
-    defb 000h                  ;9431 00  . 
+    defs 5
 v_l8afeh:
     defb 080h                  ;9432 80  . 
 inputBufferStart:              ;9433 (8aff)
     defb 0c2h                  ;9433 c2  . 
     defb 001h                  ;9434 01  . 
-    defb 000h                  ;9435 00  . 
-    defb 000h                  ;9436 00  . 
-    defb 000h                  ;9437 00  . 
-    defb 000h                  ;9438 00  . 
-    defb 000h                  ;9439 00  . 
-    defb 000h                  ;943a 00  . 
-    defb 000h                  ;943b 00  . 
-    defb 000h                  ;943c 00  . 
-    defb 000h                  ;943d 00  . 
-    defb 000h                  ;943e 00  . 
+    defs 10
 v_l8b0bh:
-    defb 000h                  ;943f 00  . 
-    defb 000h                  ;9440 00  . 
+    defs 2
 v_l8b0dh:
-    defb 000h                  ;9441 00  . 
-    defb 000h                  ;9442 00  . 
+    defs 2
 v_l8b0fh:
-    defb 000h                  ;9443 00  . 
-    defb 000h                  ;9444 00  . 
-    defb 000h                  ;9445 00  . 
-    defb 000h                  ;9446 00  . 
-    defb 000h                  ;9447 00  . 
-    defb 000h                  ;9448 00  . 
-    defb 000h                  ;9449 00  . 
-    defb 000h                  ;944a 00  . 
-    defb 000h                  ;944b 00  . 
-    defb 000h                  ;944c 00  . 
-    defb 000h                  ;944d 00  . 
-    defb 000h                  ;944e 00  . 
-    defb 000h                  ;944f 00  . 
-    defb 000h                  ;9450 00  . 
+    defs 14
 v_l8b1dh:
-    defb 000h                  ;9451 00  . 
-    defb 000h                  ;9452 00  . 
-    defb 000h                  ;9453 00  . 
-    defb 000h                  ;9454 00  . 
+    defs 4
 v_l8b21h:
-    defb 000h                  ;9455 00  . 
+    defb 0 
 v_l8b22h:
-    defb 000h                  ;9456 00  . 
+    defb 0
 v_l8b23h:
-    defb 000h                  ;9457 00  . 
+    defb 0
 v_l8b24h:
-    defb 000h                  ;9458 00  . 
-    defb 000h                  ;9459 00  . 
+    defw 0
 v_l8b26h:
-    defb 000h                  ;945a 00  . 
-    defb 000h                  ;945b 00  . 
+    defw 0
 v_l8b28h:
-    defb 000h                  ;945c 00  . 
-    defb 000h                  ;945d 00  . 
-    defb 000h                  ;945e 00  . 
-    defb 000h                  ;945f 00  . 
-    defb 000h                  ;9460 00  . 
-    defb 000h                  ;9461 00  . 
-    defb 000h                  ;9462 00  . 
-    defb 000h                  ;9463 00  . 
-    defb 000h                  ;9464 00  . 
-    defb 000h                  ;9465 00  . 
-    defb 000h                  ;9466 00  . 
-    defb 000h                  ;9467 00  . 
-    defb 000h                  ;9468 00  . 
-    defb 000h                  ;9469 00  . 
-    defb 000h                  ;946a 00  . 
-    defb 000h                  ;946b 00  . 
-    defb 000h                  ;946c 00  . 
-    defb 000h                  ;946d 00  . 
-    defb 000h                  ;946e 00  . 
-    defb 000h                  ;946f 00  . 
-    defb 000h                  ;9470 00  . 
-    defb 000h                  ;9471 00  . 
-    defb 000h                  ;9472 00  . 
-    defb 000h                  ;9473 00  . 
-    defb 000h                  ;9474 00  . 
-    defb 000h                  ;9475 00  . 
-    defb 000h                  ;9476 00  . 
-    defb 000h                  ;9477 00  . 
-    defb 000h                  ;9478 00  . 
-    defb 000h                  ;9479 00  . 
-    defb 000h                  ;947a 00  . 
-    defb 000h                  ;947b 00  . 
-    defb 000h                  ;947c 00  . 
-    defb 000h                  ;947d 00  . 
-    defb 000h                  ;947e 00  . 
-    defb 000h                  ;947f 00  . 
-    defb 000h                  ;9480 00  . 
-    defb 000h                  ;9481 00  . 
-    defb 000h                  ;9482 00  . 
-    defb 000h                  ;9483 00  . 
-    defb 000h                  ;9484 00  . 
-    defb 000h                  ;9485 00  . 
-    defb 000h                  ;9486 00  . 
-    defb 000h                  ;9487 00  . 
-    defb 000h                  ;9488 00  . 
-    defb 000h                  ;9489 00  . 
-    defb 000h                  ;948a 00  . 
-    defb 000h                  ;948b 00  . 
-    defb 000h                  ;948c 00  . 
-    defb 000h                  ;948d 00  . 
+    defs 50,0
     defb 002h                  ;948e 02  . 
     defb 0c2h                  ;948f c2  . 
     defb 001h                  ;9490 01  . 
-    defb 000h                  ;9491 00  . 
-    defb 000h                  ;9492 00  . 
-    defb 000h                  ;9493 00  . 
-    defb 000h                  ;9494 00  . 
-    defb 000h                  ;9495 00  . 
-    defb 000h                  ;9496 00  . 
-    defb 000h                  ;9497 00  . 
-    defb 000h                  ;9498 00  . 
-    defb 000h                  ;9499 00  . 
-    defb 000h                  ;949a 00  . 
-    defb 000h                  ;949b 00  . 
-    defb 000h                  ;949c 00  . 
-    defb 000h                  ;949d 00  . 
-    defb 000h                  ;949e 00  . 
-    defb 000h                  ;949f 00  . 
-    defb 000h                  ;94a0 00  . 
-    defb 000h                  ;94a1 00  . 
-    defb 000h                  ;94a2 00  . 
-    defb 000h                  ;94a3 00  . 
-    defb 000h                  ;94a4 00  . 
-    defb 000h                  ;94a5 00  . 
-    defb 000h                  ;94a6 00  . 
-    defb 000h                  ;94a7 00  . 
-    defb 000h                  ;94a8 00  . 
-    defb 000h                  ;94a9 00  . 
-    defb 000h                  ;94aa 00  . 
-    defb 000h                  ;94ab 00  . 
-    defb 000h                  ;94ac 00  . 
-    defb 000h                  ;94ad 00  . 
-    defb 000h                  ;94ae 00  . 
-    defb 000h                  ;94af 00  . 
-    defb 000h                  ;94b0 00  . 
-    defb 000h                  ;94b1 00  . 
-    defb 000h                  ;94b2 00  . 
-    defb 000h                  ;94b3 00  . 
-    defb 000h                  ;94b4 00  . 
-    defb 000h                  ;94b5 00  . 
-    defb 000h                  ;94b6 00  . 
+    defs 38
     defb 09fh                  ;94b7 9f  . 
     defb 050h                  ;94b8 50  P 
     defb 06dh                  ;94b9 6d  m 
@@ -8606,28 +8260,8 @@ mnemonicsTable:
     defb "rrc", 0xE1           ;rrca
     defb "sli", 0xE1           ;slia
 v_l8db4h:
-    defb 020h                  ;96e8 20    
-    defb 02bh                  ;96e9 2b  + 
-    defb 02bh                  ;96ea 2b  + 
-    defb 02bh                  ;96eb 2b  + 
-    defb 02bh                  ;96ec 2b  + 
-    defb 02bh                  ;96ed 2b  + 
-    defb 02bh                  ;96ee 2b  + 
-    defb 02bh                  ;96ef 2b  + 
-    defb 02bh                  ;96f0 2b  + 
-    defb 02bh                  ;96f1 2b  + 
-    defb 02bh                  ;96f2 2b  + 
-    defb 02bh                  ;96f3 2b  + 
-    defb 02bh                  ;96f4 2b  + 
-    defb 02bh                  ;96f5 2b  + 
-    defb 02bh                  ;96f6 2b  + 
-    defb 02bh                  ;96f7 2b  + 
-    defb 02bh                  ;96f8 2b  + 
-    defb 02bh                  ;96f9 2b  + 
-    defb 02bh                  ;96fa 2b  + 
-    defb 02bh                  ;96fb 2b  + 
-    defb 02bh                  ;96fc 2b  + 
-    defb 02bh                  ;96fd 2b  + 
+    defb 020h                  ;96e8 20
+    defs 21, 0x2b     
     defb 02ch                  ;96fe 2c  , 
     defb 02dh                  ;96ff 2d  - 
     defb 02eh                  ;9700 2e  . 
@@ -8782,58 +8416,31 @@ operationLabelReplace:
 include "instructionTable.asm"
 
 
-    defb 000h                  ;a542 00  . 
-    defb 030h                  ;a543 30  0 
-    defb 000h                  ;a544 00  . 
-    defb 030h                  ;a545 30  0 
-    defb 000h                  ;a546 00  . 
-    defb 030h                  ;a547 30  0 
-    defb 000h                  ;a548 00  . 
-    defb 030h                  ;a549 30  0 
-    defb 000h                  ;a54a 00  . 
-    defb 030h                  ;a54b 30  0 
-    defb 000h                  ;a54c 00  . 
-    defb 030h                  ;a54d 30  0 
-    defb 000h                  ;a54e 00  . 
-    defb 030h                  ;a54f 30  0 
-    defb 000h                  ;a550 00  . 
-    defb 030h                  ;a551 30  0 
-    defb 000h                  ;a552 00  . 
-    defb 030h                  ;a553 30  0 
-    defb 000h                  ;a554 00  . 
-    defb 030h                  ;a555 30  0 
-    defb 000h                  ;a556 00  . 
-    defb 030h                  ;a557 30  0 
-    defb 000h                  ;a558 00  . 
-    defb 030h                  ;a559 30  0 
+    defw 0x3000
+    defw 0x3000
+    defw 0x3000
+    defw 0x3000
+    defw 0x3000
+    defw 0x3000
+    defw 0x3000
+    defw 0x3000
+    defw 0x3000
+    defw 0x3000
+    defw 0x3000
+    defw 0x3000
 l0a55ah:
-    defb 000h                  ;a55a 00  . 
-    defb 030h                  ;a55b 30  0 
+    defw 0x3000
 l0a55ch:
-    defb 000h                  ;a55c 00  . 
-    defb 030h                  ;a55d 30  0 
-    defb 000h                  ;a55e 00  . 
-    defb 030h                  ;a55f 30  0 
-    defb 000h                  ;a560 00  . 
-    defb 030h                  ;a561 30  0 
-    defb 000h                  ;a562 00  . 
-    defb 030h                  ;a563 30  0 
-    defb 000h                  ;a564 00  . 
-    defb 030h                  ;a565 30  0 
-    defb 000h                  ;a566 00  . 
-    defb 030h                  ;a567 30  0 
-    defb 000h                  ;a568 00  . 
-    defb 030h                  ;a569 30  0 
+    defw 0x3000
+    defw 0x3000
+    defw 0x3000
+    defw 0x3000
+    defw 0x3000
+    defw 0x3000
+    defw 0x3000
 l0a56ah:
-    defb 000h                  ;a56a 00  . 
-    defb 000h                  ;a56b 00  . 
+    defw 0
 l0a56ch:
-    defb 000h                  ;a56c 00  . 
-    defb 000h                  ;a56d 00  . 
-    defb 000h                  ;a56e 00  . 
-    defb 000h                  ;a56f 00  . 
-    defb 000h                  ;a570 00  . 
-    defb 000h                  ;a571 00  . 
+    defs 6
 v_l9c3eh:
-    defb 000h                  ;a572 00  . 
-    defb 000h                  ;a573 00  . 
+    defw 0
