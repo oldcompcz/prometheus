@@ -1065,7 +1065,7 @@ v_sub_60b3h:
 v_sub_60b6h:
     ld a,021h                  ;69ea 3e 21  > ! 
     ld de,00001h               ;69ec 11 01 00  . . . 
-    ld hl,(v_sub_826ch+1)      ;69ef 2a ad 24  * . $ 
+    ld hl,(varcSourceBufferActiveLine+1)  ;69ef 2a ad 24  * . $ 
     ld (v_l79c3h+1),hl         ;69f2 22 04 1c  " . . 
     jr l69ffh                  ;69f5 18 08  . . 
 v_sub_60c3h:
@@ -3774,9 +3774,9 @@ l07a67h:
     defw invokeClear           ;7aaf                           ;key Y
     defw invokeReplace         ;7ab1                           ;key Z
 invokeK:
-    ld hl,l0a55ch              ;7ab3 21 68 3e  ! h > 
+    ld hl,sourceBufferDefaultLine ;7ab3 21 68 3e  ! h > 
 l7ab6h:
-    ld (v_sub_826ch+1),hl      ;7ab6 22 ad 24  " . $ 
+    ld (varcSourceBufferActiveLine+1),hl ;7ab6 22 ad 24  " . $ 
     ret                        ;7ab9 c9  . 
 invokeE:
     call v_sub_718eh           ;7aba cd ce 13  . . . 
@@ -3870,7 +3870,7 @@ v_sub_721ah:
     push hl                    ;7b4e e5  . 
     call v_sub_898ah           ;7b4f cd ca 2b  . . + 
 l7b52h:
-    ld hl,l0a55ch              ;7b52 21 68 3e  ! h > 
+    ld hl,sourceBufferDefaultLine  ;7b52 21 68 3e  ! h > 
     call v_sub_8a2fh           ;7b55 cd 6f 2c  . o , 
     jr c,l7b63h                ;7b58 38 09  8 . 
     ld d,h                     ;7b5a 54  T 
@@ -3886,7 +3886,7 @@ invokeReplace:
     call v_sub_7c2ch           ;7b67 cd 6c 1e  . l . 
     ld de,l07cdbh+2            ;7b6a 11 e9 15  . . . 
     call z,v_sub_7304h         ;7b6d cc 44 15  . D . 
-    ld ix,(v_sub_826ch+1)      ;7b70 dd 2a ad 24  . * . $ 
+    ld ix,(varcSourceBufferActiveLine+1)  ;7b70 dd 2a ad 24  . * . $ 
     ld (vr_l072ddh+1),ix       ;7b74 dd 22 1e 15  . " . . 
     call v_sub_8135h           ;7b78 cd 75 23  . u # 
     ld hl,v_l8aa5h             ;7b7b 21 e5 2c  ! . , 
@@ -3944,14 +3944,14 @@ v_l7295h:
     call v_sub_72d4h           ;7bcf cd 14 15  . . . 
     jp v_l7e34h                ;7bd2 c3 74 20  . t   
 invokeFind:
-    ld hl,(v_sub_826ch+1)      ;7bd5 2a ad 24  * . $ 
+    ld hl,(varcSourceBufferActiveLine+1)  ;7bd5 2a ad 24  * . $ 
     ld (vr_l072ddh+1),hl       ;7bd8 22 1e 15  " . . 
     ld b,053h                  ;7bdb 06 53  . S 
     call v_sub_7c2ch           ;7bdd cd 6c 1e  . l . 
     jr nz,l7bf2h               ;7be0 20 10    . 
     xor a                      ;7be2 af  . 
 l7be3h:
-    ld de,l0a55ah              ;7be3 11 66 3e  . f > 
+    ld de,sourceBufferPreviousLine  ;7be3 11 66 3e  . f > 
     ld (vr_l072ddh+1),de       ;7be6 ed 53 1e 15  . S . . 
     ld (vr_l072edh+1),a        ;7bea 32 2e 15  2 . . 
     call v_sub_7c2fh           ;7bed cd 6f 1e  . o . 
@@ -3973,7 +3973,7 @@ v_sub_72d4h:
 l7c0eh:
     ld (vr_l072fah+1),hl       ;7c0e 22 3b 15  "               ; . 
 vr_l072ddh:
-    ld hl,l0a55ch              ;7c11 21 68 3e  ! h > 
+    ld hl,sourceBufferDefaultLine  ;7c11 21 68 3e  ! h > 
     call v_sub_8248h           ;7c14 cd 88 24  . . $ 
     ld (vr_l072ddh+1),hl       ;7c17 22 1e 15  " . . 
     call v_sub_8a2fh           ;7c1a cd 6f 2c  . o , 
@@ -4019,7 +4019,7 @@ invokePrint:
     inc a                      ;7c54 3c  < 
 l7c55h:
     ld (vr_l072edh+1),a        ;7c55 32 2e 15  2 . . 
-    ld hl,l0a55ah              ;7c58 21 66 3e  ! f > 
+    ld hl,sourceBufferPreviousLine  ;7c58 21 66 3e  ! f > 
     ld (vr_l072ddh+1),hl       ;7c5b 22 1e 15  " . . 
     ld hl,v_l732fh             ;7c5e 21 6f 15  ! o . 
     jr l7c0eh                  ;7c61 18 ab  . . 
@@ -4057,7 +4057,7 @@ l7c8ah:
     ld (v_sub_080e7h+1),hl     ;7c96 22 28 23  " ( # 
     ld (vr_l080eah+1),hl       ;7c99 22 2b 23  " + # 
 l7c9ch:
-    ld (v_sub_826ch+1),hl      ;7c9c 22 ad 24  " . $ 
+    ld (varcSourceBufferActiveLine+1),hl   ;7c9c 22 ad 24  " . $ 
     ret                        ;7c9f c9  . 
 v_l736ch:
     ld de,v_l8aa5h             ;7ca0 11 e5 2c  . . , 
@@ -4319,7 +4319,7 @@ invokeClear:
     ld b,079h                  ;7e0a 06 79  . y 
     call v_sub_7c2ch           ;7e0c cd 6c 1e  . l . 
     ret nz                     ;7e0f c0  . 
-    ld hl,l0a55ch              ;7e10 21 68 3e  ! h > 
+    ld hl,sourceBufferDefaultLine  ;7e10 21 68 3e  ! h > 
     ld (v_sub_080e7h+1),hl     ;7e13 22 28 23  " ( # 
     call v_sub_718eh           ;7e16 cd ce 13  . . . 
     ld (vr_l080eah+1),hl       ;7e19 22 2b 23  " + # 
@@ -4328,7 +4328,7 @@ l7e1fh:
     call v_sub_89f2h           ;7e1f cd 32 2c  . 2 , 
     ld c,0b6h                  ;7e22 0e b6  . . 
     call v_l74c1h              ;7e24 cd 01 17  . . . 
-    ld hl,l0a55ch              ;7e27 21 68 3e  ! h > 
+    ld hl,sourceBufferDefaultLine  ;7e27 21 68 3e  ! h > 
     call v_sub_75e9h           ;7e2a cd 29 18  . ) . 
 l7e2dh:
     jr nc,l7e44h               ;7e2d 30 15  0 . 
@@ -4451,7 +4451,7 @@ l7ed5h:
     ex de,hl                   ;7ede eb  . 
     srl d                      ;7edf cb 3a  . : 
     rr e                       ;7ee1 cb 1b  . . 
-    ld hl,l0a55ch              ;7ee3 21 68 3e  ! h > 
+    ld hl,sourceBufferDefaultLine  ;7ee3 21 68 3e  ! h > 
     call v_sub_75e9h           ;7ee6 cd 29 18  . ) . 
 l7ee9h:
     jr nc,l7f08h               ;7ee9 30 1d  0 . 
@@ -4541,7 +4541,7 @@ l7f54h:
     ld hl,(vr_l087d6h+1)       ;7f62 2a 17 2a  * . * 
     ld de,0fff4h               ;7f65 11 f4 ff  . . . 
     add hl,de                  ;7f68 19  . 
-    ld de,l0a55ch              ;7f69 11 68 3e  . h > 
+    ld de,sourceBufferDefaultLine  ;7f69 11 68 3e  . h > 
     jr l7f75h                  ;7f6c 18 07  . . 
 l7f6eh:
     call v_sub_080e7h          ;7f6e cd 27 23  . ' # 
@@ -4823,7 +4823,7 @@ l8154h:
     inc hl                     ;8157 23  # 
     ld (v_l7953h+1),hl         ;8158 22 94 1b  " . . 
     ld (vr_l07934h+1),hl       ;815b 22 75 1b  " u . 
-    ld hl,l0a55ch              ;815e 21 68 3e  ! h > 
+    ld hl,sourceBufferDefaultLine  ;815e 21 68 3e  ! h > 
 l8161h:
     call v_sub_8a2fh           ;8161 cd 6f 2c  . o , 
     jr nc,l8184h               ;8164 30 1e  0 . 
@@ -5072,7 +5072,7 @@ v_sub_79afh:
     ld a,012h                  ;82f5 3e 12  > . 
 v_l79c3h:
     ld hl,00000h               ;82f7 21 00 00  ! . . 
-    ld (v_sub_826ch+1),hl      ;82fa 22 ad 24  " . $ 
+    ld (varcSourceBufferActiveLine+1),hl   ;82fa 22 ad 24  " . $ 
     jp v_l809ah                ;82fd c3 da 22  . . " 
 l8300h:
     set 6,(hl)                 ;8300 cb f6  . . 
@@ -5537,7 +5537,7 @@ l85afh:
     pop de                     ;85af d1  .                         (flow from: 7c73 8a3e)  7c7b pop de 
     jr nc,l8622h               ;85b0 30 70  0 p                    (flow from: 7c7b)  7c7c jr nc,7cee 
     push de                    ;85b2 d5  .                         (flow from: 7c7c)  7c7e push de 
-    ld (v_sub_826ch+1),hl      ;85b3 22 ad 24  " . $               (flow from: 7c7e)  7c7f ld (826d),hl 
+    ld (varcSourceBufferActiveLine+1),hl  ;85b3 22 ad 24  " . $    (flow from: 7c7e)  7c7f ld (826d),hl 
     ret                        ;85b6 c9  .                         (flow from: 7c7f)  7c82 ret 
 v_sub_7c83h:
     push hl                    ;85b7 e5  . 
@@ -5616,7 +5616,7 @@ v_l7cdah:
     ld (hl),080h               ;8620 36 80  6 .                    (flow from: 7ceb)  7cec ld (hl),80 
 l8622h:
     ld sp,l094d5h              ;8622 31 e1 2d  1 . -               (flow from: 7c7c 7cec 7d36 7d43)  7cee ld sp,8ba1
-    call v_sub_826ch           ;8625 cd ac 24  . . $               (flow from: 7cee)  7cf1 call 826c 
+    call varcSourceBufferActiveLine    ;8625 cd ac 24  . . $       (flow from: 7cee)  7cf1 call 826c 
 l8628h:
     call v_sub_85beh           ;8628 cd fe 27  . . '               (flow from: 7d71 828e)  7cf4 call 85be 
     call v_sub_7800h           ;862b cd 40 1a  . @ .               (flow from: 85db)  7cf7 call 7800 
@@ -5634,7 +5634,7 @@ vr_l07cfeh:
     jr z,l8603h                ;863f 28 c2  ( .                    (flow from: 7d09)  7d0b jr z,7ccf 
     cp 004h                    ;8641 fe 04  . .                    (flow from: 7d0b)  7d0d cp 04 
     jr nz,l865eh               ;8643 20 19    .                    (flow from: 7d0d)  7d0f jr nz,7d2a 
-    ld ix,(v_sub_826ch+1)      ;8645 dd 2a ad 24  . * . $          (flow from: 7d0f)  7d11 ld ix,(826d) 
+    ld ix,(varcSourceBufferActiveLine+1)  ;8645 dd 2a ad 24        (flow from: 7d0f)  7d11 ld ix,(826d) 
     ld hl,inputBufferStart     ;8649 21 3f 2d  ! ? -               (flow from: 7d11)  7d15 ld hl,8aff 
     push hl                    ;864c e5  .                         (flow from: 7d15)  7d18 push hl 
     ld bc,02000h               ;864d 01 00 20  . .                 (flow from: 7d18)  7d19 ld bc,2000 
@@ -5676,7 +5676,7 @@ l8685h:
     ld hl,050a0h               ;868e 21 a0 50  ! . P 
     call v_sub_85f5h           ;8691 cd 35 28  . 5 ( 
     ld b,006h                  ;8694 06 06  . . 
-    ld hl,(v_sub_826ch+1)      ;8696 2a ad 24  * . $ 
+    ld hl,(varcSourceBufferActiveLine+1)  ;8696 2a ad 24  * . $ 
 l8699h:
     call v_sub_8248h           ;8699 cd 88 24  . . $ 
     djnz l8699h                ;869c 10 fb  . . 
@@ -5708,7 +5708,7 @@ l86beh:
     ld hl,04040h               ;86c7 21 40 40  ! @ @ 
     call v_sub_85f5h           ;86ca cd 35 28  . 5 ( 
     ld b,00dh                  ;86cd 06 0d  . . 
-    ld hl,(v_sub_826ch+1)      ;86cf 2a ad 24  * . $ 
+    ld hl,(varcSourceBufferActiveLine+1)  ;86cf 2a ad 24  * . $ 
 l86d2h:
     call v_sub_8235h           ;86d2 cd 75 24  . u $ 
     djnz l86d2h                ;86d5 10 fb  . . 
@@ -5721,12 +5721,12 @@ l86e0h:
     cp 00ch                    ;86e0 fe 0c  . .                    (flow from: 7d80)  7dac cp 0c 
     jr nz,l86fah               ;86e2 20 16    .                    (flow from: 7dac)  7dae jr nz,7dc6 
     ld bc,00001h               ;86e4 01 01 00  . . . 
-    ld hl,(v_sub_826ch+1)      ;86e7 2a ad 24  * . $ 
+    ld hl,(varcSourceBufferActiveLine+1)  ;86e7 2a ad 24  * . $ 
     call v_sub_721ah           ;86ea cd 5a 14  . Z . 
     call v_sub_8a24h           ;86ed cd 64 2c  . d , 
     jr z,l86b0h                ;86f0 28 be  ( . 
     call nc,v_sub_8235h        ;86f2 d4 75 24  . u $ 
-    ld (v_sub_826ch+1),hl      ;86f5 22 ad 24  " . $ 
+    ld (varcSourceBufferActiveLine+1),hl  ;86f5 22 ad 24  " . $ 
 l86f8h:
     jr l86b0h                  ;86f8 18 b6  . . 
 l86fah:
@@ -5734,7 +5734,7 @@ l86fah:
     jr nz,l870ch               ;86fc 20 0e    .                    (flow from: 7dc6)  7dc8 jr nz,7dd8 
     ld hl,(vr_l080eah+1)       ;86fe 2a 2b 23  * + # 
     ld (v_sub_080e7h+1),hl     ;8701 22 28 23  " ( # 
-    ld hl,(v_sub_826ch+1)      ;8704 2a ad 24  * . $ 
+    ld hl,(varcSourceBufferActiveLine+1)   ;8704 2a ad 24  * . $ 
     ld (vr_l080eah+1),hl       ;8707 22 2b 23  " + # 
     jr l86f8h                  ;870a 18 ec  . . 
 l870ch:
@@ -5774,13 +5774,13 @@ l873bh:
     inc de                     ;874a 13  .                         (flow from: 7e15)  7e16 inc de 
     call v_sub_8a6ch           ;874b cd ac 2c  . . ,               (flow from: 7e16)  7e17 call 8a6c 
     pop hl                     ;874e e1  .                         (flow from: 8aa3)  7e1a pop hl 
-    ld (v_sub_826ch+1),hl      ;874f 22 ad 24  " . $               (flow from: 7e1a)  7e1b ld (826d),hl 
+    ld (varcSourceBufferActiveLine+1),hl   ;874f 22 ad 24  " . $   (flow from: 7e1a)  7e1b ld (826d),hl 
 vr_l07e1eh:
     ld a,000h                  ;8752 3e 00  > .                    (flow from: 7e1b)  7e1e ld a,01 
     or a                       ;8754 b7  .                         (flow from: 7e1e)  7e20 or a 
     jr z,l8763h                ;8755 28 0c  ( .                    (flow from: 7e20)  7e21 jr z,7e2f 
     call v_sub_8232h           ;8757 cd 72 24  . r $               (flow from: 7e21)  7e23 call 8232 
-    ld (v_sub_826ch+1),hl      ;875a 22 ad 24  " . $               (flow from: 8244)  7e26 ld (826d),hl 
+    ld (varcSourceBufferActiveLine+1),hl   ;875a 22 ad 24  " . $   (flow from: 8244)  7e26 ld (826d),hl 
     ld bc,00001h               ;875d 01 01 00  . . .               (flow from: 7e26)  7e29 ld bc,0001 
     call v_sub_898ah           ;8760 cd ca 2b  . . +               (flow from: 7e29)  7e2c call 898a 
 l8763h:
@@ -6187,10 +6187,10 @@ l089d3h:
     call v_l89f4h              ;89d3 cd 34 2c  . 4 , 
 v_l80a2h:
     call v_l82dbh              ;89d6 cd 1b 25  . . % 
-    ld hl,(v_sub_826ch+1)      ;89d9 2a ad 24  * . $ 
+    ld hl,(varcSourceBufferActiveLine+1)  ;89d9 2a ad 24  * . $ 
     call v_sub_8a2fh           ;89dc cd 6f 2c  . o , 
     call z,v_sub_8235h         ;89df cc 75 24  . u $ 
-    ld (v_sub_826ch+1),hl      ;89e2 22 ad 24  " . $ 
+    ld (varcSourceBufferActiveLine+1),hl      ;89e2 22 ad 24  " . $ 
     jp l8622h                  ;89e5 c3 2e 1f  . . . 
 v_sub_80b4h:
     ld hl,04000h               ;89e8 21 00 40  ! . @               (flow from: 7bec 89f4)  80b4 ld hl,4000 
@@ -6225,9 +6225,9 @@ v_sub_80d7h:
 v_l80e1h:
     defb "Symbo",0xec ;"l"+0x80  ;8a15
 v_sub_080e7h:
-    ld hl,l0a55ch              ;8a1b 21 68 3e  ! h >               (flow from: 80f8)  80e7 ld hl,9c28 
+    ld hl,sourceBufferDefaultLine  ;8a1b 21 68 3e  ! h >           (flow from: 80f8)  80e7 ld hl,9c28 
 vr_l080eah:
-    ld de,l0a55ch              ;8a1e 11 68 3e  . h >               (flow from: 80e7)  80ea ld de,9c28 
+    ld de,sourceBufferDefaultLine  ;8a1e 11 68 3e  . h >           (flow from: 80e7)  80ea ld de,9c28 
     push hl                    ;8a21 e5  .                         (flow from: 80ea)  80ed push hl 
     xor a                      ;8a22 af  .                         (flow from: 80ed)  80ee xor a 
     sbc hl,de                  ;8a23 ed 52  . R                    (flow from: 80ee)  80ef sbc hl,de 
@@ -6443,7 +6443,7 @@ l8b5ch:
     inc hl                     ;8b64 23  #                         (flow from: 822e)  8230 inc hl 
     ret                        ;8b65 c9  .                         (flow from: 8230)  8231 ret 
 v_sub_8232h:
-    ld hl,(v_sub_826ch+1)      ;8b66 2a ad 24  * . $               (flow from: 7c6c 7e23)  8232 ld hl,(826d) 
+    ld hl,(varcSourceBufferActiveLine+1)  ;8b66 2a ad 24  * . $    (flow from: 7c6c 7e23)  8232 ld hl,(826d) 
 v_sub_8235h:
     dec hl                     ;8b69 2b  +                         (flow from: 8232 8271)  8235 dec hl 
     ld a,(hl)                  ;8b6a 7e  ~                         (flow from: 8235)  8236 ld a,(hl) 
@@ -6458,7 +6458,7 @@ l8b77h:
     dec hl                     ;8b77 2b  +                         (flow from: 8239 8242)  8243 dec hl 
     ret                        ;8b78 c9  .                         (flow from: 8243)  8244 ret 
 v_sub_8245h:
-    ld hl,(v_sub_826ch+1)      ;8b79 2a ad 24  * . $               (flow from: 7c75 7e0a)  8245 ld hl,(826d) 
+    ld hl,(varcSourceBufferActiveLine+1)  ;8b79 2a ad 24  * . $    (flow from: 7c75 7e0a)  8245 ld hl,(826d) 
 v_sub_8248h:
     inc hl                     ;8b7c 23  #                         (flow from: 7726 8245 8284 898f)  8248 inc hl 
     ld a,(hl)                  ;8b7d 7e  ~                         (flow from: 8248)  8249 ld a,(hl) 
@@ -6488,8 +6488,8 @@ v_sub_8262h:
     and 01fh                   ;8b9a e6 1f  . .                    (flow from: 8265)  8266 and 1f 
     ret z                      ;8b9c c8  .                         (flow from: 8266)  8268 ret z 
     call v_sub_7bbch           ;8b9d cd fc 1d  . . . 
-v_sub_826ch:
-    ld hl,l0a55ch              ;8ba0 21 68 3e  ! h >               (flow from: 7cf1)  826c ld hl,b24c 
+varcSourceBufferActiveLine:
+    ld hl,sourceBufferDefaultLine  ;8ba0 21 68 3e  ! h >           (flow from: 7cf1)  826c ld hl,b24c 
     ld b,00dh                  ;8ba3 06 0d  . .                    (flow from: 826c)  826f ld b,0d 
 l8ba5h:
     call v_sub_8235h           ;8ba5 cd 75 24  . u $               (flow from: 826f 8274)  8271 call 8235 
@@ -7895,7 +7895,7 @@ v_sub_8a1bh:
 v_sub_8a24h:
     push hl                    ;9358 e5  .                         (flow from: 7c6f)  8a24 push hl 
     push de                    ;9359 d5  .                         (flow from: 8a24)  8a25 push de 
-    ld de,l0a55ch              ;935a 11 68 3e  . h >               (flow from: 8a25)  8a26 ld de,9c28
+    ld de,sourceBufferDefaultLine  ;935a 11 68 3e  . h >           (flow from: 8a25)  8a26 ld de,9c28
     and a                      ;935d a7  .                         (flow from: 8a26)  8a29 and a 
     sbc hl,de                  ;935e ed 52  . R                    (flow from: 8a29)  8a2a sbc hl,de 
     pop de                     ;9360 d1  .                         (flow from: 8a2a)  8a2c pop de 
@@ -7918,7 +7918,7 @@ invokeCopy:
     call v_sub_080e7h          ;9373 cd 27 23  . ' # 
     push hl                    ;9376 e5  . 
     push de                    ;9377 d5  . 
-    ld bc,(v_sub_826ch+1)      ;9378 ed 4b ad 24  . K . $ 
+    ld bc,(varcSourceBufferActiveLine+1)  ;9378 ed 4b ad 24  . K . $ 
     and a                      ;937c a7  . 
     sbc hl,bc                  ;937d ed 42  . B 
     jr nc,l9386h               ;937f 30 05  0 . 
@@ -8415,29 +8415,31 @@ operationLabelReplace:
 
 include "instructionTable.asm"
 
-
-    defw 0x3000
-    defw 0x3000
-    defw 0x3000
-    defw 0x3000
-    defw 0x3000
-    defw 0x3000
-    defw 0x3000
-    defw 0x3000
-    defw 0x3000
-    defw 0x3000
-    defw 0x3000
-    defw 0x3000
-l0a55ah:
-    defw 0x3000
-l0a55ch:
-    defw 0x3000
-    defw 0x3000
-    defw 0x3000
-    defw 0x3000
-    defw 0x3000
-    defw 0x3000
-    defw 0x3000
+sourceBufferStart:
+    ; initial setup of the source buffer, 20 empty lines
+    defb 0x00, 0x30  ;empty line 
+    defb 0x00, 0x30
+    defb 0x00, 0x30
+    defb 0x00, 0x30
+    defb 0x00, 0x30
+    defb 0x00, 0x30
+    defb 0x00, 0x30
+    defb 0x00, 0x30
+    defb 0x00, 0x30
+    defb 0x00, 0x30
+    defb 0x00, 0x30
+    defb 0x00, 0x30
+sourceBufferPreviousLine:
+    defb 0x00, 0x30
+sourceBufferDefaultLine:
+    defb 0x00, 0x30
+    defb 0x00, 0x30
+    defb 0x00, 0x30
+    defb 0x00, 0x30
+    defb 0x00, 0x30
+    defb 0x00, 0x30
+    defb 0x00, 0x30
+    
 l0a56ah:
     defw 0
 l0a56ch:
