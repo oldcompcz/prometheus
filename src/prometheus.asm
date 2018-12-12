@@ -879,7 +879,9 @@ v_sub_5f64h:
     call v_sub_8608h           ;68a2 cd 48 28  . H ( 
     cp 004h                    ;68a5 fe 04  . . 
     ret nz                     ;68a7 c0  . 
-v_l5f74h:
+
+
+startMonitor:
     di                         ;68a8 f3  .                         (flow (mon) from: 6015 7bd2)  5f74 di 
     call v_sub_7800h           ;68a9 cd 40 1a  . @ .               (flow (mon) from: 5f74)  5f75 call 7800 
     ld sp,l094d5h              ;68ac 31 e1 2d  1 . -               (flow (mon) from: 7804)  5f78 ld sp,8ba1 
@@ -911,7 +913,7 @@ l68cah:
     ld (v_l80a2h+1),hl         ;68e4 22 e3 22  " . "               (flow (mon) from: 5fad)  5fb0 ld (80a3),hl 
     ld hl,v_l7ccfh             ;68e7 21 0f 1f  ! . .               (flow (mon) from: 5fb0)  5fb3 ld hl,7ccf 
     ld (vr_l07e38h+1),hl       ;68ea 22 79 20  " y                 (flow (mon) from: 5fb3)  5fb6 ld (7e39),hl 
-    ld hl,v_l5f74h             ;68ed 21 b4 01  ! . .               (flow (mon) from: 5fb6)  5fb9 ld hl,5f74 
+    ld hl,startMonitor         ;68ed 21 b4 01  ! . .               (flow (mon) from: 5fb6)  5fb9 ld hl,5f74 
     push hl                    ;68f0 e5  .                         (flow (mon) from: 5fb9)  5fbc push hl 
     call v_sub_6d79h           ;68f1 cd b9 0f  . . .               (flow (mon) from: 5fbc)  5fbd call 6d79 
     call v_sub_8608h           ;68f4 cd 48 28  . H (               (flow (mon) from: 6d99)  5fc0 call 8608 
@@ -1375,7 +1377,7 @@ l6c28h:
     ld de,v_l632bh             ;6c2c 11 6b 05  . k . 
     push de                    ;6c2f d5  . 
     call v_sub_631ah           ;6c30 cd 5a 05  . Z . 
-    ld hl,v_l5f74h             ;6c33 21 b4 01  ! . . 
+    ld hl,startMonitor         ;6c33 21 b4 01  ! . . 
     ld (l089d3h+1),hl          ;6c36 22 e0 22  " . " 
     ld a,0c3h                  ;6c39 3e c3  > . 
     call v_sub_7931h           ;6c3b cd 71 1b  . q . 
@@ -1882,7 +1884,7 @@ l06f50h:
     cp 035h                    ;6f50 fe 35  . 5 
     ret c                      ;6f52 d8  . 
 l6f53h:
-    jp v_l5f74h                ;6f53 c3 b4 01  . . . 
+    jp startMonitor            ;6f53 c3 b4 01  . . . 
 v_sub_6622h:
     ld e,(hl)                  ;6f56 5e  ^ 
     inc hl                     ;6f57 23  # 
@@ -1936,7 +1938,7 @@ l6fa9h:
     cp 080h                    ;6faf fe 80  . . 
     jr nc,l6fa9h               ;6fb1 30 f6  0 . 
     cp 004h                    ;6fb3 fe 04  . . 
-    jp z,v_l5f74h              ;6fb5 ca b4 01  . . . 
+    jp z,startMonitor          ;6fb5 ca b4 01  . . . 
     cp 003h                    ;6fb8 fe 03  . . 
     jr nz,l6fc4h               ;6fba 20 08    . 
     ld hl,(v_sub_7e3bh+1)      ;6fbc 2a 7c 20  * |   
@@ -1992,14 +1994,14 @@ v_l66d8h:
     call v_sub_8713h           ;700f cd 53 29  . S ) 
     call v_sub_8639h           ;7012 cd 79 28  . y ( 
     call l6aa9h                ;7015 cd b5 03  . . . 
-    jp v_l5f74h                ;7018 c3 b4 01  . . . 
+    jp startMonitor            ;7018 c3 b4 01  . . . 
 v_sub_66e7h:
     ld hl,(l0696eh+1)          ;701b 2a 7b 02  * { . 
 v_l66eah:
     push hl                    ;701e e5  . 
     call v_sub_6b56h           ;701f cd 96 0d  . . . 
     ex af,af'                  ;7022 08  . 
-    jp nz,v_l5f74h             ;7023 c2 b4 01  . . . 
+    jp nz,startMonitor         ;7023 c2 b4 01  . . . 
     ld (l070feh+1),hl          ;7026 22 0b 0a  " . . 
     ld (l070dbh+1),hl          ;7029 22 e8 09  " . . 
     ld (l07326h+1),de          ;702c ed 53 33 0c  . S 3 . 
@@ -2889,7 +2891,7 @@ v_sub_6c4ah:
     ld l,a                     ;7585 6f  o 
     ld a,(v_l5dceh)            ;7586 3a 0e 00  : . . 
     and 01fh                   ;7589 e6 1f  . . 
-    jp z,v_l5f74h              ;758b ca b4 01  . . . 
+    jp z,startMonitor          ;758b ca b4 01  . . . 
 l758eh:
     dec a                      ;758e 3d  = 
     jr z,l759dh                ;758f 28 0c  ( . 
@@ -3894,7 +3896,7 @@ l7b63h:
 
 invokeReplace:
     ld b,03ah                  ;7b65 06 3a  . : 
-    call v_sub_7c2ch           ;7b67 cd 6c 1e  . l . 
+    call containsInputBufferCharacterInB  ;7b67 cd 6c 1e  . l . 
     ld de,l07cdbh+2            ;7b6a 11 e9 15  . . . 
     call z,v_sub_7304h         ;7b6d cc 44 15  . D . 
     ld ix,(varcSourceBufferActiveLine+1)  ;7b70 dd 2a ad 24  . * . $ 
@@ -3960,7 +3962,7 @@ invokeFind:
     ld hl,(varcSourceBufferActiveLine+1)  ;7bd5 2a ad 24  * . $ 
     ld (vr_l072ddh+1),hl       ;7bd8 22 1e 15  " . . 
     ld b,053h                  ;7bdb 06 53  . S 
-    call v_sub_7c2ch           ;7bdd cd 6c 1e  . l . 
+    call containsInputBufferCharacterInB  ;7bdd cd 6c 1e  . l . 
     jr nz,l7bf2h               ;7be0 20 10    . 
     xor a                      ;7be2 af  . 
 l7be3h:
@@ -3970,14 +3972,16 @@ l7be3h:
     call v_sub_7c2fh           ;7bed cd 6f 1e  . o . 
     jr l7bfdh                  ;7bf0 18 0b  . . 
 l7bf2h:
+    ; character "B"
     ld b,042h                  ;7bf2 06 42  . B 
-    call v_sub_7c33h           ;7bf4 cd 73 1e  . s . 
+    call compareWithCharacterInB  ;7bf4 cd 73 1e  . s . 
     jr nz,l7bfdh               ;7bf7 20 04    . 
     ld a,001h                  ;7bf9 3e 01  > . 
     jr l7be3h                  ;7bfb 18 e6  . . 
 l7bfdh:
+    ; character ":"
     ld b,03ah                  ;7bfd 06 3a  . : 
-    call v_sub_7c33h           ;7bff cd 73 1e  . s . 
+    call compareWithCharacterInB  ;7bff cd 73 1e  . s . 
     ld de,v_l738eh             ;7c02 11 ce 15  . . . 
     call z,v_sub_7304h         ;7c05 cc 44 15  . D . 
 v_sub_72d4h:
@@ -4028,7 +4032,7 @@ l7c49h:
 
 
 invokePrint:
-    call v_sub_7c2ah           ;7c4d cd 6a 1e  . j . 
+    call containsInputBufferCharacterB  ;7c4d cd 6a 1e  . j . 
     ld a,000h                  ;7c50 3e 00  > . 
     jr nz,l7c55h               ;7c52 20 01    . 
     inc a                      ;7c54 3c  < 
@@ -4239,9 +4243,12 @@ vr_l0743ch:
     cp 0a9h                    ;7d7c fe a9  . . 
     jp c,v_l73c7h              ;7d7e da 07 16  . . . 
     ret                        ;7d81 c9  . 
-l7d82h:
+
+
+symbolTableNonlockingOptions:
+    ; character "P"
     ld b,050h                  ;7d82 06 50  . P 
-    call v_sub_7c33h           ;7d84 cd 73 1e  . s . 
+    call compareWithCharacterInB  ;7d84 cd 73 1e  . s . 
     ld a,001h                  ;7d87 3e 01  > . 
     jr z,l7d8ch                ;7d89 28 01  ( . 
     dec a                      ;7d8b 3d  = 
@@ -4299,21 +4306,26 @@ l7dd6h:
 
 
 invokeTable:
+    ; character "C"
     ld b,043h                  ;7ddc 06 43  . C 
-    call v_sub_7c2ch           ;7dde cd 6c 1e  . l . 
-    jr z,l7e1fh                ;7de1 28 3c  ( < 
+    call containsInputBufferCharacterInB  ;7dde cd 6c 1e  . l . 
+    jr z,clearSymbolTable      ;7de1 28 3c  ( < 
+    ; character "L"
     ld b,04ch                  ;7de3 06 4c  . L 
-    call v_sub_7c33h           ;7de5 cd 73 1e  . s . 
+    call compareWithCharacterInB  ;7de5 cd 73 1e  . s . 
+    ; for cb fe = set 7,(hl)
     ld c,0feh                  ;7de8 0e fe  . . 
-    jr z,v_l74c1h              ;7dea 28 09  ( . 
+    jr z,lockSymbolTable       ;7dea 28 09  ( . 
+    ; character "U"
     ld b,055h                  ;7dec 06 55  . U 
-    call v_sub_7c33h           ;7dee cd 73 1e  . s . 
-    jr nz,l7d82h               ;7df1 20 8f    . 
+    call compareWithCharacterInB  ;7dee cd 73 1e  . s . 
+    jr nz,symbolTableNonlockingOptions  ;7df1 20 8f    . 
+    ; for cb be = res 7,(hl)
     ld c,0beh                  ;7df3 0e be  . . 
-v_l74c1h:
+lockSymbolTable:
     ld a,c                     ;7df5 79  y 
-    ld (vr_l074d0h+1),a        ;7df6 32 11 17  2 . . 
-    ld hl,(varcSymbolTablePt+1)       ;7df9 2a 17 2a  * . * 
+    ld (symbolTableModifier+1),a ;7df6 32 11 17  2 . . 
+    ld hl,(varcSymbolTablePt+1)  ;7df9 2a 17 2a  * . * 
     ld c,(hl)                  ;7dfc 4e  N 
     inc hl                     ;7dfd 23  # 
     ld b,(hl)                  ;7dfe 46  F 
@@ -4323,7 +4335,9 @@ l7e00h:
     or c                       ;7e01 b1  . 
     ret z                      ;7e02 c8  . 
     inc hl                     ;7e03 23  # 
-vr_l074d0h:
+symbolTableModifier:
+    ; this instruction is set to RES or SET directly by modification 
+    ; of the second byte. Locks or Unlocks the symbol table record.
     set 7,(hl)                 ;7e04 cb fe  . . 
     inc hl                     ;7e06 23  # 
     dec bc                     ;7e07 0b  . 
@@ -4331,18 +4345,19 @@ vr_l074d0h:
 
 
 invokeClear: 
+    ; check "y" in the input buffer
     ld b,079h                  ;7e0a 06 79  . y 
-    call v_sub_7c2ch           ;7e0c cd 6c 1e  . l . 
+    call containsInputBufferCharacterInB  ;7e0c cd 6c 1e  . l . 
     ret nz                     ;7e0f c0  . 
     ld hl,sourceBufferDefaultLine  ;7e10 21 68 3e  ! h > 
     ld (v_sub_080e7h+1),hl     ;7e13 22 28 23  " ( # 
     call v_sub_718eh           ;7e16 cd ce 13  . . . 
     ld (vr_l080eah+1),hl       ;7e19 22 2b 23  " + # 
     call invokeDelete          ;7e1c cd 83 15  . . . 
-l7e1fh:
+clearSymbolTable:
     call v_sub_89f2h           ;7e1f cd 32 2c  . 2 , 
     ld c,0b6h                  ;7e22 0e b6  . . 
-    call v_l74c1h              ;7e24 cd 01 17  . . . 
+    call lockSymbolTable       ;7e24 cd 01 17  . . . 
     ld hl,sourceBufferDefaultLine  ;7e27 21 68 3e  ! h > 
     call v_sub_75e9h           ;7e2a cd 29 18  . ) . 
 l7e2dh:
@@ -4376,7 +4391,7 @@ l7e52h:
     or c                       ;7e53 b1  . 
     jr nz,l7e5bh               ;7e54 20 05    . 
     ld c,0b6h                  ;7e56 0e b6  . . 
-    jp v_l74c1h                ;7e58 c3 01 17  . . . 
+    jp lockSymbolTable         ;7e58 c3 01 17  . . . 
 l7e5bh:
     dec bc                     ;7e5b 0b  . 
     ld (vr_l075d4h+1),hl       ;7e5c 22 15 18  " . . 
@@ -4537,7 +4552,7 @@ l7f37h:
 invokeSave:
     ld ix,BOTTOM_LINE_VRAM_ADDRESS ;7f3b dd 21 e0 50  . ! . P 
     ld (ix+000h),003h          ;7f3f dd 36 00 03  . 6 . . 
-    call v_sub_7c2ah           ;7f43 cd 6a 1e  . j . 
+    call containsInputBufferCharacterB  ;7f43 cd 6a 1e  . j . 
     push af                    ;7f46 f5  . 
     ld b,03ah                  ;7f47 06 3a  . : 
     cp b                       ;7f49 b8  . 
@@ -4631,8 +4646,9 @@ l7fe4h:
     jr nz,l7fe4h               ;7fe7 20 fb    . 
     ret                        ;7fe9 c9  . 
 v_sub_76b6h:
+    ; character ":"
     ld b,03ah                  ;7fea 06 3a  . :                    (flow from: 89ec)  76b6 ld b,3a 
-    call v_sub_7c2ch           ;7fec cd 6c 1e  . l .               (flow from: 76b6)  76b8 call 7c2c 
+    call containsInputBufferCharacterInB  ;7fec cd 6c 1e  . l .    (flow from: 76b6)  76b8 call 7c2c 
     ret nz                     ;7fef c0  .                         (flow from: 7c34)  76bb ret nz 
 v_sub_76bch:
     ld de,v_l76d5h             ;7ff0 11 15 19  . . .               (flow from: 76bb)  76bc ld de,76d5 
@@ -4821,15 +4837,17 @@ v_sub_7800h:
     ld a,007h                  ;8134 3e 07  > .                    (flow from: 770d 7cf7)  7800 ld a,07 
     out (0feh),a               ;8136 d3 fe  . .                    (flow from: 7800)  7802 out (fe),a 
     ret                        ;8138 c9  .                         (flow from: 7802)  7804 ret 
-v_sub_7805h:
-    call v_sub_7c2ah           ;8139 cd 6a 1e  . j . 
+
+
+processCompilation:
+    call containsInputBufferCharacterB  ;8139 cd 6a 1e  . j . 
     ld a,000h                  ;813c 3e 00  > . 
     jr z,l8141h                ;813e 28 01  ( . 
     inc a                      ;8140 3c  < 
 l8141h:
     ld (vr_l0783eh+1),a        ;8141 32 7f 1a  2  . 
     ld c,0b6h                  ;8144 0e b6  . . 
-    call v_l74c1h              ;8146 cd 01 17  . . . 
+    call lockSymbolTable       ;8146 cd 01 17  . . . 
     ld a,001h                  ;8149 3e 01  > . 
     ld (l8184h+1),a            ;814b 32 91 1a  2 . . 
     ld hl,v_sub_79afh          ;814e 21 ef 1b  ! . . 
@@ -4870,7 +4888,7 @@ l8184h:
 
 
 invokeAssembly:
-    call v_sub_7805h           ;8193 cd 45 1a  . E . 
+    call processCompilation    ;8193 cd 45 1a  . E . 
     ld a,00bh                  ;8196 3e 0b  > . 
     jp v_l7cdah                ;8198 c3 1a 1f  . . . 
 l819bh:
@@ -5427,16 +5445,18 @@ v_sub_7bbch:
 
 
 invokeMonitor:
+    ; character "A", check if the compilation is requested
     ld b,061h                  ;84fb 06 61  . a                    (flow (mon) from: 7e06)  7bc7 ld b,61 
-    call v_sub_7c2ch           ;84fd cd 6c 1e  . l .               (flow (mon) from: 7bc7)  7bc9 call 7c2c 
-    call z,v_sub_7805h         ;8500 cc 45 1a  . E .               (flow (mon) from: 7c38)  7bcc call z,7805 
+    call containsInputBufferCharacterInB  ;84fd cd 6c 1e  . l .    (flow (mon) from: 7bc7)  7bc9 call 7c2c 
+    call z,processCompilation  ;8500 cc 45 1a  . E .               (flow (mon) from: 7c38)  7bcc call z,7805 
     call v_sub_7ca1h           ;8503 cd e1 1e  . . .               (flow (mon) from: 7bcc)  7bcf call 7ca1 
-    jp v_l5f74h                ;8506 c3 b4 01  . . .               (flow (mon) from: 7caf)  7bd2 jp 5f74 
+    jp startMonitor            ;8506 c3 b4 01  . . .               (flow (mon) from: 7caf)  7bd2 jp 5f74 
 
 
 invokeQuit:
+    ; character "Y"
     ld b,079h                  ;8509 06 79  . y 
-    call v_sub_7c2ch           ;850b cd 6c 1e  . l . 
+    call containsInputBufferCharacterInB  ;850b cd 6c 1e  . l . 
     ret nz                     ;850e c0  . 
     rst 0                      ;850f c7  . 
 
@@ -5492,14 +5512,17 @@ l8556h:
     ret                        ;855d c9  .                         (flow from: 7c27)  7c29 ret 
 
 
-v_sub_7c2ah:
+containsInputBufferCharacterB:
+    ; character "B"
     ld b,042h                  ;855e 06 42  . B 
-v_sub_7c2ch:
+containsInputBufferCharacterInB:
     ld hl,inputBufferStart+1   ;8560 21 40 2d  ! @ -               (flow from: 76b8)  7c2c ld hl,8b00 
 v_sub_7c2fh:
     call atHLorNextIfOne       ;8563 cd ee 27  . . '               (flow from: 7c2c)  7c2f call 85ae 
     inc hl                     ;8566 23  #                         (flow from: 85b1)  7c32 inc hl 
-v_sub_7c33h:
+compareWithCharacterInB:
+    ; check if A corresponds to character B (case insensitive)
+    ; may corrupt register B
     cp b                       ;8567 b8  .                         (flow from: 7c32)  7c33 cp b 
     ret z                      ;8568 c8  .                         (flow from: 7c33)  7c34 ret z 
     set 5,b                    ;8569 cb e8  . .                    (flow (mon) from: 7c34)  7c35 set 5,b 
@@ -5606,7 +5629,7 @@ l85dah:
 invokeRun:
     ld a,001h                  ;85e4 3e 01  > . 
     ld (l085ech+1),a           ;85e6 32 f9 1e  2 . . 
-    call v_sub_7805h           ;85e9 cd 45 1a  . E . 
+    call processCompilation    ;85e9 cd 45 1a  . E . 
 l085ech:
     ld a,000h                  ;85ec 3e 00  > . 
     or a                       ;85ee b7  . 
