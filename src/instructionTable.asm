@@ -472,7 +472,6 @@ instructionsTable:
     defb 0x50, 0x40, 0x0e, 0x64, 0x8c                          ;9c1e
 ; bit 2,b  [CB, t=12]
     defb 0x50, 0x80, 0x22, 0x19, 0x48                          ;9c23
-l9c28h:
 ; ld d,c  [t=8]
     defb 0x51, 0x00, 0x14, 0x61, 0x64                          ;9c28
 ; out (c),d  [ED, t=4]
@@ -717,6 +716,7 @@ l9c28h:
     defb 0x73, 0x24, 0x15, 0x71, 0xb3                          ;9e80
 ; ld (N),sp  [op. type: NN, ED, t=19]
     defb 0x73, 0x42, 0x15, 0x6c, 0x74                          ;9e85
+l9e8a:
 ; bit 6,e  [CB, t=20]
     defb 0x73, 0x80, 0x22, 0x39, 0xa8                          ;9e8a
 ; ld (hl),h  [t=8]

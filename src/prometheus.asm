@@ -26,6 +26,7 @@ ROM_ChannelOpen:               equ 0x1601
 ROM_PixelAddress_22b0:         equ 0x22b0
 ROM_NEWCommandRoutine:         equ 0x11b7
 ROM_ImmediateRET:              equ 0x0052
+ROM_StatementReturn:           equ 0x1b76
 
 ; system variables
 
@@ -34,9 +35,36 @@ SYSVAR_ERR_SP:                 equ 05c3dh  ; Address of item on machine stack to
 ; constants
 
 INSTRUCTIONS_TABLE_SIZE:       equ 687  
-LEFT_BOTTOM_ATTRIBUTE_ADDRESS: equ 0x5ae0
 HIGHLIGHT_COLOR:               equ 0x30    ; yellow paper, black color
+LABEL_LENGTH:                  equ 9
+PROMETHEUS_STRING_LENGTH:      equ 10
+SEPARATOR_CHARCODE:            equ 0x7e    ; "~"
+SECOND_LINE_ADDRESS:           equ 0x4020
 BOTTOM_LINE_VRAM_ADDRESS:      equ 0x50e0
+LEFT_BOTTOM_ATTRIBUTE_ADDRESS: equ 0x5ae0
+
+; messages
+
+MESSAGE_BAD_MNEMONIC:          equ 1
+MESSAGE_BAD_OPERAND:           equ 2
+MESSAGE_BIG_NUMBER:            equ 3
+MESSAGE_SYNTAX_HORROR:         equ 4
+MESSAGE_BAD_STRING:            equ 5
+MESSAGE_BAD_INSTRUCTION:       equ 6
+MESSAGE_MEMORY_FULL:           equ 7
+MESSAGE_BAD_PUT_ORG:           equ 8
+MESSAGE_UNKNOWN:               equ 9
+MESSAGE_WAIT_PLEASE:           equ 10
+MESSAGE_ASSEMBLY_COMPLETE:     equ 11
+MESSAGE_START_TAPE:            equ 12
+MESSAGE_TAPE_ERROR:            equ 13
+MESSAGE_ANY_KEY:               equ 14
+MESSAGE_COPYRIGHT:             equ 15
+MESSAGE_SOURCE_ERROR:          equ 16
+MESSAGE_FOUND:                 equ 17
+MESSAGE_ALREADY_DEFINED:       equ 18
+MESSAGE_ENT:                   equ 19
+
 
     org INSTALLATION_ADDRESS
 
@@ -884,7 +912,7 @@ v_sub_5f64h:
 startMonitor:
     di                         ;68a8 f3  .                         (flow (mon) from: 6015 7bd2)  5f74 di 
     call v_sub_7800h           ;68a9 cd 40 1a  . @ .               (flow (mon) from: 5f74)  5f75 call 7800 
-    ld sp,l094d5h              ;68ac 31 e1 2d  1 . -               (flow (mon) from: 7804)  5f78 ld sp,8ba1 
+    ld sp,internalStackTop     ;68ac 31 e1 2d  1 . -               (flow (mon) from: 7804)  5f78 ld sp,8ba1 
     call v_sub_665ah           ;68af cd 9a 08  . . .               (flow (mon) from: 5f78)  5f7b call 665a 
     ld hl,inputBufferStart     ;68b2 21 3f 2d  ! ? -               (flow (mon) from: 82e5)  5f7e ld hl,8aff 
     ld (hl),0c6h               ;68b5 36 c6  6 .                    (flow (mon) from: 5f7e)  5f81 ld (hl),c6 
@@ -905,7 +933,7 @@ l68cah:
     call v_sub_6669h           ;68cd cd a9 08  . . .               (flow (mon) from: 5f98)  5f99 call 6669 
     ld a,080h                  ;68d0 3e 80  > .                    (flow (mon) from: 85db)  5f9c ld a,80 
     ld (inputBufferStart),a    ;68d2 32 3f 2d  2 ? -               (flow (mon) from: 5f9c)  5f9e ld (8aff),a 
-    ld hl,mnemonicsTable+170   ;68d5 21 af 2f  ! . /               (flow (mon) from: 5f9e)  5fa1 ld hl,8d6f
+    ld hl,l96a4-1             ;68d5 21 af 2f  ! . /               (flow (mon) from: 5f9e)  5fa1 ld hl,8d6f
     ld (vr_l08750h+1),hl       ;68d8 22 91 29  " . )               (flow (mon) from: 5fa1)  5fa4 ld (8751),hl 
     ld hl,v_l89f4h             ;68db 21 34 2c  ! 4 ,               (flow (mon) from: 5fa4)  5fa7 ld hl,89f4 
     ld (l089d3h+1),hl          ;68de 22 e0 22  " . "               (flow (mon) from: 5fa7)  5faa ld (80a0),hl  
@@ -1103,7 +1131,7 @@ l6a2bh:
     call v_sub_79afh           ;6a36 cd ef 1b  . . . 
     call v_sub_664ch           ;6a39 cd 8c 08  . . . 
     call v_sub_78dah           ;6a3c cd 1a 1b  . . . 
-    ld hl,(v_l7953h+1)         ;6a3f 2a 94 1b  * . . 
+    ld hl,(varcAddressCounter+1)  ;6a3f 2a 94 1b  * . . 
     ld (v_sub_664ch+1),hl      ;6a42 22 8d 08  " . . 
     xor a                      ;6a45 af  . 
     ret                        ;6a46 c9  . 
@@ -1203,7 +1231,7 @@ l6addh:
     exx                        ;6ae2 d9  . 
     xor 03ah                   ;6ae3 ee 3a  . : 
     jr nz,l6b0ah               ;6ae5 20 23    # 
-    ld ix,v_l8ad1h             ;6ae7 dd 21 11 2d  . ! . - 
+    ld ix,commandArgumentBuffer;6ae7 dd 21 11 2d  . ! . - 
     ld (ix+000h),003h          ;6aeb dd 36 00 03  . 6 . . 
     ld de,v_l8ad2h             ;6aef 11 12 2d  . . - 
     inc hl                     ;6af2 23  # 
@@ -1915,7 +1943,7 @@ l6f7eh:
     ret                        ;6f7f c9  . 
 v_sub_664ch:
     ld hl,00000h               ;6f80 21 00 00  ! . . 
-    ld (v_l7953h+1),hl         ;6f83 22 94 1b  " . . 
+    ld (varcAddressCounter+1),hl  ;6f83 22 94 1b  " . . 
     ld (vr_l07934h+1),hl       ;6f86 22 75 1b  " u . 
     ld ix,v_l8b22h             ;6f89 dd 21 62 2d  . ! b - 
     ret                        ;6f8d c9  . 
@@ -1991,10 +2019,12 @@ l07007h:
     ld (v_l6f9bh),a            ;7009 32 db 11  2 . . 
 v_l66d8h:
     call v_sub_6d79h           ;700c cd b9 0f  . . . 
-    call v_sub_8713h           ;700f cd 53 29  . S ) 
+    call beep                  ;700f cd 53 29  . S ) 
     call v_sub_8639h           ;7012 cd 79 28  . y ( 
     call l6aa9h                ;7015 cd b5 03  . . . 
     jp startMonitor            ;7018 c3 b4 01  . . . 
+
+
 v_sub_66e7h:
     ld hl,(l0696eh+1)          ;701b 2a 7b 02  * { . 
 v_l66eah:
@@ -2903,7 +2933,7 @@ l758eh:
     ex af,af'                  ;759a 08  . 
     jr l758eh                  ;759b 18 f1  . . 
 l759dh:
-    ld (vr_l08787h+1),hl       ;759d 22 c8 29  " . ) 
+    ld (varcPrintingPosition+1),hl       ;759d 22 c8 29  " . ) 
     pop hl                     ;75a0 e1  . 
 v_sub_6c6dh:
     push hl                    ;75a1 e5  .                         (flow (mon) from: 6e81)  6c6d push hl 
@@ -2915,7 +2945,7 @@ l75a7h:
     jr nc,l75b0h               ;75ac 30 02  0 .                    (flow (mon) from: 6c76)  6c78 jr nc,6c7c 
     ld a,020h                  ;75ae 3e 20  >                      (flow (mon) from: 6c78)  6c7a ld a,20 
 l75b0h:
-    call v_sub_8769h           ;75b0 cd a9 29  . . )               (flow (mon) from: 6c78 6c7a)  6c7c call 8769 
+    call displayNormalCharacter;75b0 cd a9 29  . . )               (flow (mon) from: 6c78 6c7a)  6c7c call 8769 
     djnz l75a7h                ;75b3 10 f2  . .                    (flow (mon) from: 877e)  6c7f djnz 6c73 
     pop hl                     ;75b5 e1  .                         (flow (mon) from: 6c7f)  6c81 pop hl 
     ret                        ;75b6 c9  .                         (flow (mon) from: 6c81)  6c82 ret 
@@ -3101,13 +3131,13 @@ l76c1h:
     ret                        ;76cd c9  .                         (flow (mon) from: 6d97)  6d99 ret 
 l76ceh:
     ld a,028h                  ;76ce 3e 28  > ( 
-    call v_sub_8769h           ;76d0 cd a9 29  . . ) 
+    call displayNormalCharacter;76d0 cd a9 29  . . ) 
     pop hl                     ;76d3 e1  . 
     push hl                    ;76d4 e5  . 
     call v_sub_6f5dh           ;76d5 cd 9d 11  . . . 
     ld a,029h                  ;76d8 3e 29  > ) 
 l76dah:
-    call v_sub_8767h           ;76da cd a7 29  . . )               (flow (mon) from: 6dd4)  6da6 call 8767 
+    call displayUninvertedCharacter  ;76da cd a7 29  . . )         (flow (mon) from: 6dd4)  6da6 call 8767 
     jr l770dh                  ;76dd 18 2e  . .                    (flow (mon) from: 877e)  6da9 jr 6dd9 
 v_sub_6dabh:
     ld a,(ix+004h)             ;76df dd 7e 04  . ~ .               (flow (mon) from: 6d8e)  6dab ld a,(ix+04) 
@@ -3138,11 +3168,11 @@ l76feh:
     call v_sub_6f6fh           ;770a cd af 11  . . .               (flow (mon) from: 6dd4)  6dd6 call 6f6f 
 l770dh:
     ld a,03ah                  ;770d 3e 3a  > :                    (flow (mon) from: 6da9 6f87)  6dd9 ld a,3a 
-    call v_sub_8769h           ;770f cd a9 29  . . )               (flow (mon) from: 6dd9)  6ddb call 8769 
+    call displayNormalCharacter;770f cd a9 29  . . )               (flow (mon) from: 6dd9)  6ddb call 8769 
     pop de                     ;7712 d1  .                         (flow (mon) from: 877e)  6dde pop de 
     ld a,(ix+004h)             ;7713 dd 7e 04  . ~ .               (flow (mon) from: 6dde)  6ddf ld a,(ix+04) 
     and 01fh                   ;7716 e6 1f  . .                    (flow (mon) from: 6ddf)  6de2 and 1f 
-    ld hl,(vr_l08787h+1)       ;7718 2a c8 29  * . )               (flow (mon) from: 6de2)  6de4 ld hl,(8788) 
+    ld hl,(varcPrintingPosition+1)       ;7718 2a c8 29  * . )     (flow (mon) from: 6de2)  6de4 ld hl,(8788) 
 l771bh:
     ld bc,l0781eh+2            ;771b 01 2c 11  . , .               (flow (mon) from: 6de4 6e41)  6de7 ld bc,6eec 
     or a                       ;771e b7  .                         (flow (mon) from: 6de7)  6dea or a 
@@ -3195,7 +3225,7 @@ l7744h:
     bit 2,(ix+003h)            ;7763 dd cb 03 56  . . . V          (flow (mon) from: 6e2e)  6e2f bit 2,(ix+03) 
     jr z,l7773h                ;7767 28 0a  ( .                    (flow (mon) from: 6e2f)  6e33 jr z,6e3f 
     call v_sub_6f94h           ;7769 cd d4 11  . . .               (flow (mon) from: 6e33)  6e35 call 6f94 
-    ld (vr_l08787h+1),hl       ;776c 22 c8 29  " . )               (flow (mon) from: 6f98)  6e38 ld (8788),hl 
+    ld (varcPrintingPosition+1),hl       ;776c 22 c8 29  " . )     (flow (mon) from: 6f98)  6e38 ld (8788),hl 
     xor a                      ;776f af  .                         (flow (mon) from: 6e38)  6e3b xor a 
     ld (v_sub_6ef4h+1),a       ;7770 32 35 11  2 5 .               (flow (mon) from: 6e3b)  6e3c ld (6ef5),a 
 l7773h:
@@ -3221,7 +3251,7 @@ l7785h:
     jr z,l77a3h                ;778a 28 17  ( .                    (flow (mon) from: 6e54)  6e56 jr z,6e6f 
     cp 0a3h                    ;778c fe a3  . .                    (flow (mon) from: 6e56)  6e58 cp a3 
     jr z,l7799h                ;778e 28 09  ( .                    (flow (mon) from: 6e58)  6e5a jr z,6e65 
-    call v_sub_8767h           ;7790 cd a7 29  . . ) 
+    call displayUninvertedCharacter  ;7790 cd a7 29  . . ) 
     dec hl                     ;7793 2b  + 
     ld a,h                     ;7794 7c  | 
     or l                       ;7795 b5  . 
@@ -3251,7 +3281,7 @@ l77b1h:
 v_sub_6e8ah:
     ld l,(ix+000h)             ;77be dd 6e 00  . n .               (flow (mon) from: 6db5 6e46 6ea5)  6e8a ld l,(ix+00) 
     ld h,(ix+001h)             ;77c1 dd 66 01  . f .               (flow (mon) from: 6e8a)  6e8d ld h,(ix+01) 
-    ld (vr_l08787h+1),hl       ;77c4 22 c8 29  " . )               (flow (mon) from: 6e8d)  6e90 ld (8788),hl 
+    ld (varcPrintingPosition+1),hl       ;77c4 22 c8 29  " . )     (flow (mon) from: 6e8d)  6e90 ld (8788),hl 
     ret                        ;77c7 c9  .                         (flow (mon) from: 6e90)  6e93 ret 
 v_l6e94h:
     ld (hl),e                  ;77c8 73  s 
@@ -3278,13 +3308,13 @@ v_l6e9ch:
     call v_sub_6f75h           ;77e5 cd b5 11  . . . 
     pop hl                     ;77e8 e1  . 
     call v_sub_6f94h           ;77e9 cd d4 11  . . . 
-    ld (vr_l08787h+1),hl       ;77ec 22 c8 29  " . ) 
+    ld (varcPrintingPosition+1),hl       ;77ec 22 c8 29  " . ) 
     ex af,af'                  ;77ef 08  . 
     call v_sub_6f36h           ;77f0 cd 76 11  . v . 
     pop hl                     ;77f3 e1  . 
     ret                        ;77f4 c9  . 
 l77f5h:
-    call v_sub_8765h           ;77f5 cd a5 29  . . )               (flow (mon) from: 6edb)  6ec1 call 8765 
+    call displaySpace          ;77f5 cd a5 29  . . )               (flow (mon) from: 6edb)  6ec1 call 8765 
 l77f8h:
     ld a,(hl)                  ;77f8 7e  ~                         (flow (mon) from: 6eac 877e)  6ec4 ld a,(hl) 
     inc hl                     ;77f9 23  #                         (flow (mon) from: 6ec4)  6ec5 inc hl 
@@ -3300,7 +3330,7 @@ l7803h:
     inc hl                     ;7803 23  #                         (flow (mon) from: 6ecb)  6ecf inc hl 
     push af                    ;7804 f5  .                         (flow (mon) from: 6ecf)  6ed0 push af 
     rlca                       ;7805 07  .                         (flow (mon) from: 6ed0)  6ed1 rlca 
-    call c,v_sub_8765h         ;7806 dc a5 29  . . )               (flow (mon) from: 6ed1)  6ed2 call c,8765 
+    call c,displaySpace        ;7806 dc a5 29  . . )               (flow (mon) from: 6ed1)  6ed2 call c,8765 
     pop af                     ;7809 f1  .                         (flow (mon) from: 6ed2)  6ed5 pop af 
     and 07fh                   ;780a e6 7f  .                      (flow (mon) from: 6ed5)  6ed6 and 7f 
     call v_sub_6f6fh           ;780c cd af 11  . . .               (flow (mon) from: 6ed6)  6ed8 call 6f6f 
@@ -3327,7 +3357,7 @@ l0781eh:
 v_sub_6ef4h:
     ld a,000h                  ;7828 3e 00  > .                    (flow (mon) from: 6e20)  6ef4 ld a,00 
     or a                       ;782a b7  .                         (flow (mon) from: 6ef4)  6ef6 or a 
-    call nz,v_sub_8765h        ;782b c4 a5 29  . . )               (flow (mon) from: 6ef6)  6ef7 call nz,8765 
+    call nz,displaySpace       ;782b c4 a5 29  . . )               (flow (mon) from: 6ef6)  6ef7 call nz,8765 
     ld a,001h                  ;782e 3e 01  > .                    (flow (mon) from: 6ef7 877e)  6efa ld a,01 
     ld (v_sub_6ef4h+1),a       ;7830 32 35 11  2 5 .               (flow (mon) from: 6efa)  6efc ld (6ef5),a 
     jp (ix)                    ;7833 dd e9  . .                    (flow (mon) from: 6efc)  6eff jp ix 
@@ -3351,7 +3381,7 @@ l785ch:
     ld a,(hl)                  ;785c 7e  ~                         (flow (mon) from: 6f25 6f2f)  6f28 ld a,(hl) 
     or a                       ;785d b7  .                         (flow (mon) from: 6f28)  6f29 or a 
     ret z                      ;785e c8  .                         (flow (mon) from: 6f29)  6f2a ret z 
-    call v_sub_8769h           ;785f cd a9 29  . . )               (flow (mon) from: 6f2a)  6f2b call 8769 
+    call displayNormalCharacter;785f cd a9 29  . . )               (flow (mon) from: 6f2a)  6f2b call 8769 
     inc hl                     ;7862 23  #                         (flow (mon) from: 877e)  6f2e inc hl 
     jr l785ch                  ;7863 18 f7  . .                    (flow (mon) from: 6f2e)  6f2f jr 6f28 
     ld a,h                     ;7865 7c  | 
@@ -3365,7 +3395,7 @@ l786dh:
 l786eh:
     rl c                       ;786e cb 11  . .                    (flow (mon) from: 6f39)  6f3a rl c 
     adc a,030h                 ;7870 ce 30  . 0                    (flow (mon) from: 6f3a)  6f3c adc a,30 
-    call v_sub_8769h           ;7872 cd a9 29  . . )               (flow (mon) from: 6f3c)  6f3e call 8769 
+    call displayNormalCharacter;7872 cd a9 29  . . )               (flow (mon) from: 6f3c)  6f3e call 8769 
     djnz l786dh                ;7875 10 f6  . .                    (flow (mon) from: 877e)  6f41 djnz 6f39 
     ret                        ;7877 c9  .                         (flow (mon) from: 6f41)  6f43 ret 
     ld a,h                     ;7878 7c  | 
@@ -3383,7 +3413,7 @@ v_sub_6f4eh:
     and 080h                   ;788a e6 80  . .                    (flow (mon) from: 6f54)  6f56 and 80 
     or 02eh                    ;788c f6 2e  . .                    (flow (mon) from: 6f56)  6f58 or 2e 
 l788eh:
-    jp v_sub_8769h             ;788e c3 a9 29  . . )               (flow (mon) from: 6f54 6f58)  6f5a jp 8769 
+    jp displayNormalCharacter  ;788e c3 a9 29  . . )               (flow (mon) from: 6f54 6f58)  6f5a jp 8769 
 v_sub_6f5dh:
     push ix                    ;7891 dd e5  . . 
     call v_sub_8902h           ;7893 cd 42 2b  . B + 
@@ -3402,11 +3432,11 @@ v_l6f72h:
 v_sub_6f75h:
     ld a,(de)                  ;78a9 1a  .                         (flow (mon) from: 6f85 82d3)  6f75 ld a,(de) 
     res 7,a                    ;78aa cb bf  . .                    (flow (mon) from: 6f75)  6f76 res 7,a 
-    call potencialCommandKeyPressed   ;78ac cd 6e 29  . n )        (flow (mon) from: 6f76)  6f78 call 872e 
+    call isLetter              ;78ac cd 6e 29  . n )               (flow (mon) from: 6f76)  6f78 call 872e 
     jr nz,l78b3h               ;78af 20 02    .                    (flow (mon) from: 8730 8733 873c)  6f7b jr nz,6f7f 
     sub 020h                   ;78b1 d6 20  .                      (flow (mon) from: 6f7b)  6f7d sub 20 
 l78b3h:
-    call v_sub_8767h           ;78b3 cd a7 29  . . )               (flow (mon) from: 6f7b 6f7d)  6f7f call 8767 
+    call displayUninvertedCharacter  ;78b3 cd a7 29  . . )         (flow (mon) from: 6f7b 6f7d)  6f7f call 8767 
     ld a,(de)                  ;78b6 1a  .                         (flow (mon) from: 877e)  6f82 ld a,(de) 
     inc de                     ;78b7 13  .                         (flow (mon) from: 6f82)  6f83 inc de 
     rla                        ;78b8 17  .                         (flow (mon) from: 6f83)  6f84 rla 
@@ -3778,22 +3808,25 @@ l07a67h:
 
 
 invokeK:
+    ; go to the start of the source
     ld hl,sourceBufferDefaultLine ;7ab3 21 68 3e  ! h > 
-l7ab6h:
+setActiveLine:
     ld (varcSourceBufferActiveLine+1),hl ;7ab6 22 ad 24  " . $ 
     ret                        ;7ab9 c9  . 
 
 
 invokeE:
-    call v_sub_718eh           ;7aba cd ce 13  . . . 
+    ; go to the end of the source
+    call getLastSourcePosition ;7aba cd ce 13  . . . 
     call v_sub_8235h           ;7abd cd 75 24  . u $ 
-    jr l7ab6h                  ;7ac0 18 f4  . . 
-v_sub_718eh:
+    jr setActiveLine                  ;7ac0 18 f4  . . 
+    
+getLastSourcePosition:
     ld hl,(varcSymbolTablePt+1)       ;7ac2 2a 17 2a  * . * 
-    ld de,0fff4h               ;7ac5 11 f4 ff  . . . 
+    ; compute ending position of the active line
+    ld de,sourceBufferDefaultLine-symbolTableDefaultPt+2 ; (= -12)
     add hl,de                  ;7ac8 19  . 
     ret                        ;7ac9 c9  . 
-
 
 invokeUTop:
     ; sets U-TOP, the last address where  a the source code can be stored
@@ -3805,46 +3838,51 @@ invokeUTop:
 readNumberExpression:
     ld hl,inputBufferStart+1   ;7ad1 21 40 2d  ! @ - 
 v_sub_71a0h:
-    ld de,v_l8ad1h             ;7ad4 11 11 2d  . . - 
+    ld de,commandArgumentBuffer;7ad4 11 11 2d  . . - 
     push de                    ;7ad7 d5  . 
     ld c,01eh                  ;7ad8 0e 1e  . . 
-    call v_sub_8577h           ;7ada cd b7 27  . . ' 
+    call readCommandArgument   ;7ada cd b7 27  . . ' 
     pop de                     ;7add d1  . 
     ld hl,00000h               ;7ade 21 00 00  ! . . 
+    ; "+"
     ld a,02bh                  ;7ae1 3e 2b  > + 
     ld ix,v_l8aa5h             ;7ae3 dd 21 e5 2c  . ! . , 
 l7ae7h:
     push hl                    ;7ae7 e5  . 
     push af                    ;7ae8 f5  . 
-    call v_sub_8492h           ;7ae9 cd d2 26  . . & 
+    call testClosingBracketOrComma  ;7ae9 cd d2 26  . . & 
     jp c,syntaxError           ;7aec da c9 22  . . " 
+    ; "+"
     cp 02bh                    ;7aef fe 2b  . + 
     jr z,l7afah                ;7af1 28 07  ( . 
     ld (vr_l07208h+1),a        ;7af3 32 49 14  2 I . 
+    ; ";"
     cp 02dh                    ;7af6 fe 2d  . - 
     jr nz,l7afdh               ;7af8 20 03    . 
 l7afah:
-    call v_sub_8492h           ;7afa cd d2 26  . . & 
+    call testClosingBracketOrComma  ;7afa cd d2 26  . . & 
 l7afdh:
+    ; "$"
     cp 024h                    ;7afd fe 24  . $ 
-    ld hl,(v_l7953h+1)         ;7aff 2a 94 1b  * . . 
+    ld hl,(varcAddressCounter+1)  ;7aff 2a 94 1b  * . . 
     jr z,l7b31h                ;7b02 28 2d  ( - 
-    call potencialCommandKeyPressed  ;7b04 cd 6e 29  . n ) 
+    call isLetter              ;7b04 cd 6e 29  . n ) 
     jr nz,l7b36h               ;7b07 20 2d    - 
+    ; isLetter
     dec de                     ;7b09 1b  . 
     push de                    ;7b0a d5  . 
     push ix                    ;7b0b dd e5  . . 
     ex de,hl                   ;7b0d eb  . 
     call v_sub_87aah           ;7b0e cd ea 29  . . ) 
-    ld a,009h                  ;7b11 3e 09  > . 
-    jp c,v_l809ah              ;7b13 da da 22  . . " 
+    ld a,MESSAGE_UNKNOWN       ;7b11 3e 09  > . 
+    jp c,signalError           ;7b13 da da 22  . . " 
     pop ix                     ;7b16 dd e1  . . 
     ex de,hl                   ;7b18 eb  . 
     call v_sub_8116h           ;7b19 cd 56 23  . V # 
     ld a,(hl)                  ;7b1c 7e  ~ 
     and 0c0h                   ;7b1d e6 c0  . . 
-    ld a,009h                  ;7b1f 3e 09  > . 
-    jp z,v_l809ah              ;7b21 ca da 22  . . " 
+    ld a,MESSAGE_UNKNOWN       ;7b1f 3e 09  > . 
+    jp z,signalError           ;7b21 ca da 22  . . " 
     dec de                     ;7b24 1b  . 
     ex de,hl                   ;7b25 eb  . 
     ld d,(hl)                  ;7b26 56  V 
@@ -3856,7 +3894,7 @@ l7afdh:
     add hl,bc                  ;7b2f 09  . 
     ex de,hl                   ;7b30 eb  . 
 l7b31h:
-    call v_sub_8492h           ;7b31 cd d2 26  . . & 
+    call testClosingBracketOrComma   ;7b31 cd d2 26  . . & 
     jr l7b39h                  ;7b34 18 03  . . 
 l7b36h:
     call v_sub_8419h           ;7b36 cd 59 26  . Y & 
@@ -4161,7 +4199,7 @@ v_l73c7h:
 vr_l073d1h:
     ld c,000h                  ;7d05 0e 00  . . 
     call ROM_PixelAddress_22b0 ;7d07 cd b0 22  . . " 
-    ld (vr_l08787h+1),hl       ;7d0a 22 c8 29  " . ) 
+    ld (varcPrintingPosition+1),hl       ;7d0a 22 c8 29  " . ) 
     pop hl                     ;7d0d e1  . 
     push hl                    ;7d0e e5  . 
 vr_l073dbh:
@@ -4190,8 +4228,8 @@ l7d1ch:
     ld a,b                     ;7d2c 78  x 
     or c                       ;7d2d b1  . 
     jr nz,l7d1ch               ;7d2e 20 ec    . 
-    ld a,010h                  ;7d30 3e 10  > . 
-    jp v_l809ah                ;7d32 c3 da 22  . . " 
+    ld a,MESSAGE_SOURCE_ERROR  ;7d30 3e 10  > . 
+    jp signalError             ;7d32 c3 da 22  . . " 
 l7d35h:
     ld c,(hl)                  ;7d35 4e  N 
     pop hl                     ;7d36 e1  . 
@@ -4351,7 +4389,7 @@ invokeClear:
     ret nz                     ;7e0f c0  . 
     ld hl,sourceBufferDefaultLine  ;7e10 21 68 3e  ! h > 
     ld (v_sub_080e7h+1),hl     ;7e13 22 28 23  " ( # 
-    call v_sub_718eh           ;7e16 cd ce 13  . . . 
+    call getLastSourcePosition ;7e16 cd ce 13  . . . 
     ld (vr_l080eah+1),hl       ;7e19 22 2b 23  " + # 
     call invokeDelete          ;7e1c cd 83 15  . . . 
 clearSymbolTable:
@@ -4562,7 +4600,7 @@ l7f4fh:
     jr nz,l7f54h               ;7f4f 20 03    . 
     call v_sub_76bch           ;7f51 cd fc 18  . . . 
 l7f54h:
-    ld hl,v_l76d5h             ;7f54 21 15 19  ! . . 
+    ld hl,prometheusString     ;7f54 21 15 19  ! . . 
     ld de,050e1h               ;7f57 11 e1 50  . . P 
     ld bc,0000ah               ;7f5a 01 0a 00  . . . 
     ldir                       ;7f5d ed b0  . . 
@@ -4651,7 +4689,7 @@ v_sub_76b6h:
     call containsInputBufferCharacterInB  ;7fec cd 6c 1e  . l .    (flow from: 76b6)  76b8 call 7c2c 
     ret nz                     ;7fef c0  .                         (flow from: 7c34)  76bb ret nz 
 v_sub_76bch:
-    ld de,v_l76d5h             ;7ff0 11 15 19  . . .               (flow from: 76bb)  76bc ld de,76d5 
+    ld de,prometheusString     ;7ff0 11 15 19  . . .               (flow from: 76bb)  76bc ld de,76d5 
 v_sub_76bfh:
     ld b,00ah                  ;7ff3 06 0a  . .                    (flow from: 76bc)  76bf ld b,0a 
 l7ff5h:
@@ -4671,7 +4709,8 @@ l8004h:
     inc de                     ;8005 13  . 
     djnz l8004h                ;8006 10 fc  . . 
     ret                        ;8008 c9  . 
-v_l76d5h:
+
+prometheusString:
     defb "prometheus"          ;8009
 
 
@@ -4748,8 +4787,8 @@ v_l7760h:
     and a                      ;809e a7  .                         (flow from: 7767)  776a and a 
     sbc hl,de                  ;809f ed 52  . R                    (flow from: 776a)  776b sbc hl,de 
     jr c,vr_l0771fh            ;80a1 38 b0  8 .                    (flow from: 776b)  776d jr c,771f 
-    ld a,007h                  ;80a3 3e 07  > . 
-    jp v_l809ah                ;80a5 c3 da 22  . . " 
+    ld a,MESSAGE_MEMORY_FULL   ;80a3 3e 07  > . 
+    jp signalError             ;80a5 c3 da 22  . . " 
 l80a8h:
     ld hl,v_l7ccfh             ;80a8 21 0f 1f  ! . .               (flow from: 7733)  7774 ld hl,7ccf 
     ld (vr_l07e38h+1),hl       ;80ab 22 79 20  " y                 (flow from: 7774)  7777 ld (7e39),hl 
@@ -4855,7 +4894,7 @@ l8141h:
 l8154h:
     ld hl,(varcCodeEndPt+1)    ;8154 2a 5a 2a  * Z * 
     inc hl                     ;8157 23  # 
-    ld (v_l7953h+1),hl         ;8158 22 94 1b  " . . 
+    ld (varcAddressCounter+1),hl  ;8158 22 94 1b  " . . 
     ld (vr_l07934h+1),hl       ;815b 22 75 1b  " u . 
     ld hl,sourceBufferDefaultLine  ;815e 21 68 3e  ! h > 
 l8161h:
@@ -4889,8 +4928,10 @@ l8184h:
 
 invokeAssembly:
     call processCompilation    ;8193 cd 45 1a  . E . 
-    ld a,00bh                  ;8196 3e 0b  > . 
+    ld a,MESSAGE_ASSEMBLY_COMPLETE  ;8196 3e 0b  > . 
     jp v_l7cdah                ;8198 c3 1a 1f  . . . 
+
+
 l819bh:
     ld a,(ix+000h)             ;819b dd 7e 00  . ~ . 
     call v_sub_7a02h           ;819e cd 42 1c  . B . 
@@ -5027,10 +5068,11 @@ varcUTop:
     ld (de),a                  ;8281 12  . 
     inc de                     ;8282 13  . 
     ld (vr_l07934h+1),de       ;8283 ed 53 75 1b  . S u . 
-v_l7953h:
+varcAddressCounter:
+    ; address counter ($)
     ld hl,00000h               ;8287 21 00 00  ! . . 
     inc hl                     ;828a 23  # 
-    ld (v_l7953h+1),hl         ;828b 22 94 1b  " . . 
+    ld (varcAddressCounter+1),hl  ;828b 22 94 1b  " . . 
     ret                        ;828e c9  . 
 l828fh:
     ld a,008h                  ;828f 3e 08  > . 
@@ -5046,7 +5088,7 @@ v_sub_7962h:
 l829dh:
     dec a                      ;829d 3d  = 
     jr nz,l82bfh               ;829e 20 1f    . 
-    ld hl,(v_l7953h+1)         ;82a0 2a 94 1b  * . . 
+    ld hl,(varcAddressCounter+1)  ;82a0 2a 94 1b  * . . 
     inc hl                     ;82a3 23  # 
     push bc                    ;82a4 c5  . 
     ex (sp),hl                 ;82a5 e3  . 
@@ -5095,6 +5137,8 @@ l82d3h:
     add a,(hl)                 ;82e0 86  . 
     ld (hl),a                  ;82e1 77  w 
     ret                        ;82e2 c9  . 
+
+
 v_sub_79afh:
     bit 3,(ix+001h)            ;82e3 dd cb 01 5e  . . . ^ 
     jr z,l830ah                ;82e7 28 21  ( ! 
@@ -5103,14 +5147,14 @@ v_sub_79afh:
     ld a,(hl)                  ;82f0 7e  ~ 
     and 0c0h                   ;82f1 e6 c0  . . 
     jr z,l8300h                ;82f3 28 0b  ( . 
-    ld a,012h                  ;82f5 3e 12  > . 
+    ld a,MESSAGE_ALREADY_DEFINED  ;82f5 3e 12  > . 
 v_l79c3h:
     ld hl,00000h               ;82f7 21 00 00  ! . . 
     ld (varcSourceBufferActiveLine+1),hl   ;82fa 22 ad 24  " . $ 
-    jp v_l809ah                ;82fd c3 da 22  . . " 
+    jp signalError             ;82fd c3 da 22  . . " 
 l8300h:
     set 6,(hl)                 ;8300 cb f6  . . 
-    ld hl,(v_l7953h+1)         ;8302 2a 94 1b  * . . 
+    ld hl,(varcAddressCounter+1)  ;8302 2a 94 1b  * . . 
     ex de,hl                   ;8305 eb  . 
     dec hl                     ;8306 2b  + 
     ld (hl),d                  ;8307 72  r 
@@ -5166,7 +5210,7 @@ l8356h:
     jr nz,l8365h               ;8357 20 0c    . 
 v_l7a25h:
     call v_sub_7a98h           ;8359 cd d8 1c  . . . 
-    ld (v_l7953h+1),bc         ;835c ed 43 94 1b  . C . . 
+    ld (varcAddressCounter+1),bc  ;835c ed 43 94 1b  . C . . 
 v_l7a2ch:
     ld (vr_l07934h+1),bc       ;8360 ed 43 75 1b  . C u . 
     ret                        ;8364 c9  . 
@@ -5194,7 +5238,7 @@ l837dh:
 l8380h:
     call v_sub_7a98h           ;8380 cd d8 1c  . . . 
     push af                    ;8383 f5  . 
-    ld hl,v_l7953h+1           ;8384 21 94 1b  ! . . 
+    ld hl,varcAddressCounter+1 ;8384 21 94 1b  ! . . 
     call v_sub_8980h           ;8387 cd c0 2b  . . + 
     ld hl,vr_l07934h+1         ;838a 21 75 1b  ! u . 
     call v_sub_8980h           ;838d cd c0 2b  . . + 
@@ -5209,7 +5253,7 @@ l8396h:
 l839bh:
     ld b,000h                  ;839b 06 00  . . 
     ld c,a                     ;839d 4f  O 
-    ld hl,v_l7953h+1           ;839e 21 94 1b  ! . . 
+    ld hl,varcAddressCounter+1 ;839e 21 94 1b  ! . . 
     jp v_sub_8980h             ;83a1 c3 c0 2b  . . + 
 v_sub_7a70h:
     ld c,001h                  ;83a4 0e 01  . . 
@@ -5251,7 +5295,7 @@ v_l7a9dh:
 l83ddh:
     ld a,(ix+002h)             ;83dd dd 7e 02  . ~ . 
     cp 024h                    ;83e0 fe 24  . $ 
-    ld de,(v_l7953h+1)         ;83e2 ed 5b 94 1b  . [ . . 
+    ld de,(varcAddressCounter+1)  ;83e2 ed 5b 94 1b  . [ . . 
     jr z,l8409h                ;83e6 28 21  ( ! 
     cp 080h                    ;83e8 fe 80  . . 
     jp c,v_l7b5bh              ;83ea da 9b 1d  . . . 
@@ -5489,8 +5533,8 @@ l8533h:
     jr nz,v_sub_7bdch          ;853e 20 d0    .                    (flow from: 7c08)  7c0a jr nz,7bdc 
     ret                        ;8540 c9  .                         (flow from: 7c0a)  7c0c ret 
 v_sub_7c0dh:
-    ld b,00ah                  ;8541 06 0a  . .                    (flow from: 77d4)  7c0d ld b,0a 
-    ld hl,v_l76d5h             ;8543 21 15 19  ! . .               (flow from: 7c0d)  7c0f ld hl,76d5 
+    ld b,PROMETHEUS_STRING_LENGTH   ;8541 06 0a  . .               (flow from: 77d4)  7c0d ld b,0a 
+    ld hl,prometheusString     ;8543 21 15 19  ! . .               (flow from: 7c0d)  7c0f ld hl,76d5 
 l8546h:
     ld a,(hl)                  ;8546 7e  ~                         (flow from: 7c0f)  7c12 ld a,(hl) 
     cp 020h                    ;8547 fe 20  .                      (flow from: 7c12)  7c13 cp 20 
@@ -5499,8 +5543,8 @@ l8546h:
     ret                        ;854d c9  . 
 l854eh:
 v_sub_7c1ah:
-    ld b,00ah                  ;854e 06 0a  . .                    (flow from: 7c15)  7c1a ld b,0a 
-    ld hl,v_l76d5h             ;8550 21 15 19  ! . .               (flow from: 7c1a)  7c1c ld hl,76d5 
+    ld b,PROMETHEUS_STRING_LENGTH  ;854e 06 0a  . .                (flow from: 7c15)  7c1a ld b,0a 
+    ld hl,prometheusString     ;8550 21 15 19  ! . .               (flow from: 7c1a)  7c1c ld hl,76d5 
     ld de,050e1h               ;8553 11 e1 50  . . P               (flow from: 7c1c)  7c1f ld de,50e1 
 l8556h:
     ld a,(de)                  ;8556 1a  .                         (flow from: 7c1f 7c27)  7c22 ld a,(de) 
@@ -5553,7 +5597,9 @@ invokeBasic:
     im 1                       ;857e ed 56  . V                    (flow from: 7c46)  7c4a im 1 
     ei                         ;8580 fb  .                         (flow from: 7c4a)  7c4c ei 
     ld sp,(SYSVAR_ERR_SP)      ;8581                               (flow from: 7c4c)  7c4d ld sp,(5c3d) 
-    jp 01b76h                  ;8585 c3 76 1b  . v .               (flow from: 7c4d)  7c51 jp 1b76 
+    jp ROM_StatementReturn     ;8585 c3 76 1b  . v .               (flow from: 7c4d)  7c51 jp 1b76 
+    
+    
 v_sub_7c54h:
     push af                    ;8588 f5  . 
     ld c,000h                  ;8589 0e 00  . . 
@@ -5607,6 +5653,8 @@ l85bfh:
     pop de                     ;85cc d1  . 
     pop hl                     ;85cd e1  . 
     ret                        ;85ce c9  . 
+
+
 v_sub_7c9bh:
     ld (de),a                  ;85cf 12  . 
     inc de                     ;85d0 13  . 
@@ -5619,7 +5667,7 @@ v_l7ca3h:
     ld bc,00003h               ;85d7 01 03 00  . . .               (flow from: 7ccc)  7ca3 ld bc,0003 
 l85dah:
     ld a,e                     ;85da 7b  {                         (flow from: 7ca3 7caa 7cad)  7ca6 ld a,e 
-    call v_sub_8769h           ;85db cd a9 29  . . )               (flow from: 7ca6)  7ca7 call 8769 
+    call displayNormalCharacter;85db cd a9 29  . . )               (flow from: 7ca6)  7ca7 call 8769 
     djnz l85dah                ;85de 10 fa  . .                    (flow from: 877e)  7caa djnz 7ca6 
     dec c                      ;85e0 0d  .                         (flow from: 7caa)  7cac dec c 
     jr nz,l85dah               ;85e1 20 f7    .                    (flow from: 7cac)  7cad jr nz,7ca6 
@@ -5633,8 +5681,8 @@ invokeRun:
 l085ech:
     ld a,000h                  ;85ec 3e 00  > . 
     or a                       ;85ee b7  . 
-    ld a,013h                  ;85ef 3e 13  > . 
-    jp nz,v_l809ah             ;85f1 c2 da 22  . . " 
+    ld a,MESSAGE_ENT           ;85ef 3e 13  > . 
+    jp nz,signalError          ;85f1 c2 da 22  . . " 
     call v_sub_7ca1h           ;85f4 cd e1 1e  . . . 
 vr_l07cc3h:
     call 00000h                ;85f7 cd 00 00  . . . 
@@ -5642,7 +5690,7 @@ v_l7cc6h:
     call v_sub_8639h           ;85fa cd 79 28  . y ( 
 v_l7cc9h:
     di                         ;85fd f3  .                         (flow from: 5dc0)  7cc9 di 
-    ld e,07eh                  ;85fe 1e 7e  . ~                    (flow from: 7cc9)  7cca ld e,7e 
+    ld e,SEPARATOR_CHARCODE    ;85fe 1e 7e  . ~                    (flow from: 7cc9)  7cca ld e,7e 
     call v_l7ca3h              ;8600 cd e3 1e  . . .               (flow from: 7cca)  7ccc call 7ca3 
 l8603h:
 v_l7ccfh:
@@ -5653,22 +5701,26 @@ v_l7ccfh:
 v_l7cdah:
     call v_l89f4h              ;860e cd 34 2c  . 4 ,               (flow from: 7cd8)  7cda call 89f4 
     ld hl,v_l8aa5h             ;8611 21 e5 2c  ! . ,               (flow from: 8a1d)  7cdd ld hl,8aa5 
-    ld bc,09e00h               ;8614 01 00 9e  . . .               (flow from: 7cdd)  7ce0 ld bc,9e00 
+    ; clean all buffers
+    ld bc,(l9478-1-v_l8aa5h)*256; 09e00h
+    ;ld bc,09e00h               ;8614 01 00 9e  . . .               (flow from: 7cdd)  7ce0 ld bc,9e00 
     call atHLrepeatBTimesC     ;8617 cd 21 25  . ! %               (flow from: 7ce0)  7ce3 call 82e1 
     ld hl,inputBufferStart     ;861a 21 3f 2d  ! ? -               (flow from: 82e5)  7ce6 ld hl,8aff 
+    ; reinitialize input buffer
     ld (hl),001h               ;861d 36 01  6 .                    (flow from: 7ce6)  7ce9 ld (hl),01 
+    ; reinitialize v_l8afeh
     dec hl                     ;861f 2b  +                         (flow from: 7ce9)  7ceb dec hl 
     ld (hl),080h               ;8620 36 80  6 .                    (flow from: 7ceb)  7cec ld (hl),80 
 l8622h:
-    ld sp,l094d5h              ;8622 31 e1 2d  1 . -               (flow from: 7c7c 7cec 7d36 7d43)  7cee ld sp,8ba1
-    call varcSourceBufferActiveLine    ;8625 cd ac 24  . . $       (flow from: 7cee)  7cf1 call 826c 
+    ; reinitialize stack
+    ld sp,internalStackTop     ;8622 31 e1 2d  1 . -               (flow from: 7c7c 7cec 7d36 7d43)  7cee ld sp,8ba1
+    call v_sub_8ba0h           ;8625 cd ac 24  . . $                (flow from: 7cee)  7cf1 call 826c 
 l8628h:
     call v_sub_85beh           ;8628 cd fe 27  . . '               (flow from: 7d71 828e)  7cf4 call 85be 
     call v_sub_7800h           ;862b cd 40 1a  . @ .               (flow from: 85db)  7cf7 call 7800 
     call v_sub_8639h           ;862e cd 79 28  . y (               (flow from: 7804)  7cfa call 8639 
     push af                    ;8631 f5  .                         (flow from: 86a0 86ad)  7cfd push af 
 l08632h:
-                               ; value of the argument is modified directly in the code at address 8639
 vr_l07cfeh:
     ld a,00fh                  ;8632 3e 0f  > .                    (flow from: 7cfd)  7cfe ld a,0f 
     call v_l89f4h              ;8634 cd 34 2c  . 4 ,               (flow from: 7cfe)  7d00 call 89f4 
@@ -5951,7 +6003,7 @@ l87fdh:
 l880dh:
     call v_sub_85adh           ;880d cd ed 27  . . ' 
 l8810h:
-    call v_sub_8962h           ;8810 cd a2 2b  . . + 
+    call storeAtIXMoveToNextAndIncB  ;8810 cd a2 2b  . . + 
     or a                       ;8813 b7  . 
     jr nz,l880dh               ;8814 20 f7    . 
     dec ix                     ;8816 dd 2b  . + 
@@ -5973,9 +6025,9 @@ v_sub_7ee7h:
     inc hl                     ;883c 23  #                         (flow from: 7f06)  7f08 inc hl 
     ld (v_l8af8h),a            ;883d 32 38 2d  2 8 -               (flow from: 7f08)  7f09 ld (8af8),a 
 l8840h:
-    ld de,v_l8ad1h             ;8840 11 11 2d  . . -               (flow from: 7f06 7f09)  7f0c ld de,8ad1 
+    ld de,commandArgumentBuffer;8840 11 11 2d  . . -               (flow from: 7f06 7f09)  7f0c ld de,8ad1 
     ld c,012h                  ;8843 0e 12  . .                    (flow from: 7f0c)  7f0f ld c,12 
-    call v_sub_8577h           ;8845 cd b7 27  . . '               (flow from: 7f0f)  7f11 call 8577 
+    call readCommandArgument   ;8845 cd b7 27  . . '               (flow from: 7f0f)  7f11 call 8577 
     call v_sub_838bh           ;8848 cd cb 25  . . %               (flow from: 8585)  7f14 call 838b 
     ld hl,v_l8af9h             ;884b 21 39 2d  ! 9 -               (flow from: 839f)  7f17 ld hl,8af9 
     ld a,(hl)                  ;884e 7e  ~                         (flow from: 7f17)  7f1a ld a,(hl) 
@@ -6032,7 +6084,7 @@ l88a3h:
     call v_sub_84e0h           ;88a3 cd 20 27  .   '               (flow from: 7f45 7f66)  7f6f call 84e0 
 l88a6h:
     ld (vr_l07f8ah+1),a        ;88a6 32 cb 21  2 . !               (flow from: 7f5a 84e7 84f7 84fd 851c)  7f72 ld (7f8b),a 
-    ld hl,v_l8ad1h             ;88a9 21 11 2d  ! . -               (flow from: 7f72)  7f75 ld hl,8ad1 
+    ld hl,commandArgumentBuffer;88a9 21 11 2d  ! . -               (flow from: 7f72)  7f75 ld hl,8ad1 
     call v_sub_84e0h           ;88ac cd 20 27  .   '               (flow from: 7f75)  7f78 call 84e0 
     ld (vr_l07f82h+1),a        ;88af 32 c3 21  2 . !               (flow from: 84e7 84f7 84fd 851c)  7f7b ld (7f83),a 
     xor a                      ;88b2 af  .                         (flow from: 7f7b)  7f7e xor a 
@@ -6104,7 +6156,7 @@ l88fdh:
     inc ix                     ;8918 dd 23  . # 
     inc b                      ;891a 04  . 
 l891bh:
-    ld de,v_l8ad1h             ;891b 11 11 2d  . . -               (flow from: 7fda)  7fe7 ld de,8ad1 
+    ld de,commandArgumentBuffer;891b 11 11 2d  . . -               (flow from: 7fda)  7fe7 ld de,8ad1 
     cp 02ch                    ;891e fe 2c  . ,                    (flow from: 7fe7)  7fea cp 2c 
     call nc,v_sub_83a0h        ;8920 d4 e0 25  . . %               (flow from: 7fea)  7fec call nc,83a0 
 l8923h:
@@ -6134,7 +6186,7 @@ l8944h:
     inc c                      ;8945 0c  .                         (flow from: 8010)  8011 inc c 
     cp (hl)                    ;8946 be  .                         (flow from: 8011)  8012 cp (hl) 
     jr nz,l8944h               ;8947 20 fb    .                    (flow from: 8012)  8013 jr nz,8010 
-    ld de,v_l8ad1h             ;8949 11 11 2d  . . -               (flow from: 8013)  8015 ld de,8ad1 
+    ld de,commandArgumentBuffer;8949 11 11 2d  . . -               (flow from: 8013)  8015 ld de,8ad1 
     ld a,(de)                  ;894c 1a  .                         (flow from: 8015)  8018 ld a,(de) 
     or a                       ;894d b7  .                         (flow from: 8018)  8019 or a 
     jr z,l8954h                ;894e 28 04  ( .                    (flow from: 8019)  801a jr z,8020 
@@ -6171,23 +6223,25 @@ l8973h:
     inc b                      ;897b 04  .                         (flow from: 8045)  8047 inc b 
     jr l896ch                  ;897c 18 ee  . .                    (flow from: 8047)  8048 jr 8038 
 l897eh:
-    ld hl,varLowercasedOperands  ;897e 21 25 2d  ! % - 
-    call v_sub_808dh           ;8981 cd cd 22  . . " 
-    call v_sub_8962h           ;8984 cd a2 2b  . . + 
+    ld hl,varLowercasedOperands;897e 21 25 2d  ! % - 
+    call quotesExpected        ;8981 cd cd 22  . . " 
+    call storeAtIXMoveToNextAndIncB  ;8984 cd a2 2b  . . + 
     inc hl                     ;8987 23  # 
     ld a,(hl)                  ;8988 7e  ~ 
-    call v_sub_8962h           ;8989 cd a2 2b  . . + 
+    call storeAtIXMoveToNextAndIncB  ;8989 cd a2 2b  . . + 
     inc hl                     ;898c 23  # 
     ld a,(hl)                  ;898d 7e  ~ 
 l898eh:
-    call v_sub_8962h           ;898e cd a2 2b  . . + 
+    call storeAtIXMoveToNextAndIncB  ;898e cd a2 2b  . . + 
     inc hl                     ;8991 23  # 
     ld a,(hl)                  ;8992 7e  ~ 
     or a                       ;8993 b7  . 
     jr nz,l898eh               ;8994 20 f8    . 
     dec hl                     ;8996 2b  + 
-    call v_sub_808dh           ;8997 cd cd 22  . . " 
+    call quotesExpected        ;8997 cd cd 22  . . " 
     jr l8973h                  ;899a 18 d7  . . 
+
+
 v_sub_8068h:
     push hl                    ;899c e5  .                         (flow from: 77de 881f 8a70)  8068 push hl 
     push de                    ;899d d5  .                         (flow from: 8068)  8069 push de 
@@ -6200,34 +6254,42 @@ v_sub_8068h:
     pop hl                     ;89ab e1  .                         (flow from: 8076)  8077 pop hl 
     ret c                      ;89ac d8  .                         (flow from: 8077)  8078 ret c 
 l89adh:
-    ld a,007h                  ;89ad 3e 07  > . 
-    jr v_l809ah                ;89af 18 1d  . . 
+    ld a,MESSAGE_MEMORY_FULL   ;89ad 3e 07  > . 
+    jr signalError             ;89af 18 1d  . . 
+
 badMnemonicError:
-    ld a,001h                  ;89b1 3e 01  > . 
-    jr v_l809ah                ;89b3 18 19  . . 
+    ld a,MESSAGE_BAD_MNEMONIC  ;89b1 3e 01  > . 
+    jr signalError             ;89b3 18 19  . . 
+
 badOperandError:
-    ld a,002h                  ;89b5 3e 02  > . 
-    jr v_l809ah                ;89b7 18 15  . . 
+    ld a,MESSAGE_BAD_OPERAND   ;89b5 3e 02  > . 
+    jr signalError             ;89b7 18 15  . . 
+
 bigNumberError:
-    ld a,003h                  ;89b9 3e 03  > . 
-    jr v_l809ah                ;89bb 18 11  . . 
+    ld a,MESSAGE_BIG_NUMBER    ;89b9 3e 03  > . 
+    jr signalError             ;89bb 18 11  . . 
+
 syntaxError:
-    ld a,004h                  ;89bd 3e 04  > . 
-    jr v_l809ah                ;89bf 18 0d  . . 
-v_sub_808dh:
+    ld a,MESSAGE_SYNTAX_HORROR ;89bd 3e 04  > . 
+    jr signalError             ;89bf 18 0d  . . 
+
+
+quotesExpected:
     ld a,(hl)                  ;89c1 7e  ~ 
+    ; "'"
     cp 027h                    ;89c2 fe 27  . ' 
     ret z                      ;89c4 c8  . 
+    ; "\""
     cp 022h                    ;89c5 fe 22  . " 
     ret z                      ;89c7 c8  . 
 badStringError:
-    ld a,005h                  ;89c8 3e 05  > . 
-    jr v_l809ah                ;89ca 18 02  . . 
+    ld a,MESSAGE_BAD_STRING    ;89c8 3e 05  > . 
+    jr signalError             ;89ca 18 02  . . 
 v_l8098h:
     ld a,006h                  ;89cc 3e 06  > . 
-v_l809ah:
+signalError:
     ex af,af'                  ;89ce 08  . 
-    call v_sub_8713h           ;89cf cd 53 29  . S ) 
+    call beep                  ;89cf cd 53 29  . S ) 
     ex af,af'                  ;89d2 08  . 
 l089d3h:
     call v_l89f4h              ;89d3 cd 34 2c  . 4 , 
@@ -6239,7 +6301,7 @@ v_l80a2h:
     ld (varcSourceBufferActiveLine+1),hl      ;89e2 22 ad 24  " . $ 
     jp l8622h                  ;89e5 c3 2e 1f  . . . 
 v_sub_80b4h:
-    ld hl,04000h               ;89e8 21 00 40  ! . @               (flow from: 7bec 89f4)  80b4 ld hl,4000 
+    ld hl,VRAM_ADDRESS         ;89e8 21 00 40  ! . @               (flow from: 7bec 89f4)  80b4 ld hl,4000 
 v_sub_80b7h:
     call v_sub_85f5h           ;89eb cd 35 28  . 5 (               (flow from: 80b4)  80b7 call 85f5 
     cp 009h                    ;89ee fe 09  . .                    (flow from: 8607)  80ba cp 09 
@@ -6252,8 +6314,9 @@ vr_l080bfh:
     ld (vr_l080bfh+1),hl       ;89fc 22 00 23  " . # 
     pop af                     ;89ff f1  . 
 l8a00h:
-    ld hl,l094d5h              ;8a00 21 e1 2d  ! . -               (flow from: 80bc)  80cc ld hl,8ba1 
+    ld hl,errorMessages        ;8a00 21 e1 2d  ! . -               (flow from: 80bc)  80cc ld hl,8ba1 
 l8a03h:
+    ; end of string?
     bit 7,(hl)                 ;8a03 cb 7e  . ~                    (flow from: 80cc 80d2 80d5)  80cf bit 7,(hl) 
     inc hl                     ;8a05 23  #                         (flow from: 80cf)  80d1 inc hl 
     jr z,l8a03h                ;8a06 28 fb  ( .                    (flow from: 80d1)  80d2 jr z,80cf 
@@ -6261,7 +6324,7 @@ l8a03h:
     jr nz,l8a03h               ;8a09 20 f8    .                    (flow from: 80d4)  80d5 jr nz,80cf 
 v_sub_80d7h:
     ld a,(hl)                  ;8a0b 7e  ~                         (flow from: 80d5 80de)  80d7 ld a,(hl) 
-    call v_sub_8767h           ;8a0c cd a7 29  . . )               (flow from: 80d7)  80d8 call 8767 
+    call displayUninvertedCharacter   ;8a0c cd a7 29  . . )        (flow from: 80d7)  80d8 call 8767 
     bit 7,(hl)                 ;8a0f cb 7e  . ~                    (flow from: 877e)  80db bit 7,(hl) 
     inc hl                     ;8a11 23  #                         (flow from: 80db)  80dd inc hl 
     jr z,v_sub_80d7h           ;8a12 28 f7  ( .                    (flow from: 80dd)  80de jr z,80d7 
@@ -6334,6 +6397,8 @@ v_sub_8116h:
     ex de,hl                   ;8a66 eb  .                         (flow from: 8131)  8132 ex de,hl 
     pop hl                     ;8a67 e1  .                         (flow from: 8132)  8133 pop hl 
     ret                        ;8a68 c9  .                         (flow from: 8133)  8134 ret 
+
+
 v_sub_8135h:
     ld hl,v_l8aa5h             ;8a69 21 e5 2c  ! . ,               (flow from: 773d 8291)  8135 ld hl,8aa5 
 v_sub_8138h:
@@ -6503,6 +6568,8 @@ v_sub_8235h:
 l8b77h:
     dec hl                     ;8b77 2b  +                         (flow from: 8239 8242)  8243 dec hl 
     ret                        ;8b78 c9  .                         (flow from: 8243)  8244 ret 
+
+
 v_sub_8245h:
     ld hl,(varcSourceBufferActiveLine+1)  ;8b79 2a ad 24  * . $    (flow from: 7c75 7e0a)  8245 ld hl,(826d) 
 v_sub_8248h:
@@ -6534,6 +6601,8 @@ v_sub_8262h:
     and 01fh                   ;8b9a e6 1f  . .                    (flow from: 8265)  8266 and 1f 
     ret z                      ;8b9c c8  .                         (flow from: 8266)  8268 ret z 
     call v_sub_7bbch           ;8b9d cd fc 1d  . . . 
+
+v_sub_8ba0h:
 varcSourceBufferActiveLine:
     ld hl,sourceBufferDefaultLine  ;8ba0 21 68 3e  ! h >           (flow from: 7cf1)  826c ld hl,b24c 
     ld b,00dh                  ;8ba3 06 0d  . .                    (flow from: 826c)  826f ld b,0d 
@@ -6583,7 +6652,7 @@ l8bdfh:
 l8bedh:
     bit 0,c                    ;8bed cb 41  . A                    (flow from: 82b4)  82b9 bit 0,c 
     jr nz,l8bf8h               ;8bef 20 07    .                    (flow from: 82b9)  82bb jr nz,82c4 
-    call potencialCommandKeyPressed  ;8bf1 cd 6e 29  . n )         (flow from: 82bb)  82bd call 872e 
+    call isLetter              ;8bf1 cd 6e 29  . n )               (flow from: 82bb)  82bd call 872e 
     jr nz,l8bf8h               ;8bf4 20 02    .                    (flow from: 8730 873c)  82c0 jr nz,82c4 
     and 0ffh                   ;8bf6 e6 ff  . .                    (flow from: 82c0)  82c2 and ff 
 l8bf8h:
@@ -6656,7 +6725,8 @@ v_sub_831ch:
     set 5,c                    ;8c60 cb e9  . .                    (flow from: 832a)  832c set 5,c 
 l8c62h:
     ld (vr_lO8373h+1),a        ;8c62 32 b4 25  2 . %               (flow from: 8323 8327 832c)  832e ld (8374),a 
-    ld hl,l0977eh+1804         ;8c65 21 96 37  ! . 7               (flow from: 832e)  8331 ld hl,9556 
+    ; label in instructionTable
+    ld hl,l9e8a                ;8c65 21 96 37  ! . 7               (flow from: 832e)  8331 ld hl,9556 
     exx                        ;8c68 d9  .                         (flow from: 8331)  8334 exx 
     ld b,00bh                  ;8c69 06 0b  . .                    (flow from: 8334)  8335 ld b,0b 
 l8c6bh:
@@ -6728,8 +6798,11 @@ l8cbch:
     pop af                     ;8cbc f1  .                         (flow from: 8387)  8388 pop af 
     cp a                       ;8cbd bf  .                         (flow from: 8388)  8389 cp a 
     ret                        ;8cbe c9  .                         (flow from: 8389)  838a ret 
+
+
 v_sub_838bh:
-    ld hl,v_l8ad1h             ;8cbf 21 11 2d  ! . -               (flow from: 7f14)  838b ld hl,8ad1 
+    ld hl,commandArgumentBuffer;8cbf 21 11 2d  ! . -               (flow from: 7f14)  838b ld hl,8ad1 
+    ; "("
     ld b,028h                  ;8cc2 06 28  . (                    (flow from: 838b)  838e ld b,28 
     ld c,001h                  ;8cc4 0e 01  . .                    (flow from: 838e)  8390 ld c,01 
     xor a                      ;8cc6 af  .                         (flow from: 8390)  8392 xor a 
@@ -6744,35 +6817,42 @@ l8ccch:
     cp c                       ;8cd0 b9  .                         (flow from: 839a)  839c cp c 
     jr c,l8ce2h                ;8cd1 38 0f  8 .                    (flow from: 839c)  839d jr c,83ae 
     ret                        ;8cd3 c9  .                         (flow from: 839d)  839f ret 
+
+
 v_sub_83a0h:
+    ; ","
     cp 02ch                    ;8cd4 fe 2c  . ,                    (flow from: 7fd4 7fec 803a)  83a0 cp 2c 
     jr z,l8cdfh                ;8cd6 28 07  ( .                    (flow from: 83a0)  83a2 jr z,83ab 
     inc de                     ;8cd8 13  .                         (flow from: 83a2)  83a4 inc de 
+    ; "-"
     cp 02dh                    ;8cd9 fe 2d  . -                    (flow from: 83a4)  83a5 cp 2d 
     jr z,l8cdfh                ;8cdb 28 02  ( .                    (flow from: 83a5)  83a7 jr z,83ab 
     inc de                     ;8cdd 13  . 
     inc de                     ;8cde 13  . 
 l8cdfh:
-    call v_sub_8492h           ;8cdf cd d2 26  . . &               (flow from: 83a2 83a7)  83ab call 8492 
+    call testClosingBracketOrComma   ;8cdf cd d2 26  . . &               (flow from: 83a2 83a7)  83ab call 8492 
 l8ce2h:
     jp c,syntaxError           ;8ce2 da c9 22  . . "               (flow from: 8417 849d)  83ae jp c,8089 
+    ; "+"
     cp 02bh                    ;8ce5 fe 2b  . +                    (flow from: 83ae)  83b1 cp 2b 
     jr z,l8cf0h                ;8ce7 28 07  ( .                    (flow from: 83b1)  83b3 jr z,83bc 
+    ; "-"
     cp 02dh                    ;8ce9 fe 2d  . -                    (flow from: 83b3)  83b5 cp 2d 
     jr nz,l8cf5h               ;8ceb 20 08    .                    (flow from: 83b5)  83b7 jr nz,83c1 
-    call v_sub_8962h           ;8ced cd a2 2b  . . + 
+    call storeAtIXMoveToNextAndIncB  ;8ced cd a2 2b  . . + 
 l8cf0h:
-    call v_sub_8492h           ;8cf0 cd d2 26  . . & 
+    call testClosingBracketOrComma   ;8cf0 cd d2 26  . . & 
     jr c,l8ce2h                ;8cf3 38 ed  8 . 
 l8cf5h:
+    ; "$"
     cp 024h                    ;8cf5 fe 24  . $                    (flow from: 83b7)  83c1 cp 24 
     jr nz,l8cfeh               ;8cf7 20 05    .                    (flow from: 83c1)  83c3 jr nz,83ca 
-    call v_sub_848fh           ;8cf9 cd cf 26  . . &               (flow from: 83c3)  83c5 call 848f 
+    call storeAndTestNextClosingBracketOrComma  ;8cf9 cd cf 26     (flow from: 83c3)  83c5 call 848f 
     jr l8d31h                  ;8cfc 18 33  . 3                    (flow from: 849f)  83c8 jr 83fd 
 l8cfeh:
     ld c,a                     ;8cfe 4f  O                         (flow from: 83c3)  83ca ld c,a 
     or 020h                    ;8cff f6 20  .                      (flow from: 83ca)  83cb or 20 
-    call potencialCommandKeyPressed  ;8d01 cd 6e 29  . n )         (flow from: 83cb)  83cd call 872e 
+    call isLetter              ;8d01 cd 6e 29  . n )               (flow from: 83cb)  83cd call 872e 
     jr nz,l8d2dh               ;8d04 20 27    '                    (flow from: 8730 873c)  83d0 jr nz,83f9 
     push bc                    ;8d06 c5  .                         (flow from: 83d0)  83d2 push bc 
     dec de                     ;8d07 1b  .                         (flow from: 83d2)  83d3 dec de 
@@ -6794,7 +6874,7 @@ l8cfeh:
     pop bc                     ;8d25 c1  .                         (flow from: 83f0)  83f1 pop bc 
     inc b                      ;8d26 04  .                         (flow from: 83f1)  83f2 inc b 
     inc b                      ;8d27 04  .                         (flow from: 83f2)  83f3 inc b 
-    call v_sub_8492h           ;8d28 cd d2 26  . . &               (flow from: 83f3)  83f4 call 8492 
+    call testClosingBracketOrComma  ;8d28 cd d2 26  . . &               (flow from: 83f3)  83f4 call 8492 
     jr l8d31h                  ;8d2b 18 04  . .                    (flow from: 849d 849f)  83f7 jr 83fd 
 l8d2dh:
     ld a,c                     ;8d2d 79  y                         (flow from: 83d0)  83f9 ld a,c 
@@ -6802,36 +6882,46 @@ l8d2dh:
 l8d31h:
     ccf                        ;8d31 3f  ?                         (flow from: 83c8 83f7 845c)  83fd ccf 
     ret nc                     ;8d32 d0  .                         (flow from: 83fd)  83fe ret nc 
+    ; "+"
     cp 02bh                    ;8d33 fe 2b  . +                    (flow from: 83fe)  83ff cp 2b 
     jr z,l8d48h                ;8d35 28 11  ( .                    (flow from: 83ff)  8401 jr z,8414 
+    ; "-"
     cp 02dh                    ;8d37 fe 2d  . - 
     jr z,l8d48h                ;8d39 28 0d  ( . 
+    ; "*"
     cp 02ah                    ;8d3b fe 2a  . * 
     jr z,l8d48h                ;8d3d 28 09  ( . 
+    ; "/"
     cp 02fh                    ;8d3f fe 2f  . / 
     jr z,l8d48h                ;8d41 28 05  ( . 
+    ; "?"
     cp 03fh                    ;8d43 fe 3f  . ? 
 l8d45h:
     jp nz,syntaxError          ;8d45 c2 c9 22  . . " 
 l8d48h:
-    call v_sub_848fh           ;8d48 cd cf 26  . . &               (flow from: 8401)  8414 call 848f 
+    call storeAndTestNextClosingBracketOrComma  ;8d48 cd cf 26     (flow from: 8401)  8414 call 848f 
     jr l8ce2h                  ;8d4b 18 95  . .                    (flow from: 849d)  8417 jr 83ae 
+
+
 v_sub_8419h:
+    ; "\""
     cp 022h                    ;8d4d fe 22  . "                    (flow from: 83fa)  8419 cp 22 
-    jr z,l8d93h                ;8d4f 28 42  ( B                    (flow from: 8419)  841b jr z,845f 
+    jr z,l8d93h                ;8d4f 28 42  ( B                    (flow from: 8419)  841b jr z,845f     
     ld c,00ah                  ;8d51 0e 0a  . .                    (flow from: 841b)  841d ld c,0a 
-    call v_sub_8726h           ;8d53 cd 66 29  . f )               (flow from: 841d)  841f call 8726 
+    call isNumber              ;8d53 cd 66 29  . f )               (flow from: 841d)  841f call 8726 
     jr z,l8d6ch                ;8d56 28 14  ( .                    (flow from: 872b 872d)  8422 jr z,8438 
+    ; "%" binary
     cp 025h                    ;8d58 fe 25  . % 
     jr nz,l8d60h               ;8d5a 20 04    . 
     ld c,002h                  ;8d5c 0e 02  . . 
     jr l8d66h                  ;8d5e 18 06  . . 
 l8d60h:
+    ; "#" hexadecimal
     cp 023h                    ;8d60 fe 23  . # 
     jr nz,l8d45h               ;8d62 20 e1    . 
     ld c,010h                  ;8d64 0e 10  . . 
 l8d66h:
-    call v_sub_848fh           ;8d66 cd cf 26  . . & 
+    call storeAndTestNextClosingBracketOrComma  ;8d66 cd cf 26  . . & 
     jp c,syntaxError           ;8d69 da c9 22  . . " 
 l8d6ch:
     ld hl,00000h               ;8d6c 21 00 00  ! . .               (flow from: 8422)  8438 ld hl,0000 
@@ -6859,7 +6949,7 @@ l8d7ah:
     jr c,l8d7ah                ;8d89 38 ef  8 .                    (flow from: 8454)  8455 jr c,8446 
     pop de                     ;8d8b d1  .                         (flow from: 8455)  8457 pop de 
     ex af,af'                  ;8d8c 08  .                         (flow from: 8457)  8458 ex af,af' 
-    call v_sub_848fh           ;8d8d cd cf 26  . . &               (flow from: 8458)  8459 call 848f 
+    call storeAndTestNextClosingBracketOrComma ;8d8d cd cf 26      (flow from: 8458)  8459 call 848f 
     ret c                      ;8d90 d8  .                         (flow from: 849d 849f)  845c ret c 
     jr l8d6fh                  ;8d91 18 dc  . .                    (flow from: 845c)  845d jr 843b 
 l8d93h:
@@ -6879,7 +6969,7 @@ l8d93h:
 l8dach:
     jr l8dc1h                  ;8dac 18 13  . . 
 v_sub_847ah:
-    call v_sub_848fh           ;8dae cd cf 26  . . & 
+    call storeAndTestNextClosingBracketOrComma  ;8dae cd cf 26  . . & 
     or a                       ;8db1 b7  . 
     jp z,badStringError        ;8db2 ca d4 22  . . " 
     cp 022h                    ;8db5 fe 22  . " 
@@ -6892,21 +6982,26 @@ l8dbbh:
     ld a,000h                  ;8dbe 3e 00  > . 
     ret nz                     ;8dc0 c0  . 
 l8dc1h:
+    ; "\""
     ld a,022h                  ;8dc1 3e 22  > " 
-v_sub_848fh:
-    call v_sub_8962h           ;8dc3 cd a2 2b  . . +               (flow from: 83c5 8414 8459)  848f call 8962 
-v_sub_8492h:
+storeAndTestNextClosingBracketOrComma:
+    call storeAtIXMoveToNextAndIncB   ;8dc3 cd a2 2b  . . +        (flow from: 83c5 8414 8459)  848f call 8962 
+testClosingBracketOrComma:
     ld a,(de)                  ;8dc6 1a  .                         (flow from: 83ab 83f4 8968)  8492 ld a,(de) 
     inc de                     ;8dc7 13  .                         (flow from: 8492)  8493 inc de 
+    ; ")"
     cp 029h                    ;8dc8 fe 29  . )                    (flow from: 8493)  8494 cp 29 
-    jr z,l8dd2h                ;8dca 28 06  ( .                    (flow from: 8494)  8496 jr z,849e 
+    jr z,setFlagForSyntaxError ;8dca 28 06  ( .                    (flow from: 8494)  8496 jr z,849e 
+    ; ","
     cp 02ch                    ;8dcc fe 2c  . ,                    (flow from: 8496)  8498 cp 2c 
-    jr z,l8dd2h                ;8dce 28 02  ( .                    (flow from: 8498)  849a jr z,849e 
+    jr z,setFlagForSyntaxError                ;8dce 28 02  ( .                    (flow from: 8498)  849a jr z,849e 
     or a                       ;8dd0 b7  .                         (flow from: 849a)  849c or a 
     ret nz                     ;8dd1 c0  .                         (flow from: 849c)  849d ret nz 
-l8dd2h:
+setFlagForSyntaxError:
     scf                        ;8dd2 37  7                         (flow from: 8496 849a 849d)  849e scf 
     ret                        ;8dd3 c9  .                         (flow from: 849e)  849f ret 
+
+
 v_sub_84a0h:
     push af                    ;8dd4 f5  .                         (flow from: 843b)  84a0 push af 
     ex af,af'                  ;8dd5 08  .                         (flow from: 84a0)  84a1 ex af,af' 
@@ -6932,6 +7027,8 @@ l8df4h:
     ex af,af'                  ;8df4 08  . 
     and a                      ;8df5 a7  . 
     ret                        ;8df6 c9  . 
+
+
 v_sub_84c3h:
     cp 01ah                    ;8df7 fe 1a  . .                    (flow from: 7f84 7f8c 837a 8382)  84c3 cp 1a 
     jr z,l8e0ah                ;8df9 28 0f  ( .                    (flow from: 84c3)  84c5 jr z,84d6 
@@ -7040,6 +7137,8 @@ l8e6eh:
 ; no word found, set carry
     scf                        ;8e77 37  7                         (flow from: 8541)  8543 scf 
     ret                        ;8e78 c9  .                         (flow from: 8543)  8544 ret 
+
+
 v_l8545h:
     defw v_l8c76h              ;8e79 
     defb 0x01                  ;8e7b
@@ -7079,46 +7178,62 @@ v_sub_8559h:
     add hl,de                  ;8ea0 19  .                         (flow from: 856b)  856c add hl,de 
     ex de,hl                   ;8ea1 eb  .                         (flow from: 856c)  856d ex de,hl 
     ret                        ;8ea2 c9  .                         (flow from: 856d)  856e ret 
+
+
 v_sub_856fh:
+    ; space
     ld b,020h                  ;8ea3 06 20  .                      (flow from: 7eed 7ef8)  856f ld b,20 
     jr l8eadh                  ;8ea5 18 06  . .                    (flow from: 856f)  8571 jr 8579 
 v_sub_8573h:
+    ; ","
     ld b,02ch                  ;8ea7 06 2c  . ,                    (flow from: 7f03)  8573 ld b,2c 
     jr l8eadh                  ;8ea9 18 02  . .                    (flow from: 8573)  8575 jr 8579 
-v_sub_8577h:
+readCommandArgument:
     ld b,000h                  ;8eab 06 00  . .                    (flow from: 7f11)  8577 ld b,00 
 l8eadh:
+    ; the input buffer string ends with 1,0
     call atHLorNextIfOne       ;8ead cd ee 27  . . '               (flow from: 8571 8575 8577 8597)  8579 call 85ae 
+    ; "\""
     cp 022h                    ;8eb0 fe 22  . "                    (flow from: 85b1)  857c cp 22 
     jr z,l8ed9h                ;8eb2 28 25  ( %                    (flow from: 857c)  857e jr z,85a5 
+    ; "'"
     cp 027h                    ;8eb4 fe 27  . '                    (flow from: 857e)  8580 cp 27 
     jr z,l8ed9h                ;8eb6 28 21  ( !                    (flow from: 8580)  8582 jr z,85a5 
 l8eb8h:
     cp b                       ;8eb8 b8  .                         (flow from: 8582 859f)  8584 cp b 
     ret z                      ;8eb9 c8  .                         (flow from: 8584)  8585 ret z 
+    ; skip spaces
     cp 020h                    ;8eba fe 20  .                      (flow from: 8585)  8586 cp 20 
     inc hl                     ;8ebc 23  #                         (flow from: 8586)  8588 inc hl 
     jr z,l8eadh                ;8ebd 28 ee  ( .                    (flow from: 8588)  8589 jr z,8579 
+    ; 
     dec hl                     ;8ebf 2b  +                         (flow from: 8589)  858b dec hl 
     or a                       ;8ec0 b7  .                         (flow from: 858b)  858c or a 
     jr nz,l8ec5h               ;8ec1 20 02    .                    (flow from: 858c)  858d jr nz,8591 
     inc a                      ;8ec3 3c  <                         (flow from: 858d)  858f inc a 
+    ; end of line
     ret                        ;8ec4 c9  .                         (flow from: 858f)  8590 ret 
 l8ec5h:
     inc hl                     ;8ec5 23  #                         (flow from: 858d)  8591 inc hl 
+    ; uppercase
     set 5,a                    ;8ec6 cb ef  . .                    (flow from: 8591)  8592 set 5,a 
+    ; store
     ld (de),a                  ;8ec8 12  .                         (flow from: 8592)  8594 ld (de),a 
     inc de                     ;8ec9 13  .                         (flow from: 8594)  8595 inc de 
+    ; decrease the characters counter and repeat if we still can read
     dec c                      ;8eca 0d  .                         (flow from: 8595)  8596 dec c 
     jr nz,l8eadh               ;8ecb 20 e0    .                    (flow from: 8596)  8597 jr nz,8579 
+    ; else syntax error
     jr l8edeh                  ;8ecd 18 0f  . . 
 l8ecfh:
     call v_sub_85adh           ;8ecf cd ed 27  . . '               (flow from: 85a8)  859b call 85ad 
     or a                       ;8ed2 b7  .                         (flow from: 85b1)  859e or a 
     jr z,l8eb8h                ;8ed3 28 e3  ( .                    (flow from: 859e)  859f jr z,8584 
+    ; "\""
     cp 022h                    ;8ed5 fe 22  . " 
     jr z,l8eb8h                ;8ed7 28 df  ( . 
 l8ed9h:
+    ; store character and decrease characters counter
     ld (de),a                  ;8ed9 12  .                         (flow from: 8582)  85a5 ld (de),a 
     inc de                     ;8eda 13  .                         (flow from: 85a5)  85a6 inc de 
     dec c                      ;8edb 0d  .                         (flow from: 85a6)  85a7 dec c 
@@ -7134,6 +7249,8 @@ atHLorNextIfOne:
     inc hl                     ;8ee6 23  #                         (flow from: 85b1)  85b2 inc hl 
     ld a,(hl)                  ;8ee7 7e  ~                         (flow from: 85b2)  85b3 ld a,(hl) 
     ret                        ;8ee8 c9  .                         (flow from: 85b3)  85b4 ret 
+
+
 v_sub_85b5h:
     call atHLorNextIfOne       ;8ee9 cd ee 27  . . '               (flow from: 7ef0 7efb 85bc)  85b5 call 85ae 
     cp 020h                    ;8eec fe 20  .                      (flow from: 85b1 85b4)  85b8 cp 20 
@@ -7141,7 +7258,7 @@ v_sub_85b5h:
     inc hl                     ;8eef 23  #                         (flow from: 85ba)  85bb inc hl 
     jr v_sub_85b5h             ;8ef0 18 f7  . .                    (flow from: 85bb)  85bc jr 85b5 
 v_sub_85beh:
-    ld hl,mnemonicsTable+170   ;8ef2 21 af 2f  ! . /               (flow from: 7cf4)  85be ld hl,8d6f 
+    ld hl,l96a4-1              ;8ef2 21 af 2f  ! . /               (flow from: 7cf4)  85be ld hl,8d6f 
     ld (vr_l08750h+1),hl       ;8ef5 22 91 29  " . )               (flow from: 85be)  85c1 ld (8751),hl 
     ld hl,BOTTOM_LINE_VRAM_ADDRESS  ;8ef8 21 e0 50  ! . P          (flow from: 85c1)  85c4 ld hl,50e0 
 v_l85c7h:
@@ -7149,7 +7266,7 @@ v_l85c7h:
     ld hl,v_l8afeh             ;8efe 21 3e 2d  ! > -               (flow from: 8607)  85ca ld hl,8afe 
 l8f01h:
     inc hl                     ;8f01 23  #                         (flow from: 85ca 85df 85ee)  85cd inc hl 
-    ld a,(vr_l08787h+1)        ;8f02 3a c8 29  : . )               (flow from: 85cd)  85ce ld a,(8788) 
+    ld a,(varcPrintingPosition+1)        ;8f02 3a c8 29  : . )     (flow from: 85cd)  85ce ld a,(8788) 
     and 01fh                   ;8f05 e6 1f  . .                    (flow from: 85ce)  85d1 and 1f 
     ld (l87e0h+1),a            ;8f07 32 ed 20  2 .                 (flow from: 85d1)  85d3 ld (7ead),a 
     ld a,(hl)                  ;8f0a 7e  ~                         (flow from: 85d3)  85d6 ld a,(hl) 
@@ -7164,14 +7281,16 @@ l8f15h:
     push hl                    ;8f18 e5  .                         (flow from: 85e1)  85e4 push hl 
     ld a,(l08fa1h+1)           ;8f19 3a ae 28  : . (               (flow from: 85e4)  85e5 ld a,(866e) 
     add a,0cch                 ;8f1c c6 cc  . .                    (flow from: 85e5)  85e8 add a,cc 
-    call v_sub_8769h           ;8f1e cd a9 29  . . )               (flow from: 85e8)  85ea call 8769 
+    call displayNormalCharacter;8f1e cd a9 29  . . )               (flow from: 85e8)  85ea call 8769 
     pop hl                     ;8f21 e1  .                         (flow from: 877e)  85ed pop hl 
     jr l8f01h                  ;8f22 18 dd  . .                    (flow from: 85ed)  85ee jr 85cd 
+
+
 v_sub_85f0h:
     ld c,000h                  ;8f24 0e 00  . .                    (flow from: 827b)  85f0 ld c,00 
     call ROM_PixelAddress_22b0 ;8f26 cd b0 22  . . "               (flow from: 85f0)  85f2 call 22b0 
 v_sub_85f5h:
-    ld (vr_l08787h+1),hl       ;8f29 22 c8 29  " . )               (flow from: 22ca 80b7 85c7)  85f5 ld (8788),hl 
+    ld (varcPrintingPosition+1),hl       ;8f29 22 c8 29  " . )     (flow from: 22ca 80b7 85c7)  85f5 ld (8788),hl 
 v_sub_85f8h:
     ld b,008h                  ;8f2c 06 08  . .                    (flow from: 85f5)  85f8 ld b,08 
 l8f2eh:
@@ -7186,14 +7305,18 @@ l8f31h:
     inc h                      ;8f38 24  $                         (flow from: 8603)  8604 inc h 
     djnz l8f2eh                ;8f39 10 f3  . .                    (flow from: 8604)  8605 djnz 85fa 
     ret                        ;8f3b c9  .                         (flow from: 8605)  8607 ret 
+
+
 v_sub_8608h:
     exx                        ;8f3c d9  .                         (flow (mon) from: 5fc0)  8608 exx 
     call v_sub_8639h           ;8f3d cd 79 28  . y (               (flow (mon) from: 8608)  8609 call 8639 
     exx                        ;8f40 d9  .                         (flow (mon) from: 86a0)  860c exx 
-    call potencialCommandKeyPressed  ;8f41 cd 6e 29  . n )         (flow (mon) from: 860c)  860d call 872e 
+    call isLetter              ;8f41 cd 6e 29  . n )               (flow (mon) from: 860c)  860d call 872e 
     ret nz                     ;8f44 c0  .                         (flow (mon) from: 8730)  8610 ret nz 
     or 020h                    ;8f45 f6 20  .   
     ret                        ;8f47 c9  . 
+
+
 varcKeyboardScanningsCount:
     ld hl,00000h               ;8f48 21 00 00  ! . .               (flow from: 868c)  8614 ld hl,004e 
     inc hl                     ;8f4b 23  #                         (flow from: 8614)  8617 inc hl 
@@ -7239,13 +7362,14 @@ v_sub_8639h:
     ld a,b                     ;8f8b 78  x                         (flow from: 8655)  8657 ld a,b 
     set 5,a                    ;8f8c cb ef  . .                    (flow from: 8657)  8658 set 5,a 
     jr nz,l8fa0h               ;8f8e 20 10    .                    (flow from: 8658)  865a jr nz,866c 
-    call v_sub_8726h           ;8f90 cd 66 29  . f )               (flow from: 865a)  865c call 8726 
+    call isNumber             ;8f90 cd 66 29  . f )               (flow from: 865a)  865c call 8726 
     jr nz,l8f99h               ;8f93 20 04    .                    (flow from: 872d)  865f jr nz,8665 
     sub 02dh                   ;8f95 d6 2d  . -                    (flow from: 865f)  8661 sub 2d 
     jr l8fafh                  ;8f97 18 16  . .                    (flow from: 8661)  8663 jr 867b 
 l8f99h:
-    call potencialCommandKeyPressed  ;8f99 cd 6e 29  . n ) 
+    call isLetter              ;8f99 cd 6e 29  . n ) 
     jr nz,l8fa0h               ;8f9c 20 02    . 
+    ; uppercase
     res 5,a                    ;8f9e cb af  . . 
 l8fa0h:
     ld b,a                     ;8fa0 47  G                         (flow from: 865a)  866c ld b,a 
@@ -7254,7 +7378,7 @@ l08fa1h:
     or a                       ;8fa3 b7  .                         (flow from: 866d)  866f or a 
     ld a,b                     ;8fa4 78  x                         (flow from: 866f)  8670 ld a,b 
     jr z,l8fafh                ;8fa5 28 08  ( .                    (flow from: 8670)  8671 jr z,867b 
-    call potencialCommandKeyPressed  ;8fa7 cd 6e 29  . n )         (flow from: 8671)  8673 call 872e 
+    call isLetter              ;8fa7 cd 6e 29  . n )               (flow from: 8671)  8673 call 872e 
     jr nz,l8fafh               ;8faa 20 03    .                    (flow from: 873c)  8676 jr nz,867b 
     ld a,020h                  ;8fac 3e 20  >                      (flow from: 8676)  8678 ld a,20 
     xor b                      ;8fae a8  .                         (flow from: 8678)  867a xor b 
@@ -7335,7 +7459,7 @@ l8ff7h:
     ex de,hl                   ;9008 eb  .                         (flow from: 86d2)  86d4 ex de,hl 
     add hl,bc                  ;9009 09  .                         (flow from: 86d4)  86d5 add hl,bc 
     ld a,(hl)                  ;900a 7e  ~                         (flow from: 86d5)  86d6 ld a,(hl) 
-    call potencialCommandKeyPressed  ;900b cd 6e 29  . n )         (flow from: 86d6)  86d7 call 872e 
+    call isLetter              ;900b cd 6e 29  . n )               (flow from: 86d6)  86d7 call 872e 
     jr nz,standardKeyPlusSSPressed  ;900e 20 04    .               (flow from: 873c)  86da jr nz,86e0 
     set 7,a                    ;9010 cb ff  . .                    (flow from: 86da)  86dc set 7,a 
     jr l8fafh                  ;9012 18 9b  . .                    (flow from: 86dc)  86de jr 867b 
@@ -7378,7 +7502,9 @@ varc9019:
 keypressBeep:
     ld e,01eh                  ;9043 1e 1e  . .                    (flow from: 8690)  870f ld e,0a 
     jr l9049h                  ;9045 18 02  . .                    (flow from: 870f)  8711 jr 8715 
-v_sub_8713h:
+
+
+beep:
     ld e,000h                  ;9047 1e 00  . . 
 l9049h:
     ld hl,0012ch               ;9049 21 2c 01  ! , .               (flow from: 8711)  8715 ld hl,012c 
@@ -7394,14 +7520,18 @@ l9053h:
     inc h                      ;9056 24  $                         (flow from: 8721)  8722 inc h 
     dec h                      ;9057 25  %                         (flow from: 8722)  8723 dec h 
     jr nz,l904eh               ;9058 20 f4    .                    (flow from: 8723)  8724 jr nz,871a 
-v_sub_8726h:
+
+isNumber:
+    ; "
     cp 030h                    ;905a fe 30  . 0                    (flow from: 841f 865c 8724 87b2)  8726 cp 30 
     ret c                      ;905c d8  .                         (flow from: 8726)  8728 ret c 
     cp 039h                    ;905d fe 39  . 9                    (flow from: 8728)  8729 cp 39 
     ret nc                     ;905f d0  .                         (flow from: 8729)  872b ret nc 
     cp a                       ;9060 bf  .                         (flow from: 872b)  872c cp a 
     ret                        ;9061 c9  .                         (flow from: 872c)  872d ret 
-potencialCommandKeyPressed:
+
+
+isLetter:
 ; ignore if the command key is not in a-z or A-Z
     cp 041h                    ;9062 fe 41  . A                    (flow from: 82bd 83cd 8673 86d7 87bd)  872e cp 41 
     ret c                      ;9064 d8  .                         (flow from: 872e)  8730 ret c 
@@ -7414,6 +7544,8 @@ potencialCommandKeyPressed:
 l906fh:
     cp a                       ;906f bf  .                         (flow from: 8736 873a)  873b cp a 
     ret                        ;9070 c9  .                         (flow from: 873b)  873c ret 
+
+
 v_sub_873dh:
     ld a,020h                  ;9071 3e 20  >                      (flow from: 8a12)  873d ld a,20 
     jr v_sub_8744h             ;9073 18 03  . .                    (flow from: 873d)  873f jr 8744 
@@ -7425,9 +7557,11 @@ v_sub_8744h:
     call displayCharacter      ;9079 cd bf 29  . . )               (flow from: 8744)  8745 call 877f 
     exx                        ;907c d9  .                         (flow from: 87a9)  8748 exx 
     ret                        ;907d c9  .                         (flow from: 8748)  8749 ret 
+
+
 v_sub_874ah:
     cp 080h                    ;907e fe 80  . .                    (flow from: 85dc)  874a cp 80 
-    jr c,v_sub_8767h           ;9080 38 19  8 .                    (flow from: 874a)  874c jr c,8767 
+    jr c,displayUninvertedCharacter           ;9080 38 19  8 .     (flow from: 874a)  874c jr c,8767 
     push hl                    ;9082 e5  .                         (flow from: 874c)  874e push hl 
     push de                    ;9083 d5  .                         (flow from: 874e)  874f push de 
 vr_l08750h:
@@ -7441,17 +7575,17 @@ l908dh:
     ld a,(hl)                  ;908d 7e  ~                         (flow from: 8758 8761)  8759 ld a,(hl) 
     inc hl                     ;908e 23  #                         (flow from: 8759)  875a inc hl 
     push af                    ;908f f5  .                         (flow from: 875a)  875b push af 
-    call v_sub_8767h           ;9090 cd a7 29  . . )               (flow from: 875b)  875c call 8767 
+    call displayUninvertedCharacter    ;9090 cd a7 29  . . )       (flow from: 875b)  875c call 8767 
     pop af                     ;9093 f1  .                         (flow from: 877e)  875f pop af 
     rlca                       ;9094 07  .                         (flow from: 875f)  8760 rlca 
     jr nc,l908dh               ;9095 30 f6  0 .                    (flow from: 8760)  8761 jr nc,8759 
     pop de                     ;9097 d1  .                         (flow from: 8761)  8763 pop de 
     pop hl                     ;9098 e1  .                         (flow from: 8763)  8764 pop hl 
-v_sub_8765h:
+displaySpace:
     ld a,020h                  ;9099 3e 20  >                      (flow from: 8764)  8765 ld a,20 
-v_sub_8767h:
+displayUninvertedCharacter:
     res 7,a                    ;909b cb bf  . .                    (flow from: 80d8 874c 875c 8765)  8767 res 7,a 
-v_sub_8769h:
+displayNormalCharacter:
     exx                        ;909d d9  .                         (flow from: 7ca7 85ea 8767)  8769 exx 
     call displayCharacter      ;909e cd bf 29  . . )               (flow from: 8769)  876a call 877f 
     ld a,h                     ;90a1 7c  |                         (flow from: 87a9)  876d ld a,h 
@@ -7468,6 +7602,8 @@ vr_l0877bh:
     ld (hl),038h               ;90af 36 38  6 8                    (flow from: 877a)  877b ld (hl),38 
     exx                        ;90b1 d9  .                         (flow from: 877b)  877d exx 
     ret                        ;90b2 c9  .                         (flow from: 877d)  877e ret 
+
+
 displayCharacter:
     add a,a                    ;90b3 87  .                         (flow from: 8745 876a)  877f add a,a 
     ld h,00fh                  ;90b4 26 0f  & .                    (flow from: 877f)  8780 ld h,0f 
@@ -7476,8 +7612,8 @@ displayCharacter:
     ld c,a                     ;90b8 4f  O                         (flow from: 8783)  8784 ld c,a 
     add hl,hl                  ;90b9 29  )                         (flow from: 8784)  8785 add hl,hl 
     add hl,hl                  ;90ba 29  )                         (flow from: 8785)  8786 add hl,hl 
-vr_l08787h:
-    ld de,04020h               ;90bb 11 20 40  .   @               (flow from: 8786)  8787 ld de,401f 
+varcPrintingPosition:
+    ld de,SECOND_LINE_ADDRESS  ;90bb 11 20 40  .   @               (flow from: 8786)  8787 ld de,401f 
     push de                    ;90be d5  .                         (flow from: 8787)  878a push de 
     ld b,008h                  ;90bf 06 08  . .                    (flow from: 878a)  878b ld b,08 
 l90c1h:
@@ -7501,20 +7637,24 @@ l90c1h:
 l90d8h:
     ld h,a                     ;90d8 67  g                         (flow from: 87a0 87a2)  87a4 ld h,a 
 l90d9h:
-    ld (vr_l08787h+1),hl       ;90d9 22 c8 29  " . )               (flow from: 8799 87a4)  87a5 ld (8788),hl 
+    ld (varcPrintingPosition+1),hl       ;90d9 22 c8 29  " . )     (flow from: 8799 87a4)  87a5 ld (8788),hl 
     pop hl                     ;90dc e1  .                         (flow from: 87a5)  87a8 pop hl 
     ret                        ;90dd c9  .                         (flow from: 87a8)  87a9 ret 
+
+
 v_sub_87aah:
     ld de,v_l8ac8h             ;90de 11 08 2d  . . -               (flow from: 8815)  87aa ld de,8ac8 
     ld b,000h                  ;90e1 06 00  . .                    (flow from: 87aa)  87ad ld b,00 
 l90e3h:
     call atHLorNextIfOne       ;90e3 cd ee 27  . . '               (flow from: 87ad 87c9)  87af call 85ae 
-    call v_sub_8726h           ;90e6 cd 66 29  . f )               (flow from: 85b1)  87b2 call 8726 
+    call isNumber             ;90e6 cd 66 29  . f )               (flow from: 85b1)  87b2 call 8726 
     jr z,l90f6h                ;90e9 28 0b  ( .                    (flow from: 8728 872b 872d)  87b5 jr z,87c2 
+    ; uppercase
     res 5,a                    ;90eb cb af  . .                    (flow from: 87b5)  87b7 res 5,a 
+    ; "_"
     cp 05fh                    ;90ed fe 5f  . _                    (flow from: 87b7)  87b9 cp 5f 
     jr z,l90f6h                ;90ef 28 05  ( .                    (flow from: 87b9)  87bb jr z,87c2 
-    call potencialCommandKeyPressed  ;90f1 cd 6e 29  . n )         (flow from: 87bb)  87bd call 872e 
+    call isLetter              ;90f1 cd 6e 29  . n )               (flow from: 87bb)  87bd call 872e 
     jr nz,l9102h               ;90f4 20 0c    .                    (flow from: 8730 873c)  87c0 jr nz,87ce 
 l90f6h:
     ld (de),a                  ;90f6 12  .                         (flow from: 87b5 87c0)  87c2 ld (de),a 
@@ -7522,7 +7662,7 @@ l90f6h:
     inc hl                     ;90f8 23  #                         (flow from: 87c3)  87c4 inc hl 
     inc b                      ;90f9 04  .                         (flow from: 87c4)  87c5 inc b 
     ld a,b                     ;90fa 78  x                         (flow from: 87c5)  87c6 ld a,b 
-    cp 009h                    ;90fb fe 09  . .                    (flow from: 87c6)  87c7 cp 09 
+    cp LABEL_LENGTH            ;90fb fe 09  . .                    (flow from: 87c6)  87c7 cp 09 
     jr c,l90e3h                ;90fd 38 e4  8 .                    (flow from: 87c7)  87c9 jr c,87af 
     jp syntaxError             ;90ff c3 c9 22  . . " 
 l9102h:
@@ -7585,6 +7725,8 @@ l9143h:
     jr nz,l9121h               ;9145 20 da    .                    (flow from: 8810)  8811 jr nz,87ed 
     scf                        ;9147 37  7                         (flow from: 8811)  8813 scf 
     ret                        ;9148 c9  .                         (flow from: 8813)  8814 ret 
+
+
 v_sub_8815h:
     call v_sub_87aah           ;9149 cd ea 29  . . )               (flow from: 830a 83d8)  8815 call 87aa 
     ret nc                     ;914c d0  .                         (flow from: 880b 8814)  8818 ret nc 
@@ -7748,6 +7890,8 @@ l922dh:
     ex de,hl                   ;9232 eb  .                         (flow from: 88fd)  88fe ex de,hl 
     lddr                       ;9233 ed b8  . .                    (flow from: 88fe 88ff)  88ff lddr 
     ret                        ;9235 c9  .                         (flow from: 88ff)  8901 ret 
+
+
 v_sub_8902h:
     ld c,000h                  ;9236 0e 00  . .                    (flow from: 8a15)  8902 ld c,00 
     ld ix,v_l8ac7h             ;9238 dd 21 07 2d  . ! . -          (flow from: 8902)  8904 ld ix,8ac7 
@@ -7800,15 +7944,19 @@ l9284h:
     jr c,l928eh                ;928a 38 02  8 .                    (flow from: 8954)  8956 jr c,895a 
     add a,007h                 ;928c c6 07  . . 
 l928eh:
-    call v_sub_8963h           ;928e cd a3 2b  . . +               (flow from: 8956)  895a call 8963 
+    call storeAtIXAndMoveToNext;928e cd a3 2b  . . +               (flow from: 8956)  895a call 8963 
     ld (ix+000h),000h          ;9291 dd 36 00 00  . 6 . .          (flow from: 8968)  895d ld (ix+00),00 
     ret                        ;9295 c9  .                         (flow from: 895d)  8961 ret 
-v_sub_8962h:
+
+
+storeAtIXMoveToNextAndIncB:
     inc b                      ;9296 04  .                         (flow from: 848f)  8962 inc b 
-v_sub_8963h:
+storeAtIXAndMoveToNext:
     ld (ix+000h),a             ;9297 dd 77 00  . w .               (flow from: 895a 8962)  8963 ld (ix+00),a 
     inc ix                     ;929a dd 23  . #                    (flow from: 8963)  8966 inc ix 
     ret                        ;929c c9  .                         (flow from: 8966)  8968 ret 
+
+
 v_sub_8969h:
     push hl                    ;929d e5  .                         (flow from: 8a96 8a9c)  8969 push hl 
     ld a,(hl)                  ;929e 7e  ~                         (flow from: 8969)  896a ld a,(hl) 
@@ -7917,7 +8065,7 @@ v_sub_89f2h:
 v_l89f4h:
     call v_sub_80b4h           ;9328 cd f4 22  . . "               (flow from: 7cda 7d00 7d33 89f2)  89f4 call 80b4 
     ld a,013h                  ;932b 3e 13  > .                    (flow from: 80e0)  89f7 ld a,13 
-    ld (vr_l08787h+1),a        ;932d 32 c8 29  2 . )               (flow from: 89f7)  89f9 ld (8788),a 
+    ld (varcPrintingPosition+1),a        ;932d 32 c8 29  2 . )     (flow from: 89f7)  89f9 ld (8788),a 
     ld a,(varcInsertMode+1)    ;9330 3a 5f 20  : _                 (flow from: 89f9)  89fc ld a,(7e1f) 
     or a                       ;9333 b7  .                         (flow from: 89fc)  89ff or a 
     ld a,04fh                  ;9334 3e 4f  > O                    (flow from: 89ff)  8a00 ld a,4f 
@@ -8052,7 +8200,7 @@ v_l8ac8h:
     defb 033h                  ;93fe 33  3 
     defb 035h                  ;93ff 35  5 
     defs 5 
-v_l8ad1h:
+commandArgumentBuffer:
     defb 000h                  ;9405 00  . 
 v_l8ad2h:
     defs 10
@@ -8093,7 +8241,10 @@ v_l8b24h:
 v_l8b26h:
     defw 0
 v_l8b28h:
-    defs 50,0
+    defs 50-22,0
+l9478:
+    defs 22
+
     defb 002h                  ;948e 02  . 
     defb 0c2h                  ;948f c2  . 
     defb 001h                  ;9490 01  . 
@@ -8128,8 +8279,10 @@ v_l8b28h:
     defb 07dh                  ;94d2 7d  } 
     defb 0cfh                  ;94d3 cf  . 
     defb 07ch                  ;94d4 7c  | 
-l094d5h:
-    defb 080h                  ;94d5 80  . 
+internalStackTop:
+
+errorMessages:
+    defb 080h  ; empty         ;94d5 80  .  
     defb "Bad mnemoni",0xe3    ;"c"+0x80                       ;94d6
     defb "Bad operan",0xe4     ;"d"+0x80                       ;94e2
     defb "Big numbe",0xf2      ;"r"+0x80                       ;94ed
@@ -8289,6 +8442,7 @@ mnemonicsTable:
     defb "def", 0xE2           ;defb
     defb "def", 0xED           ;defm
     defb "def", 0xF3           ;defs
+l96a4:
     defb "def", 0xF7           ;defw
     defb "djn", 0xFA           ;djnz
     defb "hal", 0xF4           ;halt
@@ -8421,8 +8575,8 @@ operationLabels:
     defb 050h                  ;977b 50  P 
     defb 04fh                  ;977c 4f  O 
     defb 053h                  ;977d 53  S 
+
 operationLabelAssembly:
-l0977eh:
     defb "ASSEMBL", 0xD9       ;977e                           ;ASSEMBLY
 operationLabelBasic:
     defb "BASI", 0xC3          ;BASIC
