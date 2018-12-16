@@ -646,7 +646,7 @@ include "relocationTable.asm"
     org 0
 
 ENTRY_POINT_WITH_MONITOR:
-    jp v_l7cc9h                ;66f4 c3 09 1f  . . . 
+    jp startPrometheus         ;66f4 c3 09 1f  . . . 
 
 ; BLOCK 'data_66f7' (start 0x66f7 end 0x6898)
 v_l5dc3h:
@@ -911,7 +911,7 @@ v_sub_5f64h:
 
 startMonitor:
     di                         ;68a8 f3  .                         (flow (mon) from: 6015 7bd2)  5f74 di 
-    call v_sub_7800h           ;68a9 cd 40 1a  . @ .               (flow (mon) from: 5f74)  5f75 call 7800 
+    call simpleBeep            ;68a9 cd 40 1a  . @ .               (flow (mon) from: 5f74)  5f75 call 7800 
     ld sp,internalStackTop     ;68ac 31 e1 2d  1 . -               (flow (mon) from: 7804)  5f78 ld sp,8ba1 
     call v_sub_665ah           ;68af cd 9a 08  . . .               (flow (mon) from: 5f78)  5f7b call 665a 
     ld hl,inputBufferStart     ;68b2 21 3f 2d  ! ? -               (flow (mon) from: 82e5)  5f7e ld hl,8aff 
@@ -949,18 +949,31 @@ l68cah:
     call v_sub_85f8h           ;68fa cd 38 28  . 8 (               (flow (mon) from: 611c)  5fc6 call 85f8 
     ld hl,(l0696eh+1)          ;68fd 2a 7b 02  * { .               (flow (mon) from: 8607)  5fc9 ld hl,(603b)  
     ld e,020h                  ;6900 1e 20  .                      (flow (mon) from: 5fc9)  5fcc ld e,20 
+    
+    ; Q - return to Prometheus
     cp 071h                    ;6902 fe 71  . q                    (flow (mon) from: 5fcc)  5fce cp 71 
-    jp z,v_l7cc9h              ;6904 ca 09 1f  . . .               (flow (mon) from: 5fce)  5fd0 jp z,7cc9 
+    jp z,startPrometheus       ;6904 ca 09 1f  . . .               (flow (mon) from: 5fce)  5fd0 jp z,7cc9 
+    
+    ; SS+W - front panel editor
     cp 014h                    ;6907 fe 14  . .                    (flow (mon) from: 5fd0)  5fd3 cp 14 
-    jp z,v_l6c83h              ;6909 ca c3 0e  . . .               (flow (mon) from: 5fd3)  5fd5 jp z,6c83 
+    jp z,invokeFrontPanelEditor;6909 ca c3 0e  . . .               (flow (mon) from: 5fd3)  5fd5 jp z,6c83 
+    
+    ; SS+3 - hex/dec
     cp 023h                    ;690c fe 23  . #                    (flow (mon) from: 5fd5)  5fd8 cp 23 
     jp z,invokeH               ;690e ca 79 1e  . y .               (flow (mon) from: 5fd8)  5fda jp z,7c39 
+    
+    ; SS+Z - stepping
     cp 03ah                    ;6911 fe 3a  . :                    (flow (mon) from: 5fda)  5fdd cp 3a 
-    jp z,v_l66eah              ;6913 ca 2a 09  . * .               (flow (mon) from: 5fdd)  5fdf jp z,66ea 
+    jp z,invokeStep            ;6913 ca 2a 09  . * .               (flow (mon) from: 5fdd)  5fdf jp z,66ea 
+    
+    ; SS+N - set register value
     cp 02ch                    ;6916 fe 2c  . ,                    (flow (mon) from: 5fdf)  5fe2 cp 2c 
-    jp z,v_l64feh              ;6918 ca 3e 07  . > .               (flow (mon) from: 5fe2)  5fe4 jp z,64fe 
+    jp z,setRegisterValue      ;6918 ca 3e 07  . > .               (flow (mon) from: 5fe2)  5fe4 jp z,64fe 
+    
+    ; CS+0 - restore monitor display
     cp 003h                    ;691b fe 03  . .                    (flow (mon) from: 5fe4)  5fe7 cp 03 
-    jp z,v_l7ca3h              ;691d ca e3 1e  . . .               (flow (mon) from: 5fe7)  5fe9 jp z,7ca3 
+    jp z,clearDisplay          ;691d ca e3 1e  . . .               (flow (mon) from: 5fe7)  5fe9 jp z,7ca3 
+    
     ld c,a                     ;6920 4f  O                         (flow (mon) from: 5fe9)  5fec ld c,a 
     ld b,028h                  ;6921 06 28  . (                    (flow (mon) from: 5fec)  5fed ld b,28 
     ld hl,v_l600ah             ;6923 21 4a 02  ! J .               (flow (mon) from: 5fed)  5fef ld hl,600a 
@@ -1135,14 +1148,19 @@ l6a2bh:
     ld (v_sub_664ch+1),hl      ;6a42 22 8d 08  " . . 
     xor a                      ;6a45 af  . 
     ret                        ;6a46 c9  . 
+
+
 v_sub_6113h:
     ld hl,(v_l5dc3h)           ;6a47 2a 03 00  * . .               (flow (mon) from: 5fc3 666f)  6113 ld hl,(5dc3) 
     push af                    ;6a4a f5  .                         (flow (mon) from: 6113)  6116 push af 
     ld a,l                     ;6a4b 7d  }                         (flow (mon) from: 6116)  6117 ld a,l 
+    ; top 3 bits
     and 0e0h                   ;6a4c e6 e0  . .                    (flow (mon) from: 6117)  6118 and e0 
     ld l,a                     ;6a4e 6f  o                         (flow (mon) from: 6118)  611a ld l,a 
     pop af                     ;6a4f f1  .                         (flow (mon) from: 611a)  611b pop af 
     ret                        ;6a50 c9  .                         (flow (mon) from: 611b)  611c ret 
+
+
 v_sub_611dh:
     call v_sub_6113h           ;6a51 cd 53 03  . S . 
     call v_sub_80b7h           ;6a54 cd f7 22  . . " 
@@ -1737,7 +1755,8 @@ l6e0ch:
 v_l64f9h:
     call v_sub_611dh           ;6e2d cd 5d 03  . ] . 
     jr l6e45h                  ;6e30 18 13  . . 
-v_l64feh:
+
+setRegisterValue:
     call v_sub_665ah           ;6e32 cd 9a 08  . . . 
     ld hl,001c5h               ;6e35 21 c5 01  ! . . 
     ld (inputBufferStart),hl   ;6e38 22 3f 2d  " ? - 
@@ -1941,15 +1960,20 @@ l6f68h:
 l6f7eh:
     pop hl                     ;6f7e e1  . 
     ret                        ;6f7f c9  . 
+
+
 v_sub_664ch:
     ld hl,00000h               ;6f80 21 00 00  ! . . 
     ld (varcAddressCounter+1),hl  ;6f83 22 94 1b  " . . 
     ld (vr_l07934h+1),hl       ;6f86 22 75 1b  " u . 
     ld ix,v_l8b22h             ;6f89 dd 21 62 2d  . ! b - 
     ret                        ;6f8d c9  . 
+
+
 v_sub_665ah:
     ld hl,v_l8afeh             ;6f8e 21 3e 2d  ! > -               (flow (mon) from: 5f7b 60ce)  665a ld hl,8afe 
     ld (hl),080h               ;6f91 36 80  6 .                    (flow (mon) from: 665a)  665d ld (hl),80 
+    ; clear input buffer
     inc hl                     ;6f93 23  #                         (flow (mon) from: 665d)  665f inc hl 
     ld (hl),001h               ;6f94 36 01  6 .                    (flow (mon) from: 665f)  6660 ld (hl),01 
     inc hl                     ;6f96 23  #                         (flow (mon) from: 6660)  6662 inc hl 
@@ -1960,6 +1984,8 @@ v_sub_6669h:
     ld (vr_l08750h+1),hl       ;6fa0 22 91 29  " . )               (flow (mon) from: 6669)  666c ld (8751),hl 
     call v_sub_6113h           ;6fa3 cd 53 03  . S .               (flow (mon) from: 666c)  666f call 6113 
     jp v_l85c7h                ;6fa6 c3 07 28  . . (               (flow (mon) from: 611c)  6672 jp 85c7 
+
+
 l6fa9h:
     call v_sub_6669h           ;6fa9 cd a9 08  . . .               (flow (mon) from: 60e5)  6675 call 6669 
     call v_sub_8639h           ;6fac cd 79 28  . y (               (flow (mon) from: 85db)  6678 call 8639 
@@ -2027,7 +2053,7 @@ v_l66d8h:
 
 v_sub_66e7h:
     ld hl,(l0696eh+1)          ;701b 2a 7b 02  * { . 
-v_l66eah:
+invokeStep:
     push hl                    ;701e e5  . 
     call v_sub_6b56h           ;701f cd 96 0d  . . . 
     ex af,af'                  ;7022 08  . 
@@ -2219,6 +2245,8 @@ l7157h:
     add hl,de                  ;7157 19  . 
     add a,005h                 ;7158 c6 05  . . 
     ret                        ;715a c9  . 
+
+
 l715bh:
     cp 00ah                    ;715b fe 0a  . . 
     jr z,l7186h                ;715d 28 27  ( ' 
@@ -2949,7 +2977,9 @@ l75b0h:
     djnz l75a7h                ;75b3 10 f2  . .                    (flow (mon) from: 877e)  6c7f djnz 6c73 
     pop hl                     ;75b5 e1  .                         (flow (mon) from: 6c7f)  6c81 pop hl 
     ret                        ;75b6 c9  .                         (flow (mon) from: 6c81)  6c82 ret 
-v_l6c83h:
+
+
+invokeFrontPanelEditor:
     ld hl,ATTRIBUTES_ADDRESS   ;75b7 21 00 58  ! . X 
     ld bc,00003h               ;75ba 01 03 00  . . . 
     push hl                    ;75bd e5  . 
@@ -3004,7 +3034,7 @@ l075edh:
     pop bc                     ;7607 c1  . 
     cp 004h                    ;7608 fe 04  . . 
     ret z                      ;760a c8  . 
-    ld hl,v_l6c83h             ;760b 21 c3 0e  ! . . 
+    ld hl,invokeFrontPanelEditor  ;760b 21 c3 0e  ! . . 
     push hl                    ;760e e5  . 
     ld b,007h                  ;760f 06 07  . . 
     cp 034h                    ;7611 fe 34  . 4 
@@ -3777,7 +3807,7 @@ l07a67h:
 ; =====================================================================
 ;ENTRY_POINT_WITHOUT_MONITOR
 
-    jp  v_l7cc9h               ;7a7c 
+    jp  startPrometheus        ;7a7c 
 
     defw invokeAssembly        ;7a7f
     defw invokeBasic           ;7a81
@@ -4338,7 +4368,7 @@ l7dbbh:
     call v_sub_8639h           ;7dd1 cd 79 28  . y ( 
     cp 020h                    ;7dd4 fe 20  .   
 l7dd6h:
-    jp z,v_l7cc9h              ;7dd6 ca 09 1f  . . . 
+    jp z,startPrometheus       ;7dd6 ca 09 1f  . . . 
     exx                        ;7dd9 d9  . 
     jr l7db4h                  ;7dda 18 d8  . .
 
@@ -4872,7 +4902,7 @@ l8105h:
     scf                        ;812f 37  7                         (flow from: 77f9)  77fb scf 
     sbc a,a                    ;8130 9f  .                         (flow from: 77fb)  77fc sbc a,a 
     call v_sub_770ah           ;8131 cd 4a 19  . J .               (flow from: 77fc)  77fd call 770a 
-v_sub_7800h:
+simpleBeep:
     ld a,007h                  ;8134 3e 07  > .                    (flow from: 770d 7cf7)  7800 ld a,07 
     out (0feh),a               ;8136 d3 fe  . .                    (flow from: 7800)  7802 out (fe),a 
     ret                        ;8138 c9  .                         (flow from: 7802)  7804 ret 
@@ -5512,8 +5542,8 @@ v_sub_7bdch:
     scf                        ;8518 37  7                         (flow from: 7be3)  7be4 scf 
     call v_sub_7bb1h           ;8519 cd f1 1d  . . .               (flow from: 7be4)  7be5 call 7bb1 
     jr nc,v_sub_7bdch          ;851c 30 f2  0 .                    (flow from: 7bc6)  7be8 jr nc,7bdc 
-    ld a,011h                  ;851e 3e 11  > .                    (flow from: 7be8)  7bea ld a,11 
-    call v_sub_80b4h           ;8520 cd f4 22  . . "               (flow from: 7bea)  7bec call 80b4 
+    ld a,MESSAGE_FOUND         ;851e 3e 11  > .                    (flow from: 7be8)  7bea ld a,11 
+    call signalMessage         ;8520 cd f4 22  . . "               (flow from: 7bea)  7bec call 80b4 
     ld hl,050e1h               ;8523 21 e1 50  ! . P               (flow from: 80e0)  7bef ld hl,50e1 
     ld b,00ah                  ;8526 06 0a  . .                    (flow from: 7bef)  7bf2 ld b,0a 
 l8528h:
@@ -5663,7 +5693,7 @@ v_sub_7c9bh:
     jr l8603h                  ;85d3 18 2e  . . 
 v_sub_7ca1h:
     ld e,020h                  ;85d5 1e 20  .                      (flow (mon) from: 7bcf)  7ca1 ld e,20 
-v_l7ca3h:
+clearDisplay:
     ld bc,00003h               ;85d7 01 03 00  . . .               (flow from: 7ccc)  7ca3 ld bc,0003 
 l85dah:
     ld a,e                     ;85da 7b  {                         (flow from: 7ca3 7caa 7cad)  7ca6 ld a,e 
@@ -5688,10 +5718,11 @@ vr_l07cc3h:
     call 00000h                ;85f7 cd 00 00  . . . 
 v_l7cc6h:
     call v_sub_8639h           ;85fa cd 79 28  . y ( 
-v_l7cc9h:
+
+startPrometheus:
     di                         ;85fd f3  .                         (flow from: 5dc0)  7cc9 di 
     ld e,SEPARATOR_CHARCODE    ;85fe 1e 7e  . ~                    (flow from: 7cc9)  7cca ld e,7e 
-    call v_l7ca3h              ;8600 cd e3 1e  . . .               (flow from: 7cca)  7ccc call 7ca3 
+    call clearDisplay          ;8600 cd e3 1e  . . .               (flow from: 7cca)  7ccc call 7ca3 
 l8603h:
 v_l7ccfh:
     ld hl,059e0h               ;8603 21 e0 59  ! . Y               (flow from: 777a 7caf 7e38)  7ccf ld hl,59e0 
@@ -5717,7 +5748,7 @@ l8622h:
     call v_sub_8ba0h           ;8625 cd ac 24  . . $                (flow from: 7cee)  7cf1 call 826c 
 l8628h:
     call v_sub_85beh           ;8628 cd fe 27  . . '               (flow from: 7d71 828e)  7cf4 call 85be 
-    call v_sub_7800h           ;862b cd 40 1a  . @ .               (flow from: 85db)  7cf7 call 7800 
+    call simpleBeep            ;862b cd 40 1a  . @ .               (flow from: 85db)  7cf7 call 7800 
     call v_sub_8639h           ;862e cd 79 28  . y (               (flow from: 7804)  7cfa call 8639 
     push af                    ;8631 f5  .                         (flow from: 86a0 86ad)  7cfd push af 
 l08632h:
@@ -6247,13 +6278,14 @@ v_sub_8068h:
     push de                    ;899d d5  .                         (flow from: 8068)  8069 push de 
     ld hl,(varcCodeEndPt+1)    ;899e 2a 5a 2a  * Z *               (flow from: 8069)  806a ld hl,(881a) 
     add hl,bc                  ;89a1 09  .                         (flow from: 806a)  806d add hl,bc 
-    jr c,l89adh                ;89a2 38 09  8 .                    (flow from: 806d)  806e jr c,8079 
+    jr c,memoryFullError       ;89a2 38 09  8 .                    (flow from: 806d)  806e jr c,8079 
     ld de,(varcUTop+1)         ;89a4 ed 5b 86 1b  . [ . .          (flow from: 806e)  8070 ld de,(7946) 
     sbc hl,de                  ;89a8 ed 52  . R                    (flow from: 8070)  8074 sbc hl,de 
     pop de                     ;89aa d1  .                         (flow from: 8074)  8076 pop de 
     pop hl                     ;89ab e1  .                         (flow from: 8076)  8077 pop hl 
     ret c                      ;89ac d8  .                         (flow from: 8077)  8078 ret c 
-l89adh:
+
+memoryFullError:
     ld a,MESSAGE_MEMORY_FULL   ;89ad 3e 07  > . 
     jr signalError             ;89af 18 1d  . . 
 
@@ -6300,7 +6332,7 @@ v_l80a2h:
     call z,v_sub_8235h         ;89df cc 75 24  . u $ 
     ld (varcSourceBufferActiveLine+1),hl      ;89e2 22 ad 24  " . $ 
     jp l8622h                  ;89e5 c3 2e 1f  . . . 
-v_sub_80b4h:
+signalMessage:
     ld hl,VRAM_ADDRESS         ;89e8 21 00 40  ! . @               (flow from: 7bec 89f4)  80b4 ld hl,4000 
 v_sub_80b7h:
     call v_sub_85f5h           ;89eb cd 35 28  . 5 (               (flow from: 80b4)  80b7 call 85f5 
@@ -8061,9 +8093,9 @@ v_sub_89e8h:
     call v_sub_76b6h           ;9320 cd f6 18  . . .               (flow from: 89e9)  89ec call 76b6 
     call l8105h                ;9323 cd 11 1a  . . .               (flow from: 76cd)  89ef call 77d1 
 v_sub_89f2h:
-    ld a,00ah                  ;9326 3e 0a  > .                    (flow from: 7804)  89f2 ld a,0a 
+    ld a,MESSAGE_WAIT_PLEASE                  ;9326 3e 0a  > .                    (flow from: 7804)  89f2 ld a,0a 
 v_l89f4h:
-    call v_sub_80b4h           ;9328 cd f4 22  . . "               (flow from: 7cda 7d00 7d33 89f2)  89f4 call 80b4 
+    call signalMessage         ;9328 cd f4 22  . . "               (flow from: 7cda 7d00 7d33 89f2)  89f4 call 80b4 
     ld a,013h                  ;932b 3e 13  > .                    (flow from: 80e0)  89f7 ld a,13 
     ld (varcPrintingPosition+1),a        ;932d 32 c8 29  2 . )     (flow from: 89f7)  89f9 ld (8788),a 
     ld a,(varcInsertMode+1)    ;9330 3a 5f 20  : _                 (flow from: 89f9)  89fc ld a,(7e1f) 
@@ -8241,44 +8273,16 @@ v_l8b24h:
 v_l8b26h:
     defw 0
 v_l8b28h:
-    defs 50-22,0
+    defs 28
 l9478:
+    ; the next data are probably junk, the documentation talks
+    ; about 100 bytes of stack space
     defs 22
-
-    defb 002h                  ;948e 02  . 
-    defb 0c2h                  ;948f c2  . 
-    defb 001h                  ;9490 01  . 
+    defb 002h, 0c2h, 001h                  ;9490 01  . 
     defs 38
-    defb 09fh                  ;94b7 9f  . 
-    defb 050h                  ;94b8 50  P 
-    defb 06dh                  ;94b9 6d  m 
-    defb 087h                  ;94ba 87  . 
-    defb 02eh                  ;94bb 2e  . 
-    defb 06fh                  ;94bc 6f  o 
-    defb 023h                  ;94bd 23  # 
-    defb 06eh                  ;94be 6e  n 
-    defb 02ah                  ;94bf 2a  * 
-    defb 05dh                  ;94c0 5d  ] 
-    defb 0d0h                  ;94c1 d0  . 
-    defb 001h                  ;94c2 01  . 
-    defb 09ch                  ;94c3 9c  . 
-    defb 05eh                  ;94c4 5e  ^ 
-    defb 0e4h                  ;94c5 e4  . 
-    defb 050h                  ;94c6 50  P 
-    defb 06dh                  ;94c7 6d  m 
-    defb 087h                  ;94c8 87  . 
-    defb 019h                  ;94c9 19  . 
-    defb 040h                  ;94ca 40  @ 
-    defb 01fh                  ;94cb 1f  . 
-    defb 040h                  ;94cc 40  @ 
-    defb 048h                  ;94cd 48  H 
-    defb 087h                  ;94ce 87  . 
-    defb 021h                  ;94cf 21  ! 
-    defb 08ah                  ;94d0 8a  . 
-    defb 003h                  ;94d1 03  . 
-    defb 07dh                  ;94d2 7d  } 
-    defb 0cfh                  ;94d3 cf  . 
-    defb 07ch                  ;94d4 7c  | 
+    defb 09fh, 050h, 06dh, 087h, 02eh, 06fh, 023h, 06eh, 02ah, 05dh
+    defb 0d0h, 001h, 09ch, 05eh, 0e4h, 050h, 06dh, 087h, 019h, 040h
+    defb 01fh, 040h, 048h, 087h, 021h, 08ah, 003h, 07dh, 0cfh, 07ch                 
 internalStackTop:
 
 errorMessages:
