@@ -5174,7 +5174,7 @@ l82d3h:
 v_sub_79afh:
     bit 3,(ix+001h)            ;82e3 dd cb 01 5e  . . . ^ 
     jr z,l830ah                ;82e7 28 21  ( ! 
-    call v_sub_8113h           ;82e9 cd 53 23  . S # 
+    call writeLabel            ;82e9 cd 53 23  . S # 
     ld (vr_l07a1ah+1),de       ;82ec ed 53 5b 1c  . S [ . 
     ld a,(hl)                  ;82f0 7e  ~ 
     and 0c0h                   ;82f1 e6 c0  . . 
@@ -6401,7 +6401,9 @@ v_sub_810ch:
     ld d,(ix+002h)             ;8a40 dd 56 02  . V .               (flow from: 8113)  810c ld d,(ix+02) 
     ld e,(ix+003h)             ;8a43 dd 5e 03  . ^ .               (flow from: 810c)  810f ld e,(ix+03) 
     ret                        ;8a46 c9  .                         (flow from: 810f)  8112 ret 
-v_sub_8113h:
+
+
+writeLabel:
     call v_sub_810ch           ;8a47 cd 4c 23  . L #               (flow from: 8167)  8113 call 810c 
 v_sub_8116h:
     ld hl,(varcSymbolTablePt+1)       ;8a4a 2a 17 2a  * . *        (flow from: 8112 821f)  8116 ld hl,(87d7) 
@@ -6449,11 +6451,13 @@ v_sub_8138h:
     cp 037h                    ;8a7d fe 37  . 7 
     jr nz,l8a8fh               ;8a7f 20 0e    . 
 l8a81h:
-    ; comment
+    ; write comment content
     ld a,(ix+002h)             ;8a81 dd 7e 02  . ~ . 
     cp 0c0h                    ;8a84 fe c0  . . 
+    ; try to write EOL...
     ld (hl),001h               ;8a86 36 01  6 . 
     ret nc                     ;8a88 d0  . 
+    ; ...but overwrite if the line does not end
     inc ix                     ;8a89 dd 23  . # 
     ld (hl),a                  ;8a8b 77  w 
     inc hl                     ;8a8c 23  # 
@@ -6461,11 +6465,13 @@ l8a81h:
 l8a8fh:
     ; not a comment
     ld b,LABEL_LENGTH          ;8a8f 06 09  . .                    (flow from: 8144)  815b ld b,09 
+    ; label present? (bit 3 of information byte)
     bit 3,(ix+001h)            ;8a91 dd cb 01 5e  . . . ^          (flow from: 815b)  815d bit 3,(ix+01) 
-    call z,v_sub_82d7h         ;8a95 cc 17 25  . . %               (flow from: 815d)  8161 call z,82d7 
+    ; label not present, print spaces instead of label
+    call z,fillHLWithBSpaces   ;8a95 cc 17 25  . . %               (flow from: 815d)  8161 call z,82d7 
     jr z,l8aa4h                ;8a98 28 0a  ( .                    (flow from: 8161 82e5)  8164 jr z,8170 
     push hl                    ;8a9a e5  .                         (flow from: 8164)  8166 push hl 
-    call v_sub_8113h           ;8a9b cd 53 23  . S #               (flow from: 8166)  8167 call 8113 
+    call writeLabel            ;8a9b cd 53 23  . S #               (flow from: 8166)  8167 call 8113 
     pop hl                     ;8a9e e1  .                         (flow from: 8134)  816a pop hl 
     ld b,009h                  ;8a9f 06 09  . .                    (flow from: 816a)  816b ld b,09 
     call v_sub_82d4h           ;8aa1 cd 14 25  . . %               (flow from: 816b)  816d call 82d4 
@@ -6473,6 +6479,7 @@ l8aa4h:
     push hl                    ;8aa4 e5  .                         (flow from: 8164 82e5)  8170 push hl 
     ld b,(ix+000h)             ;8aa5 dd 46 00  . F .               (flow from: 8170)  8171 ld b,(ix+00) 
     ld a,(ix+001h)             ;8aa8 dd 7e 01  . ~ .               (flow from: 8171)  8174 ld a,(ix+01) 
+    ; get instruction type (top 3 bytes of information byte)
     and 0f0h                   ;8aab e6 f0  . .                    (flow from: 8174)  8177 and f0 
     ld c,a                     ;8aad 4f  O                         (flow from: 8177)  8179 ld c,a 
     call v_sub_831ch           ;8aae cd 5c 25  . \ %               (flow from: 8179)  817a call 831c 
@@ -6667,6 +6674,43 @@ l8bach:
     ret                        ;8bc2 c9  .                         (flow from: 828c)  828e ret 
 
 
+; Internal format:
+; First byte:
+; Operation code of instruction or pseudoinstruction (pseudoinstructions have in second byte nonexisting combination of prefixes).
+; Second byte = Information byte:
+; bit 7 - prefix #CB (203)
+; bit 6 - prefix #ED (237)
+; bit 5 - prefix #DD (221)
+; bit 4 - prefix #FD (251)
+; bit 3 - label used in this instruction
+; bit 2-0 - type:	0 - without operand
+;     1 - 1 byte, -256..256
+;     2 - 2bytes, -65535..65535
+;     3 - 1 byte, -128..128
+;     4 - 1 byte, (ix+N)
+;     5 - (ix+N),N
+;     6 - rst p (p is stored in operation code)
+;     7 - noninstruction
+; If bit 3=1 and bits 2-0 aren't only zero, third byte follows:
+; Bit 3=1, bits 2-0 =0: follows number of label, at the end 192+lenght.
+; Bit 3=0, bits 2-0 aren't only zero: follows all expression, labels as their numbers, at the end 192+lenght.
+; Bit 3=1, bits 2-0 aren't only zero: follows two bytes of label number, then expression, labels as their numbers, at the end 192+lenght.
+; Example:
+; 2*LABEL+#23
+; "2","*","128+H,L,"+","#","2","3",192+8
+; Empty line has infobyte 48 or 56 (if label used), noninstructions have infobyte 55 or 63 (if label used). 
+; Opcode (first byte) of noninstructions:
+;     0 - empty line
+;     1 - comment
+;     2 - ent
+;     3 - equ
+;     4 - org
+;     5 - put
+;     6 - defb
+;     7 - defm
+;     8 - defs
+;     9 - defw
+
 writeLineOfCode:
     push ix                    ;8bc3 dd e5  . .                    (flow from: 8280)  828f push ix 
     call v_sub_8135h           ;8bc5 cd 75 23  . u #               (flow from: 828f)  8291 call 8135 
@@ -6712,9 +6756,11 @@ v_sub_82c9h:
     ex de,hl                   ;8c05 eb  .                         (flow from: 82d0)  82d1 ex de,hl 
     pop hl                     ;8c06 e1  .                         (flow from: 82d1)  82d2 pop hl 
     ret                        ;8c07 c9  .                         (flow from: 82d2)  82d3 ret 
+
+
 v_sub_82d4h:
     call l8afch                ;8c08 cd 08 24  . . $               (flow from: 816d 819d)  82d4 call 81c8 
-v_sub_82d7h:
+fillHLWithBSpaces:
     ld c,020h                  ;8c0b 0e 20  .                      (flow from: 8161 81dd)  82d7 ld c,20 
     jr atHLrepeatBTimesC       ;8c0d 18 06  . .                    (flow from: 82d7)  82d9 jr 82e1 
 v_l82dbh:
@@ -6755,17 +6801,22 @@ l8c38h:
     ld (ix-001h),l             ;8c4a dd 75 ff  . u .               (flow from: 8313)  8316 ld (ix-01),l 
     ld b,002h                  ;8c4d 06 02  . .                    (flow from: 8316)  8319 ld b,02 
     ret                        ;8c4f c9  .                         (flow from: 8319)  831b ret 
+
+
 v_sub_831ch:
     ld de,00352h               ;8c50 11 52 03  . R .               (flow from: 817a)  831c ld de,0352 
     ld a,001h                  ;8c53 3e 01  > .                    (flow from: 831c)  831f ld a,01 
+    ; prefix DD?
     bit 5,c                    ;8c55 cb 69  . i                    (flow from: 831f)  8321 bit 5,c 
     jr nz,l8c62h               ;8c57 20 09    .                    (flow from: 8321)  8323 jr nz,832e 
+    ; prefix FD?
     bit 4,c                    ;8c59 cb 61  . a                    (flow from: 8323)  8325 bit 4,c 
     jr z,l8c62h                ;8c5b 28 05  ( .                    (flow from: 8325)  8327 jr z,832e 
     dec a                      ;8c5d 3d  =                         (flow from: 8327)  8329 dec a 
     res 4,c                    ;8c5e cb a1  . .                    (flow from: 8329)  832a res 4,c 
     set 5,c                    ;8c60 cb e9  . .                    (flow from: 832a)  832c set 5,c 
 l8c62h:
+    ; prefix DD and not FD
     ld (vr_lO8373h+1),a        ;8c62 32 b4 25  2 . %               (flow from: 8323 8327 832c)  832e ld (8374),a 
     ; label in instructionTable
     ld hl,l9e8a                ;8c65 21 96 37  ! . 7               (flow from: 832e)  8331 ld hl,9556 
