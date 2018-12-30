@@ -658,15 +658,23 @@ ENTRY_POINT_WITH_MONITOR:
 frontPanelItemsTable:
 frontPanelEditLineItem:
     ; edit line
-    defb 0e0h                  ;66f7 e0  . 
-    defb 050h                  ;66f8 50  P 
+    defb 0e0h ; VRAM address, 2 bytes   ;66f7 e0  . 
+    defb 050h ; (0,23)         ;66f8 50  P 
     defb 0c5h                  ;66f9 c5  . 
-    defb 003h                  ;66fa 03  . 
-    defb 001h                  ;66fb 01  . 
+    defb 003h ; bit 7: decimal form
+              ; bit 6: hexadeciaml form
+              ; bit 5: binary form
+              ; bit 4: character form 
+              ; bit 3: one/two bytes
+              ; bit 2: single/multi line
+                               ;66fa 03  . 
+    defb 001h ; bit 7: full line? 
+              ; bit 0-5: item size
+                               ;66fb 01  . 
     defw 0                     ;66fc 00  . 
 frontPanelListWindowItem:
     ; list window
-    defb 000h                  ;66fe 00  . 
+    defb 000h ; (0,0)          ;66fe 00  . 
     defb 040h                  ;66ff 40  @ 
     defb 0a0h                  ;6700 a0  . 
     defb 003h                  ;6701 03  . 
@@ -675,14 +683,14 @@ v_l5dceh:
     defw 0                     ;6703 00  . 
 frontPanelDisassemblerListItem:
     ; disassembler list window
-    defb 0a0h                  ;6705 a0  . 
+    defb 0a0h ; (0,13)         ;6705 a0  . 
     defb 048h                  ;6706 48  H 
     defb 0c4h                  ;6707 c4  . 
     defb 003h                  ;6708 03  . 
     defb 082h                  ;6709 82  . 
     defw 0                     ;670a 00  . 
     ; interrupt state
-    defb 012h                  ;670c 12  . 
+    defb 012h ; (18,16)        ;670c 12  . 
     defb 050h                  ;670d 50  P 
     defb 0a3h                  ;670e a3  . 
     defb 003h                  ;670f 03  . 
@@ -690,210 +698,210 @@ frontPanelDisassemblerListItem:
     defw 0                     ;6711 00  . 
 frontPanelRegistersItems:
     ; register A
-    defb 000h                  ;6713 00  . 
+    defb 000h ; (0,16)         ;6713 00  . 
     defb 050h                  ;6714 50  P 
     defb 0c1h                  ;6715 c1  . 
     defb 0b2h                  ;6716 b2  . 
     defb 001h                  ;6717 01  . 
     defw l078e4h               ;6718
     ; register B
-    defb 020h                  ;671a 20    
+    defb 020h ; (0,17)         ;671a 20    
     defb 050h                  ;671b 50  P 
     defb 0c2h                  ;671c c2  . 
     defb 092h                  ;671d 92  . 
     defb 001h                  ;671e 01  . 
     defw l078deh               ;671f
     ; register C
-    defb 040h                  ;6721 40  @ 
+    defb 040h ; (0,18)         ;6721 40  @ 
     defb 050h                  ;6722 50  P 
     defb 0c3h                  ;6723 c3  . 
     defb 092h                  ;6724 92  . 
     defb 001h                  ;6725 01  . 
     defw v_l6fa9h              ;6726
     ; register D
-    defb 060h                  ;6728 60  ` 
+    defb 060h ; (0,19)         ;6728 60  ` 
     defb 050h                  ;6729 50  P 
     defb 0c4h                  ;672a c4  . 
     defb 092h                  ;672b 92  . 
     defb 001h                  ;672c 01  . 
     defw vr_l06fach            ;672d
     ; register E
-    defb 080h                  ;672f 80  . 
+    defb 080h ; (0,20)         ;672f 80  . 
     defb 050h                  ;6730 50  P 
     defb 0c5h                  ;6731 c5  . 
     defb 092h                  ;6732 92  . 
     defb 001h                  ;6733 01  . 
     defw v_l6fabh              ;6734
     ; register H
-    defb 0a0h                  ;6736 a0  . 
+    defb 0a0h ; (0,21)         ;6736 a0  . 
     defb 050h                  ;6737 50  P 
     defb 0c8h                  ;6738 c8  . 
     defb 092h                  ;6739 92  . 
     defb 001h                  ;673a 01  . 
     defw l078e2h               ;673b
     ; register L
-    defb 0c0h                  ;673d c0  . 
+    defb 0c0h ; (0,22)         ;673d c0  . 
     defb 050h                  ;673e 50  P 
     defb 0cch                  ;673f cc  . 
     defb 092h                  ;6740 92  . 
     defb 001h                  ;6741 01  . 
     defw l078e1h               ;6742
     ; register I
-    defb 080h                  ;6744 80  . 
+    defb 080h ; (0,12)         ;6744 80  . 
     defb 048h                  ;6745 48  H 
     defb 0c9h                  ;6746 c9  . 
     defb 082h                  ;6747 82  . 
     defb 000h                  ;6748 00  . 
     defw l078d0h               ;6749
     ; register R
-    defb 0c8h                  ;674b c8  . 
+    defb 0c8h ; (8,22)         ;674b c8  . 
     defb 050h                  ;674c 50  P 
     defb 0d2h                  ;674d d2  . 
     defb 082h                  ;674e 82  . 
     defb 001h                  ;674f 01  . 
     defw v_l6f9bh              ;6750
     ; register HX
-    defb 000h                  ;6752 00  . 
+    defb 000h ; (0,8)          ;6752 00  . 
     defb 048h                  ;6753 48  H 
     defb 019h                  ;6754 19  . 
     defb 082h                  ;6755 82  . 
     defb 000h                  ;6756 00  . 
     defw l078dch               ;6757
     ; register LX
-    defb 020h                  ;6759 20    
+    defb 020h ; (0,9)          ;6759 20    
     defb 048h                  ;675a 48  H 
     defb 01dh                  ;675b 1d  . 
     defb 082h                  ;675c 82  . 
     defb 000h                  ;675d 00  . 
     defw l078dbh               ;675e
     ; register HY
-    defb 040h                  ;6760 40  @ 
+    defb 040h ; (0,10)         ;6760 40  @ 
     defb 048h                  ;6761 48  H 
     defb 01ah                  ;6762 1a  . 
     defb 082h                  ;6763 82  . 
     defb 000h                  ;6764 00  . 
     defw vr_l06fa6h            ;6765
     ; register LY
-    defb 060h                  ;6767 60  ` 
+    defb 060h ; (0,11)         ;6767 60  ` 
     defb 048h                  ;6768 48  H 
     defb 01eh                  ;6769 1e  . 
     defb 082h                  ;676a 82  . 
     defb 000h                  ;676b 00  . 
     defw v_l6fa5h              ;676c
     ; flags
-    defb 0ceh                  ;676e ce  . 
+    defb 0ceh ; (14,22)        ;676e ce  . 
     defb 050h                  ;676f 50  P 
     defb 0c6h                  ;6770 c6  . 
     defb 000h                  ;6771 00  . 
     defb 001h                  ;6772 01  . 
     defw v_l6fafh              ;6773
     ; register AF
-    defb 0e0h                  ;6775 e0  . 
+    defb 0e0h ; (0,7)          ;6775 e0  . 
     defb 040h                  ;6776 40  @ 
     defb 015h                  ;6777 15  . 
     defb 08ah                  ;6778 8a  . 
     defb 000h                  ;6779 00  . 
     defw v_l6fafh              ;677a
     ; register BC
-    defb 049h                  ;677c 49  I 
+    defb 049h ; (9,18)         ;677c 49  I 
     defb 050h                  ;677d 50  P 
     defb 016h                  ;677e 16  . 
     defb 08ah                  ;677f 8a  . 
     defb 001h                  ;6780 01  . 
     defw v_l6fa9h              ;6781
     ; register DE
-    defb 069h                  ;6783 69  i 
+    defb 069h ; (9,19)         ;6783 69  i 
     defb 050h                  ;6784 50  P 
     defb 017h                  ;6785 17  . 
     defb 08ah                  ;6786 8a  . 
     defb 001h                  ;6787 01  . 
     defw v_l6fabh              ;6788
     ; register HL
-    defb 089h                  ;678a 89  . 
+    defb 089h ; (9,20)         ;678a 89  . 
     defb 050h                  ;678b 50  P 
     defb 018h                  ;678c 18  . 
     defb 08ah                  ;678d 8a  . 
     defb 001h                  ;678e 01  . 
     defw l078e1h               ;678f
     ; register SP
-    defb 052h                  ;6791 52  R 
+    defb 052h ; (18,18)        ;6791 52  R 
     defb 050h                  ;6792 50  P 
     defb 023h                  ;6793 23  # 
     defb 08ah                  ;6794 8a  . 
     defb 001h                  ;6795 01  . 
     defw v_l6fb1h              ;6796
     ; register IX
-    defb 072h                  ;6798 72  r 
+    defb 072h ; (18,19)        ;6798 72  r 
     defb 050h                  ;6799 50  P 
     defb 01bh                  ;679a 1b  . 
     defb 08ah                  ;679b 8a  . 
     defb 001h                  ;679c 01  . 
     defw l078dbh               ;679d 
     ; register IY
-    defb 092h                  ;679f 92  . 
+    defb 092h ; (18,20)        ;679f 92  . 
     defb 050h                  ;67a0 50  P 
     defb 01ch                  ;67a1 1c  . 
     defb 08ah                  ;67a2 8a  . 
     defb 001h                  ;67a3 01  . 
     defw v_l6fa5h              ;67a4
     ; cycles counter
-    defb 0d9h                  ;67a6 d9  . 
+    defb 0d9h ; (25,22)        ;67a6 d9  . 
     defb 050h                  ;67a7 50  P 
     defb 0d4h                  ;67a8 d4  . 
     defb 08ah                  ;67a9 8a  . 
     defb 001h                  ;67aa 01  . 
     defw v_l6fb3h              ;67ab
     ; address X
-    defb 0a0h                  ;67ad a0  . 
+    defb 0a0h ; (0,13)         ;67ad a0  . 
     defb 048h                  ;67ae 48  H 
     defb 0d8h                  ;67af d8  . 
     defb 081h                  ;67b0 81  . 
     defb 0e0h                  ;67b1 e0  . 
     defw l078e9h               ;67b2
     ; address Y
-    defb 0b1h                  ;67b4 b1  . 
+    defb 0b1h ; (17,13)        ;67b4 b1  . 
     defb 048h                  ;67b5 48  H 
     defb 0d9h                  ;67b6 d9  . 
     defb 081h                  ;67b7 81  . 
     defb 0e0h                  ;67b8 e0  . 
     defw l078ebh               ;67b9
     ; address (BC)
-    defb 008h                  ;67bb 08  . 
+    defb 008h ; (8,8)          ;67bb 08  . 
     defb 048h                  ;67bc 48  H 
     defb 026h                  ;67bd 26  & 
     defb 081h                  ;67be 81  . 
     defb 0e0h                  ;67bf e0  . 
     defw v_l6fa9h              ;67c0
     ; address (DE) 
-    defb 028h                  ;67c2 28  ( 
+    defb 028h ; (8,9)          ;67c2 28  ( 
     defb 048h                  ;67c3 48  H 
     defb 027h                  ;67c4 27  ' 
     defb 081h                  ;67c5 81  . 
     defb 0e0h                  ;67c6 e0  . 
     defw v_l6fabh              ;67c7
     ; address (HL)
-    defb 048h                  ;67c9 48  H 
+    defb 048h ; (8,10)         ;67c9 48  H 
     defb 048h                  ;67ca 48  H 
     defb 028h                  ;67cb 28  ( 
     defb 081h                  ;67cc 81  . 
     defb 0e0h                  ;67cd e0  . 
     defw l078e1h               ;67ce
     ; address (SP)
-    defb 016h                  ;67d0 16  . 
+    defb 016h ; (22,16)        ;67d0 16  . 
     defb 050h                  ;67d1 50  P 
     defb 02bh                  ;67d2 2b  + 
     defb 08dh                  ;67d3 8d  . 
     defb 0e5h                  ;67d4 e5  . 
     defw v_l6fb1h              ;67d5
     ; address (IX)
-    defb 068h                  ;67d7 68  h 
+    defb 068h ; (8,11)         ;67d7 68  h 
     defb 048h                  ;67d8 48  H 
     defb 029h                  ;67d9 29  ) 
     defb 081h                  ;67da 81  . 
     defb 0e0h                  ;67db e0  . 
     defw l078dbh               ;67dc
     ; address (IY)
-    defb 088h                  ;67de 88  . 
+    defb 088h ; (8,12)         ;67de 88  . 
     defb 048h                  ;67df 48  H 
     defb 02ah                  ;67e0 2a  * 
     defb 081h                  ;67e1 81  . 
@@ -1891,6 +1899,8 @@ l6ed2h:
 l6ed5h:
     ld (hl),e                  ;6ed5 73  s 
     ret                        ;6ed6 c9  . 
+
+
 v_sub_65a3h:
     ld b,000h                  ;6ed7 06 00  . . 
     push hl                    ;6ed9 e5  . 
@@ -3135,12 +3145,15 @@ l7659h:
     ld (ix+000h),l             ;765c dd 75 00  . u . 
     ret                        ;765f c9  . 
 l7660h:
-    cp 061h                    ;7660 fe 61  . a 
+    ; A-Z keys for the item size setting?
+    cp "a"                     ;7660 fe 61  . a 
     jr c,l767dh                ;7662 38 19  8 . 
-    cp 07bh                    ;7664 fe 7b  . { 
+    cp "z"+1                   ;7664 fe 7b  . { 
     jr nc,l767dh               ;7666 30 15  0 . 
-    sub 061h                   ;7668 d6 61  . a 
+    ; get item size
+    sub "a"                    ;7668 d6 61  . a 
     ld b,a                     ;766a 47  G 
+    ; 4th item byte, lowest 5 bits
     ld a,(ix+004h)             ;766b dd 7e 04  . ~ . 
     ld c,a                     ;766e 4f  O 
     and 01fh                   ;766f e6 1f  . . 
@@ -3223,14 +3236,17 @@ l76dah:
 
 
 v_sub_6dabh:
+    ; get item size
     ld a,(ix+004h)             ;76df dd 7e 04  . ~ .               (flow (mon) from: 6d8e)  6dab ld a,(ix+04) 
     and 01fh                   ;76e2 e6 1f  . .                    (flow (mon) from: 6dab)  6dae and 1f 
+    ; empty, do nothing
     ret z                      ;76e4 c8  .                         (flow (mon) from: 6dae)  6db0 ret z 
+    ; not empty
 v_sub_6db1h:
     xor a                      ;76e5 af  .                         (flow (mon) from: 6db0)  6db1 xor a 
 l76e6h:
     ld (v_sub_6ef4h+1),a       ;76e6 32 35 11  2 5 .               (flow (mon) from: 6db1)  6db2 ld (6ef5),a 
-    call v_sub_6e8ah           ;76e9 cd ca 10  . . .               (flow (mon) from: 6db2)  6db5 call 6e8a 
+    call setPrintingPositionForItemData   ;76e9 cd ca 10  . . .    (flow (mon) from: 6db2)  6db5 call 6e8a 
     ld l,(ix+005h)             ;76ec dd 6e 05  . n .               (flow (mon) from: 6e93)  6db8 ld l,(ix+05) 
     ld h,(ix+006h)             ;76ef dd 66 06  . f .               (flow (mon) from: 6db8)  6dbb ld h,(ix+06) 
     ld a,(ix+003h)             ;76f2 dd 7e 03  . ~ .               (flow (mon) from: 6dbb)  6dbe ld a,(ix+03) 
@@ -3245,12 +3261,13 @@ l76feh:
     push hl                    ;76fe e5  .                         (flow (mon) from: 6dc4 6dc9)  6dca push hl 
     ld a,(ix+002h)             ;76ff dd 7e 02  . ~ .               (flow (mon) from: 6dca)  6dcb ld a,(ix+02) 
     cp 0d8h                    ;7702 fe d8  . .                    (flow (mon) from: 6dcb)  6dce cp d8 
+    ; >=
     jr nc,l76ceh               ;7704 30 c8  0 .                    (flow (mon) from: 6dce)  6dd0 jr nc,6d9a 
     cp 080h                    ;7706 fe 80  . .                    (flow (mon) from: 6dd0)  6dd2 cp 80 
     jr nc,l76dah               ;7708 30 d0  0 .                    (flow (mon) from: 6dd2)  6dd4 jr nc,6da6 
     call v_sub_6f6fh           ;770a cd af 11  . . .               (flow (mon) from: 6dd4)  6dd6 call 6f6f 
 l770dh:
-    ld a,03ah                  ;770d 3e 3a  > :                    (flow (mon) from: 6da9 6f87)  6dd9 ld a,3a 
+    ld a,":"                   ;770d 3e 3a  > :                    (flow (mon) from: 6da9 6f87)  6dd9 ld a,3a 
     call displayNormalCharacter;770f cd a9 29  . . )               (flow (mon) from: 6dd9)  6ddb call 8769 
     pop de                     ;7712 d1  .                         (flow (mon) from: 877e)  6dde pop de 
     ld a,(ix+004h)             ;7713 dd 7e 04  . ~ .               (flow (mon) from: 6dde)  6ddf ld a,(ix+04) 
@@ -3320,7 +3337,7 @@ l7777h:
     pop hl                     ;7778 e1  .                         (flow (mon) from: 6e43)  6e44 pop hl 
     pop af                     ;7779 f1  .                         (flow (mon) from: 6e44)  6e45 pop af 
 v_l6e46h:
-    call v_sub_6e8ah           ;777a cd ca 10  . . .               (flow (mon) from: 6e45)  6e46 call 6e8a 
+    call setPrintingPositionForItemData  ;777a cd ca 10  . . .     (flow (mon) from: 6e45)  6e46 call 6e8a 
     rlca                       ;777d 07  .                         (flow (mon) from: 6e93)  6e49 rlca 
     rlca                       ;777e 07  .                         (flow (mon) from: 6e49)  6e4a rlca 
     rlca                       ;777f 07  .                         (flow (mon) from: 6e4a)  6e4b rlca 
@@ -3361,11 +3378,15 @@ l77b1h:
     djnz l77b1h                ;77b9 10 f6  . .                    (flow (mon) from: 6e84)  6e85 djnz 6e7d 
     pop ix                     ;77bb dd e1  . .                    (flow (mon) from: 6e85)  6e87 pop ix 
     ret                        ;77bd c9  .                         (flow (mon) from: 6e87)  6e89 ret 
-v_sub_6e8ah:
+
+
+setPrintingPositionForItemData:
     ld l,(ix+000h)             ;77be dd 6e 00  . n .               (flow (mon) from: 6db5 6e46 6ea5)  6e8a ld l,(ix+00) 
     ld h,(ix+001h)             ;77c1 dd 66 01  . f .               (flow (mon) from: 6e8a)  6e8d ld h,(ix+01) 
     ld (varcPrintingPosition+1),hl       ;77c4 22 c8 29  " . )     (flow (mon) from: 6e8d)  6e90 ld (8788),hl 
     ret                        ;77c7 c9  .                         (flow (mon) from: 6e90)  6e93 ret 
+
+
 v_l6e94h:
     ld (hl),e                  ;77c8 73  s 
     ld a,d                     ;77c9 7a  z 
@@ -3383,7 +3404,7 @@ v_l6e9ch:
     ld c,l                     ;77d4 4d  M                         (flow (mon) from: 6e9f)  6ea0 ld c,l 
     ld b,004h                  ;77d5 06 04  . .                    (flow (mon) from: 6ea0)  6ea1 ld b,04 
     bit 5,e                    ;77d7 cb 6b  . k                    (flow (mon) from: 6ea1)  6ea3 bit 5,e 
-    call v_sub_6e8ah           ;77d9 cd ca 10  . . .               (flow (mon) from: 6ea3)  6ea5 call 6e8a 
+    call setPrintingPositionForItemData  ;77d9 cd ca 10  . . .     (flow (mon) from: 6ea3)  6ea5 call 6e8a 
     push hl                    ;77dc e5  .                         (flow (mon) from: 6e93)  6ea8 push hl 
     ld hl,v_l6ee0h             ;77dd 21 20 11  !   .               (flow (mon) from: 6ea8)  6ea9 ld hl,6ee0 
     jr z,l77f8h                ;77e0 28 16  ( .                    (flow (mon) from: 6ea9)  6eac jr z,6ec4 
@@ -6799,6 +6820,10 @@ writeLineOfCode:
     pop ix                     ;8bc8 dd e1  . .                    (flow from: 8189 81b6)  8294 pop ix 
     call v_sub_80f5h           ;8bca cd 35 23  . 5 #               (flow from: 8294)  8296 call 80f5 
     jr c,l8bd4h                ;8bcd 38 05  8 .                    (flow from: 8109)  8299 jr c,82a0 
+    ; add the character for block selection - code 0x03. The computed character bitmap address is
+    ; then located in the unused block of ROM that is filled with 0xFF values on 48k Spectrum.
+    ; However, some other ROMs use this part of memory in a different way so the character may 
+    ; be corrupted or not visible at all on some machines
     ld hl,lineBufferMarkerPosition  ;8bcf 21 ed 2c  ! . ,          (flow from: 8299)  829b ld hl,8aad 
     ld (hl),003h               ;8bd2 36 03  6 .                    (flow from: 829b)  829e ld (hl),03 
 l8bd4h:
