@@ -47,6 +47,7 @@ LEFT_BOTTOM_ATTRIBUTE_ADDRESS: equ 0x5ae0
 ACCESS_LINE_ATTRIBUTE_ADDRESS: equ 0x59e0
 STATUS_BAR_MODE_POSITION:      equ 0x13
 LINES_BEFORE_ACCESS_LINE:      equ 13
+CALLS_STACK_SIZE:              equ 10
 
 ; messages
 
@@ -922,8 +923,10 @@ v_l5ecch:
     defb 05dh                  ;6802 5d  ] 
     defb 038h                  ;6803 38  8 
     defb 09ch                  ;6804 9c  . 
-    defs 20
-v_l5ee5h:
+
+    defs CALLS_STACK_SIZE*2
+monCallsStack:
+
     defs 25
     defb 0d3h                  ;6832 d3  . 
 l06833h:
@@ -965,7 +968,7 @@ startMonitor:
     ld hl,inputBufferStart     ;68b2 21 3f 2d  ! ? -               (flow (mon) from: 82e5)  5f7e ld hl,8aff 
     ld (hl),0c6h               ;68b5 36 c6  6 .                    (flow (mon) from: 5f7e)  5f81 ld (hl),c6 
     inc hl                     ;68b7 23  #                         (flow (mon) from: 5f81)  5f83 inc hl 
-    ld a,(l7226h+1)            ;68b8 3a 33 0b  : 3 .               (flow (mon) from: 5f83)  5f84 ld a,(68f3) 
+    ld a,(varcInstructionsControlsMode+1)  ;68b8 3a 33 0b  : 3 .   (flow (mon) from: 5f83)  5f84 ld a,(68f3) 
     add a,0c7h                 ;68bb c6 c7  . .                    (flow (mon) from: 5f84)  5f87 add a,c7 
     ld (hl),a                  ;68bd 77  w                         (flow (mon) from: 5f87)  5f89 ld (hl),a 
     inc hl                     ;68be 23  #                         (flow (mon) from: 5f89)  5f8a inc hl 
@@ -995,7 +998,7 @@ l68cah:
     call v_sub_8608h           ;68f4 cd 48 28  . H (               (flow (mon) from: 6d99)  5fc0 call 8608 
     call v_sub_6113h           ;68f7 cd 53 03  . S .               (flow (mon) from: 8610)  5fc3 call 6113 
     call v_sub_85f8h           ;68fa cd 38 28  . 8 (               (flow (mon) from: 611c)  5fc6 call 85f8 
-    ld hl,(l0696eh+1)          ;68fd 2a 7b 02  * { .               (flow (mon) from: 8607)  5fc9 ld hl,(603b)  
+    ld hl,(varcMonitorCurrentAddress+1)  ;68fd 2a 7b 02  * { .     (flow (mon) from: 8607)  5fc9 ld hl,(603b)  
     ld e,020h                  ;6900 1e 20  .                      (flow (mon) from: 5fc9)  5fcc ld e,20 
     
     ; Q - return to Prometheus
@@ -1039,26 +1042,28 @@ l6929h:
     jp v_l6480h                ;6936 c3 c0 06  . . . 
 l6939h:
     push hl                    ;6939 e5  .                         (flow (mon) from: 5ffd)  6005 push hl 
-    ld hl,(l0696eh+1)          ;693a 2a 7b 02  * { .               (flow (mon) from: 6005)  6006 ld hl,(603b) 
+    ld hl,(varcMonitorCurrentAddress+1)   ;693a 2a 7b 02  * { .    (flow (mon) from: 6005)  6006 ld hl,(603b) 
     ret                        ;693d c9  .                         (flow (mon) from: 6006)  6009 ret 
 
 
 monitorKeyboardActions:
 monSetCurrentAddress:
     call v_sub_60c3h           ;693e cd 03 03  . . . 
-    defb 0xc4, 0x23
+    defb 0xc4
+    inc hl
 
 monOneByteBack:   
     dec hl                     ;6943 2b  +                         (flow (mon) from: 600f)  6010 dec hl 
     dec hl                     ;6944 2b  +                         (flow (mon) from: 600f)  6010 dec hl 
+
 monOneByteForward:
     inc hl                     ;6945 23  #                         (flow (mon) from: 6010)  6011 inc hl 
-l6946h:
-    ld (l0696eh+1),hl          ;6946 22 7b 02  " { .               (flow (mon) from: 6011 6046)  6012 ld (603b),hl
+setMonitorCurrentAddressAndRet:
+    ld (varcMonitorCurrentAddress+1),hl   ;6946 22 7b 02  " { .    (flow (mon) from: 6011 6046)  6012 ld (603b),hl
     ret                        ;6949 c9  .                         (flow (mon) from: 6012)  6015 ret 
 
 monLevelUp:
-    ld hl,v_l5ee5h             ;694a 21 25 01  ! % . 
+    ld hl,monCallsStack        ;694a 21 25 01  ! % . 
     ld a,(hl)                  ;694d 7e  ~ 
     or a                       ;694e b7  . 
     ret z                      ;694f c8  . 
@@ -1069,30 +1074,32 @@ monLevelUp:
     dec hl                     ;6956 2b  + 
     ld l,(hl)                  ;6957 6e  n 
     ld h,a                     ;6958 67  g 
-    jr l6946h                  ;6959 18 eb  . . 
+    jr setMonitorCurrentAddressAndRet                  ;6959 18 eb  . . 
 
 monLevelDown:
-    ld hl,v_l5ee5h             ;695b 21 25 01  ! % .               (flow (mon) from: 6009)  6027 ld hl,5ee5 
+    ld hl,monCallsStack        ;695b 21 25 01  ! % .               (flow (mon) from: 6009)  6027 ld hl,5ee5 
     ld a,(hl)                  ;695e 7e  ~                         (flow (mon) from: 6027)  602a ld a,(hl) 
-    cp 00ah                    ;695f fe 0a  . .                    (flow (mon) from: 602a)  602b cp 0a 
+    cp CALLS_STACK_SIZE        ;695f fe 0a  . .                    (flow (mon) from: 602a)  602b cp 0a 
     ret nc                     ;6961 d0  .                         (flow (mon) from: 602b)  602d ret nc 
     push hl                    ;6962 e5  .                         (flow (mon) from: 602d)  602e push hl 
     call v_sub_60c3h           ;6963 cd 03 03  . . .               (flow (mon) from: 602e)  602f call 60c3 
-    call nz,034e3h             ;6966 c4 e3 34  . . 4 
+    defb 0xc4                  
+    ex (sp), hl                ;e3
+    inc (hl)                   ;34 
     ld a,(hl)                  ;6969 7e  ~ 
     add a,a                    ;696a 87  . 
     call addAtoHL              ;696b cd 18 0e  . . . 
-l0696eh:
+varcMonitorCurrentAddress:
     ld de,00000h               ;696e 11 00 00  . . . 
     ld (hl),d                  ;6971 72  r 
     dec hl                     ;6972 2b  + 
     ld (hl),e                  ;6973 73  s 
     pop hl                     ;6974 e1  . 
-    jr l6946h                  ;6975 18 cf  . . 
+    jr setMonitorCurrentAddressAndRet                  ;6975 18 cf  . . 
 
 monOneInstructionForward:
     call v_sub_6b56h           ;6977 cd 96 0d  . . .               (flow (mon) from: 6009)  6043 call 6b56 
-    jr l6946h                  ;697a 18 ca  . .                    (flow (mon) from: 6bda)  6046 jr 6012 
+    jr setMonitorCurrentAddressAndRet    ;697a 18 ca  . .          (flow (mon) from: 6bda)  6046 jr 6012 
 
 monListDisassemblyFromGivenAddress:
     call v_sub_60c3h           ;697c cd 03 03  . . . 
@@ -1100,8 +1107,7 @@ monListDisassemblyFromGivenAddress:
     
 monListDisassembly: 
     call v_sub_6c47h           ;6980
-    defb 0xcd                  ;6983
-    defw l0733eh               ;6984
+    call l0733eh               ;6984
     call v_sub_5f64h           ;6986 cd a4 01  . . . 
     jr $-6                     ;6989 18 f8  . . 
 
@@ -1237,7 +1243,6 @@ monitorKeyboardActionsTable:
     defb 0x6e ; n       - next sequence
  
 
-v_sub_60b3h:
 monMemoryEditingOneShot:
     ld (v_sub_664ch+1),hl      ;69e7 22 8d 08  " . . 
 v_sub_60b6h:
@@ -1313,7 +1318,7 @@ v_l612dh:
     jr l6a0dh                  ;6a64 18 a7  . . 
 
 monMemoryEditing:
-    call v_sub_60b3h           ;6a66 cd f3 02  . . . 
+    call monMemoryEditingOneShot  ;6a66 cd f3 02  . . . 
 l6a69h:
     ld hl,(v_sub_664ch+1)      ;6a69 2a 8d 08  * . . 
     call v_sub_6d7ch           ;6a6c cd bc 0f  . . . 
@@ -1321,8 +1326,8 @@ l6a69h:
     jr l6a69h                  ;6a72 18 f5  . . 
 
 monInstructionControlsMode:
-    ld hl,l7226h+1             ;6a74 21 33 0b  ! 3 . 
-l6a77h:
+    ld hl,varcInstructionsControlsMode+1             ;6a74 21 33 0b  ! 3 . 
+invertLogicAtHLAndRet_:
     jp invertLogicAtHLAndRet   ;6a77 c3 81 1e  . . . 
 
 monExecutionMode:
@@ -1346,8 +1351,8 @@ l6a89h:
     ret                        ;6a8a c9  . 
 
 monShowAddresses:
-    ld hl,l7421h+1             ;6a8b 21 2e 0d  ! . . 
-    jr l6a77h                  ;6a8e 18 e7  . . 
+    ld hl,varcShowAddresses+1  ;6a8b 21 2e 0d  ! . . 
+    jr invertLogicAtHLAndRet_ ;6a8e 18 e7  . . 
 
 monAddressPrintingMode:
     ld hl,l073c4h+1            ;6a90 21 d1 0c  ! . . 
@@ -1362,12 +1367,11 @@ l6a99h:
     ret                        ;6a9d c9  . 
 
 
-l6a9eh:
 monTracing:
     call v_sub_66e7h           ;6a9e cd 27 09  . ' . 
     call c,v_sub_6d79h         ;6aa1 dc b9 0f  . . . 
     call ROM_BreakKey          ;6aa4 cd 54 1f  . T . 
-    jr c,l6a9eh                ;6aa7 38 f5  8 . 
+    jr c,monTracing            ;6aa7 38 f5  8 . 
 l6aa9h:
     xor a                      ;6aa9 af  . 
     ; read keyboard
@@ -1379,12 +1383,12 @@ l6aa9h:
 
 monFastTracing:
     call v_sub_60c3h           ;6ab2 cd 03 03  . . . 
-    defb 0xc3, 0x22            ;6ab5
-    defw l06ac2h+1             ;6ab7
+    defb 0xc3                  ;6ab5
+    ld (l06ac2h+1),hl          ;6ab6
 l6ab9h:
     call v_sub_66e7h           ;6ab9 cd 27 09  . ' . 
     call nc,v_sub_6d79h        ;6abc d4 b9 0f  . . . 
-    ld hl,(l0696eh+1)          ;6abf 2a 7b 02  * { . 
+    ld hl,(varcMonitorCurrentAddress+1)          ;6abf 2a 7b 02  * { . 
 l06ac2h:
     ld de,00000h               ;6ac2 11 00 00  . . . 
     or a                       ;6ac5 b7  . 
@@ -1395,8 +1399,8 @@ l06ac2h:
     jr l6ab9h                  ;6ace 18 e9  . . 
 
 monInterruptMode:
-    ld hl,l7799h+1             ;6ad0 21 a6 10  ! . . 
-    jr l6a77h                  ;6ad3 18 a2  . . 
+    ld hl,varcInterruptMode+1  ;6ad0 21 a6 10  ! . . 
+    jr invertLogicAtHLAndRet_  ;6ad3 18 a2  . . 
 
 monSaveBlockFirstLast:
     call v_sub_66a8h           ;6ad5 cd e8 08  . . . 
@@ -1408,7 +1412,7 @@ l6addh:
     push hl                    ;6add e5  . 
     push de                    ;6ade d5  . 
     call v_sub_60c3h           ;6adf cd 03 03  . . . 
-    exx                        ;6ae2 d9  . 
+    defb 0xd9                  ;6ae2 d9  . 
     xor 03ah                   ;6ae3 ee 3a  . : 
     jr nz,l6b0ah               ;6ae5 20 23    # 
     ld ix,commandArgumentBuffer;6ae7 dd 21 11 2d  . ! . - 
@@ -1453,7 +1457,7 @@ monLoadBlockFirstLength:
 l6b26h:
     call v_sub_66b3h           ;6b26 cd f3 08  . . . 
     call v_sub_60c3h           ;6b29 cd 03 03  . . . 
-    exx                        ;6b2c d9  . 
+    defb 0xd9                  ;6b2c d9  . 
 l6b2dh:
     call v_sub_61dch           ;6b2d cd 1c 04  . . . 
     scf                        ;6b30 37  7 
@@ -1572,7 +1576,7 @@ monDisassembly:
     ld hl,v_l62b6h             ;6bf6 21 f6 04  ! . . 
     ld (vr_l07e38h+1),hl       ;6bf9 22 79 20  " y   
     xor a                      ;6bfc af  . 
-    ld (l7421h+1),a            ;6bfd 32 2e 0d  2 . . 
+    ld (varcShowAddresses+1),a            ;6bfd 32 2e 0d  2 . . 
     ld hl,v_l62d1h             ;6c00 21 11 05  ! . . 
     jr l6bb6h                  ;6c03 18 b1  . . 
 v_l62d1h:
@@ -1590,11 +1594,10 @@ v_sub_62dch:
 
 monSetStartForBreakpoint:
     cp 077h                    ;6c20 fe 77  . w 
-    jr nz,l6c28h               ;6c22 20 04    . 
+    jr nz,monBreakpoint        ;6c22 20 04    . 
     ld (l06c46h+1),hl          ;6c24 22 53 05  " S . 
     ret                        ;6c27 c9  . 
 
-l6c28h:
 monBreakpoint:
     push hl                    ;6c28 e5  . 
     ld (vr_l07934h+1),hl       ;6c29 22 75 1b  " u . 
@@ -1632,8 +1635,9 @@ v_l632bh:
 
 monCall:
     call v_sub_60c3h           ;6c62 cd 03 03  . . . 
-    call z,0eebh               ;6c65 cc eb 0e  . . . 
-    defb 0xcd
+    defb 0xcc
+    ex de,hl
+    ld c, 0xcd
 l06c69h:
     call v_sub_68d4h           ;6c69
     ld (hl),c                  ;6c6c 71  q 
@@ -1655,7 +1659,7 @@ l6c80h:
     push hl                    ;6c80 e5  . 
     push de                    ;6c81 d5  . 
     call v_sub_60c3h           ;6c82 cd 03 03  . . . 
-    ret c                      ;6c85 d8  . 
+    defb 0xd8                  ;6c85 d8  . 
     pop de                     ;6c86 d1  . 
     pop bc                     ;6c87 c1  . 
     push de                    ;6c88 d5  . 
@@ -1684,7 +1688,7 @@ monFillBlockFirstLength:
 l6ca6h:
     call v_sub_66b3h           ;6ca6 cd f3 08  . . . 
     call v_sub_60c3h           ;6ca9 cd 03 03  . . . 
-    rst ROM_PrintACharacter    ;6cac d7  . 
+    defb 0xd7
     ld a,l                     ;6cad 7d  } 
     pop de                     ;6cae d1  . 
     pop hl                     ;6caf e1  . 
@@ -1794,7 +1798,9 @@ l6d39h:
     inc hl                     ;6d4a 23  # 
     push hl                    ;6d4b e5  . 
     call v_sub_60c3h           ;6d4c cd 03 03  . . . 
-    call z,0e1ebh              ;6d4f cc eb e1  . . . 
+    defb 0xcc
+    ex de, hl
+    pop hl
     ld (hl),e                  ;6d52 73  s 
     inc hl                     ;6d53 23  # 
     ld (hl),d                  ;6d54 72  r 
@@ -1811,7 +1817,8 @@ l6d63h:
     push bc                    ;6d63 c5  . 
     push hl                    ;6d64 e5  . 
     call v_sub_60c3h           ;6d65 cd 03 03  . . . 
-    jp c,03aeeh                ;6d68 da ee 3a  . . : 
+    defb 0xda
+    xor 0x3a
     ld c,000h                  ;6d6b 0e 00  . . 
     jr z,l6d70h                ;6d6d 28 01  ( . 
     dec c                      ;6d6f 0d  . 
@@ -1828,7 +1835,7 @@ l6d70h:
     djnz l6d63h                ;6d7b 10 e6  . . 
 
 monNextSequence:
-    ld de,(l0696eh+1)          ;6d7d ed 5b 7b 02  . [ { . 
+    ld de,(varcMonitorCurrentAddress+1)          ;6d7d ed 5b 7b 02  . [ { . 
     inc de                     ;6d81 13  . 
 l6d82h:
     push de                    ;6d82 d5  . 
@@ -1844,7 +1851,7 @@ l6d88h:
     jr nz,l6df1h               ;6d8e 20 61    a 
     djnz l6d88h                ;6d90 10 f6  . . 
     pop hl                     ;6d92 e1  . 
-    jp l6946h                  ;6d93 c3 52 02  . R . 
+    jp setMonitorCurrentAddressAndRet                  ;6d93 c3 52 02  . R . 
 
 l6d96h:
     sub 02fh                   ;6d96 d6 2f  . / 
@@ -2211,8 +2218,9 @@ l6fc4h:
     jp v_sub_85f8h             ;6fcc c3 38 28  . 8 ( 
 v_sub_669bh:
     call v_sub_60c3h           ;6fcf cd 03 03  . . . 
-    jp nz,0cde5h               ;6fd2 c2 e5 cd  . . . 
-    defw v_sub_60c3h           ;6fd5
+    defb 0xc2
+    push hl
+    call v_sub_60c3h            
     pop bc                     ;6fd7 c1  . 
     pop de                     ;6fd8 d1  . 
     add hl,de                  ;6fd9 19  . 
@@ -2220,8 +2228,9 @@ v_sub_669bh:
     ret                        ;6fdb c9  . 
 v_sub_66a8h:
     call v_sub_60c3h           ;6fdc cd 03 03  . . . 
-    jp nz,0cde5h               ;6fdf c2 e5 cd  . . . 
-    defw v_sub_60c3h           ;6fe2
+    defb 0xc2
+    push hl
+    call v_sub_60c3h         
     jp 0c9d1h                  ;6fe4 c3 d1 c9  . . . 
 v_sub_66b3h:
     pop af                     ;6fe7 f1  . 
@@ -2257,7 +2266,7 @@ v_l66d8h:
 
 
 v_sub_66e7h:
-    ld hl,(l0696eh+1)          ;701b 2a 7b 02  * { . 
+    ld hl,(varcMonitorCurrentAddress+1)          ;701b 2a 7b 02  * { . 
 invokeStep:
     push hl                    ;701e e5  . 
     call v_sub_6b56h           ;701f cd 96 0d  . . . 
@@ -2298,7 +2307,7 @@ l7069h:
     exx                        ;7070 d9  . 
     pop de                     ;7071 d1  . 
     ld hl,v_l5f33h             ;7072 21 73 01  ! s . 
-    ld a,(l7226h+1)            ;7075 3a 33 0b  : 3 . 
+    ld a,(varcInstructionsControlsMode+1)            ;7075 3a 33 0b  : 3 . 
     or a                       ;7078 b7  . 
     call z,v_sub_6c20h         ;7079 cc 60 0e  . ` . 
     ld a,0ceh                  ;707c 3e ce  > . 
@@ -2308,7 +2317,7 @@ l7069h:
 l07083h:
     call nz,v_l680ah           ;7083 c4 4a 0a  . J . 
     exx                        ;7086 d9  . 
-    ld (l0696eh+1),hl          ;7087 22 7b 02  " { . 
+    ld (varcMonitorCurrentAddress+1),hl          ;7087 22 7b 02  " { . 
     ld hl,(v_l6fb3h)           ;708a 2a f3 11  * . . 
     add hl,de                  ;708d 19  . 
     ld (v_l6fb3h),hl           ;708e 22 f3 11  " . . 
@@ -2412,7 +2421,7 @@ l07114h:
     and 004h                   ;7123 e6 04  . . 
     rrca                       ;7125 0f  . 
     rrca                       ;7126 0f  . 
-    ld (l7799h+1),a            ;7127 32 a6 10  2 . . 
+    ld (varcInterruptMode+1),a ;7127 32 a6 10  2 . . 
     ret                        ;712a c9  . 
 v_l67f7h:
     ld hl,(v_l6fb1h)           ;712b 2a f1 11  * . . 
@@ -2562,7 +2571,7 @@ v_sub_68ceh:
     ret                        ;7207 c9  . 
 v_sub_68d4h:
     ld hl,v_l8b21h             ;7208 21 61 2d  ! a - 
-    ld a,(l7799h+1)            ;720b 3a a6 10  : . . 
+    ld a,(varcInterruptMode+1) ;720b 3a a6 10  : . . 
     add a,a                    ;720e 87  . 
     add a,a                    ;720f 87  . 
     add a,a                    ;7210 87  . 
@@ -2575,12 +2584,14 @@ v_sub_68e2h:
     sub 076h                   ;7217 d6 76  . v 
     or c                       ;7219 b1  . 
     jr nz,l7226h               ;721a 20 0a    . 
-    ld a,(l7799h+1)            ;721c 3a a6 10  : . . 
+    ld a,(varcInterruptMode+1) ;721c 3a a6 10  : . . 
     or a                       ;721f b7  . 
     ret nz                     ;7220 c0  . 
     ld a,0cfh                  ;7221 3e cf  > . 
     jp v_l66c6h                ;7223 c3 06 09  . . . 
 l7226h:
+varcInstructionsControlsMode:
+    ; on/off all controls of instructions 
     ld a,000h                  ;7226 3e 00  > . 
     or a                       ;7228 b7  . 
     ret nz                     ;7229 c0  . 
@@ -2894,6 +2905,7 @@ l73f6h:
     call v_sub_82d4h           ;741c cd 14 25  . . % 
     jr l742eh                  ;741f 18 0d  . . 
 l7421h:
+varcShowAddresses:
     ld a,001h                  ;7421 3e 01  > .                    (flow (mon) from: 6ade)  6aed ld a,01 
     dec a                      ;7423 3d  =                         (flow (mon) from: 6aed)  6aef dec a 
     jr nz,l742eh               ;7424 20 08    .                    (flow (mon) from: 6aef)  6af0 jr nz,6afa 
@@ -3363,7 +3375,7 @@ v_l6d67h:
     ld a,h                     ;76aa 7c  | 
     jr nz,$+6                  ;76ab 20 04    . 
 v_sub_6d79h:
-    ld hl,(l0696eh+1)         ;76ad 2a 7b 02  * { .                (flow (mon) from: 5fbd)  6d79 ld hl,(603b)
+    ld hl,(varcMonitorCurrentAddress+1)    ;76ad 2a 7b 02  * { .   (flow (mon) from: 5fbd)  6d79 ld hl,(603b)
 v_sub_6d7ch:
     ld ix,frontPanelDisassemblerListItem   ;76b0 dd 21 11 00       (flow (mon) from: 6d79)  6d7c ld ix,5dd1 
     ld b,020h                  ;76b4 06 20  .                      (flow (mon) from: 6d7c)  6d80 ld b,20 
@@ -3514,14 +3526,14 @@ l7785h:
     cp 0c4h                    ;7788 fe c4  . .                    (flow (mon) from: 6e51)  6e54 cp c4 
     jr z,l77a3h                ;778a 28 17  ( .                    (flow (mon) from: 6e54)  6e56 jr z,6e6f 
     cp 0a3h                    ;778c fe a3  . .                    (flow (mon) from: 6e56)  6e58 cp a3 
-    jr z,l7799h                ;778e 28 09  ( .                    (flow (mon) from: 6e58)  6e5a jr z,6e65 
+    jr z,varcInterruptMode     ;778e 28 09  ( .                    (flow (mon) from: 6e58)  6e5a jr z,6e65 
     call displayUninvertedCharacter  ;7790 cd a7 29  . . ) 
     dec hl                     ;7793 2b  + 
     ld a,h                     ;7794 7c  | 
     or l                       ;7795 b5  . 
     jr nz,l7785h               ;7796 20 ed    . 
     ret                        ;7798 c9  . 
-l7799h:
+varcInterruptMode:
     ld a,000h                  ;7799 3e 00  > .                    (flow (mon) from: 6e5a)  6e65 ld a,00 
     add a,003h                 ;779b c6 03  . .                    (flow (mon) from: 6e65)  6e67 add a,03 
     ld de,v_l8c76h             ;779d 11 b6 2e  . . .               (flow (mon) from: 6e67)  6e69 ld de,8c76 
