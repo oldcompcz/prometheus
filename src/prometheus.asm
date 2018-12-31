@@ -1024,8 +1024,8 @@ l68cah:
     
     ld c,a                     ;6920 4f  O                         (flow (mon) from: 5fe9)  5fec ld c,a 
     ld b,028h                  ;6921 06 28  . (                    (flow (mon) from: 5fec)  5fed ld b,28 
-    ld hl,v_l600ah             ;6923 21 4a 02  ! J .               (flow (mon) from: 5fed)  5fef ld hl,600a 
-    ld de,v_l6063h             ;6926 11 a3 02  . . .               (flow (mon) from: 5fef)  5ff2 ld de,6063 
+    ld hl,monitorKeyboardActions       ;6923 21 4a 02  ! J .       (flow (mon) from: 5fed)  5fef ld hl,600a 
+    ld de,monitorKeyboardActionsTable  ;6926 11 a3 02  . . .       (flow (mon) from: 5fef)  5ff2 ld de,6063 
 l6929h:
     ld a,(de)                  ;6929 1a  .                         (flow (mon) from: 5ff2 5fff)  5ff5 ld a,(de) 
     inc de                     ;692a 13  .                         (flow (mon) from: 5ff5)  5ff6 inc de 
@@ -1043,14 +1043,21 @@ l6939h:
     ret                        ;693d c9  .                         (flow (mon) from: 6006)  6009 ret 
 
 
-v_l600ah:
+monitorKeyboardActions:
+monSetCurrentAddress:
     call v_sub_60c3h           ;693e cd 03 03  . . . 
-    call nz,02b23h             ;6941 c4 23 2b  . # + 
+    defb 0xc4, 0x23
+
+monOneByteBack:   
+    dec hl                     ;6943 2b  +                         (flow (mon) from: 600f)  6010 dec hl 
     dec hl                     ;6944 2b  +                         (flow (mon) from: 600f)  6010 dec hl 
+monOneByteForward:
     inc hl                     ;6945 23  #                         (flow (mon) from: 6010)  6011 inc hl 
 l6946h:
     ld (l0696eh+1),hl          ;6946 22 7b 02  " { .               (flow (mon) from: 6011 6046)  6012 ld (603b),hl
     ret                        ;6949 c9  .                         (flow (mon) from: 6012)  6015 ret 
+
+monLevelUp:
     ld hl,v_l5ee5h             ;694a 21 25 01  ! % . 
     ld a,(hl)                  ;694d 7e  ~ 
     or a                       ;694e b7  . 
@@ -1063,6 +1070,8 @@ l6946h:
     ld l,(hl)                  ;6957 6e  n 
     ld h,a                     ;6958 67  g 
     jr l6946h                  ;6959 18 eb  . . 
+
+monLevelDown:
     ld hl,v_l5ee5h             ;695b 21 25 01  ! % .               (flow (mon) from: 6009)  6027 ld hl,5ee5 
     ld a,(hl)                  ;695e 7e  ~                         (flow (mon) from: 6027)  602a ld a,(hl) 
     cp 00ah                    ;695f fe 0a  . .                    (flow (mon) from: 602a)  602b cp 0a 
@@ -1080,65 +1089,156 @@ l0696eh:
     ld (hl),e                  ;6973 73  s 
     pop hl                     ;6974 e1  . 
     jr l6946h                  ;6975 18 cf  . . 
+
+monOneInstructionForward:
     call v_sub_6b56h           ;6977 cd 96 0d  . . .               (flow (mon) from: 6009)  6043 call 6b56 
     jr l6946h                  ;697a 18 ca  . .                    (flow (mon) from: 6bda)  6046 jr 6012 
+
+monListDisassemblyFromGivenAddress:
     call v_sub_60c3h           ;697c cd 03 03  . . . 
-    defb 0xc2, 0xcd            ;697f
-    defw v_sub_6c47h           ;6981
+    defb 0xc2
+    
+monListDisassembly: 
+    call v_sub_6c47h           ;6980
     defb 0xcd                  ;6983
     defw l0733eh               ;6984
     call v_sub_5f64h           ;6986 cd a4 01  . . . 
     jr $-6                     ;6989 18 f8  . . 
+
+monClearListWindow:
     ld ix,frontPanelListWindowItem   ;698b dd 21 0a 00  . ! . . 
     ld a,(ix+004h)             ;698f dd 7e 04  . ~ . 
     and 01fh                   ;6992 e6 1f  . . 
     jp v_l6e46h                ;6994 c3 86 10  . . . 
 
 
-v_l6063h:
-    defb 0x00, 0x6d ; m       - set current address
-    defb 0x05, 0x0a ; up      - one byte back
-    defb 0x02, 0x0d ; enter   - one byte forward
-    defb 0x05, 0x08 ; left    - level up
-    defb 0x11, 0x0b ; right   - level down
-    defb 0x1c, 0x09 ; down    - one instruction forward
-    defb 0x05, 0x76 ; v       - list disassembly from given address
-    defb 0x04, 0x24 ; SS + 4  - list disassembly
-    defb 0x0b, 0x05 ; CS + 2  - clear list window
-    defb 0x5c, 0x20 ; space   - memory editing (one-shot)
-    defb 0x7f, 0x65 ; e       - memory editing
-    defb 0x0e, 0x60 ; SS + x  - instruction controls mode
-    defb 0x06, 0x78 ; x       - execution mode
-    defb 0x11, 0x63 ; c       - show addresses
-    defb 0x05, 0x3f ; SS + c  - addresses printing mode
-    defb 0x0e, 0x74 ; t       - tracing
-    defb 0x14, 0x3e ; SS + t  - fast racing
-    defb 0x1e, 0x2e ; SS + m  - interrupt mode
-    defb 0x05, 0x73 ; s       - save block (first/last)
-    defb 0x05, 0x7c ; SS + s  - save block (first/length)
-    defb 0x44, 0x6a ; j       - load block from a tape (first/last)
-    defb 0x05, 0x2d ; SS + j  - load block from a tape (first/length)
-    defb 0x15, 0x79 ; y       - load header from tape
-    defb 0x69, 0x2a ; SS + b  - registers swap
-    defb 0x12, 0x64 ; d       - disassembly on printer
-    defb 0x43, 0x5c ; SS + d  - disassembly 
-    defb 0x2a, 0x77 ; w       - set start for breakpoint
-    defb 0x08, 0x5d ; SS + u  - breakpoint
-    defb 0x3a, 0x5e ; SS + h  - call
-    defb 0x16, 0x69 ; i       - move block (first/last)
-    defb 0x05, 0x7f ; SS + i  - move block (first/length)
-    defb 0x21, 0x70 ; p       - fill block (first/last)
-    defb 0x05, 0x22 ; SS + p  - fill block (first/length)
-    defb 0x1b, 0x3d ; SS + l  - list memory from a given address
-    defb 0x04, 0x6c ; l       - list memory from the current address 
-    defb 0x41, 0x3b ; SS + O  - characters from a given address
-    defb 0x04, 0x6f ; o       - characters from the current address
-    defb 0x2f, 0x36 ; 6       - define address for the direct call
-    defb 0x23, 0x67 ; g       - find sequence
-    defb 0x24, 0x6e ; n       - next sequence
+monitorKeyboardActionsTable:
+    ; a table of relative address differences of keyboard actions
+    ; and associated keyboard codes
+
+    defb monSetCurrentAddress - monitorKeyboardActions
+    defb 0x6d ; m       - set current address
+
+    defb monOneByteBack - monSetCurrentAddress
+    defb 0x0a ; up      - one byte back
+
+    defb monOneByteForward - monOneByteBack
+    defb 0x0d ; enter   - one byte forward
+
+    defb monLevelUp - monOneByteForward
+    defb 0x08 ; left    - level up
+
+    defb monLevelDown - monLevelUp
+    defb 0x0b ; right   - level down
+
+    defb monOneInstructionForward - monLevelDown
+    defb 0x09 ; down    - one instruction forward
+
+    defb monListDisassemblyFromGivenAddress - monOneInstructionForward
+    defb 0x76 ; v       - list disassembly from given address
+
+    defb monListDisassembly - monListDisassemblyFromGivenAddress
+    defb 0x24 ; SS + 4  - list disassembly
+
+    defb monClearListWindow - monListDisassembly
+    defb 0x05 ; CS + 2  - clear list window
+
+    defb monMemoryEditingOneShot - monClearListWindow
+    defb 0x20 ; space   - memory editing (one-shot)
+
+    defb monMemoryEditing - monMemoryEditingOneShot
+    defb 0x65 ; e       - memory editing
+
+    defb monInstructionControlsMode - monMemoryEditing
+    defb 0x60 ; SS + x  - instruction controls mode
+
+    defb monExecutionMode - monInstructionControlsMode
+    defb 0x78 ; x       - execution mode
+
+    defb monShowAddresses - monExecutionMode
+    defb 0x63 ; c       - show addresses
+
+    defb monAddressPrintingMode - monShowAddresses
+    defb 0x3f ; SS + c  - addresses printing mode
+
+    defb monTracing - monAddressPrintingMode
+    defb 0x74 ; t       - tracing
+
+    defb monFastTracing - monTracing
+    defb 0x3e ; SS + t  - fast tracing
+
+    defb monInterruptMode - monFastTracing
+    defb 0x2e ; SS + m  - interrupt mode
+
+    defb monSaveBlockFirstLast - monInterruptMode
+    defb 0x73 ; s       - save block (first/last)
+
+    defb monSaveBlockFirstLength - monSaveBlockFirstLast
+    defb 0x7c ; SS + s  - save block (first/length)
+
+    defb monLoadBlockFirstLast - monSaveBlockFirstLength
+    defb 0x6a ; j       - load block from a tape (first/last)
+
+    defb monLoadBlockFirstLength - monLoadBlockFirstLast
+    defb 0x2d ; SS + j  - load block from a tape (first/length)
+
+    defb monLoadHeader - monLoadBlockFirstLength
+    defb 0x79 ; y       - load header from tape
+
+    defb monRegistersSwap - monLoadHeader
+    defb 0x2a ; SS + b  - registers swap
+
+    defb monDisassemblyOnPrinter - monRegistersSwap
+    defb 0x64 ; d       - disassembly on printer
+
+    defb monDisassembly - monDisassemblyOnPrinter
+    defb 0x5c ; SS + d  - disassembly 
+
+    defb monSetStartForBreakpoint - monDisassembly
+    defb 0x77 ; w       - set start for breakpoint
+
+    defb monBreakpoint - monSetStartForBreakpoint
+    defb 0x5d ; SS + u  - breakpoint
+
+    defb monCall - monBreakpoint
+    defb 0x5e ; SS + h  - call
+
+    defb monMoveBlockFirstLast - monCall
+    defb 0x69 ; i       - move block (first/last)
+
+    defb monMoveBlockFirstLength - monMoveBlockFirstLast
+    defb 0x7f ; SS + i  - move block (first/length)
+
+    defb monFillBlockFirstLast - monMoveBlockFirstLength
+    defb 0x70 ; p       - fill block (first/last)
+
+    defb monFillBlockFirstLength - monFillBlockFirstLast
+    defb 0x22 ; SS + p  - fill block (first/length)
+
+    defb monListMemoryFromAGivenAddress - monFillBlockFirstLength
+    defb 0x3d ; SS + l  - list memory from a given address
+
+    defb monListMemoryFromTheCurrentAddress - monListMemoryFromAGivenAddress
+    defb 0x6c ; l       - list memory from the current address 
+
+    defb monCharactersFromAGivenAddress - monListMemoryFromTheCurrentAddress
+    defb 0x3b ; SS + O  - characters from a given address
+
+    defb monCharactersFromTheCurrentAddress - monCharactersFromAGivenAddress
+    defb 0x6f ; o       - characters from the current address
+
+    defb monDefineAddressForTheDirectCall - monCharactersFromTheCurrentAddress
+    defb 0x36 ; 6       - define address for the direct call
+
+    defb monFindSequence - monDefineAddressForTheDirectCall
+    defb 0x67 ; g       - find sequence
+
+    defb monNextSequence - monFindSequence
+    defb 0x6e ; n       - next sequence
  
 
 v_sub_60b3h:
+monMemoryEditingOneShot:
     ld (v_sub_664ch+1),hl      ;69e7 22 8d 08  " . . 
 v_sub_60b6h:
     ld a,021h                  ;69ea 3e 21  > ! 
@@ -1211,17 +1311,21 @@ l6a59h:
 v_l612dh:
     call v_sub_611dh           ;6a61 cd 5d 03  . ] . 
     jr l6a0dh                  ;6a64 18 a7  . . 
+
+monMemoryEditing:
     call v_sub_60b3h           ;6a66 cd f3 02  . . . 
 l6a69h:
     ld hl,(v_sub_664ch+1)      ;6a69 2a 8d 08  * . . 
     call v_sub_6d7ch           ;6a6c cd bc 0f  . . . 
     call v_sub_60b6h           ;6a6f cd f6 02  . . . 
     jr l6a69h                  ;6a72 18 f5  . . 
+
+monInstructionControlsMode:
     ld hl,l7226h+1             ;6a74 21 33 0b  ! 3 . 
 l6a77h:
     jp invertLogicAtHLAndRet   ;6a77 c3 81 1e  . . . 
 
-
+monExecutionMode:
     ld hl,executionModeOperation  ;6a7a 21 88 0a  ! . . 
     ld a,(hl)                  ;6a7d 7e  ~ 
     or a                       ;6a7e b7  . 
@@ -1241,9 +1345,11 @@ l6a89h:
     ld (hl),a                  ;6a89 77  w 
     ret                        ;6a8a c9  . 
 
-
+monShowAddresses:
     ld hl,l7421h+1             ;6a8b 21 2e 0d  ! . . 
     jr l6a77h                  ;6a8e 18 e7  . . 
+
+monAddressPrintingMode:
     ld hl,l073c4h+1            ;6a90 21 d1 0c  ! . . 
     ld a,(hl)                  ;6a93 7e  ~ 
     or a                       ;6a94 b7  . 
@@ -1257,6 +1363,7 @@ l6a99h:
 
 
 l6a9eh:
+monTracing:
     call v_sub_66e7h           ;6a9e cd 27 09  . ' . 
     call c,v_sub_6d79h         ;6aa1 dc b9 0f  . . . 
     call ROM_BreakKey          ;6aa4 cd 54 1f  . T . 
@@ -1269,6 +1376,8 @@ l6aa9h:
     and 01fh                   ;6aad e6 1f  . . 
     jr nz,l6aa9h               ;6aaf 20 f8    . 
     ret                        ;6ab1 c9  . 
+
+monFastTracing:
     call v_sub_60c3h           ;6ab2 cd 03 03  . . . 
     defb 0xc3, 0x22            ;6ab5
     defw l06ac2h+1             ;6ab7
@@ -1284,10 +1393,16 @@ l06ac2h:
     call ROM_BreakKey          ;6ac9 cd 54 1f  . T . 
     jr nc,l6aa9h               ;6acc 30 db  0 . 
     jr l6ab9h                  ;6ace 18 e9  . . 
+
+monInterruptMode:
     ld hl,l7799h+1             ;6ad0 21 a6 10  ! . . 
     jr l6a77h                  ;6ad3 18 a2  . . 
+
+monSaveBlockFirstLast:
     call v_sub_66a8h           ;6ad5 cd e8 08  . . . 
     jr l6addh                  ;6ad8 18 03  . . 
+
+monSaveBlockFirstLength:
     call v_sub_669bh           ;6ada cd db 08  . . . 
 l6addh:
     push hl                    ;6add e5  . 
@@ -1328,8 +1443,12 @@ v_sub_61dch:
     push hl                    ;6b1a e5  . 
     pop ix                     ;6b1b dd e1  . . 
     ret                        ;6b1d c9  . 
+
+monLoadBlockFirstLast:
     call v_sub_66a8h           ;6b1e cd e8 08  . . . 
     jr l6b26h                  ;6b21 18 03  . . 
+
+monLoadBlockFirstLength:
     call v_sub_669bh           ;6b23 cd db 08  . . . 
 l6b26h:
     call v_sub_66b3h           ;6b26 cd f3 08  . . . 
@@ -1341,6 +1460,8 @@ l6b2dh:
     call v_sub_7bb1h           ;6b31 cd f1 1d  . . . 
     ret c                      ;6b34 d8  . 
     jp v_l66c4h                ;6b35 c3 04 09  . . . 
+
+monLoadHeader:
     call v_sub_6c47h           ;6b38 cd 87 0e  . . . 
     ld ix,inputBufferStart     ;6b3b dd 21 3f 2d  . ! ? - 
     ld de,00012h               ;6b3f 11 12 00  . . . 
@@ -1392,6 +1513,8 @@ l6b70h:
     call v_sub_66b3h           ;6b9a cd f3 08  . . . 
     ld l,0ffh                  ;6b9d 2e ff  . . 
     jr l6b2dh                  ;6b9f 18 8c  . . 
+
+monRegistersSwap:
     ld b,008h                  ;6ba1 06 08  . . 
     ld hl,v_l6fa9h             ;6ba3 21 e9 11  ! . . 
     ld de,v_l6f9dh             ;6ba6 11 dd 11  . . . 
@@ -1404,7 +1527,9 @@ l6ba9h:
     inc hl                     ;6bae 23  # 
     inc de                     ;6baf 13  . 
     djnz l6ba9h                ;6bb0 10 f7  . . 
-    ret                        ;6bb2 c9  . 
+    ret                        ;6bb2 c9  .  
+
+monDisassemblyOnPrinter:
     ld hl,v_l7332h             ;6bb3 21 72 15  ! r . 
 l6bb6h:
     ld (l06bd7h+1),hl          ;6bb6 22 e4 04  " . . 
@@ -1442,6 +1567,8 @@ l06bebh:
     call l6fa9h                ;6bee cd b5 08  . . . 
     call v_sub_62dch           ;6bf1 cd 1c 05  . . . 
     jr l6bdbh                  ;6bf4 18 e5  . . 
+
+monDisassembly:
     ld hl,v_l62b6h             ;6bf6 21 f6 04  ! . . 
     ld (vr_l07e38h+1),hl       ;6bf9 22 79 20  " y   
     xor a                      ;6bfc af  . 
@@ -1460,11 +1587,15 @@ v_sub_62dch:
     ld d,000h                  ;6c19 16 00  . . 
     ld c,009h                  ;6c1b 0e 09  . . 
     jp l873bh                  ;6c1d c3 47 20  . G   
+
+monSetStartForBreakpoint:
     cp 077h                    ;6c20 fe 77  . w 
     jr nz,l6c28h               ;6c22 20 04    . 
     ld (l06c46h+1),hl          ;6c24 22 53 05  " S . 
     ret                        ;6c27 c9  . 
+
 l6c28h:
+monBreakpoint:
     push hl                    ;6c28 e5  . 
     ld (vr_l07934h+1),hl       ;6c29 22 75 1b  " u . 
     ld de,v_l632bh             ;6c2c 11 6b 05  . k . 
@@ -1498,6 +1629,8 @@ v_l632bh:
     nop                        ;6c5f 00  . 
     nop                        ;6c60 00  . 
     nop                        ;6c61 00  . 
+
+monCall:
     call v_sub_60c3h           ;6c62 cd 03 03  . . . 
     call z,0eebh               ;6c65 cc eb 0e  . . . 
     defb 0xcd
@@ -1511,8 +1644,12 @@ l06c69h:
     inc hl                     ;6c71 23  # 
     call v_sub_68c3h           ;6c72 cd 03 0b  . . . 
     jp v_l6762h                ;6c75 c3 a2 09  . . . 
+
+monMoveBlockFirstLast:
     call v_sub_66a8h           ;6c78 cd e8 08  . . . 
     jr l6c80h                  ;6c7b 18 03  . . 
+
+monMoveBlockFirstLength:
     call v_sub_669bh           ;6c7d cd db 08  . . . 
 l6c80h:
     push hl                    ;6c80 e5  . 
@@ -1537,8 +1674,12 @@ l6c80h:
     ld c,l                     ;6c99 4d  M 
     pop hl                     ;6c9a e1  . 
     jp v_l88ech                ;6c9b c3 2c 2b  . , + 
+
+monFillBlockFirstLast:
     call v_sub_66a8h           ;6c9e cd e8 08  . . . 
     jr l6ca6h                  ;6ca1 18 03  . . 
+
+monFillBlockFirstLength:
     call v_sub_669bh           ;6ca3 cd db 08  . . . 
 l6ca6h:
     call v_sub_66b3h           ;6ca6 cd f3 08  . . . 
@@ -1559,9 +1700,13 @@ l6ca6h:
     inc de                     ;6cba 13  . 
     ldir                       ;6cbb ed b0  . . 
     ret                        ;6cbd c9  . 
+
+monListMemoryFromAGivenAddress:
     call v_sub_60c3h           ;6cbe cd 03 03  . . . 
-    defb 0xc2, 0xcd            ;6cc1
-    defw v_sub_6c47h           ;6cc3 
+    defb 0xc2 
+
+monListMemoryFromTheCurrentAddress:
+    call v_sub_6c47h           ;6cc3 
     defb 0xdd                  ;6cc4
     ld hl,lineBuffer           ;6cc6 21 e5 2c  ! . , 
     push hl                    ;6cc9 e5  . 
@@ -1598,9 +1743,13 @@ l6cf9h:
     djnz l6cf9h                ;6cfc 10 fb  . . 
     call v_sub_5f64h           ;6cfe cd a4 01  . . . 
     jr $-60                    ;6d01 18 c2  . . 
+
+monCharactersFromAGivenAddress:
     call v_sub_60c3h           ;6d03 cd 03 03  . . . 
-    defb 0xc2, 0xcd            ;6d06
-    defw v_sub_6c47h           ;6d08 
+    defb 0xc2
+    
+monCharactersFromTheCurrentAddress:
+    call v_sub_6c47h           ;6d07 
     defb 0xdd                  ;6d0a
     ld hl,lineBuffer           ;6d0b 21 e5 2c  ! . , 
     push hl                    ;6d0e e5  . 
@@ -1627,6 +1776,8 @@ l6d30h:
     ld (ix+000h),a             ;6d30 dd 77 00  . w . 
     inc ix                     ;6d33 dd 23  . # 
     ret                        ;6d35 c9  . 
+
+monDefineAddressForTheDirectCall:
     ld hl,l06881h              ;6d36 21 8d 01  ! . . 
 l6d39h:
     push hl                    ;6d39 e5  . 
@@ -1650,6 +1801,8 @@ l6d39h:
     pop hl                     ;6d55 e1  . 
     inc (hl)                   ;6d56 34  4 
     jr l6d39h                  ;6d57 18 e0  . . 
+
+monFindSequence:
     ld a,031h                  ;6d59 3e 31  > 1 
     ld (l07a67h),a             ;6d5b 32 73 13  2 s . 
     ld b,005h                  ;6d5e 06 05  . . 
@@ -1673,6 +1826,8 @@ l6d70h:
     inc hl                     ;6d79 23  # 
     pop bc                     ;6d7a c1  . 
     djnz l6d63h                ;6d7b 10 e6  . . 
+
+monNextSequence:
     ld de,(l0696eh+1)          ;6d7d ed 5b 7b 02  . [ { . 
     inc de                     ;6d81 13  . 
 l6d82h:
@@ -1690,6 +1845,7 @@ l6d88h:
     djnz l6d88h                ;6d90 10 f6  . . 
     pop hl                     ;6d92 e1  . 
     jp l6946h                  ;6d93 c3 52 02  . R . 
+
 l6d96h:
     sub 02fh                   ;6d96 d6 2f  . / 
     cp (hl)                    ;6d98 be  . 
