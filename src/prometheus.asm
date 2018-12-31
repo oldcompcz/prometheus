@@ -971,7 +971,7 @@ startMonitor:
     inc hl                     ;68be 23  #                         (flow (mon) from: 5f89)  5f8a inc hl 
     ld (hl),0cch               ;68bf 36 cc  6 .                    (flow (mon) from: 5f8a)  5f8b ld (hl),cc 
     inc hl                     ;68c1 23  #                         (flow (mon) from: 5f8b)  5f8d inc hl 
-    ld a,(v_l6848h)            ;68c2 3a 88 0a  : . .               (flow (mon) from: 5f8d)  5f8e ld a,(6848) 
+    ld a,(executionModeOperation)  ;68c2 3a 88 0a  : . .               (flow (mon) from: 5f8d)  5f8e ld a,(6848) 
     or a                       ;68c5 b7  .                         (flow (mon) from: 5f8e)  5f91 or a 
     jr z,l68cah                ;68c6 28 02  ( .                    (flow (mon) from: 5f91)  5f92 jr z,5f96 
     sub 0c7h                   ;68c8 d6 c7  . . 
@@ -1029,7 +1029,7 @@ l68cah:
 l6929h:
     ld a,(de)                  ;6929 1a  .                         (flow (mon) from: 5ff2 5fff)  5ff5 ld a,(de) 
     inc de                     ;692a 13  .                         (flow (mon) from: 5ff5)  5ff6 inc de 
-    call v_sub_6bd8h           ;692b cd 18 0e  . . .               (flow (mon) from: 5ff6)  5ff7 call 6bd8 
+    call addAtoHL              ;692b cd 18 0e  . . .               (flow (mon) from: 5ff6)  5ff7 call 6bd8 
     ld a,(de)                  ;692e 1a  .                         (flow (mon) from: 6bda)  5ffa ld a,(de) 
     cp c                       ;692f b9  .                         (flow (mon) from: 5ffa)  5ffb cp c 
     inc de                     ;6930 13  .                         (flow (mon) from: 5ffb)  5ffc inc de 
@@ -1041,6 +1041,8 @@ l6939h:
     push hl                    ;6939 e5  .                         (flow (mon) from: 5ffd)  6005 push hl 
     ld hl,(l0696eh+1)          ;693a 2a 7b 02  * { .               (flow (mon) from: 6005)  6006 ld hl,(603b) 
     ret                        ;693d c9  .                         (flow (mon) from: 6006)  6009 ret 
+
+
 v_l600ah:
     call v_sub_60c3h           ;693e cd 03 03  . . . 
     call nz,02b23h             ;6941 c4 23 2b  . # + 
@@ -1055,7 +1057,7 @@ l6946h:
     ret z                      ;694f c8  . 
     dec (hl)                   ;6950 35  5 
     add a,a                    ;6951 87  . 
-    call v_sub_6bd8h           ;6952 cd 18 0e  . . . 
+    call addAtoHL              ;6952 cd 18 0e  . . . 
     ld a,(hl)                  ;6955 7e  ~ 
     dec hl                     ;6956 2b  + 
     ld l,(hl)                  ;6957 6e  n 
@@ -1070,7 +1072,7 @@ l6946h:
     call nz,034e3h             ;6966 c4 e3 34  . . 4 
     ld a,(hl)                  ;6969 7e  ~ 
     add a,a                    ;696a 87  . 
-    call v_sub_6bd8h           ;696b cd 18 0e  . . . 
+    call addAtoHL              ;696b cd 18 0e  . . . 
 l0696eh:
     ld de,00000h               ;696e 11 00 00  . . . 
     ld (hl),d                  ;6971 72  r 
@@ -1091,66 +1093,51 @@ l0696eh:
     ld a,(ix+004h)             ;698f dd 7e 04  . ~ . 
     and 01fh                   ;6992 e6 1f  . . 
     jp v_l6e46h                ;6994 c3 86 10  . . . 
+
+
 v_l6063h:
-    nop                        ;6997 00  . 
-    ld l,l                     ;6998 6d  m 
-    dec b                      ;6999 05  . 
-    ld a,(bc)                  ;699a 0a  . 
-    ld (bc),a                  ;699b 02  . 
-    dec c                      ;699c 0d  . 
-    dec b                      ;699d 05  . 
-    ex af,af'                  ;699e 08  . 
-    ld de,01c0bh               ;699f 11 0b 1c  . . . 
-    add hl,bc                  ;69a2 09  . 
-    dec b                      ;69a3 05  . 
-    halt                       ;69a4 76  v 
-    inc b                      ;69a5 04  . 
-    inc h                      ;69a6 24  $ 
-    dec bc                     ;69a7 0b  . 
-    dec b                      ;69a8 05  . 
-    ld e,h                     ;69a9 5c  \ 
-    jr nz,l6a2bh               ;69aa 20 7f     
-    ld h,l                     ;69ac 65  e 
-    ld c,060h                  ;69ad 0e 60  . ` 
-    ld b,078h                  ;69af 06 78  . x 
-    ld de,00563h               ;69b1 11 63 05  . c . 
-    ccf                        ;69b4 3f  ? 
-    ld c,074h                  ;69b5 0e 74  . t 
-    inc d                      ;69b7 14  . 
-    ld a,01eh                  ;69b8 3e 1e  > . 
-    ld l,005h                  ;69ba 2e 05  . . 
-    ld (hl),e                  ;69bc 73  s 
-    dec b                      ;69bd 05  . 
-    ld a,h                     ;69be 7c  | 
-    ld b,h                     ;69bf 44  D 
-    ld l,d                     ;69c0 6a  j 
-    dec b                      ;69c1 05  . 
-    dec l                      ;69c2 2d  - 
-    dec d                      ;69c3 15  . 
-    ld a,c                     ;69c4 79  y 
-    ld l,c                     ;69c5 69  i 
-    ld hl,(06412h)                                             ;69c6 2a 12 64  * . d 
-    ld b,e                     ;69c9 43  C 
-    ld e,h                     ;69ca 5c  \ 
-    ld hl,(00877h)             ;69cb 2a 77 08  * w . 
-    ld e,l                     ;69ce 5d  ] 
-    ld a,(0165eh)              ;69cf 3a 5e 16  : ^ . 
-    ld l,c                     ;69d2 69  i 
-    dec b                      ;69d3 05  . 
-    ld a,a                     ;69d4 7f   
-    ld hl,00570h               ;69d5 21 70 05  ! p . 
-    ld (03d1bh),hl             ;69d8 22 1b 3d  " . = 
-    inc b                      ;69db 04  . 
-    ld l,h                     ;69dc 6c  l 
-    ld b,c                     ;69dd 41  A 
-    dec sp                     ;69de 3b                        ; 
-    inc b                      ;69df 04  . 
-    ld l,a                     ;69e0 6f  o 
-    cpl                        ;69e1 2f  / 
-    ld (hl),023h               ;69e2 36 23  6 # 
-    ld h,a                     ;69e4 67  g 
-    inc h                      ;69e5 24  $ 
-    ld l,(hl)                  ;69e6 6e  n 
+    defb 0x00, 0x6d ; m       - set current address
+    defb 0x05, 0x0a ; up      - one byte back
+    defb 0x02, 0x0d ; enter   - one byte forward
+    defb 0x05, 0x08 ; left    - level up
+    defb 0x11, 0x0b ; right   - level down
+    defb 0x1c, 0x09 ; down    - one instruction forward
+    defb 0x05, 0x76 ; v       - list disassembly from given address
+    defb 0x04, 0x24 ; SS + 4  - list disassembly
+    defb 0x0b, 0x05 ; CS + 2  - clear list window
+    defb 0x5c, 0x20 ; space   - memory editing (one-shot)
+    defb 0x7f, 0x65 ; e       - memory editing
+    defb 0x0e, 0x60 ; SS + x  - instruction controls mode
+    defb 0x06, 0x78 ; x       - execution mode
+    defb 0x11, 0x63 ; c       - show addresses
+    defb 0x05, 0x3f ; SS + c  - addresses printing mode
+    defb 0x0e, 0x74 ; t       - tracing
+    defb 0x14, 0x3e ; SS + t  - fast racing
+    defb 0x1e, 0x2e ; SS + m  - interrupt mode
+    defb 0x05, 0x73 ; s       - save block (first/last)
+    defb 0x05, 0x7c ; SS + s  - save block (first/length)
+    defb 0x44, 0x6a ; j       - load block from a tape (first/last)
+    defb 0x05, 0x2d ; SS + j  - load block from a tape (first/length)
+    defb 0x15, 0x79 ; y       - load header from tape
+    defb 0x69, 0x2a ; SS + b  - registers swap
+    defb 0x12, 0x64 ; d       - disassembly on printer
+    defb 0x43, 0x5c ; SS + d  - disassembly 
+    defb 0x2a, 0x77 ; w       - set start for breakpoint
+    defb 0x08, 0x5d ; SS + u  - breakpoint
+    defb 0x3a, 0x5e ; SS + h  - call
+    defb 0x16, 0x69 ; i       - move block (first/last)
+    defb 0x05, 0x7f ; SS + i  - move block (first/length)
+    defb 0x21, 0x70 ; p       - fill block (first/last)
+    defb 0x05, 0x22 ; SS + p  - fill block (first/length)
+    defb 0x1b, 0x3d ; SS + l  - list memory from a given address
+    defb 0x04, 0x6c ; l       - list memory from the current address 
+    defb 0x41, 0x3b ; SS + O  - characters from a given address
+    defb 0x04, 0x6f ; o       - characters from the current address
+    defb 0x2f, 0x36 ; 6       - define address for the direct call
+    defb 0x23, 0x67 ; g       - find sequence
+    defb 0x24, 0x6e ; n       - next sequence
+ 
+
 v_sub_60b3h:
     ld (v_sub_664ch+1),hl      ;69e7 22 8d 08  " . . 
 v_sub_60b6h:
@@ -1233,19 +1220,28 @@ l6a69h:
     ld hl,l7226h+1             ;6a74 21 33 0b  ! 3 . 
 l6a77h:
     jp invertLogicAtHLAndRet   ;6a77 c3 81 1e  . . . 
-    ld hl,v_l6848h             ;6a7a 21 88 0a  ! . . 
+
+
+    ld hl,executionModeOperation  ;6a7a 21 88 0a  ! . . 
     ld a,(hl)                  ;6a7d 7e  ~ 
     or a                       ;6a7e b7  . 
     jr nz,l6a83h               ;6a7f 20 02    . 
+    ; c8(-1), ret z
     ld a,0c7h                  ;6a81 3e c7  > . 
 l6a83h:
+    ; increase to c9 (ret)
     inc a                      ;6a83 3c  < 
+    ; should rotate? is c9+1?
     cp 0cah                    ;6a84 fe ca  . . 
     jr nz,l6a89h               ;6a86 20 01    . 
+    ; set to NOP
     xor a                      ;6a88 af  . 
 l6a89h:
+    ; set execution mode
     ld (hl),a                  ;6a89 77  w 
     ret                        ;6a8a c9  . 
+
+
     ld hl,l7421h+1             ;6a8b 21 2e 0d  ! . . 
     jr l6a77h                  ;6a8e 18 e7  . . 
     ld hl,l073c4h+1            ;6a90 21 d1 0c  ! . . 
@@ -1258,6 +1254,8 @@ l6a99h:
     ld (hl),a                  ;6a9a 77  w 
     out (0feh),a               ;6a9b d3 fe  . . 
     ret                        ;6a9d c9  . 
+
+
 l6a9eh:
     call v_sub_66e7h           ;6a9e cd 27 09  . ' . 
     call c,v_sub_6d79h         ;6aa1 dc b9 0f  . . . 
@@ -1641,7 +1639,7 @@ l6d39h:
     push hl                    ;6d44 e5  . 
     dec a                      ;6d45 3d  = 
     add a,a                    ;6d46 87  . 
-    call v_sub_6bd8h           ;6d47 cd 18 0e  . . . 
+    call addAtoHL              ;6d47 cd 18 0e  . . . 
     inc hl                     ;6d4a 23  # 
     push hl                    ;6d4b e5  . 
     call v_sub_60c3h           ;6d4c cd 03 03  . . . 
@@ -1705,7 +1703,7 @@ l6d96h:
     ld a,b                     ;6da2 78  x 
     ld b,000h                  ;6da3 06 00  . . 
     push hl                    ;6da5 e5  . 
-    call v_sub_6bd8h           ;6da6 cd 18 0e  . . . 
+    call addAtoHL              ;6da6 cd 18 0e  . . . 
     inc hl                     ;6da9 23  # 
     ld d,h                     ;6daa 54  T 
     ld e,l                     ;6dab 5d  ] 
@@ -1723,7 +1721,7 @@ v_l6480h:
     sub 031h                   ;6dba d6 31  . 1 
     add a,a                    ;6dbc 87  . 
     ld hl,v_l64c4h             ;6dbd 21 04 07  ! . . 
-    call v_sub_6bd8h           ;6dc0 cd 18 0e  . . . 
+    call addAtoHL              ;6dc0 cd 18 0e  . . . 
     ld e,(hl)                  ;6dc3 5e  ^ 
     inc hl                     ;6dc4 23  # 
     ld d,(hl)                  ;6dc5 56  V 
@@ -1740,7 +1738,7 @@ l6dc7h:
     dec a                      ;6dd3 3d  = 
     add a,a                    ;6dd4 87  . 
     add a,a                    ;6dd5 87  . 
-    call v_sub_6bd8h           ;6dd6 cd 18 0e  . . . 
+    call addAtoHL              ;6dd6 cd 18 0e  . . . 
     inc hl                     ;6dd9 23  # 
     push hl                    ;6dda e5  . 
     call v_sub_66a8h           ;6ddb cd e8 08  . . . 
@@ -1789,7 +1787,7 @@ l6e0ch:
     ld a,b                     ;6e19 78  x 
     ld b,000h                  ;6e1a 06 00  . . 
     push hl                    ;6e1c e5  . 
-    call v_sub_6bd8h           ;6e1d cd 18 0e  . . . 
+    call addAtoHL              ;6e1d cd 18 0e  . . . 
     inc hl                     ;6e20 23  # 
     ld d,h                     ;6e21 54  T 
     ld e,l                     ;6e22 5d  ] 
@@ -2125,10 +2123,10 @@ invokeStep:
     call v_sub_6992h           ;7044 cd d2 0b  . . . 
     jr c,l7069h                ;7047 38 20  8   
     ld hl,v_l680bh             ;7049 21 4b 0a  ! K . 
-    call v_sub_6bd8h           ;704c cd 18 0e  . . . 
+    call addAtoHL              ;704c cd 18 0e  . . . 
     ld a,(hl)                  ;704f 7e  ~ 
     ld hl,v_l6813h             ;7050 21 53 0a  ! S . 
-    call v_sub_6bd8h           ;7053 cd 18 0e  . . . 
+    call addAtoHL              ;7053 cd 18 0e  . . . 
     ld bc,v_l680ah             ;7056 01 4a 0a  . J . 
     ld a,(l070fbh+1)           ;7059 3a 08 0a  : . . 
     call v_sub_6a53h           ;705c cd 93 0c  . . . 
@@ -2319,7 +2317,11 @@ l7172h:
 l7178h:
     ld sp,00000h               ;7178 31 00 00  1 . . 
     exx                        ;717b d9  . 
-v_l6848h:
+executionModeOperation:
+    ; execution mode
+    ; 00 (nop)   - NON
+    ; c8 (ret z) - DEF
+    ; c9 (ret)   - ALL
     nop                        ;717c 00  . 
     add a,008h                 ;717d c6 08  . . 
     ld hl,l070fbh+1            ;717f 21 08 0a  ! . . 
@@ -2501,10 +2503,10 @@ v_sub_6969h:
     push hl                    ;729e e5  . 
     push af                    ;729f f5  . 
     ld hl,v_l69c3h             ;72a0 21 03 0c  ! . . 
-    call v_sub_6bd8h           ;72a3 cd 18 0e  . . . 
+    call addAtoHL              ;72a3 cd 18 0e  . . . 
     ld a,(hl)                  ;72a6 7e  ~ 
     ld hl,v_l69cbh             ;72a7 21 0b 0c  ! . . 
-    call v_sub_6bd8h           ;72aa cd 18 0e  . . . 
+    call addAtoHL              ;72aa cd 18 0e  . . . 
     call v_sub_6a53h           ;72ad cd 93 0c  . . . 
     pop af                     ;72b0 f1  . 
     ex (sp),hl                 ;72b1 e3  . 
@@ -2550,10 +2552,10 @@ l72d9h:
     res 3,a                    ;72e4 cb 9f  . . 
     ret                        ;72e6 c9  . 
     ld hl,v_l69c3h             ;72e7 21 03 0c  ! . . 
-    call v_sub_6bd8h           ;72ea cd 18 0e  . . . 
+    call addAtoHL              ;72ea cd 18 0e  . . . 
     ld a,(hl)                  ;72ed 7e  ~ 
     ld hl,v_l69cbh             ;72ee 21 0b 0c  ! . . 
-    call v_sub_6bd8h           ;72f1 cd 18 0e  . . . 
+    call addAtoHL              ;72f1 cd 18 0e  . . . 
     call v_sub_6a53h           ;72f4 cd 93 0c  . . . 
 v_l69c3h:
     nop                        ;72f7 00  . 
@@ -2608,7 +2610,7 @@ l0733eh:
     or a                       ;7340 b7  .                         (flow (mon) from: 6a0a)  6a0c or a 
     jr z,l7352h                ;7341 28 0f  ( .                    (flow (mon) from: 6a0c)  6a0d jr z,6a1e 
 v_sub_6a0fh:
-    ld a,020h                  ;7343 3e 20  >   
+    ld a," "                   ;7343 3e 20  >   
     ld b,a                     ;7345 47  G 
     ld de,lineBuffer           ;7346 11 e5 2c  . . , 
 l7349h:
@@ -2907,15 +2909,17 @@ l74e6h:
     pop de                     ;7501 d1  .                         (flow (mon) from: 6bcc)  6bcd pop de 
     and 007h                   ;7502 e6 07  . .                    (flow (mon) from: 6bcd)  6bce and 07 
     ld hl,v_l79fah             ;7504 21 3a 1c  ! : .               (flow (mon) from: 6bce)  6bd0 ld hl,79fa 
-    call v_sub_6bd8h           ;7507 cd 18 0e  . . .               (flow (mon) from: 6bd0)  6bd3 call 6bd8 
+    call addAtoHL              ;7507 cd 18 0e  . . .               (flow (mon) from: 6bd0)  6bd3 call 6bd8 
     ld a,(hl)                  ;750a 7e  ~                         (flow (mon) from: 6bda)  6bd6 ld a,(hl) 
     pop hl                     ;750b e1  .                         (flow (mon) from: 6bd6)  6bd7 pop hl 
-v_sub_6bd8h:
+addAtoHL:
     add a,l                    ;750c 85  .                         (flow (mon) from: 5ff7 6bd3 6bd7)  6bd8 add a,l 
     ld l,a                     ;750d 6f  o                         (flow (mon) from: 6bd8)  6bd9 ld l,a 
     ret nc                     ;750e d0  .                         (flow (mon) from: 6bd9)  6bda ret nc 
     inc h                      ;750f 24  $ 
     ret                        ;7510 c9  . 
+
+
 v_sub_6bddh:
     ld (l7550h+1),sp           ;7511 ed 73 5d 0e  . s ] . 
     ld a,002h                  ;7515 3e 02  > . 
@@ -3270,6 +3274,7 @@ l770dh:
     ld a,":"                   ;770d 3e 3a  > :                    (flow (mon) from: 6da9 6f87)  6dd9 ld a,3a 
     call displayNormalCharacter;770f cd a9 29  . . )               (flow (mon) from: 6dd9)  6ddb call 8769 
     pop de                     ;7712 d1  .                         (flow (mon) from: 877e)  6dde pop de 
+    ; get item size
     ld a,(ix+004h)             ;7713 dd 7e 04  . ~ .               (flow (mon) from: 6dde)  6ddf ld a,(ix+04) 
     and 01fh                   ;7716 e6 1f  . .                    (flow (mon) from: 6ddf)  6de2 and 1f 
     ld hl,(varcPrintingPosition+1)       ;7718 2a c8 29  * . )     (flow (mon) from: 6de2)  6de4 ld hl,(8788) 
@@ -3284,6 +3289,7 @@ l771bh:
     inc de                     ;7724 13  .                         (flow (mon) from: 6def)  6df0 inc de 
     ld a,(de)                  ;7725 1a  .                         (flow (mon) from: 6df0)  6df1 ld a,(de) 
     ld h,a                     ;7726 67  g                         (flow (mon) from: 6df1)  6df2 ld h,a 
+    ; one/two bytes?
     ld a,(ix+003h)             ;7727 dd 7e 03  . ~ .               (flow (mon) from: 6df2)  6df3 ld a,(ix+03) 
     bit 3,a                    ;772a cb 5f  . _                    (flow (mon) from: 6df3)  6df6 bit 3,a 
     jr z,l772fh                ;772c 28 01  ( .                    (flow (mon) from: 6df6)  6df8 jr z,6dfb 
@@ -3297,6 +3303,7 @@ l772fh:
     jr nc,l7777h               ;7738 30 3d  0 =                    (flow (mon) from: 6e02)  6e04 jr nc,6e43 
     ld d,004h                  ;773a 16 04  . .                    (flow (mon) from: 6e04)  6e06 ld d,04 
 l773ch:
+    ; one/two bytes?
     bit 3,(ix+003h)            ;773c dd cb 03 5e  . . . ^          (flow (mon) from: 6e06 6e2b)  6e08 bit 3,(ix+03) 
     push bc                    ;7740 c5  .                         (flow (mon) from: 6e08)  6e0c push bc 
     jr z,l7744h                ;7741 28 01  ( .                    (flow (mon) from: 6e0c)  6e0d jr z,6e10 
@@ -3322,6 +3329,7 @@ l7744h:
     jr nz,l773ch               ;775f 20 db    .                    (flow (mon) from: 6e2a)  6e2b jr nz,6e08 
     pop de                     ;7761 d1  .                         (flow (mon) from: 6e2b)  6e2d pop de 
     pop hl                     ;7762 e1  .                         (flow (mon) from: 6e2d)  6e2e pop hl 
+    ; single/multi line
     bit 2,(ix+003h)            ;7763 dd cb 03 56  . . . V          (flow (mon) from: 6e2e)  6e2f bit 2,(ix+03) 
     jr z,l7773h                ;7767 28 0a  ( .                    (flow (mon) from: 6e2f)  6e33 jr z,6e3f 
     call v_sub_6f94h           ;7769 cd d4 11  . . .               (flow (mon) from: 6e33)  6e35 call 6f94 
@@ -3363,6 +3371,7 @@ l7799h:
     ld de,v_l8c76h             ;779d 11 b6 2e  . . .               (flow (mon) from: 6e67)  6e69 ld de,8c76 
     jp v_l6f72h                ;77a0 c3 b2 11  . . .               (flow (mon) from: 6e69)  6e6c jp 6f72 
 l77a3h:
+    ; item size
     ld a,(ix+004h)             ;77a3 dd 7e 04  . ~ .               (flow (mon) from: 6e56)  6e6f ld a,(ix+04) 
     and 01fh                   ;77a6 e6 1f  . .                    (flow (mon) from: 6e6f)  6e72 and 1f 
     ld b,a                     ;77a8 47  G                         (flow (mon) from: 6e72)  6e74 ld b,a 
@@ -7428,6 +7437,8 @@ l8ed9h:
     jr nz,l8ecfh               ;8edc 20 f1    .                    (flow from: 85a7)  85a8 jr nz,859b 
 l8edeh:
     jp syntaxError             ;8ede c3 c9 22  . . " 
+
+
 v_sub_85adh:
     inc hl                     ;8ee1 23  #                         (flow from: 859b)  85ad inc hl 
 atHLorNextIfOne:
