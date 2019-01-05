@@ -909,16 +909,18 @@ frontPanelRegistersItems:
     defb 081h                  ;67e1 81  . 
     defb 0e0h                  ;67e2 e0  . 
     defw v_l6fa5h              ;67e3
+
     defb 0d4h                  ;67e5 d4  . 
-l067e6h:
+setDefbAreas:
     defb 002h                  ;67e6 02  . 
     defb 0c0h                  ;67e7 c0  . 
     defb 05dh                  ;67e8 5d  ] 
     defb 038h                  ;67e9 38  8 
     defb 09ch                  ;67ea 9c  . 
     defs 20
+ 
     defb 0d5h                  ;67ff d5  . 
-v_l5ecch:
+setDefwAreas:
     defb 002h                  ;6800 02  . 
     defb 0c0h                  ;6801 c0  . 
     defb 05dh                  ;6802 5d  ] 
@@ -929,19 +931,23 @@ v_l5ecch:
 monCallsStack:
 
     defs 25
+
     defb 0d3h                  ;6832 d3  . 
-l06833h:
+setReadProtectedAreas:
     defb 002h                  ;6833 02  . 
     defs 24
+
     defb 0d2h                  ;684c d2  . 
-l0684dh:
+setWriteProtectedAreas:
     defb 002h                  ;684d 02  . 
 l0684eh:
     defs 24
+
     defb 0d1h                  ;6866 d1  . 
-v_l5f33h:
+setExecutionProtectedAreas:
     defb 002h                  ;6867 02  . 
     defs 24
+
     defb 0cch                  ;6880 cc  . 
 l06881h:
     defb 001h                  ;6881 01  . 
@@ -956,7 +962,8 @@ v_sub_5f64h:
     cpl                        ;689e 2f  / 
     and 01fh                   ;689f e6 1f  . . 
     ret nz                     ;68a1 c0  . 
-    call v_sub_8608h           ;68a2 cd 48 28  . H ( 
+    call readKeyCode           ;68a2 cd 48 28  . H ( 
+    ; edit (CS+1)
     cp 004h                    ;68a5 fe 04  . . 
     ret nz                     ;68a7 c0  . 
 
@@ -996,7 +1003,7 @@ l68cah:
     ld hl,startMonitor         ;68ed 21 b4 01  ! . .               (flow (mon) from: 5fb6)  5fb9 ld hl,5f74 
     push hl                    ;68f0 e5  .                         (flow (mon) from: 5fb9)  5fbc push hl 
     call v_sub_6d79h           ;68f1 cd b9 0f  . . .               (flow (mon) from: 5fbc)  5fbd call 6d79 
-    call v_sub_8608h           ;68f4 cd 48 28  . H (               (flow (mon) from: 6d99)  5fc0 call 8608 
+    call readKeyCode           ;68f4 cd 48 28  . H (               (flow (mon) from: 6d99)  5fc0 call 8608 
     call v_sub_6113h           ;68f7 cd 53 03  . S .               (flow (mon) from: 8610)  5fc3 call 6113 
     call v_sub_85f8h           ;68fa cd 38 28  . 8 (               (flow (mon) from: 611c)  5fc6 call 85f8 
     ld hl,(varcMonitorCurrentAddress+1)  ;68fd 2a 7b 02  * { .     (flow (mon) from: 8607)  5fc9 ld hl,(603b)  
@@ -1040,7 +1047,7 @@ l6929h:
     jr z,l6939h                ;6931 28 06  ( .                    (flow (mon) from: 5ffc)  5ffd jr z,6005 
     djnz l6929h                ;6933 10 f4  . .                    (flow (mon) from: 5ffd)  5fff djnz 5ff5 
     ld a,c                     ;6935 79  y 
-    jp v_l6480h                ;6936 c3 c0 06  . . . 
+    jp testKeysForAreas        ;6936 c3 c0 06  . . . 
 l6939h:
     push hl                    ;6939 e5  .                         (flow (mon) from: 5ffd)  6005 push hl 
     ld hl,(varcMonitorCurrentAddress+1)   ;693a 2a 7b 02  * { .    (flow (mon) from: 6005)  6006 ld hl,(603b) 
@@ -1508,7 +1515,7 @@ l6b70h:
     ld hl,(v_l8b0fh)           ;6b87 2a 4f 2d  * O - 
     call v_sub_6afch           ;6b8a cd 3c 0d  . < . 
     call v_sub_6c4ah           ;6b8d cd 8a 0e  . . . 
-    call v_sub_8608h           ;6b90 cd 48 28  . H ( 
+    call readKeyCode           ;6b90 cd 48 28  . H ( 
     pop hl                     ;6b93 e1  . 
     pop de                     ;6b94 d1  . 
     cp 06ah                    ;6b95 fe 6a  . j 
@@ -1877,12 +1884,16 @@ l6d96h:
     pop hl                     ;6db0 e1  . 
     dec (hl)                   ;6db1 35  5 
     jr l6d39h                  ;6db2 18 85  . . 
-v_l6480h:
+
+
+testKeysForAreas:
+    ; test keys 1-5
     cp 031h                    ;6db4 fe 31  . 1 
     ret c                      ;6db6 d8  . 
     cp 036h                    ;6db7 fe 36  . 6 
     ret nc                     ;6db9 d0  . 
     sub 031h                   ;6dba d6 31  . 1 
+    ; compute address offset
     add a,a                    ;6dbc 87  . 
     ld hl,v_l64c4h             ;6dbd 21 04 07  ! . . 
     call addAtoHL              ;6dc0 cd 18 0e  . . . 
@@ -1930,11 +1941,11 @@ l6df1h:
     ret z                      ;6df5 c8  . 
     jr l6d82h                  ;6df6 18 8a  . . 
 v_l64c4h:
-    defw l067e6h               ;6df8
-    defw v_l5ecch              ;6dfa
-    defw l06833h               ;6dfc
-    defw l0684dh               ;6dfe
-    defw v_l5f33h              ;6e00
+    defw setDefbAreas                ;6df8
+    defw setDefwAreas                ;6dfa
+    defw setReadProtectedAreas       ;6dfc
+    defw setWriteProtectedAreas      ;6dfe
+    defw setExecutionProtectedAreas  ;6e00
 v_l64ceh:
     defs 10
 l6e0ch:
@@ -2083,19 +2094,23 @@ l6ee0h:
     inc de                     ;6eec 13  . 
     pop hl                     ;6eed e1  . 
     ret                        ;6eee c9  . 
+
+
 v_sub_65bbh:
-    ld a,037h                  ;6eef 3e 37  > 7 
-    ld c,035h                  ;6ef1 0e 35  . 5 
+    ld a,037h  ; scf           ;6eef 3e 37  > 7 
+    ld c,035h  ; key code limit (key 5)  ;6ef1 0e 35  . 5 
     jr l6ef9h                  ;6ef3 18 04  . . 
+
 v_sub_65c1h:
-    ld a,0b7h                  ;6ef5 3e b7  > . 
-    ld c,039h                  ;6ef7 0e 39  . 9 
+    ld a,0b7h  ; or a          ;6ef5 3e b7  > . 
+    ld c,039h  ; key code limit (key 9)  ;6ef7 0e 39  . 9 
 l6ef9h:
+    ; modify code
     ld (v_l65deh),a            ;6ef9 32 1e 08  2 . . 
     ld (v_l65edh),a            ;6efc 32 2d 08  2 - . 
     ld (v_l6608h),a            ;6eff 32 48 08  2 H . 
     ld a,c                     ;6f02 79  y 
-    ld (l06f50h+1),a           ;6f03 32 5d 08  2 ] . 
+    ld (keyCodeLimit+1),a      ;6f03 32 5d 08  2 ] . 
     call v_sub_6c47h           ;6f06 cd 87 0e  . . . 
     dec hl                     ;6f09 2b  + 
     ld c,(hl)                  ;6f0a 4e  N 
@@ -2103,6 +2118,7 @@ l6ef9h:
     ld de,lineBuffer           ;6f0c 11 e5 2c  . . , 
     call v_sub_65a3h           ;6f0f cd e3 07  . . . 
 v_l65deh:
+    ; operation
     scf                        ;6f12 37  7 
     ld c,0d6h                  ;6f13 0e d6  . . 
     call c,v_sub_65a3h         ;6f15 dc e3 07  . . . 
@@ -2135,12 +2151,15 @@ v_l6608h:
     pop af                     ;6f43 f1  . 
     jr l6f2ah                  ;6f44 18 e4  . . 
 l6f46h:
-    call v_sub_8608h           ;6f46 cd 48 28  . H ( 
-    cp 069h                    ;6f49 fe 69  . i 
+    call readKeyCode           ;6f46 cd 48 28  . H ( 
+    ; key for inserting 
+    cp "i"                    ;6f49 fe 69  . i 
     ret z                      ;6f4b c8  . 
+    ; key 0
     cp 030h                    ;6f4c fe 30  . 0 
     jr c,l6f53h                ;6f4e 38 03  8 . 
-l06f50h:
+keyCodeLimit:
+    ; key 5
     cp 035h                    ;6f50 fe 35  . 5 
     ret c                      ;6f52 d8  . 
 l6f53h:
@@ -2204,6 +2223,7 @@ l6fa9h:
     call processKey            ;6fac cd 79 28  . y (               (flow (mon) from: 85db)  6678 call 8639 
     cp 080h                    ;6faf fe 80  . . 
     jr nc,l6fa9h               ;6fb1 30 f6  0 . 
+    ; edit (CS+1)
     cp 004h                    ;6fb3 fe 04  . . 
     jp z,startMonitor          ;6fb5 ca b4 01  . . . 
     cp 003h                    ;6fb8 fe 03  . . 
@@ -2307,7 +2327,7 @@ l7069h:
     push hl                    ;706f e5  . 
     exx                        ;7070 d9  . 
     pop de                     ;7071 d1  . 
-    ld hl,v_l5f33h             ;7072 21 73 01  ! s . 
+    ld hl,setExecutionProtectedAreas                 ;7072 21 73 01  ! s . 
     ld a,(varcInstructionsControlsMode+1)            ;7075 3a 33 0b  : 3 . 
     or a                       ;7078 b7  . 
     call z,v_sub_6c20h         ;7079 cc 60 0e  . ` . 
@@ -2642,12 +2662,12 @@ l725ch:
     dec hl                     ;7268 2b  + 
     dec hl                     ;7269 2b  + 
     ld (l070fbh+1),hl          ;726a 22 08 0a  " . . 
-    ld hl,l0684dh              ;726d 21 59 01  ! Y . 
+    ld hl,setWriteProtectedAreas  ;726d 21 59 01  ! Y . 
     pop de                     ;7270 d1  . 
     pop bc                     ;7271 c1  . 
     call v_sub_6be8h           ;7272 cd 28 0e  . ( . 
     jp c,v_l66c4h              ;7275 da 04 09  . . . 
-    ld hl,l06833h              ;7278 21 3f 01  ! ? . 
+    ld hl,setReadProtectedAreas  ;7278 21 3f 01  ! ? . 
     pop de                     ;727b d1  . 
     pop bc                     ;727c c1  . 
     call v_sub_6be8h           ;727d cd 28 0e  . ( . 
@@ -2660,12 +2680,12 @@ l7286h:
     ld hl,v_l6fb9h             ;7286 21 f9 11  ! . . 
     push de                    ;7289 d5  . 
     call v_sub_6992h           ;728a cd d2 0b  . . . 
-    ld hl,l06833h              ;728d 21 3f 01  ! ? . 
+    ld hl,setReadProtectedAreas  ;728d 21 3f 01  ! ? . 
     call v_sub_6969h           ;7290 cd a9 0b  . . . 
     ld hl,v_l700bh             ;7293 21 4b 12  ! K . 
     pop de                     ;7296 d1  . 
     call v_sub_6992h           ;7297 cd d2 0b  . . . 
-    ld hl,l0684dh              ;729a 21 59 01  ! Y . 
+    ld hl,setWriteProtectedAreas  ;729a 21 59 01  ! Y . 
 v_sub_6969h:
     ret c                      ;729d d8  . 
     push hl                    ;729e e5  . 
@@ -2792,10 +2812,10 @@ v_sub_6a19h:
 l7352h:
     ld (l073bdh+1),hl          ;7352 22 ca 0c  " . .               (flow (mon) from: 6a0d)  6a1e ld (6a8a),hl 
     ex de,hl                   ;7355 eb  .                         (flow (mon) from: 6a1e)  6a21 ex de,hl 
-    ld hl,l067e6h              ;7356 21 f2 00  ! . .               (flow (mon) from: 6a21)  6a22 ld hl,5eb2 
+    ld hl,setDefbAreas         ;7356 21 f2 00  ! . .               (flow (mon) from: 6a21)  6a22 ld hl,5eb2 
     call v_sub_6c20h           ;7359 cd 60 0e  . ` .               (flow (mon) from: 6a22)  6a25 call 6c20 
     jr c,l7332h                ;735c 38 d4  8 .                    (flow (mon) from: 6c46)  6a28 jr c,69fe 
-    ld hl,v_l5ecch             ;735e 21 0c 01  ! . .               (flow (mon) from: 6a28)  6a2a ld hl,5ecc 
+    ld hl,setDefwAreas         ;735e 21 0c 01  ! . .               (flow (mon) from: 6a28)  6a2a ld hl,5ecc 
     call v_sub_6c20h           ;7361 cd 60 0e  . ` .               (flow (mon) from: 6a2a)  6a2d call 6c20 
     ex de,hl                   ;7364 eb  .                         (flow (mon) from: 6c46)  6a30 ex de,hl 
     jr c,l732ah                ;7365 38 c3  8 .                    (flow (mon) from: 6a30)  6a31 jr c,69f6 
@@ -3258,8 +3278,9 @@ varcActiveMonitorEditorItem:
     ; text color
     ld a,038h                  ;75ff 3e 38  > 8 
     ld (varcTextColor+1),a     ;7601 32 bc 29  2 . ) 
-    call v_sub_8608h           ;7604 cd 48 28  . H ( 
+    call readKeyCode           ;7604 cd 48 28  . H ( 
     pop bc                     ;7607 c1  . 
+    ; edit (CS+1)
     cp 004h                    ;7608 fe 04  . . 
     ret z                      ;760a c8  . 
     ld hl,invokeFrontPanelEditor  ;760b 21 c3 0e  ! . . 
@@ -7689,7 +7710,7 @@ l8f31h:
     ret                        ;8f3b c9  .                         (flow from: 8605)  8607 ret 
 
 
-v_sub_8608h:
+readKeyCode:
     exx                        ;8f3c d9  .                         (flow (mon) from: 5fc0)  8608 exx 
     call processKey            ;8f3d cd 79 28  . y (               (flow (mon) from: 8608)  8609 call 8639 
     exx                        ;8f40 d9  .                         (flow (mon) from: 86a0)  860c exx 
