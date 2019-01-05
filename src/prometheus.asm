@@ -38,6 +38,7 @@ SYSVAR_ERR_SP:                 equ 05c3dh  ; Address of item on machine stack to
 
 INSTRUCTIONS_TABLE_SIZE:       equ 687  
 HIGHLIGHT_COLOR:               equ 0x30    ; yellow paper, black color
+FRONT_PANEL_EDITOR_COLOR:      equ 0x39    ; as text color with bit 0 inverted
 LABEL_LENGTH:                  equ 9
 PROMETHEUS_STRING_LENGTH:      equ 10
 SEPARATOR_CHARCODE:            equ "~"
@@ -962,7 +963,7 @@ v_sub_5f64h:
 
 startMonitor:
     di                         ;68a8 f3  .                         (flow (mon) from: 6015 7bd2)  5f74 di 
-    call simpleBeep            ;68a9 cd 40 1a  . @ .               (flow (mon) from: 5f74)  5f75 call 7800 
+    call setBorderColor        ;68a9 cd 40 1a  . @ .               (flow (mon) from: 5f74)  5f75 call 7800 
     ld sp,internalStackTop     ;68ac 31 e1 2d  1 . -               (flow (mon) from: 7804)  5f78 ld sp,8ba1 
     call monitorInputBuffersInitialization       ;68af cd 9a 08    (flow (mon) from: 5f78)  5f7b call 665a 
     ld hl,inputBufferStart     ;68b2 21 3f 2d  ! ? -               (flow (mon) from: 82e5)  5f7e ld hl,8aff 
@@ -3208,7 +3209,8 @@ invokeFrontPanelEditor:
     push hl                    ;75bd e5  . 
     push bc                    ;75be c5  . 
 l75bfh:
-    ld (hl),039h               ;75bf 36 39  6 9 
+    ; color for the front panel editor (text color with inverted bit 0)
+    ld (hl),FRONT_PANEL_EDITOR_COLOR     ;75bf 36 39  6 9 
     inc hl                     ;75c1 23  # 
     djnz l75bfh                ;75c2 10 fb  . . 
     dec c                      ;75c4 0d  . 
@@ -3218,7 +3220,8 @@ l75bfh:
     pop hl                     ;75cb e1  . 
 l75cch:
     ld a,(hl)                  ;75cc 7e  ~ 
-    cp 039h                    ;75cd fe 39  . 9 
+    ; front panel editor color
+    cp FRONT_PANEL_EDITOR_COLOR  ;75cd fe 39  . 9 
     jr nz,l75e7h               ;75cf 20 16    . 
     push hl                    ;75d1 e5  . 
     ld a,h                     ;75d2 7c  | 
@@ -3248,11 +3251,13 @@ varcActiveMonitorEditorItem:
     ld ix,frontPanelItemsTable ;75f0 dd 21 03 00  . ! . . 
     add ix,bc                  ;75f4 dd 09  . . 
     push bc                    ;75f6 c5  . 
+    ; access line color
     ld a,028h                  ;75f7 3e 28  > ( 
-    ld (vr_l0877bh+1),a        ;75f9 32 bc 29  2 . ) 
+    ld (varcTextColor+1),a     ;75f9 32 bc 29  2 . ) 
     call v_sub_6db1h           ;75fc cd f1 0f  . . . 
+    ; text color
     ld a,038h                  ;75ff 3e 38  > 8 
-    ld (vr_l0877bh+1),a        ;7601 32 bc 29  2 . ) 
+    ld (varcTextColor+1),a     ;7601 32 bc 29  2 . ) 
     call v_sub_8608h           ;7604 cd 48 28  . H ( 
     pop bc                     ;7607 c1  . 
     cp 004h                    ;7608 fe 04  . . 
@@ -4574,9 +4579,11 @@ l7d8ch:
     ld a,00eh                  ;7d8f 3e 0e  > . 
     call printStatusBar        ;7d91 cd 34 2c  . 4 , 
     ld hl,05840h               ;7d94 21 40 58  ! @ X 
+    ; text color
     ld a,038h                  ;7d97 3e 38  > 8 
     ex af,af'                  ;7d99 08  . 
-    ld a,030h                  ;7d9a 3e 30  > 0 
+    ; access line color
+    ld a,HIGHLIGHT_COLOR       ;7d9a 3e 30  > 0 
     ld c,014h                  ;7d9c 0e 14  . . 
 l7d9eh:
     ld b,020h                  ;7d9e 06 20  .   
@@ -5155,7 +5162,7 @@ l8105h:
     scf                        ;812f 37  7                         (flow from: 77f9)  77fb scf 
     sbc a,a                    ;8130 9f  .                         (flow from: 77fb)  77fc sbc a,a 
     call v_sub_770ah           ;8131 cd 4a 19  . J .               (flow from: 77fc)  77fd call 770a 
-simpleBeep:
+setBorderColor:
     ld a,007h                  ;8134 3e 07  > .                    (flow from: 770d 7cf7)  7800 ld a,07 
     out (0feh),a               ;8136 d3 fe  . .                    (flow from: 7800)  7802 out (fe),a 
     ret                        ;8138 c9  .                         (flow from: 7802)  7804 ret 
@@ -6007,8 +6014,8 @@ l8622h:
     call writeVisibleCode      ;8625 cd ac 24  . . $                (flow from: 7cee)  7cf1 call 826c 
 l8628h:
     call repaintEditLine       ;8628 cd fe 27  . . '               (flow from: 7d71 828e)  7cf4 call 85be 
-    call simpleBeep            ;862b cd 40 1a  . @ .               (flow from: 85db)  7cf7 call 7800 
-    call processKey           ;862e cd 79 28  . y (               (flow from: 7804)  7cfa call 8639 
+    call setBorderColor        ;862b cd 40 1a  . @ .               (flow from: 85db)  7cf7 call 7800 
+    call processKey            ;862e cd 79 28  . y (               (flow from: 7804)  7cfa call 8639 
     push af                    ;8631 f5  .                         (flow from: 86a0 86ad)  7cfd push af 
 l08632h:
 vr_l07cfeh:
@@ -6137,6 +6144,8 @@ l870ch:
     jr nz,l86deh               ;870f 20 cd    .                    (flow from: 7e40 7e73)  7ddb jr nz,7daa 
 v_l7dddh:
     ld hl,LEFT_BOTTOM_ATTRIBUTE_ADDRESS  ;8711 21 e0 5a  ! . Z     (flow from: 775d 7ddb)  7ddd ld hl,5ae0 
+    ; color for hiding of the edit line (0x3f)
+    ;   - ink color replace by the paper color 
     ld bc,0203fh               ;8714 01 3f 20  . ?                 (flow from: 7ddd)  7de0 ld bc,203f 
     call atHLrepeatBTimesC     ;8717 cd 21 25  . ! %               (flow from: 7de0)  7de3 call 82e1 
     ld hl,inputBufferStart     ;871a 21 3f 2d  ! ? -               (flow from: 82e5)  7de6 ld hl,8aff 
@@ -7025,6 +7034,10 @@ l8bedh:
     jr nz,l8bf8h               ;8bef 20 07    .                    (flow from: 82b9)  82bb jr nz,82c4 
     call isLetter              ;8bf1 cd 6e 29  . n )               (flow from: 82bb)  82bd call 872e 
     jr nz,l8bf8h               ;8bf4 20 02    .                    (flow from: 8730 873c)  82c0 jr nz,82c4 
+    ; font modifier:
+    ;  230, 255 - normal
+    ;  230, 223 - uppercase
+    ;  246, 32  - lowercase    
     and 0ffh                   ;8bf6 e6 ff  . .                    (flow from: 82c0)  82c2 and ff 
 l8bf8h:
     call displayCharacterSafely    ;8bf8 cd 84 29  . . )           (flow from: 82c0 82c2)  82c4 call 8744 
@@ -7871,6 +7884,8 @@ varc9019:
     ld a,(hl)                  ;9041 7e  ~ 
     nop                        ;9042 00  . 
 keypressBeep:
+    ; beep length 
+    ;   reasonable values: 1-30
     ld e,01eh                  ;9043 1e 1e  . .                    (flow from: 8690)  870f ld e,0a 
     jr l9049h                  ;9045 18 02  . .                    (flow from: 870f)  8711 jr 8715 
 
@@ -7879,6 +7894,7 @@ beep:
     ld e,000h                  ;9047 1e 00  . . 
 l9049h:
     ld hl,0012ch               ;9049 21 2c 01  ! , .               (flow from: 8711)  8715 ld hl,012c 
+    ; set border color
     ld a,017h                  ;904c 3e 17  > .                    (flow from: 8715)  8718 ld a,07 
 l904eh:
     ld b,e                     ;904e 43  C                         (flow from: 8718 8724)  871a ld b,e 
@@ -7968,7 +7984,7 @@ l90a8h:
     jr c,l90a8h                ;90ac 38 fa  8 .                    (flow from: 8776)  8778 jr c,8774 
 l90aeh:
     ld h,a                     ;90ae 67  g                         (flow from: 8772 8778)  877a ld h,a 
-vr_l0877bh:
+varcTextColor:
     ld (hl),038h               ;90af 36 38  6 8                    (flow from: 877a)  877b ld (hl),38 
     exx                        ;90b1 d9  .                         (flow from: 877b)  877d exx 
     ret                        ;90b2 c9  .                         (flow from: 877d)  877e ret 
@@ -7988,6 +8004,9 @@ varcPrintingPosition:
     ld b,008h                  ;90bf 06 08  . .                    (flow from: 878a)  878b ld b,08 
 l90c1h:
     ld a,(hl)                  ;90c1 7e  ~                         (flow from: 878b 8794)  878d ld a,(hl) 
+    ; font modifier:
+    ;   0 - normal
+    ;  15 - bold
     nop                        ;90c2 00  .                         (flow from: 878d)  878e nop 
     or (hl)                    ;90c3 b6  .                         (flow from: 878e)  878f or (hl) 
     xor c                      ;90c4 a9  .                         (flow from: 878f)  8790 xor c 
