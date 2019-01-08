@@ -1997,8 +1997,8 @@ l6e54h:
     ld a,(ix+002h)             ;6e5a dd 7e 02  . ~ . 
     bit 7,a                    ;6e5d cb 7f  .  
     jr nz,l6e73h               ;6e5f 20 12    . 
-    ld de,v_l8db4h             ;6e61 11 f4 2f  . . / 
-    call v_sub_82c9h           ;6e64 cd 09 25  . . % 
+    ld de,operandsReferences   ;6e61 11 f4 2f  . . / 
+    call getStringFromTableDE  ;6e64 cd 09 25  . . % 
     ld a,(de)                  ;6e67 1a  . 
     xor (hl)                   ;6e68 ae  . 
     and 05fh                   ;6e69 e6 5f  . _ 
@@ -3562,7 +3562,7 @@ l7785h:
 varcInterruptMode:
     ld a,000h                  ;7799 3e 00  > .                    (flow (mon) from: 6e5a)  6e65 ld a,00 
     add a,003h                 ;779b c6 03  . .                    (flow (mon) from: 6e65)  6e67 add a,03 
-    ld de,v_l8c76h             ;779d 11 b6 2e  . . .               (flow (mon) from: 6e67)  6e69 ld de,8c76 
+    ld de,mnemonicsReferences  ;779d 11 b6 2e  . . .               (flow (mon) from: 6e67)  6e69 ld de,8c76 
     jp v_l6f72h                ;77a0 c3 b2 11  . . .               (flow (mon) from: 6e69)  6e6c jp 6f72 
 l77a3h:
     ; item size
@@ -3721,6 +3721,8 @@ v_sub_6f4eh:
     or 02eh                    ;788c f6 2e  . .                    (flow (mon) from: 6f56)  6f58 or 2e 
 l788eh:
     jp displayNormalCharacter  ;788e c3 a9 29  . . )               (flow (mon) from: 6f54 6f58)  6f5a jp 8769 
+
+
 v_sub_6f5dh:
     push ix                    ;7891 dd e5  . . 
     call printNumberToStringBuffer  ;7893 cd 42 2b  . B + 
@@ -3732,10 +3734,12 @@ v_sub_6f68h:
     ld ix,numberStringBuffer   ;789c dd 21 07 2d  . ! . -          (flow (mon) from: 6f09 6f66)  6f68 ld ix,8ac7 
     ld c,000h                  ;78a0 0e 00  . .                    (flow (mon) from: 6f68)  6f6c ld c,00 
     ret                        ;78a2 c9  .                         (flow (mon) from: 6f6c)  6f6e ret 
+
+
 v_sub_6f6fh:
-    ld de,v_l8db4h             ;78a3 11 f4 2f  . . /               (flow (mon) from: 6dd6 6ed8)  6f6f ld de,8db4 
+    ld de,operandsReferences       ;78a3 11 f4 2f  . . /           (flow (mon) from: 6dd6 6ed8)  6f6f ld de,8db4 
 v_l6f72h:
-    call v_sub_82c9h           ;78a6 cd 09 25  . . %               (flow (mon) from: 6e6c 6f6f)  6f72 call 82c9 
+    call getStringFromTableDE   ;78a6 cd 09 25  . . %              (flow (mon) from: 6e6c 6f6f)  6f72 call 82c9 
 v_sub_6f75h:
     ld a,(de)                  ;78a9 1a  .                         (flow (mon) from: 6f85 82d3)  6f75 ld a,(de) 
     res 7,a                    ;78aa cb bf  . .                    (flow (mon) from: 6f75)  6f76 res 7,a 
@@ -3749,6 +3753,8 @@ l78b3h:
     rla                        ;78b8 17  .                         (flow (mon) from: 6f83)  6f84 rla 
     jr nc,v_sub_6f75h          ;78b9 30 ee  0 .                    (flow (mon) from: 6f84)  6f85 jr nc,6f75 
     ret                        ;78bb c9  .                         (flow (mon) from: 6f85)  6f87 ret 
+
+
 v_sub_6f88h:
     inc l                      ;78bc 2c  , 
     ret nz                     ;78bd c0  . 
@@ -6799,8 +6805,8 @@ l8abah:
     ld d,02ch                  ;8ac6 16 2c  . ,                    (flow from: 8190)  8192 ld d,2c 
 l8ac8h:
     push de                    ;8ac8 d5  .                         (flow from: 818c 8190 8192)  8194 push de 
-    ld de,v_l8c76h             ;8ac9 11 b6 2e  . . .               (flow from: 8194)  8195 ld de,8c76 
-    call v_sub_82c9h           ;8acc cd 09 25  . . %               (flow from: 8195)  8198 call 82c9 
+    ld de,mnemonicsReferences  ;8ac9 11 b6 2e  . . .               (flow from: 8194)  8195 ld de,8c76 
+    call getStringFromTableDE  ;8acc cd 09 25  . . %               (flow from: 8195)  8198 call 82c9 
     ld b,005h                  ;8acf 06 05  . .                    (flow from: 82d3)  819b ld b,05 
     call v_sub_82d4h           ;8ad1 cd 14 25  . . %               (flow from: 819b)  819d call 82d4 
     pop de                     ;8ad4 d1  .                         (flow from: 82e5)  81a0 pop de 
@@ -6825,8 +6831,8 @@ v_sub_81bah:
     ret z                      ;8aef c8  .                         (flow from: 81ba)  81bb ret z 
     cp 02ch                    ;8af0 fe 2c  . ,                    (flow from: 81bb)  81bc cp 2c 
     jr nc,l8b12h               ;8af2 30 1e  0 .                    (flow from: 81bc)  81be jr nc,81de 
-    ld de,v_l8db4h             ;8af4 11 f4 2f  . . /               (flow from: 81be)  81c0 ld de,8db4 
-    call v_sub_82c9h           ;8af7 cd 09 25  . . %               (flow from: 81c0)  81c3 call 82c9 
+    ld de,operandsReferences   ;8af4 11 f4 2f  . . /               (flow from: 81be)  81c0 ld de,8db4 
+    call getStringFromTableDE   ;8af7 cd 09 25  . . %              (flow from: 81c0)  81c3 call 82c9 
 v_sub_81c6h:
     ld b,009h                  ;8afa 06 09  . .                    (flow from: 8223 82d3)  81c6 ld b,09 
 l8afch:
@@ -7063,13 +7069,17 @@ l8bedh:
 l8bf8h:
     call displayCharacterSafely    ;8bf8 cd 84 29  . . )           (flow from: 82c0 82c2)  82c4 call 8744 
     jr l8bdfh                  ;8bfb 18 e2  . .                    (flow from: 8749)  82c7 jr 82ab 
-v_sub_82c9h:
+
+
+getStringFromTableDE:
+    ; de = de + a + (de+a)
     push hl                    ;8bfd e5  .                         (flow from: 8198 81c3)  82c9 push hl 
     ex de,hl                   ;8bfe eb  .                         (flow from: 82c9)  82ca ex de,hl 
     ld d,000h                  ;8bff 16 00  . .                    (flow from: 82ca)  82cb ld d,00 
     ld e,a                     ;8c01 5f  _                         (flow from: 82cb)  82cd ld e,a 
     add hl,de                  ;8c02 19  .                         (flow from: 82cd)  82ce add hl,de 
     ld e,(hl)                  ;8c03 5e  ^                         (flow from: 82ce)  82cf ld e,(hl) 
+    ; d is still 0
     add hl,de                  ;8c04 19  .                         (flow from: 82cf)  82d0 add hl,de 
     ex de,hl                   ;8c05 eb  .                         (flow from: 82d0)  82d1 ex de,hl 
     pop hl                     ;8c06 e1  .                         (flow from: 82d1)  82d2 pop hl 
@@ -7541,7 +7551,7 @@ l8e6eh:
 
 
 v_l8545h:
-    defw v_l8c76h              ;8e79 
+    defw mnemonicsReferences   ;8e79 
     defb 0x01                  ;8e7b
     ld bc,0020ch               ;8e7c 01 0c 02  . . . 
     add hl,hl                  ;8e7f 29  ) 
@@ -7549,7 +7559,7 @@ v_l8545h:
     scf                        ;8e82 37  7 
 
 v_l854fh:
-    defw v_l8db4h              ;8e83 
+    defw operandsReferences    ;8e83 
     defb 0x0c                  ;8e85
     add hl,bc                  ;8e86 09  . 
     rrca                       ;8e87 0f  . 
@@ -8684,7 +8694,10 @@ errorMessages:
     defb "Found",0xba          ;":"+0x80                       ;9590
     defb "Already define",0xe4 ;"d"+0x80                       ;9596
     defb "ENT ",0xbf           ;"?"+0x80                       ;95a5
-v_l8c76h:
+
+
+mnemonicsReferences:
+    ; probably similar structure to operandsReferences
     defb 000h                  ;95aa 00  . 
     defb 04dh                  ;95ab 4d  M 
     defb 04dh                  ;95ac 4d  M 
@@ -8764,156 +8777,179 @@ v_l8c76h:
     defb 0eah                  ;95f6 ea  . 
     defb 0edh                  ;95f7 ed  . 
     defb 0bbh                  ;95f8 bb  . 
+
 mnemonicsTable:
-    defb "c", 0xF0             ;cp                             ;95f9
-    defb "d", 0xE9             ;di
-    defb "e", 0xE9             ;ei
-    defb "e", 0xF8             ;ex
-    defb "i", 0xED             ;im
-    defb "i", 0xEE             ;in
-    defb "j", 0xF0             ;jp
-    defb "j", 0xF2             ;jr
-    defb "l", 0xE4             ;ld
-    defb "o", 0xF2             ;or
-    defb "r", 0xEC             ;rl
-    defb "r", 0xF2             ;rr
-    defb "ad", 0xE3            ;adc
-    defb "ad", 0xE4            ;add
-    defb "an", 0xE4            ;and
-    defb "bi", 0xF4            ;bit
-    defb "cc", 0xE6            ;ccf
-    defb "cp", 0xE4            ;cpd
-    defb "cp", 0xE9            ;cpi
-    defb "cp", 0xEC            ;cpl
-    defb "da", 0xE1            ;daa
-    defb "de", 0xE3            ;dec
-    defb "en", 0xF4            ;ent
-    defb "eq", 0xF5            ;equ
-    defb "ex", 0xF8            ;exx
-    defb "in", 0xE3            ;inc
-    defb "in", 0xE4            ;ind
-    defb "in", 0xE9            ;ini
-    defb "ld", 0xE4            ;ldd
-    defb "ld", 0xE9            ;ldi
-    defb "ne", 0xE7            ;neg
-    defb "no", 0xF0            ;nop
-    defb "or", 0xE7            ;org
-    defb "ou", 0xF4            ;out
-    defb "po", 0xF0            ;pop
-    defb "pu", 0xF4            ;put
-    defb "re", 0xF3            ;res
-    defb "re", 0xF4            ;ret
-    defb "rl", 0xE1            ;rla
-    defb "rl", 0xE3            ;rlc
-    defb "rl", 0xE4            ;rld
-    defb "rr", 0xE1            ;rra
-    defb "rr", 0xE3            ;rrc
-    defb "rr", 0xE4            ;rrd
-    defb "rs", 0xF4            ;rst
-    defb "sb", 0xE3            ;sbc
-    defb "sc", 0xE6            ;scf
-    defb "se", 0xF4            ;set
-    defb "sl", 0xE1            ;sla
-    defb "sr", 0xE1            ;sra
-    defb "sr", 0xEC            ;srl
-    defb "su", 0xE2            ;sub
-    defb "xo", 0xF2            ;xor
-    defb "cal", 0xEC           ;call
-    defb "cpd", 0xF2           ;cpdr
-    defb "cpi", 0xF2           ;cpir
-    defb "def", 0xE2           ;defb
-    defb "def", 0xED           ;defm
-    defb "def", 0xF3           ;defs
+mnemonicsTable00:   defb "c", 0xF0             ;cp                             ;95f9
+mnemonicsTable01:   defb "d", 0xE9             ;di
+mnemonicsTable02:   defb "e", 0xE9             ;ei
+mnemonicsTable03:   defb "e", 0xF8             ;ex
+mnemonicsTable04:   defb "i", 0xED             ;im
+mnemonicsTable05:   defb "i", 0xEE             ;in
+mnemonicsTable06:   defb "j", 0xF0             ;jp
+mnemonicsTable07:   defb "j", 0xF2             ;jr
+mnemonicsTable08:   defb "l", 0xE4             ;ld
+mnemonicsTable09:   defb "o", 0xF2             ;or
+mnemonicsTable10:   defb "r", 0xEC             ;rl
+mnemonicsTable11:   defb "r", 0xF2             ;rr
+mnemonicsTable12:   defb "ad", 0xE3            ;adc
+mnemonicsTable13:   defb "ad", 0xE4            ;add
+mnemonicsTable14:   defb "an", 0xE4            ;and
+mnemonicsTable15:   defb "bi", 0xF4            ;bit
+mnemonicsTable16:   defb "cc", 0xE6            ;ccf
+mnemonicsTable17:   defb "cp", 0xE4            ;cpd
+mnemonicsTable18:   defb "cp", 0xE9            ;cpi
+mnemonicsTable19:   defb "cp", 0xEC            ;cpl
+mnemonicsTable20:   defb "da", 0xE1            ;daa
+mnemonicsTable21:   defb "de", 0xE3            ;dec
+mnemonicsTable22:   defb "en", 0xF4            ;ent
+mnemonicsTable23:   defb "eq", 0xF5            ;equ
+mnemonicsTable24:   defb "ex", 0xF8            ;exx
+mnemonicsTable25:   defb "in", 0xE3            ;inc
+mnemonicsTable26:   defb "in", 0xE4            ;ind
+mnemonicsTable27:   defb "in", 0xE9            ;ini
+mnemonicsTable28:   defb "ld", 0xE4            ;ldd
+mnemonicsTable29:   defb "ld", 0xE9            ;ldi
+mnemonicsTable30:   defb "ne", 0xE7            ;neg
+mnemonicsTable31:   defb "no", 0xF0            ;nop
+mnemonicsTable32:   defb "or", 0xE7            ;org
+mnemonicsTable33:   defb "ou", 0xF4            ;out
+mnemonicsTable34:   defb "po", 0xF0            ;pop
+mnemonicsTable35:   defb "pu", 0xF4            ;put
+mnemonicsTable36:   defb "re", 0xF3            ;res
+mnemonicsTable37:   defb "re", 0xF4            ;ret
+mnemonicsTable38:   defb "rl", 0xE1            ;rla
+mnemonicsTable39:   defb "rl", 0xE3            ;rlc
+mnemonicsTable40:   defb "rl", 0xE4            ;rld
+mnemonicsTable41:   defb "rr", 0xE1            ;rra
+mnemonicsTable42:   defb "rr", 0xE3            ;rrc
+mnemonicsTable43:   defb "rr", 0xE4            ;rrd
+mnemonicsTable44:   defb "rs", 0xF4            ;rst
+mnemonicsTable45:   defb "sb", 0xE3            ;sbc
+mnemonicsTable46:   defb "sc", 0xE6            ;scf
+mnemonicsTable47:   defb "se", 0xF4            ;set
+mnemonicsTable48:   defb "sl", 0xE1            ;sla
+mnemonicsTable49:   defb "sr", 0xE1            ;sra
+mnemonicsTable50:   defb "sr", 0xEC            ;srl
+mnemonicsTable51:   defb "su", 0xE2            ;sub
+mnemonicsTable52:   defb "xo", 0xF2            ;xor
+mnemonicsTable53:   defb "cal", 0xEC           ;call
+mnemonicsTable54:   defb "cpd", 0xF2           ;cpdr
+mnemonicsTable55:   defb "cpi", 0xF2           ;cpir
+mnemonicsTable56:   defb "def", 0xE2           ;defb
+mnemonicsTable57:   defb "def", 0xED           ;defm
+mnemonicsTable58:   defb "def", 0xF3           ;defs
 l96a4:
-    defb "def", 0xF7           ;defw
-    defb "djn", 0xFA           ;djnz
-    defb "hal", 0xF4           ;halt
-    defb "ind", 0xF2           ;indr
-    defb "ini", 0xF2           ;inir
-    defb "ldd", 0xF2           ;lddr
-    defb "ldi", 0xF2           ;ldir
-    defb "otd", 0xF2           ;otdr
-    defb "oti", 0xF2           ;otir
-    defb "out", 0xE4           ;outd
-    defb "out", 0xE9           ;outi
-    defb "pus", 0xE8           ;push
-    defb "ret", 0xE9           ;reti
-    defb "ret", 0xEE           ;retn
-    defb "rlc", 0xE1           ;rlca
-    defb "rrc", 0xE1           ;rrca
-    defb "sli", 0xE1           ;slia
-v_l8db4h:
-    defb 020h                  ;96e8 20
-    defs 21, 0x2b     
-    defb 02ch                  ;96fe 2c  , 
-    defb 02dh                  ;96ff 2d  - 
-    defb 02eh                  ;9700 2e  . 
-    defb 02fh                  ;9701 2f  / 
-    defb 030h                  ;9702 30  0 
-    defb 031h                  ;9703 31  1 
-    defb 032h                  ;9704 32  2 
-    defb 033h                  ;9705 33  3 
-    defb 034h                  ;9706 34  4 
-    defb 035h                  ;9707 35  5 
-    defb 036h                  ;9708 36  6 
-    defb 037h                  ;9709 37  7 
-    defb 038h                  ;970a 38  8 
-    defb 039h                  ;970b 39  9 
-    defb 03ah                  ;970c 3a  : 
-    defb 03ch                  ;970d 3c  < 
-    defb 03eh                  ;970e 3e  > 
-    defb 041h                  ;970f 41  A 
-    defb 044h                  ;9710 44  D 
-    defb 047h                  ;9711 47  G 
-    defb 04ah                  ;9712 4a  J 
-    defb 04dh                  ;9713 4d  M 
+mnemonicsTable59:   defb "def", 0xF7           ;defw
+mnemonicsTable60:   defb "djn", 0xFA           ;djnz
+mnemonicsTable61:   defb "hal", 0xF4           ;halt
+mnemonicsTable62:   defb "ind", 0xF2           ;indr
+mnemonicsTable63:   defb "ini", 0xF2           ;inir
+mnemonicsTable64:   defb "ldd", 0xF2           ;lddr
+mnemonicsTable65:   defb "ldi", 0xF2           ;ldir
+mnemonicsTable66:   defb "otd", 0xF2           ;otdr
+mnemonicsTable67:   defb "oti", 0xF2           ;otir
+mnemonicsTable68:   defb "out", 0xE4           ;outd
+mnemonicsTable69:   defb "out", 0xE9           ;outi
+mnemonicsTable70:   defb "pus", 0xE8           ;push
+mnemonicsTable71:   defb "ret", 0xE9           ;reti
+mnemonicsTable72:   defb "ret", 0xEE           ;retn
+mnemonicsTable73:   defb "rlc", 0xE1           ;rlca
+mnemonicsTable74:   defb "rrc", 0xE1           ;rrca
+mnemonicsTable75:   defb "sli", 0xE1           ;slia
+
+
+operandsReferences:
+                    defb 0x20  ;96e8  is it in meaning of space (" ")? 
+operand00:          defb operandsTable00-operand00
+operand01:          defb operandsTable01-operand01
+operand02:          defb operandsTable02-operand02
+operand03:          defb operandsTable03-operand03
+operand04:          defb operandsTable04-operand04
+operand05:          defb operandsTable05-operand05
+operand06:          defb operandsTable06-operand06
+operand07:          defb operandsTable07-operand07
+operand08:          defb operandsTable08-operand08
+operand09:          defb operandsTable09-operand09
+operand10:          defb operandsTable10-operand10
+operand11:          defb operandsTable11-operand11
+operand12:          defb operandsTable12-operand12
+operand13:          defb operandsTable13-operand13
+operand14:          defb operandsTable14-operand14
+operand15:          defb operandsTable15-operand15
+operand16:          defb operandsTable16-operand16
+operand17:          defb operandsTable17-operand17
+operand18:          defb operandsTable18-operand18
+operand19:          defb operandsTable19-operand19
+operand20:          defb operandsTable20-operand20
+operand21:          defb operandsTable21-operand21
+operand22:          defb operandsTable22-operand22
+operand23:          defb operandsTable23-operand23
+operand24:          defb operandsTable24-operand24
+operand25:          defb operandsTable25-operand25
+operand26:          defb operandsTable26-operand26
+operand27:          defb operandsTable27-operand27
+operand28:          defb operandsTable28-operand28
+operand29:          defb operandsTable29-operand29
+operand30:          defb operandsTable30-operand30
+operand31:          defb operandsTable31-operand31
+operand32:          defb operandsTable32-operand32
+operand33:          defb operandsTable33-operand33
+operand34:          defb operandsTable34-operand34
+operand35:          defb operandsTable35-operand35
+operand36:          defb operandsTable36-operand36
+operand37:          defb operandsTable37-operand37
+operand38:          defb operandsTable38-operand38
+operand39:          defb operandsTable39-operand39
+operand40:          defb operandsTable40-operand40
+operand41:          defb operandsTable41-operand41
+operand42:          defb operandsTable42-operand42
 
 ;table of operands
     
 operandsTable:  
-    defb "", 0xB0              ;0                              ;9714
-    defb "", 0xB1              ;1
-    defb "", 0xB2              ;2
-    defb "", 0xB3              ;3
-    defb "", 0xB4              ;4
-    defb "", 0xB5              ;5
-    defb "", 0xB6              ;6
-    defb "", 0xB7              ;7
-    defb "", 0xE1              ;a
-    defb "", 0xE2              ;b
-    defb "", 0xE3              ;c
-    defb "", 0xE4              ;d
-    defb "", 0xE5              ;e
-    defb "", 0xE8              ;h
-    defb "", 0xE9              ;i
-    defb "", 0xEC              ;l
-    defb "", 0xED              ;m
-    defb "", 0xF0              ;p
-    defb "", 0xF2              ;r
-    defb "", 0xFA              ;z
-    defb "a", 0xE6             ;af                             ;9728
-    defb "b", 0xE3             ;bc
-    defb "d", 0xE5             ;de
-    defb "h", 0xEC             ;hl
-    defb "h", 0xF8             ;hx
-    defb "h", 0xF9             ;hy
-    defb "i", 0xF8             ;ix
-    defb "i", 0xF9             ;iy
-    defb "l", 0xF8             ;lx
-    defb "l", 0xF9             ;ly
-    defb "n", 0xE3             ;nc
-    defb "n", 0xFA             ;nz
-    defb "p", 0xE5             ;pe
-    defb "p", 0xEF             ;po
-    defb "s", 0xF0             ;sp
-    defb "(c", 0xA9            ;(c)
-    defb "af", 0xA7            ;af'
-    defb "(bc", 0xA9           ;(bc)
-    defb "(de", 0xA9           ;(de)
-    defb "(hl", 0xA9           ;(hl)
-    defb "(ix", 0xA9           ;(ix)
-    defb "(iy", 0xA9           ;(iy)
-    defb "(sp", 0xA9           ;(sp)
+operandsTable00:    defb "", 0xB0              ;0                              ;9714
+operandsTable01:    defb "", 0xB1              ;1
+operandsTable02:    defb "", 0xB2              ;2
+operandsTable03:    defb "", 0xB3              ;3
+operandsTable04:    defb "", 0xB4              ;4
+operandsTable05:    defb "", 0xB5              ;5
+operandsTable06:    defb "", 0xB6              ;6
+operandsTable07:    defb "", 0xB7              ;7
+operandsTable08:    defb "", 0xE1              ;a
+operandsTable09:    defb "", 0xE2              ;b
+operandsTable10:    defb "", 0xE3              ;c
+operandsTable11:    defb "", 0xE4              ;d
+operandsTable12:    defb "", 0xE5              ;e
+operandsTable13:    defb "", 0xE8              ;h
+operandsTable14:    defb "", 0xE9              ;i
+operandsTable15:    defb "", 0xEC              ;l
+operandsTable16:    defb "", 0xED              ;m
+operandsTable17:    defb "", 0xF0              ;p
+operandsTable18:    defb "", 0xF2              ;r
+operandsTable19:    defb "", 0xFA              ;z
+operandsTable20:    defb "a", 0xE6             ;af                             ;9728
+operandsTable21:    defb "b", 0xE3             ;bc
+operandsTable22:    defb "d", 0xE5             ;de
+operandsTable23:    defb "h", 0xEC             ;hl
+operandsTable24:    defb "h", 0xF8             ;hx
+operandsTable25:    defb "h", 0xF9             ;hy
+operandsTable26:    defb "i", 0xF8             ;ix
+operandsTable27:    defb "i", 0xF9             ;iy
+operandsTable28:    defb "l", 0xF8             ;lx
+operandsTable29:    defb "l", 0xF9             ;ly
+operandsTable30:    defb "n", 0xE3             ;nc
+operandsTable31:    defb "n", 0xFA             ;nz
+operandsTable32:    defb "p", 0xE5             ;pe
+operandsTable33:    defb "p", 0xEF             ;po
+operandsTable34:    defb "s", 0xF0             ;sp
+operandsTable35:    defb "(c", 0xA9            ;(c)
+operandsTable36:    defb "af", 0xA7            ;af'
+operandsTable37:    defb "(bc", 0xA9           ;(bc)
+operandsTable38:    defb "(de", 0xA9           ;(de)
+operandsTable39:    defb "(hl", 0xA9           ;(hl)
+operandsTable40:    defb "(ix", 0xA9           ;(ix)
+operandsTable41:    defb "(iy", 0xA9           ;(iy)
+operandsTable42:    defb "(sp", 0xA9           ;(sp)
     
 operationLabels:
     defb operationLabelAssembly - operationLabels
