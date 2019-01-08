@@ -8697,86 +8697,85 @@ errorMessages:
 
 
 mnemonicsReferences:
-    ; probably similar structure to operandsReferences
-    defb 000h                  ;95aa 00  . 
-    defb 04dh                  ;95ab 4d  M 
-    defb 04dh                  ;95ac 4d  M 
-    defb 04eh                  ;95ad 4e  N 
-    defb 04fh                  ;95ae 4f  O 
-    defb 050h                  ;95af 50  P 
-    defb 051h                  ;95b0 51  Q 
-    defb 052h                  ;95b1 52  R 
-    defb 053h                  ;95b2 53  S 
-    defb 054h                  ;95b3 54  T 
-    defb 055h                  ;95b4 55  U 
-    defb 056h                  ;95b5 56  V 
-    defb 057h                  ;95b6 57  W 
-    defb 058h                  ;95b7 58  X 
-    defb 059h                  ;95b8 59  Y 
-    defb 05bh                  ;95b9 5b  [ 
-    defb 05dh                  ;95ba 5d  ] 
-    defb 05fh                  ;95bb 5f  _ 
-    defb 061h                  ;95bc 61  a 
-    defb 063h                  ;95bd 63  c 
-    defb 065h                  ;95be 65  e 
-    defb 067h                  ;95bf 67  g 
-    defb 069h                  ;95c0 69  i 
-    defb 06bh                  ;95c1 6b  k 
-    defb 06dh                  ;95c2 6d  m 
-    defb 06fh                  ;95c3 6f  o 
-    defb 071h                  ;95c4 71  q 
-    defb 073h                  ;95c5 73  s 
-    defb 075h                  ;95c6 75  u 
-    defb 077h                  ;95c7 77  w 
-    defb 079h                  ;95c8 79  y 
-    defb 07bh                  ;95c9 7b  { 
-    defb 07dh                  ;95ca 7d  } 
-    defb 07fh                  ;95cb 7f   
-    defb 081h                  ;95cc 81  . 
-    defb 083h                  ;95cd 83  . 
-    defb 085h                  ;95ce 85  . 
-    defb 087h                  ;95cf 87  . 
-    defb 089h                  ;95d0 89  . 
-    defb 08bh                  ;95d1 8b  . 
-    defb 08dh                  ;95d2 8d  . 
-    defb 08fh                  ;95d3 8f  . 
-    defb 091h                  ;95d4 91  . 
-    defb 093h                  ;95d5 93  . 
-    defb 095h                  ;95d6 95  . 
-    defb 097h                  ;95d7 97  . 
-    defb 099h                  ;95d8 99  . 
-    defb 09bh                  ;95d9 9b  . 
-    defb 09dh                  ;95da 9d  . 
-    defb 09fh                  ;95db 9f  . 
-    defb 0a1h                  ;95dc a1  . 
-    defb 0a3h                  ;95dd a3  . 
-    defb 0a5h                  ;95de a5  . 
-    defb 0a7h                  ;95df a7  . 
-    defb 0a9h                  ;95e0 a9  . 
-    defb 0abh                  ;95e1 ab  . 
-    defb 0aeh                  ;95e2 ae  . 
-    defb 0b1h                  ;95e3 b1  . 
-    defb 0b4h                  ;95e4 b4  . 
-    defb 0b7h                  ;95e5 b7  . 
-    defb 0bah                  ;95e6 ba  . 
-    defb 0bdh                  ;95e7 bd  . 
-    defb 0c0h                  ;95e8 c0  . 
-    defb 0c3h                  ;95e9 c3  . 
-    defb 0c6h                  ;95ea c6  . 
-    defb 0c9h                  ;95eb c9  . 
-    defb 0cch                  ;95ec cc  . 
-    defb 0cfh                  ;95ed cf  . 
-    defb 0d2h                  ;95ee d2  . 
-    defb 0d5h                  ;95ef d5  . 
-    defb 0d8h                  ;95f0 d8  . 
-    defb 0dbh                  ;95f1 db  . 
-    defb 0deh                  ;95f2 de  . 
-    defb 0e1h                  ;95f3 e1  . 
-    defb 0e4h                  ;95f4 e4  . 
-    defb 0e7h                  ;95f5 e7  . 
-    defb 0eah                  ;95f6 ea  . 
-    defb 0edh                  ;95f7 ed  . 
-    defb 0bbh                  ;95f8 bb  . 
+                    defb 000h                  ;95aa 00  . 
+                    defb 04dh                  ;95ab 4d  M 
+mnemonics00:        defb mnemonicsTable00-mnemonics00
+mnemonics01:        defb mnemonicsTable01-mnemonics01
+mnemonics02:        defb mnemonicsTable02-mnemonics02
+mnemonics03:        defb mnemonicsTable03-mnemonics03
+mnemonics04:        defb mnemonicsTable04-mnemonics04
+mnemonics05:        defb mnemonicsTable05-mnemonics05
+mnemonics06:        defb mnemonicsTable06-mnemonics06
+mnemonics07:        defb mnemonicsTable07-mnemonics07
+mnemonics08:        defb mnemonicsTable08-mnemonics08
+mnemonics09:        defb mnemonicsTable09-mnemonics09
+mnemonics10:        defb mnemonicsTable10-mnemonics10
+mnemonics11:        defb mnemonicsTable11-mnemonics11
+mnemonics12:        defb mnemonicsTable12-mnemonics12
+mnemonics13:        defb mnemonicsTable13-mnemonics13
+mnemonics14:        defb mnemonicsTable14-mnemonics14
+mnemonics15:        defb mnemonicsTable15-mnemonics15
+mnemonics16:        defb mnemonicsTable16-mnemonics16
+mnemonics17:        defb mnemonicsTable17-mnemonics17
+mnemonics18:        defb mnemonicsTable18-mnemonics18
+mnemonics19:        defb mnemonicsTable19-mnemonics19
+mnemonics20:        defb mnemonicsTable20-mnemonics20
+mnemonics21:        defb mnemonicsTable21-mnemonics21
+mnemonics22:        defb mnemonicsTable22-mnemonics22
+mnemonics23:        defb mnemonicsTable23-mnemonics23
+mnemonics24:        defb mnemonicsTable24-mnemonics24
+mnemonics25:        defb mnemonicsTable25-mnemonics25
+mnemonics26:        defb mnemonicsTable26-mnemonics26
+mnemonics27:        defb mnemonicsTable27-mnemonics27
+mnemonics28:        defb mnemonicsTable28-mnemonics28
+mnemonics29:        defb mnemonicsTable29-mnemonics29
+mnemonics30:        defb mnemonicsTable30-mnemonics30
+mnemonics31:        defb mnemonicsTable31-mnemonics31
+mnemonics32:        defb mnemonicsTable32-mnemonics32
+mnemonics33:        defb mnemonicsTable33-mnemonics33
+mnemonics34:        defb mnemonicsTable34-mnemonics34
+mnemonics35:        defb mnemonicsTable35-mnemonics35
+mnemonics36:        defb mnemonicsTable36-mnemonics36
+mnemonics37:        defb mnemonicsTable37-mnemonics37
+mnemonics38:        defb mnemonicsTable38-mnemonics38
+mnemonics39:        defb mnemonicsTable39-mnemonics39
+mnemonics40:        defb mnemonicsTable40-mnemonics40
+mnemonics41:        defb mnemonicsTable41-mnemonics41
+mnemonics42:        defb mnemonicsTable42-mnemonics42
+mnemonics43:        defb mnemonicsTable43-mnemonics43
+mnemonics44:        defb mnemonicsTable44-mnemonics44
+mnemonics45:        defb mnemonicsTable45-mnemonics45
+mnemonics46:        defb mnemonicsTable46-mnemonics46
+mnemonics47:        defb mnemonicsTable47-mnemonics47
+mnemonics48:        defb mnemonicsTable48-mnemonics48
+mnemonics49:        defb mnemonicsTable49-mnemonics49
+mnemonics50:        defb mnemonicsTable50-mnemonics50
+mnemonics51:        defb mnemonicsTable51-mnemonics51
+mnemonics52:        defb mnemonicsTable52-mnemonics52
+mnemonics53:        defb mnemonicsTable53-mnemonics53
+mnemonics54:        defb mnemonicsTable54-mnemonics54
+mnemonics55:        defb mnemonicsTable55-mnemonics55
+mnemonics56:        defb mnemonicsTable56-mnemonics56
+mnemonics57:        defb mnemonicsTable57-mnemonics57
+mnemonics58:        defb mnemonicsTable58-mnemonics58
+mnemonics59:        defb mnemonicsTable59-mnemonics59
+mnemonics60:        defb mnemonicsTable60-mnemonics60
+mnemonics61:        defb mnemonicsTable61-mnemonics61
+mnemonics62:        defb mnemonicsTable62-mnemonics62
+mnemonics63:        defb mnemonicsTable63-mnemonics63
+mnemonics64:        defb mnemonicsTable64-mnemonics64
+mnemonics65:        defb mnemonicsTable65-mnemonics65
+mnemonics66:        defb mnemonicsTable66-mnemonics66
+mnemonics67:        defb mnemonicsTable67-mnemonics67
+mnemonics68:        defb mnemonicsTable68-mnemonics68
+mnemonics69:        defb mnemonicsTable69-mnemonics69
+mnemonics70:        defb mnemonicsTable70-mnemonics70
+mnemonics71:        defb mnemonicsTable71-mnemonics71
+mnemonics72:        defb mnemonicsTable72-mnemonics72
+mnemonics73:        defb mnemonicsTable73-mnemonics73
+mnemonics74:        defb mnemonicsTable74-mnemonics74
+mnemonics75:        defb mnemonicsTable75-mnemonics75
+                    defb 0bbh                  ;95f8 bb  . 
 
 mnemonicsTable:
 mnemonicsTable00:   defb "c", 0xF0             ;cp                             ;95f9
