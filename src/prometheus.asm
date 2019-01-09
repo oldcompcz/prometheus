@@ -4034,59 +4034,63 @@ v_l7066h:
     defb 0ffh                  ;79c2 ff  . 
     defb 010h                  ;79c3 10  . 
     defb 000h                  ;79c4 00  . 
-    defb 01ah                  ;79c5 1a  . 
-    defb 01fh                  ;79c6 1f  . 
-    defb 023h                  ;79c7 23  # 
-    defb 026h                  ;79c8 26  & 
-    defb 02bh                  ;79c9 2b  + 
-    defb 02ch                  ;79ca 2c  , 
-    defb 03dh                  ;79cb 3d  = 
-    defb 03fh                  ;79cc 3f  ? 
-    defb 041h                  ;79cd 41  A 
-    defb 043h                  ;79ce 43  C 
-    defb 045h                  ;79cf 45  E 
-    defb 047h                  ;79d0 47  G 
-    defb 04ah                  ;79d1 4a  J 
-    defb 053h                  ;79d2 53  S 
-    defb 055h                  ;79d3 55  U 
-    defb 05dh                  ;79d4 5d  ] 
-    defb 061h                  ;79d5 61  a 
-    defb 066h                  ;79d6 66  f 
-    defb 06dh                  ;79d7 6d  m 
-    defb 073h                  ;79d8 73  s 
-    defb 076h                  ;79d9 76  v 
-    defb 079h                  ;79da 79  y 
-    defb 080h                  ;79db 80  . 
-    defb 083h                  ;79dc 83  . 
-    defb 084h                  ;79dd 84  . 
-    defb 089h                  ;79de 89  . 
-    defb "Lengt",0xe8          ;"h"+0x80                       ;79df
-    defb "Firs",0xf4           ;"t"+0x80                       ;79e5
-    defb "Las",0xf4            ;"t"+0x80                       ;79ea
-    defb "Memor",0xf9          ;"y"+0x80                       ;79ee
-    defb "l",0xe4              ;"d"+0x80                       ;79f4
-    defb " UNIVERSUM Contro",0xec                              ;"l"+0x80                       ;79f6
-    defb "ON",0xa0             ;" "+0x80                       ;7a08
-    defb "OF",0xc6             ;"F"+0x80                       ;7a0b
-    defb "NO",0xce             ;"N"+0x80                       ;7a0e
-    defb "DE",0xc6             ;"F"+0x80                       ;7a11
-    defb "AL",0xcc             ;"L"+0x80                       ;7a14
-    defb "Cal",0xec            ;"l"+0x80                       ;7a17
-    defb "Read/Writ",0xe5      ;"e"+0x80                       ;7a1b
-    defb "Ru",0xee             ;"n"+0x80                       ;7a25
-    defb "Interrup",0xf4       ;"t"+0x80                       ;7a28
-    defb "ERRO",0xd2           ;"R"+0x80                       ;7a31
-    defb "No ru",0xee          ;"n"+0x80                       ;7a36
-    defb "No writ",0xe5        ;"e"+0x80                       ;7a3c
-    defb "No rea",0xe4         ;"d"+0x80                       ;7a44
-    defb "Def",0xe2            ;"b"+0x80                       ;7a4b
-    defb "Def",0xf7            ;"w"+0x80                       ;7a4f
-    defb "windows",0xba        ;":"+0x80                       ;7a53
-    defb "Wit",0xe8            ;"h"+0x80                       ;7a5b
-    defb "T",0xef              ;"o"+0x80                       ;7a5f
-    defb "Leade",0xf2          ;"r"+0x80                       ;7a61
+
+monitorTextReferences:
+monitorText02:          defb monitorTextsTable02-monitorText02
+monitorText03:          defb monitorTextsTable03-monitorText03
+monitorText04:          defb monitorTextsTable04-monitorText04
+monitorText05:          defb monitorTextsTable05-monitorText05
+monitorText06:          defb monitorTextsTable06-monitorText06
+monitorText07:          defb monitorTextsTable07-monitorText07
+monitorText08:          defb monitorTextsTable08-monitorText08
+monitorText09:          defb monitorTextsTable09-monitorText09
+monitorText10:          defb monitorTextsTable10-monitorText10
+monitorText11:          defb monitorTextsTable11-monitorText11
+monitorText12:          defb monitorTextsTable12-monitorText12
+monitorText13:          defb monitorTextsTable13-monitorText13
+monitorText14:          defb monitorTextsTable14-monitorText14
+monitorText15:          defb monitorTextsTable15-monitorText15
+monitorText16:          defb monitorTextsTable16-monitorText16
+monitorText17:          defb monitorTextsTable17-monitorText17
+monitorText18:          defb monitorTextsTable18-monitorText18
+monitorText19:          defb monitorTextsTable19-monitorText19
+monitorText20:          defb monitorTextsTable20-monitorText20
+monitorText21:          defb monitorTextsTable21-monitorText21
+monitorText22:          defb monitorTextsTable22-monitorText22
+monitorText23:          defb monitorTextsTable23-monitorText23
+monitorText24:          defb monitorTextsTable24-monitorText24
+monitorText25:          defb monitorTextsTable25-monitorText25
+monitorText26:          defb monitorTextsTable26-monitorText26
+monitorText27:          defb monitorTextsTable27-monitorText27
+
+monitorTextsTable:
+monitorTextsTable02:    defb "Lengt",0xe8          ;"h"+0x80                       ;79df
+monitorTextsTable03:    defb "Firs",0xf4           ;"t"+0x80                       ;79e5
+monitorTextsTable04:    defb "Las",0xf4            ;"t"+0x80                       ;79ea
+monitorTextsTable05:    defb "Memor",0xf9          ;"y"+0x80                       ;79ee
+monitorTextsTable06:    defb "l",0xe4              ;"d"+0x80                       ;79f4
+monitorTextsTable07:    defb " UNIVERSUM Contro",0xec                              ;"l"+0x80                       ;79f6
+monitorTextsTable08:    defb "ON",0xa0             ;" "+0x80                       ;7a08
+monitorTextsTable09:    defb "OF",0xc6             ;"F"+0x80                       ;7a0b
+monitorTextsTable10:    defb "NO",0xce             ;"N"+0x80                       ;7a0e
+monitorTextsTable11:    defb "DE",0xc6             ;"F"+0x80                       ;7a11
+monitorTextsTable12:    defb "AL",0xcc             ;"L"+0x80                       ;7a14
+monitorTextsTable13:    defb "Cal",0xec            ;"l"+0x80                       ;7a17
+monitorTextsTable14:    defb "Read/Writ",0xe5      ;"e"+0x80                       ;7a1b
+monitorTextsTable15:    defb "Ru",0xee             ;"n"+0x80                       ;7a25
+monitorTextsTable16:    defb "Interrup",0xf4       ;"t"+0x80                       ;7a28
+monitorTextsTable17:    defb "ERRO",0xd2           ;"R"+0x80                       ;7a31
+monitorTextsTable18:    defb "No ru",0xee          ;"n"+0x80                       ;7a36
+monitorTextsTable19:    defb "No writ",0xe5        ;"e"+0x80                       ;7a3c
+monitorTextsTable20:    defb "No rea",0xe4         ;"d"+0x80                       ;7a44
+monitorTextsTable21:    defb "Def",0xe2            ;"b"+0x80                       ;7a4b
+monitorTextsTable22:    defb "Def",0xf7            ;"w"+0x80                       ;7a4f
+monitorTextsTable23:    defb "windows",0xba        ;":"+0x80                       ;7a53
+monitorTextsTable24:    defb "Wit",0xe8            ;"h"+0x80                       ;7a5b
+monitorTextsTable25:    defb "T",0xef              ;"o"+0x80                       ;7a5f
+monitorTextsTable26:    defb "Leade",0xf2          ;"r"+0x80                       ;7a61
 l07a67h:
-    defb "1. byte",0xba        ;":"+0x80                       ;7a67
+monitorTextsTable27:    defb "1. byte",0xba        ;":"+0x80                       ;7a67
     defs 13
 
 ; =====================================================================
