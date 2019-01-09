@@ -8951,47 +8951,32 @@ operandsTable41:    defb "(iy", 0xA9           ;(iy)
 operandsTable42:    defb "(sp", 0xA9           ;(sp)
     
 operationLabels:
-    defb operationLabelAssembly - operationLabels
-    defb operationLabelBasic - operationLabels - 1
-    defb operationLabelCopy - operationLabels - 2
-    defb operationLabelDelete - operationLabels - 3
-;   defb operationLabelFind - operationLabels - 4
-;   defb operationLabelGens - operationLabels - 5
-;   defb operationLabelLoad - operationLabels - 6
-;   defb operationLabelMonitor - operationLabels - 7
-;   defb operationLabelNew - operationLabels - 8
-;   defb operationLabelPrint - operationLabels - 9
-;   defb operationLabelQuit - operationLabels - 10
-;   defb operationLabelRun - operationLabels - 11
-;   defb operationLabelSave - operationLabels - 12
-;   defb operationLabelTable - operationLabels - 13
-;   defb operationLabelUTop - operationLabels - 14
-;   defb operationLabelVerify - operationLabels - 15
-;   defb operationLabelClear - operationLabels - 16
-;   defb operationLabelReplace - operationLabels - 17
-
-    defb 027h                  ;9768 27  ' 
-    defb 02ch                  ;9769 2c  , 
-    defb 02fh                  ;976a 2f  / 
-    defb 02eh                  ;976b 2e  . 
-    defb 02dh                  ;976c 2d  - 
-    defb 02ch                  ;976d 2c  , 
-    defb 02bh                  ;976e 2b  + 
-    defb 02eh                  ;976f 2e  . 
-    defb 031h                  ;9770 31  1 
-    defb 037h                  ;9771 37  7 
-    defb 036h                  ;9772 36  6 
-    defb 038h                  ;9773 38  8 
-    defb 03ch                  ;9774 3c  < 
-    defb 03fh                  ;9775 3f  ? 
-    defb 041h                  ;9776 41  A 
-    defb 044h                  ;9777 44  D 
-    defb 048h                  ;9778 48  H 
-    defb 04ch                  ;9779 4c  L 
-    defb 04bh                  ;977a 4b  K 
-    defb 050h                  ;977b 50  P 
-    defb 04fh                  ;977c 4f  O 
-    defb 053h                  ;977d 53  S 
+operationLabels00:  defb operationLabelAssembly - operationLabels00
+operationLabels01:  defb operationLabelBasic - operationLabels01
+operationLabels02:  defb operationLabelCopy - operationLabels02
+operationLabels03:  defb operationLabelDelete - operationLabels03
+operationLabels05:  defb operationLabelDelete - operationLabels05
+operationLabels06:  defb operationLabelFind - operationLabels06
+operationLabels07:  defb operationLabelGens - operationLabels07
+operationLabels08:  defb operationLabelGens - operationLabels08
+operationLabels09:  defb operationLabelGens - operationLabels09
+operationLabels10:  defb operationLabelGens - operationLabels10
+operationLabels11:  defb operationLabelGens - operationLabels11
+operationLabels12:  defb operationLabelLoad - operationLabels12
+operationLabels13:  defb operationLabelMonitor - operationLabels13
+operationLabels14:  defb operationLabelNew - operationLabels14
+operationLabels15:  defb operationLabelNew - operationLabels15
+operationLabels16:  defb operationLabelPrint - operationLabels16
+operationLabels17:  defb operationLabelQuit - operationLabels17
+operationLabels18:  defb operationLabelRun - operationLabels18
+operationLabels19:  defb operationLabelSave - operationLabels19
+operationLabels20:  defb operationLabelTable - operationLabels20
+operationLabels21:  defb operationLabelUTop - operationLabels21
+operationLabels22:  defb operationLabelVerify - operationLabels22
+operationLabels23:  defb operationLabelVerify - operationLabels23
+operationLabels24:  defb operationLabelClear - operationLabels24
+operationLabels25:  defb operationLabelClear - operationLabels25
+operationLabels26:  defb operationLabelReplace - operationLabels26
 
 operationLabelAssembly:
     defb "ASSEMBL", 0xD9       ;977e                           ;ASSEMBLY
