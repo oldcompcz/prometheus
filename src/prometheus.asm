@@ -913,46 +913,72 @@ frontPanelRegistersItems:
     defb 0d4h                  ;67e5 d4  . 
 setDefbAreas:
     defb 002h                  ;67e6 02  . 
-    defb 0c0h                  ;67e7 c0  . 
-    defb 05dh                  ;67e8 5d  ] 
-    defb 038h                  ;67e9 38  8 
-    defb 09ch                  ;67ea 9c  . 
-    defs 20
+    defw 0x5dc0, 0x9c38
+custommDefbAreas: 
+    defw 0x0000, 0x0000        ;from-to
+    defw 0x0000, 0x0000
+    defw 0x0000, 0x0000
+    defw 0x0000, 0x0000
+    defw 0x0000, 0x0000
  
     defb 0d5h                  ;67ff d5  . 
 setDefwAreas:
     defb 002h                  ;6800 02  . 
-    defb 0c0h                  ;6801 c0  . 
-    defb 05dh                  ;6802 5d  ] 
-    defb 038h                  ;6803 38  8 
-    defb 09ch                  ;6804 9c  . 
+    defw 0x5dc0, 0x9c38
+custommDefwAreas:
+    defw 0x0000, 0x0000        ;from-to
+    defw 0x0000, 0x0000
+    defw 0x0000, 0x0000
+    defw 0x0000, 0x0000
+    defw 0x0000, 0x0000
 
-    defs CALLS_STACK_SIZE*2
+ ;   defs CALLS_STACK_SIZE*2
 monCallsStack:
-
-    defs 25
+    defb 0
+    defw 0x0000, 0x0000 
+    defs CALLS_STACK_SIZE*2
 
     defb 0d3h                  ;6832 d3  . 
 setReadProtectedAreas:
     defb 002h                  ;6833 02  . 
-    defs 24
+    defw 0x0000, 0x0000
+customReadProtectedAreas:
+    defw 0x0000, 0x0000        ;from-to
+    defw 0x0000, 0x0000
+    defw 0x0000, 0x0000
+    defw 0x0000, 0x0000
+    defw 0x0000, 0x0000
 
     defb 0d2h                  ;684c d2  . 
 setWriteProtectedAreas:
     defb 002h                  ;684d 02  . 
 l0684eh:
-    defs 24
+    defw 0x0000, 0x0000
+customWriteProtectedAreas:
+    defw 0x0000, 0x0000        ;from-to
+    defw 0x0000, 0x0000
+    defw 0x0000, 0x0000
+    defw 0x0000, 0x0000
+    defw 0x0000, 0x0000
 
     defb 0d1h                  ;6866 d1  . 
 setExecutionProtectedAreas:
     defb 002h                  ;6867 02  . 
-    defs 24
+    defw 0x0000, 0x0000
+customExecutionProtectedAreas:
+    defw 0x0000, 0x0000        ;from-to
+    defw 0x0000, 0x0000
+    defw 0x0000, 0x0000
+    defw 0x0000, 0x0000
+    defw 0x0000, 0x0000
 
     defb 0cch                  ;6880 cc  . 
-l06881h:
+setAddressForTheDirectCall:
     defb 001h                  ;6881 01  . 
-    defs 22
-    
+    defw 0x0000
+customAddressesForDirectCall:
+    defw 0x0000, 0x0000, 0x0000, 0x0000, 0x0000
+    defw 0x0000, 0x0000, 0x0000, 0x0000, 0x0000
     
 v_sub_5f64h:
     call v_sub_6c4ah           ;6898 cd 8a 0e  . . . 
@@ -1790,7 +1816,7 @@ l6d30h:
     ret                        ;6d35 c9  . 
 
 monDefineAddressForTheDirectCall:
-    ld hl,l06881h              ;6d36 21 8d 01  ! . . 
+    ld hl,setAddressForTheDirectCall              ;6d36 21 8d 01  ! . . 
 l6d39h:
     push hl                    ;6d39 e5  . 
     call v_sub_65c1h           ;6d3a cd 01 08  . . . 
@@ -2488,7 +2514,7 @@ l715bh:
     exx                        ;715f d9  . 
     ld de,(v_l8b23h)           ;7160 ed 5b 63 2d  . [ c - 
     ld (l7178h+1),sp           ;7164 ed 73 85 0a  . s . . 
-    ld hl,l06881h              ;7168 21 8d 01  ! . . 
+    ld hl,setAddressForTheDirectCall              ;7168 21 8d 01  ! . . 
     ld b,(hl)                  ;716b 46  F 
     inc hl                     ;716c 23  # 
     ld sp,hl                   ;716d f9  . 
