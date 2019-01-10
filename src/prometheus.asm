@@ -910,7 +910,7 @@ frontPanelRegistersItems:
     defb 0e0h                  ;67e2 e0  . 
     defw v_l6fa5h              ;67e3
 
-    defb 0d4h                  ;67e5 d4  . 
+    defb monitorTextDefb-monitorTables                  ;67e5 d4  . 
 setDefbAreas:
     defb 002h                  ;67e6 02  . 
     defw 0x5dc0, 0x9c38
@@ -921,7 +921,7 @@ custommDefbAreas:
     defw 0x0000, 0x0000
     defw 0x0000, 0x0000
  
-    defb 0d5h                  ;67ff d5  . 
+    defb monitorTextDefw-monitorTables                  ;67ff d5  . 
 setDefwAreas:
     defb 002h                  ;6800 02  . 
     defw 0x5dc0, 0x9c38
@@ -932,13 +932,12 @@ custommDefwAreas:
     defw 0x0000, 0x0000
     defw 0x0000, 0x0000
 
- ;   defs CALLS_STACK_SIZE*2
 monCallsStack:
     defb 0
     defw 0x0000, 0x0000 
     defs CALLS_STACK_SIZE*2
 
-    defb 0d3h                  ;6832 d3  . 
+    defb monitorTextNoRead-monitorTables                  ;6832 d3  . 
 setReadProtectedAreas:
     defb 002h                  ;6833 02  . 
     defw 0x0000, 0x0000
@@ -949,7 +948,7 @@ customReadProtectedAreas:
     defw 0x0000, 0x0000
     defw 0x0000, 0x0000
 
-    defb 0d2h                  ;684c d2  . 
+    defb monitorTextNoWrite-monitorTables                  ;684c d2  . 
 setWriteProtectedAreas:
     defb 002h                  ;684d 02  . 
 l0684eh:
@@ -961,7 +960,7 @@ customWriteProtectedAreas:
     defw 0x0000, 0x0000
     defw 0x0000, 0x0000
 
-    defb 0d1h                  ;6866 d1  . 
+    defb monitorTextNoRun-monitorTables                  ;6866 d1  . 
 setExecutionProtectedAreas:
     defb 002h                  ;6867 02  . 
     defw 0x0000, 0x0000
@@ -972,7 +971,7 @@ customExecutionProtectedAreas:
     defw 0x0000, 0x0000
     defw 0x0000, 0x0000
 
-    defb 0cch                  ;6880 cc  . 
+    defb monitorTextCall-monitorTables                  ;6880 cc  . 
 setAddressForTheDirectCall:
     defb 001h                  ;6881 01  . 
     defw 0x0000
@@ -2100,21 +2099,30 @@ l6ed5h:
     ret                        ;6ed6 c9  . 
 
 
-v_sub_65a3h:
+writeMonitorTextToDE:
+    ; C  - index of the text reference
+    ; DE - address where the text should be written
     ld b,000h                  ;6ed7 06 00  . . 
     push hl                    ;6ed9 e5  . 
-    ld hl,v_l6fd0h             ;6eda 21 10 12  ! . . 
+    ld hl,monitorTables        ;6eda 21 10 12  ! . . 
+    ; get reference address
     add hl,bc                  ;6edd 09  . 
     ld c,(hl)                  ;6ede 4e  N 
+    ; get text address
     add hl,bc                  ;6edf 09  . 
 l6ee0h:
+    ; get character
     ld a,(hl)                  ;6ee0 7e  ~ 
+    ; is line ending?
     cp 080h                    ;6ee1 fe 80  . . 
+    ; write the character to (DE)
     res 7,a                    ;6ee3 cb bf  . . 
     ld (de),a                  ;6ee5 12  . 
+    ; next character
     inc de                     ;6ee6 13  . 
     inc hl                     ;6ee7 23  # 
     jr c,l6ee0h                ;6ee8 38 f6  8 . 
+    ; we are at the end of string, insert zero
     xor a                      ;6eea af  . 
     ld (de),a                  ;6eeb 12  . 
     inc de                     ;6eec 13  . 
@@ -2142,12 +2150,12 @@ l6ef9h:
     ld c,(hl)                  ;6f0a 4e  N 
     inc hl                     ;6f0b 23  # 
     ld de,lineBuffer           ;6f0c 11 e5 2c  . . , 
-    call v_sub_65a3h           ;6f0f cd e3 07  . . . 
+    call writeMonitorTextToDE  ;6f0f cd e3 07  . . . 
 v_l65deh:
     ; operation
     scf                        ;6f12 37  7 
-    ld c,0d6h                  ;6f13 0e d6  . . 
-    call c,v_sub_65a3h         ;6f15 dc e3 07  . . . 
+    ld c,monitorTextWindows-monitorTables                  ;6f13 0e d6  . . 
+    call c,writeMonitorTextToDE   ;6f15 dc e3 07  . . . 
     call v_sub_6c4ah           ;6f18 cd 8a 0e  . . . 
     ld a,02fh                  ;6f1b 3e 2f  > / 
     ld (lineBuffer),a          ;6f1d 32 e5 2c  2 . , 
@@ -2238,7 +2246,7 @@ monitorInputBuffersInitialization:
     ld bc,02000h               ;6f97 01 00 20  . .                 (flow (mon) from: 6662)  6663 ld bc,2000 
     jp atHLrepeatBTimesC       ;6f9a c3 21 25  . ! %               (flow (mon) from: 6663)  6666 jp 82e1 
 v_sub_6669h:
-    ld hl,v_l6fd0h             ;6f9d 21 10 12  ! . .               (flow (mon) from: 5f99 6675)  6669 ld hl,6fd0 
+    ld hl,monitorTables             ;6f9d 21 10 12  ! . .               (flow (mon) from: 5f99 6675)  6669 ld hl,6fd0 
     ld (vr_l08750h+1),hl       ;6fa0 22 91 29  " . )               (flow (mon) from: 6669)  666c ld (8751),hl 
     call v_sub_6113h           ;6fa3 cd 53 03  . S .               (flow (mon) from: 666c)  666f call 6113 
     jp v_l85c7h                ;6fa6 c3 07 28  . . (               (flow (mon) from: 611c)  6672 jp 85c7 
@@ -3865,7 +3873,9 @@ v_l6fc9h:
     defb 0a0h                  ;7901 a0  . 
     defb 042h                  ;7902 42  B 
     defb 0c7h                  ;7903 c7  . 
-v_l6fd0h:
+
+monitorTables:
+    ; servers as base address for computing references to monitor texts
     defb 086h                  ;7904 86  . 
     defb 014h                  ;7905 14  . 
     defb 0c7h                  ;7906 c7  . 
@@ -4062,32 +4072,32 @@ v_l7066h:
     defb 000h                  ;79c4 00  . 
 
 monitorTextReferences:
-monitorText02:          defb monitorTextsTable02-monitorText02
-monitorText03:          defb monitorTextsTable03-monitorText03
-monitorText04:          defb monitorTextsTable04-monitorText04
-monitorText05:          defb monitorTextsTable05-monitorText05
-monitorText06:          defb monitorTextsTable06-monitorText06
-monitorText07:          defb monitorTextsTable07-monitorText07
-monitorText08:          defb monitorTextsTable08-monitorText08
-monitorText09:          defb monitorTextsTable09-monitorText09
-monitorText10:          defb monitorTextsTable10-monitorText10
-monitorText11:          defb monitorTextsTable11-monitorText11
-monitorText12:          defb monitorTextsTable12-monitorText12
-monitorText13:          defb monitorTextsTable13-monitorText13
-monitorText14:          defb monitorTextsTable14-monitorText14
-monitorText15:          defb monitorTextsTable15-monitorText15
-monitorText16:          defb monitorTextsTable16-monitorText16
-monitorText17:          defb monitorTextsTable17-monitorText17
-monitorText18:          defb monitorTextsTable18-monitorText18
-monitorText19:          defb monitorTextsTable19-monitorText19
-monitorText20:          defb monitorTextsTable20-monitorText20
-monitorText21:          defb monitorTextsTable21-monitorText21
-monitorText22:          defb monitorTextsTable22-monitorText22
-monitorText23:          defb monitorTextsTable23-monitorText23
-monitorText24:          defb monitorTextsTable24-monitorText24
-monitorText25:          defb monitorTextsTable25-monitorText25
-monitorText26:          defb monitorTextsTable26-monitorText26
-monitorText27:          defb monitorTextsTable27-monitorText27
+monitorTextLength:      defb monitorTextsTable02-monitorTextLength    ;79c5, index c1
+monitorTextFirst:       defb monitorTextsTable03-monitorTextFirst     ;79c6, index c2
+monitorTextLast:        defb monitorTextsTable04-monitorTextLast      ;79c7, index c3
+monitorTextMemory:      defb monitorTextsTable05-monitorTextMemory    ;79c8, index c4
+monitorTextLd:          defb monitorTextsTable06-monitorTextLd        ;79c9, index c5
+monitorTextUniversum:   defb monitorTextsTable07-monitorTextUniversum ;79ca, index c6
+monitorTextOn:          defb monitorTextsTable08-monitorTextOn        ;79cb, index c7
+monitorTextOff:         defb monitorTextsTable09-monitorTextOff       ;79cc, index c8
+monitorTextNon:         defb monitorTextsTable10-monitorTextNon       ;79cd, index c9
+monitorTextDef:         defb monitorTextsTable11-monitorTextDef       ;79ce, index ca
+monitorTextAll:         defb monitorTextsTable12-monitorTextAll       ;79cf, index cb
+monitorTextCall:        defb monitorTextsTable13-monitorTextCall      ;79d0, index cc
+monitorTextReadWrite:   defb monitorTextsTable14-monitorTextReadWrite ;79d1, index cd
+monitorTextRun:         defb monitorTextsTable15-monitorTextRun       ;79d2, index ce
+monitorTextInterrupt:   defb monitorTextsTable16-monitorTextInterrupt ;79d3, index cf
+monitorTextError:       defb monitorTextsTable17-monitorTextError     ;79c4, index d0
+monitorTextNoRun:       defb monitorTextsTable18-monitorTextNoRun     ;79d5, index d1
+monitorTextNoWrite:     defb monitorTextsTable19-monitorTextNoWrite   ;79d6, index d2
+monitorTextNoRead:      defb monitorTextsTable20-monitorTextNoRead    ;79d7, index d3
+monitorTextDefb:        defb monitorTextsTable21-monitorTextDefb      ;79d8, index d4
+monitorTextDefw:        defb monitorTextsTable22-monitorTextDefw      ;79d9, index d5
+monitorTextWindows:     defb monitorTextsTable23-monitorTextWindows   ;79da, index d6
+monitorTextWith:        defb monitorTextsTable24-monitorTextWith      ;79dc, index d7
+monitorTextTo:          defb monitorTextsTable25-monitorTextTo        ;79dd, index d8
+monitorTextLeader:      defb monitorTextsTable26-monitorTextLeader    ;79de, index d9
+monitorTextFirstByte:   defb monitorTextsTable27-monitorTextFirstByte ;79de, index da
 
 monitorTextsTable:
 monitorTextsTable02:    defb "Lengt",0xe8          ;"h"+0x80                       ;79df
