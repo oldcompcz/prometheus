@@ -2146,6 +2146,7 @@ l6ef9h:
     ld a,c                     ;6f02 79  y 
     ld (keyCodeLimit+1),a      ;6f03 32 5d 08  2 ] . 
     call v_sub_6c47h           ;6f06 cd 87 0e  . . . 
+    ; get corresponding item text and write it to the line buffer
     dec hl                     ;6f09 2b  + 
     ld c,(hl)                  ;6f0a 4e  N 
     inc hl                     ;6f0b 23  # 
@@ -3702,18 +3703,22 @@ v_sub_6ef4h:
     ld a,001h                  ;782e 3e 01  > .                    (flow (mon) from: 6ef7 877e)  6efa ld a,01 
     ld (v_sub_6ef4h+1),a       ;7830 32 35 11  2 5 .               (flow (mon) from: 6efa)  6efc ld (6ef5),a 
     jp (ix)                    ;7833 dd e9  . .                    (flow (mon) from: 6efc)  6eff jp ix 
+
 v_l6f01h:
     call v_sub_6f66h           ;7835 cd a6 11  . . .               (flow (mon) from: 6eff)  6f01 call 6f66 
     call v_sub_8932h           ;7838 cd 72 2b  . r +               (flow (mon) from: 6f6e)  6f04 call 8932 
     jr l7859h                  ;783b 18 1c  . .                    (flow (mon) from: 8961)  6f07 jr 6f25 
+
     call v_sub_6f68h           ;783d cd a8 11  . . .               (flow (mon) from: 6eff)  6f09 call 6f68 
     call v_sub_8926h           ;7840 cd 66 2b  . f +               (flow (mon) from: 6f6e)  6f0c call 8926 
     jr l7859h                  ;7843 18 14  . .                    (flow (mon) from: 8961)  6f0f jr 6f25 
+
     call v_sub_6f66h           ;7845 cd a6 11  . . . 
     ld (ix+000h),023h          ;7848 dd 36 00 23  . 6 . # 
     inc ix                     ;784c dd 23  . # 
     call v_sub_891eh           ;784e cd 5e 2b  . ^ + 
     jr l7859h                  ;7851 18 06  . . 
+
     call v_sub_6f68h           ;7853 cd a8 11  . . . 
     call printHexNumberToIX    ;7856 cd 4d 2b  . M + 
 l7859h:
@@ -3762,6 +3767,8 @@ v_sub_6f5dh:
     call printNumberToStringBuffer  ;7893 cd 42 2b  . B + 
     pop ix                     ;7896 dd e1  . . 
     jr l7859h                  ;7898 18 bf  . . 
+
+
 v_sub_6f66h:
     ld h,000h                  ;789a 26 00  & .                    (flow (mon) from: 6f01)  6f66 ld h,00 
 v_sub_6f68h:
@@ -5124,8 +5131,8 @@ vr_l07737h:
     ld a,02ah                  ;8074 3e 2a  > *                    (flow from: 8189 81b6 81dd 822d 8231)  7740 ld a,2a 
     ld hl,varcSymbolTablePt+1         ;8076 21 17 2a  ! . *        (flow from: 7740)  7742 ld hl,87d7 
     call setSymbolTableSizeAndPosition  ;8079 cd 0a 1a  . . .      (flow from: 7742)  7745 call 77ca 
-    ld a,(vr_l07cfeh+1)        ;807c 3a 3f 1f  : ? .               (flow from: 77d0)  7748 ld a,(7cff) 
-    cp 010h                    ;807f fe 10  . .                    (flow from: 7748)  774b cp 10 
+    ld a,(varcLastStatusBarMessage+1)   ;807c 3a 3f 1f  : ? .      (flow from: 77d0)  7748 ld a,(7cff) 
+    cp MESSAGE_SOURCE_ERROR    ;807f fe 10  . .                    (flow from: 7748)  774b cp 10 
     jr z,l8044h                ;8081 28 c1  ( .                    (flow from: 774b)  774d jr z,7710 
     ld hl,lineBuffer           ;8083 21 e5 2c  ! . ,               (flow from: 774d)  774f ld hl,8aa5 
     ld de,inputBufferStart     ;8086 11 3f 2d  . ? -               (flow from: 774f)  7752 ld de,8aff 
@@ -5236,12 +5243,13 @@ setBorderColor:
 
 
 processCompilation:
+    ; check if a block compilation was requested
     call containsInputBufferCharacterB  ;8139 cd 6a 1e  . j . 
     ld a,000h                  ;813c 3e 00  > . 
     jr z,l8141h                ;813e 28 01  ( . 
     inc a                      ;8140 3c  < 
 l8141h:
-    ld (vr_l0783eh+1),a        ;8141 32 7f 1a  2  . 
+    ld (varcBlockCompilation+1),a        ;8141 32 7f 1a  2  . 
     ld c,0b6h                  ;8144 0e b6  . . 
     call lockSymbolTable       ;8146 cd 01 17  . . . 
     ld a,001h                  ;8149 3e 01  > . 
@@ -5262,7 +5270,9 @@ l8161h:
     call moveToNextLine        ;816a cd 88 24  . . $ 
     ld (l817fh+1),hl           ;816d 22 8c 1a  " . . 
     pop ix                     ;8170 dd e1  . . 
-vr_l0783eh:
+varcBlockCompilation:
+    ; 0 - compile all
+    ; 1 - compile block
     ld a,000h                  ;8172 3e 00  > . 
     or a                       ;8174 b7  . 
     jr nz,l817ch               ;8175 20 05    . 
@@ -5990,7 +6000,7 @@ v_sub_7c75h:
     call v_sub_8a2fh           ;85ac cd 6f 2c  . o ,               (flow from: 825a)  7c78 call 8a2f 
 l85afh:
     pop de                     ;85af d1  .                         (flow from: 7c73 8a3e)  7c7b pop de 
-    jr nc,l8622h               ;85b0 30 70  0 p                    (flow from: 7c7b)  7c7c jr nc,7cee 
+    jr nc,prometheusWarmStartWithCurrentBuffers  ;85b0 30 70  0 p  (flow from: 7c7b)  7c7c jr nc,7cee 
     push de                    ;85b2 d5  .                         (flow from: 7c7c)  7c7e push de 
     ld (varcSourceBufferActiveLine+1),hl  ;85b3 22 ad 24  " . $    (flow from: 7c7e)  7c7f ld (826d),hl 
     ret                        ;85b6 c9  .                         (flow from: 7c7f)  7c82 ret 
@@ -6075,7 +6085,7 @@ prometheusWarmStartWithMessage:
     ; reinitialize v_l8afeh
     dec hl                     ;861f 2b  +                         (flow from: 7ce9)  7ceb dec hl 
     ld (hl),080h               ;8620 36 80  6 .                    (flow from: 7ceb)  7cec ld (hl),80 
-l8622h:
+prometheusWarmStartWithCurrentBuffers:
     ; reinitialize stack
     ld sp,internalStackTop     ;8622 31 e1 2d  1 . -               (flow from: 7c7c 7cec 7d36 7d43)  7cee ld sp,8ba1
     call writeVisibleCode      ;8625 cd ac 24  . . $                (flow from: 7cee)  7cf1 call 826c 
@@ -6084,12 +6094,11 @@ l8628h:
     call setBorderColor        ;862b cd 40 1a  . @ .               (flow from: 85db)  7cf7 call 7800 
     call processKey            ;862e cd 79 28  . y (               (flow from: 7804)  7cfa call 8639 
     push af                    ;8631 f5  .                         (flow from: 86a0 86ad)  7cfd push af 
-l08632h:
-vr_l07cfeh:
-    ld a,00fh                  ;8632 3e 0f  > .                    (flow from: 7cfd)  7cfe ld a,0f 
+varcLastStatusBarMessage:
+    ld a,MESSAGE_COPYRIGHT     ;8632 3e 0f  > .                    (flow from: 7cfd)  7cfe ld a,0f 
     call printStatusBar        ;8634 cd 34 2c  . 4 ,               (flow from: 7cfe)  7d00 call 89f4 
-    ld a,00fh                  ;8637 3e 0f  > .                    (flow from: 8a1d)  7d03 ld a,0f 
-    ld (l08632h+1),a           ;8639 32 3f 1f  2 ? .               (flow from: 7d03)   7d05 ld (7cff),a 
+    ld a,MESSAGE_COPYRIGHT     ;8637 3e 0f  > .                    (flow from: 8a1d)  7d03 ld a,0f 
+    ld (varcLastStatusBarMessage+1),a  ;8639 32 3f 1f  2 ? .       (flow from: 7d03)   7d05 ld (7cff),a 
     pop af                     ;863c f1  .                         (flow from: 7d05)  7d08 pop af 
     ; SS + Q - clear the edit line
     cp 015h                    ;863d fe 15  . .                    (flow from: 7d08)  7d09 cp 15 
@@ -6118,17 +6127,19 @@ l865eh:
 l8665h:
     ld a,MESSAGE_COPYRIGHT                  ;8665 3e 0f  > .                    (flow from: 7d28)  7d31 ld a,0f 
     call printStatusBar        ;8667 cd 34 2c  . 4 ,               (flow from: 7d31)  7d33 call 89f4 
-    jr l8622h                  ;866a 18 b6  . .                    (flow from: 8a1d)  7d36 jr 7cee 
+    jr prometheusWarmStartWithCurrentBuffers  ;866a 18 b6  . .     (flow from: 8a1d)  7d36 jr 7cee 
 l866ch:
     ld b,014h                  ;866c 06 14  . .                    (flow from: 7d2c)  7d38 ld b,14 
+    ; CS + 3 - previous page
     cp 006h                    ;866e fe 06  . .                    (flow from: 7d38)  7d3a cp 06 
     jr nz,l8679h               ;8670 20 07    .                    (flow from: 7d3a)  7d3c jr nz,7d45 
 l8672h:
     call v_sub_7c75h           ;8672 cd b5 1e  . . .               (flow from: 7d3c)  7d3e call 7c75 
     djnz l8672h                ;8675 10 fb  . . 
 l8677h:
-    jr l8622h                  ;8677 18 a9  . .                    (flow from: 7d7c)  7d43 jr 7cee 
+    jr prometheusWarmStartWithCurrentBuffers   ;8677 18 a9  . .    (flow from: 7d7c)  7d43 jr 7cee 
 l8679h:
+    ; CS + 6 - down
     cp 009h                    ;8679 fe 09  . .                    (flow from: 7d3c)  7d45 cp 09 
     jr nz,l86a7h               ;867b 20 2a    *                    (flow from: 7d45)  7d47 jr nz,7d73 
 l867dh:
@@ -6154,6 +6165,7 @@ l8699h:
 l86a5h:
     jr l8628h                  ;86a5 18 81  . .                    (flow from: 7daa)  7d71 jr 7cf4 
 l86a7h:
+    ; CS + 4 - page up
     cp 007h                    ;86a7 fe 07  . .                    (flow from: 7d47)  7d73 cp 07 
     jr nz,l86b2h               ;86a9 20 07    .                    (flow from: 7d73)  7d75 jr nz,7d7e 
 l86abh:
@@ -6162,6 +6174,7 @@ l86abh:
 l86b0h:
     jr l8677h                  ;86b0 18 c5  . .                    (flow from: 7d7a)  7d7c jr 7d43 
 l86b2h:
+    ; CS + 7 - up
     cp 00ah                    ;86b2 fe 0a  . .                    (flow from: 7d75)  7d7e cp 0a 
     jr nz,l86e0h               ;86b4 20 2a    *                    (flow from: 7d7e)  7d80 jr nz,7dac 
 l86b6h:
@@ -6187,6 +6200,7 @@ l86d2h:
 l86deh:
     jr l86a5h                  ;86de 18 c5  . .                    (flow from: 7ddb)  7daa jr 7d71 
 l86e0h:
+    ; CS + 9 - clear current line and return one line back
     cp 00ch                    ;86e0 fe 0c  . .                    (flow from: 7d80)  7dac cp 0c 
     jr nz,l86fah               ;86e2 20 16    .                    (flow from: 7dac)  7dae jr nz,7dc6 
     ld bc,00001h               ;86e4 01 01 00  . . . 
@@ -6199,6 +6213,7 @@ l86e0h:
 l86f8h:
     jr l86b0h                  ;86f8 18 b6  . . 
 l86fah:
+    ; CS + SS - set block margin 
     cp 00eh                    ;86fa fe 0e  . .                    (flow from: 7dae)  7dc6 cp 0e 
     jr nz,l870ch               ;86fc 20 0e    .                    (flow from: 7dc6)  7dc8 jr nz,7dd8 
     ld hl,(vr_l080eah+1)       ;86fe 2a 2b 23  * + # 
@@ -6212,7 +6227,7 @@ l870ch:
 v_l7dddh:
     ld hl,LEFT_BOTTOM_ATTRIBUTE_ADDRESS  ;8711 21 e0 5a  ! . Z     (flow from: 775d 7ddb)  7ddd ld hl,5ae0 
     ; color for hiding of the edit line (0x3f)
-    ;   - ink color replace by the paper color 
+    ;   - ink color replaced by the paper color 
     ld bc,0203fh               ;8714 01 3f 20  . ?                 (flow from: 7ddd)  7de0 ld bc,203f 
     call atHLrepeatBTimesC     ;8717 cd 21 25  . ! %               (flow from: 7de0)  7de3 call 82e1 
     ld hl,inputBufferStart     ;871a 21 3f 2d  ! ? -               (flow from: 82e5)  7de6 ld hl,8aff 
@@ -6256,8 +6271,8 @@ varcInsertMode:
     ld bc,00001h               ;875d 01 01 00  . . .               (flow from: 7e26)  7e29 ld bc,0001 
     call v_sub_898ah           ;8760 cd ca 2b  . . +               (flow from: 7e29)  7e2c call 898a 
 l8763h:
-    ld a,00fh                  ;8763 3e 0f  > .                    (flow from: 7e21 8989)  7e2f ld a,0f 
-    ld (vr_l07cfeh+1),a        ;8765 32 3f 1f  2 ? .               (flow from: 7e2f)  7e31 ld (7cff),a 
+    ld a,MESSAGE_COPYRIGHT     ;8763 3e 0f  > .                    (flow from: 7e21 8989)  7e2f ld a,0f 
+    ld (varcLastStatusBarMessage+1),a        ;8765 32 3f 1f  2 ? . (flow from: 7e2f)  7e31 ld (7cff),a 
 v_l7e34h:
     xor a                      ;8768 af  .                         (flow from: 7e31)  7e34 xor a 
     ld (varcInsertMode+1),a    ;8769 32 5f 20  2 _                 (flow from: 7e34)  7e35 ld (7e1f),a 
@@ -6673,7 +6688,7 @@ v_l80a2h:
     call v_sub_8a2fh           ;89dc cd 6f 2c  . o , 
     call z,v_sub_8235h         ;89df cc 75 24  . u $ 
     ld (varcSourceBufferActiveLine+1),hl      ;89e2 22 ad 24  " . $ 
-    jp l8622h                  ;89e5 c3 2e 1f  . . . 
+    jp prometheusWarmStartWithCurrentBuffers  ;89e5 c3 2e 1f  . . . 
 signalMessage:
     ld hl,VRAM_ADDRESS         ;89e8 21 00 40  ! . @               (flow from: 7bec 89f4)  80b4 ld hl,4000 
 v_sub_80b7h:
@@ -6832,7 +6847,7 @@ l8aa4h:
     pop hl                     ;8ab1 e1  .                         (flow from: 8376 838a)  817d pop hl 
     jr z,l8abah                ;8ab2 28 06  ( .                    (flow from: 817d)  817e jr z,8186 
     ld a,010h                  ;8ab4 3e 10  > . 
-    ld (vr_l07cfeh+1),a        ;8ab6 32 3f 1f  2 ? . 
+    ld (varcLastStatusBarMessage+1),a        ;8ab6 32 3f 1f  2 ? . 
     ret                        ;8ab9 c9  . 
 l8abah:
     ld (hl),001h               ;8aba 36 01  6 .                    (flow from: 817e)  8186 ld (hl),01 
@@ -6881,8 +6896,8 @@ l8afch:
     ld (hl),a                  ;8aff 77  w                         (flow from: 81c9)  81cb ld (hl),a 
     dec b                      ;8b00 05  .                         (flow from: 81cb)  81cc dec b 
     jr nz,l8b0ah               ;8b01 20 07    .                    (flow from: 81cc)  81cd jr nz,81d6 
-    ld a,010h                  ;8b03 3e 10  > . 
-    ld (vr_l07cfeh+1),a        ;8b05 32 3f 1f  2 ? . 
+    ld a,MESSAGE_SOURCE_ERROR  ;8b03 3e 10  > . 
+    ld (varcLastStatusBarMessage+1),a        ;8b05 32 3f 1f  2 ? . 
     pop af                     ;8b08 f1  . 
     ret                        ;8b09 c9  . 
 l8b0ah:
