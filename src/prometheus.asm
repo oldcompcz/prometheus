@@ -2745,6 +2745,8 @@ v_sub_6969h:
     call v_sub_6c20h           ;72bf cd 60 0e  . ` . 
     jp c,v_l66c4h              ;72c2 da 04 09  . . . 
     ret                        ;72c5 c9  . 
+
+
 v_sub_6992h:
     ld a,c                     ;72c6 79  y 
     and 0f0h                   ;72c7 e6 f0  . . 
@@ -3872,7 +3874,6 @@ v_l6fb9h:
     defb 0cfh                  ;78fa cf  . 
     defb 0c1h                  ;78fb c1  . 
     defb 00dh                  ;78fc 0d  . 
-v_l6fc9h:
     defb 0c7h                  ;78fd c7  . 
     defb 0c0h                  ;78fe c0  . 
     defb 00dh                  ;78ff 0d  . 
@@ -4141,6 +4142,7 @@ monitorTextsTable27:    defb "1. byte",0xba        ;":"+0x80                    
 
     jp  startPrometheus        ;7a7c 
 
+operationsInvokingTable:
     defw invokeAssembly        ;7a7f
     defw invokeBasic           ;7a81
     defw invokeCopy            ;7a83
@@ -5609,9 +5611,9 @@ l8380h:
     call v_sub_7a98h           ;8380 cd d8 1c  . . . 
     push af                    ;8383 f5  . 
     ld hl,varcAddressCounter+1 ;8384 21 94 1b  ! . . 
-    call v_sub_8980h           ;8387 cd c0 2b  . . + 
+    call increaseAtHLbyBC      ;8387 cd c0 2b  . . + 
     ld hl,vr_l07934h+1         ;838a 21 75 1b  ! u . 
-    call v_sub_8980h           ;838d cd c0 2b  . . + 
+    call increaseAtHLbyBC      ;838d cd c0 2b  . . + 
     pop af                     ;8390 f1  . 
     inc ix                     ;8391 dd 23  . # 
     jr nc,l8380h               ;8393 30 eb  0 . 
@@ -5624,7 +5626,8 @@ l839bh:
     ld b,000h                  ;839b 06 00  . . 
     ld c,a                     ;839d 4f  O 
     ld hl,varcAddressCounter+1 ;839e 21 94 1b  ! . . 
-    jp v_sub_8980h             ;83a1 c3 c0 2b  . . + 
+    jp increaseAtHLbyBC        ;83a1 c3 c0 2b  . . + 
+
 v_sub_7a70h:
     ld c,001h                  ;83a4 0e 01  . . 
 l83a6h:
@@ -6245,7 +6248,8 @@ v_l7dddh:
     push hl                    ;872e e5  .                         (flow from: 7df7)  7dfa push hl 
     ld h,d                     ;872f 62  b                         (flow from: 7dfa)  7dfb ld h,d 
     ld l,a                     ;8730 6f  o                         (flow from: 7dfb)  7dfc ld l,a 
-    ld de,v_l6fc9h             ;8731 11 09 12  . . .               (flow from: 7dfc)  7dfd ld de,6fc9 
+    ; a=0xc1 for Assembly, 0xc2 for Basic etc.
+    ld de,operationsInvokingTable-(0xc1*2)    ;8731 11 09 12  . . .(flow from: 7dfc)  7dfd ld de,6fc9 
     add hl,hl                  ;8734 29  )                         (flow from: 7dfd)  7e00 add hl,hl 
     add hl,de                  ;8735 19  .                         (flow from: 7e00)  7e01 add hl,de 
     ld a,(hl)                  ;8736 7e  ~                         (flow from: 7e01)  7e02 ld a,(hl) 
@@ -8292,14 +8296,14 @@ l91a4h:
     call v_l88ech              ;91bc cd 2c 2b  . , +               (flow from: 8887)  8888 call 88ec 
     pop bc                     ;91bf c1  .                         (flow from: 88ee 8901)  888b pop bc 
     ld hl,varcCodeEndPt+1      ;91c0 21 5a 2a  ! Z *               (flow from: 888b)  888c ld hl,881a 
-    call v_sub_8980h           ;91c3 cd c0 2b  . . +               (flow from: 888c)  888f call 8980 
+    call increaseAtHLbyBC      ;91c3 cd c0 2b  . . +               (flow from: 888c)  888f call 8980 
     pop de                     ;91c6 d1  .                         (flow from: 8989)  8892 pop de 
     ld hl,v_l8ac6h             ;91c7 21 06 2d  ! . -               (flow from: 8892)  8893 ld hl,8ac6 
     ld (hl),000h               ;91ca 36 00  6 .                    (flow from: 8893)  8896 ld (hl),00 
     push bc                    ;91cc c5  .                         (flow from: 8896)  8898 push bc 
     call v_l88ech              ;91cd cd 2c 2b  . , +               (flow from: 8898)  8899 call 88ec 
     ld hl,(varcSymbolTablePt+1)       ;91d0 2a 17 2a  * . *        (flow from: 8901)  889c ld hl,(87d7) 
-    call v_sub_897dh           ;91d3 cd bd 2b  . . +               (flow from: 889c)  889f call 897d 
+    call increaseAtHL          ;91d3 cd bd 2b  . . +               (flow from: 889c)  889f call 897d 
     pop bc                     ;91d6 c1  .                         (flow from: 8989)  88a2 pop bc 
     dec de                     ;91d7 1b  .                         (flow from: 88a2)  88a3 dec de 
     ex de,hl                   ;91d8 eb  .                         (flow from: 88a3)  88a4 ex de,hl 
@@ -8323,7 +8327,7 @@ l91f0h:
     push de                    ;91f7 d5  .                         (flow from: 88c1)  88c3 push de 
     push ix                    ;91f8 dd e5  . .                    (flow from: 88c3)  88c4 push ix 
     pop hl                     ;91fa e1  .                         (flow from: 88c4)  88c6 pop hl 
-    call v_sub_8980h           ;91fb cd c0 2b  . . +               (flow from: 88c6)  88c7 call 8980 
+    call increaseAtHLbyBC      ;91fb cd c0 2b  . . +               (flow from: 88c6)  88c7 call 8980 
     pop de                     ;91fe d1  .                         (flow from: 8989)  88ca pop de 
 l91ffh:
     ex (sp),hl                 ;91ff e3  .                         (flow from: 88c1 88ca)  88cb ex (sp),hl 
@@ -8453,24 +8457,29 @@ vr_l0896eh:
     sbc hl,de                  ;92a6 ed 52  . R                    (flow from: 8971)  8972 sbc hl,de 
     pop hl                     ;92a8 e1  .                         (flow from: 8972)  8974 pop hl 
     ret c                      ;92a9 d8  .                         (flow from: 8974)  8975 ret c 
-    jr v_sub_8980h             ;92aa 18 08  . . 
+    jr increaseAtHLbyBC        ;92aa 18 08  . . 
+
+
 v_sub_8978h:
     ld bc,00002h               ;92ac 01 02 00  . . .               (flow from: 8834)  8978 ld bc,0002 
-    jr v_sub_8980h             ;92af 18 03  . .                    (flow from: 8978)  897b jr 8980 
-v_sub_897dh:
+    jr increaseAtHLbyBC        ;92af 18 03  . .                    (flow from: 8978)  897b jr 8980 
+
+increaseAtHL:
     ld bc,00001h               ;92b1 01 01 00  . . .               (flow from: 889f)  897d ld bc,0001 
-v_sub_8980h:
+increaseAtHLbyBC:
     ld e,(hl)                  ;92b4 5e  ^                         (flow from: 888f 88c7 897b 897d 8a8a 8a90)  8980 ld e,(hl) 
     inc hl                     ;92b5 23  #                         (flow from: 8980)  8981 inc hl 
     ld d,(hl)                  ;92b6 56  V                         (flow from: 8981)  8982 ld d,(hl) 
     ex de,hl                   ;92b7 eb  .                         (flow from: 8982)  8983 ex de,hl 
     add hl,bc                  ;92b8 09  .                         (flow from: 8983)  8984 add hl,bc 
-l92b9h:
+atDEminusOnePutHLAndRet:
     ex de,hl                   ;92b9 eb  .                         (flow from: 8984 89d8)  8985 ex de,hl 
     ld (hl),d                  ;92ba 72  r                         (flow from: 8985)  8986 ld (hl),d 
     dec hl                     ;92bb 2b  +                         (flow from: 8986)  8987 dec hl 
     ld (hl),e                  ;92bc 73  s                         (flow from: 8987)  8988 ld (hl),e 
     ret                        ;92bd c9  .                         (flow from: 8988)  8989 ret 
+
+
 v_sub_898ah:
     push hl                    ;92be e5  .                         (flow from: 7e2c)  898a push hl 
     ld (vr_l089deh+1),hl       ;92bf 22 1f 2c  " . ,               (flow from: 898a)  898b ld (89df),hl 
@@ -8526,7 +8535,9 @@ v_sub_89d1h:
     ex de,hl                   ;9308 eb  .                         (flow from: 89d3)  89d4 ex de,hl 
     and a                      ;9309 a7  .                         (flow from: 89d4)  89d5 and a 
     sbc hl,bc                  ;930a ed 42  . B                    (flow from: 89d5)  89d6 sbc hl,bc 
-    jr l92b9h                  ;930c 18 ab  . .                    (flow from: 89d6)  89d8 jr 8985 
+    jr atDEminusOnePutHLAndRet ;930c 18 ab  . .                    (flow from: 89d6)  89d8 jr 8985 
+
+
 v_sub_89dah:
     push hl                    ;930e e5  .                         (flow from: 89bf 89c5)  89da push hl 
     ld e,(hl)                  ;930f 5e  ^                         (flow from: 89da)  89db ld e,(hl) 
@@ -8655,9 +8666,9 @@ l93a2h:
     call v_l88ech              ;93b7 cd 2c 2b  . , +               (flow from: 8a82)  8a83 call 88ec 
     pop bc                     ;93ba c1  .                         (flow from: 8901)  8a86 pop bc 
     ld hl,varcCodeEndPt+1      ;93bb 21 5a 2a  ! Z *               (flow from: 8a86)  8a87 ld hl,881a 
-    call v_sub_8980h           ;93be cd c0 2b  . . +               (flow from: 8a87)  8a8a call 8980 
-    ld hl,varcSymbolTablePt+1         ;93c1 21 17 2a  ! . *        (flow from: 8989)  8a8d ld hl,87d7
-    call v_sub_8980h           ;93c4 cd c0 2b  . . +               (flow from: 8a8d)  8a90 call 8980 
+    call increaseAtHLbyBC      ;93be cd c0 2b  . . +               (flow from: 8a87)  8a8a call 8980 
+    ld hl,varcSymbolTablePt+1  ;93c1 21 17 2a  ! . *               (flow from: 8989)  8a8d ld hl,87d7
+    call increaseAtHLbyBC      ;93c4 cd c0 2b  . . +               (flow from: 8a8d)  8a90 call 8980 
     ld hl,v_sub_080e7h+1       ;93c7 21 28 23  ! ( #               (flow from: 8989)  8a93 ld hl,80e8 
     call v_sub_8969h           ;93ca cd a9 2b  . . +               (flow from: 8a93)  8a96 call 8969 
     ld hl,vr_l080eah+1         ;93cd 21 2b 23  ! + #               (flow from: 8975)  8a99 ld hl,80eb 
