@@ -38,6 +38,7 @@ SYSVAR_ERR_SP:                 equ 05c3dh  ; Address of item on machine stack to
 ; constants
 
 INSTRUCTIONS_TABLE_SIZE:       equ 687  
+TEXT_COLOR:                    equ 0x38    ; white paper, black color
 HIGHLIGHT_COLOR:               equ 0x30    ; yellow paper, black color
 FRONT_PANEL_EDITOR_COLOR:      equ 0x39    ; as text color with bit 0 inverted
 LABEL_LENGTH:                  equ 9
@@ -52,6 +53,7 @@ STATUS_BAR_MODE_POSITION:      equ 0x13
 LINES_BEFORE_ACCESS_LINE:      equ 13
 CALLS_STACK_SIZE:              equ 10
 CHARACTERS_PER_LINE:           equ 32
+SYMBOL_TABLE_LINES_COUNT:      equ 20
 
 ; messages
 
@@ -2225,8 +2227,8 @@ l6f68h:
     call writeLabel            ;6f74 cd 56 23  . V # 
     pop hl                     ;6f77 e1  . 
     inc hl                     ;6f78 23  # 
-    ld b,009h                  ;6f79 06 09  . . 
-    call v_sub_82d4h           ;6f7b cd 14 25  . . % 
+    ld b,LABEL_LENGTH          ;6f79 06 09  . . 
+    call printFromDEtoHLpaddedLeft           ;6f7b cd 14 25  . . % 
 l6f7eh:
     pop hl                     ;6f7e e1  . 
     ret                        ;6f7f c9  . 
@@ -2963,7 +2965,7 @@ l73f6h:
     ld b,009h                  ;7417 06 09  . . 
     push ix                    ;7419 dd e5  . . 
     pop hl                     ;741b e1  . 
-    call v_sub_82d4h           ;741c cd 14 25  . . % 
+    call printFromDEtoHLpaddedLeft           ;741c cd 14 25  . . % 
     jr l742eh                  ;741f 18 0d  . . 
 l7421h:
 varcShowAddresses:
@@ -4443,6 +4445,7 @@ l7c55h:
     ld (vr_l072ddh+1),hl       ;7c5b 22 1e 15  " . . 
     ld hl,v_l732fh             ;7c5e 21 6f 15  ! o . 
     jr l7c0eh                  ;7c61 18 ab  . . 
+
 v_l732fh:
     call v_sub_7bbch           ;7c63 cd fc 1d  . . . 
 v_l7332h:
@@ -4489,6 +4492,8 @@ l7ca3h:
     inc de                     ;7ca9 13  . 
     jr nz,l7ca3h               ;7caa 20 f7    . 
     ret                        ;7cac c9  . 
+
+
 v_sub_7379h:
     ld hl,v_l738dh             ;7cad 21 cd 15  ! . . 
     ld b,(hl)                  ;7cb0 46  F 
@@ -4547,10 +4552,11 @@ l07cdbh:
     ld l,c                     ;7cf0 69  i 
     ld (060a8h),a              ;7cf1 32 a8 60  2 . ` 
     ld a,010h                  ;7cf4 3e 10  > . 
+
 displaySymbolTableColumn:
     ; a = 0x00  - left column
     ;     0x88  - right column  
-    ld (vr_l073d1h+1),a        ;7cf6 32 12 16  2 . . 
+    ld (varcSymbolTableColumnPosition+1),a        ;7cf6 32 12 16  2 . . 
     ld a,010h                  ;7cf9 3e 10  > . 
 v_l73c7h:
     push af                    ;7cfb f5  . 
@@ -4561,18 +4567,21 @@ v_l73c7h:
     ex af,af'                  ;7d02 08  . 
     push bc                    ;7d03 c5  . 
     push hl                    ;7d04 e5  . 
-vr_l073d1h:
+varcSymbolTableColumnPosition:
+    ; in pixels
+    ; 0x00  - left column, 0x88  - right column  
     ld c,000h                  ;7d05 0e 00  . . 
     call ROM_PixelAddress_22b0 ;7d07 cd b0 22  . . " 
     ld (varcPrintingPosition+1),hl       ;7d0a 22 c8 29  " . ) 
     pop hl                     ;7d0d e1  . 
     push hl                    ;7d0e e5  . 
-vr_l073dbh:
+varcEndOfSymbolTable:
     ld de,00000h               ;7d0f 11 00 00  . . . 
     and a                      ;7d12 a7  . 
     sbc hl,de                  ;7d13 ed 52  . R 
     ex de,hl                   ;7d15 eb  . 
     ld hl,(varcSymbolTablePt+1)       ;7d16 2a 17 2a  * . * 
+    ; bc = symbol table size
     ld c,(hl)                  ;7d19 4e  N 
     inc hl                     ;7d1a 23  # 
     ld b,(hl)                  ;7d1b 46  F 
@@ -4581,11 +4590,14 @@ l7d1ch:
     ld a,(hl)                  ;7d1d 7e  ~ 
     inc hl                     ;7d1e 23  # 
     push hl                    ;7d1f e5  . 
+    ; hl = pointer to names table
     ld h,(hl)                  ;7d20 66  f 
     ld l,a                     ;7d21 6f  o 
-    ld a,h                     ;7d22 7c  | 
+    ld a,h 
+    ; low 6 bits               ;7d22 7c  | 
     and 03fh                   ;7d23 e6 3f  . ? 
     ld h,a                     ;7d25 67  g 
+    ; are we at the end of the table?
     sbc hl,de                  ;7d26 ed 52  . R 
     pop hl                     ;7d28 e1  . 
     jr z,l7d35h                ;7d29 28 0a  ( . 
@@ -4606,26 +4618,32 @@ l7d35h:
     ex de,hl                   ;7d3c eb  . 
     ld hl,lineBuffer           ;7d3d 21 e5 2c  ! . , 
     ld (hl),020h               ;7d40 36 20  6   
+    ; locked entry?
     bit 7,c                    ;7d42 cb 79  . y 
     jr z,l7d48h                ;7d44 28 02  ( . 
-    ld (hl),02ah               ;7d46 36 2a  6 * 
+    ld (hl),"*"               ;7d46 36 2a  6 * 
 l7d48h:
     inc hl                     ;7d48 23  # 
     push bc                    ;7d49 c5  . 
-    ld b,009h                  ;7d4a 06 09  . . 
-    call v_sub_82d4h           ;7d4c cd 14 25  . . % 
+    ; symbol length
+    ld b,LABEL_LENGTH          ;7d4a 06 09  . . 
+    call printFromDEtoHLpaddedLeft           ;7d4c cd 14 25  . . % 
     pop bc                     ;7d4f c1  . 
     ex de,hl                   ;7d50 eb  . 
     ex (sp),hl                 ;7d51 e3  . 
     ex de,hl                   ;7d52 eb  . 
     ld a,c                     ;7d53 79  y 
+    ; high 2 bits
     and 0c0h                   ;7d54 e6 c0  . . 
     jr nz,l7d61h               ;7d56 20 09    . 
+    ; symbol undefined 
+    ; print 5-times "."
     ld bc,0052eh               ;7d58 01 2e 05  . . . 
     call atHLrepeatBTimesC     ;7d5b cd 21 25  . ! % 
     ld (hl),b                  ;7d5e 70  p 
     jr l7d6ah                  ;7d5f 18 09  . . 
 l7d61h:
+    ; print address
     push hl                    ;7d61 e5  . 
     pop ix                     ;7d62 dd e1  . . 
     ex de,hl                   ;7d64 eb  . 
@@ -4633,7 +4651,7 @@ l7d61h:
     call printNumberToIX       ;7d67 cd 48 2b  . H + 
 l7d6ah:
     ld hl,lineBuffer           ;7d6a 21 e5 2c  ! . , 
-    call v_sub_8a1bh           ;7d6d cd 5b 2c  . [ , 
+    call displayCharactersAtHLUntil0Character           ;7d6d cd 5b 2c  . [ , 
 varcPrintSymbolTable:
     ; 1 - display and print symbol table
     ; 0 - display symbol table
@@ -4663,31 +4681,36 @@ l7d8ch:
     ld (varcPrintSymbolTable+1),a    ;7d8c 32 7d 16  2 } . 
     ld a,MESSAGE_ANY_KEY       ;7d8f 3e 0e  > . 
     call printStatusBar        ;7d91 cd 34 2c  . 4 , 
+    ; set display to highlight every second line
     ld hl,THIRD_LINE_ATTRIBUTE_ADDRESS               ;7d94 21 40 58  ! @ X 
-    ; text color
-    ld a,038h                  ;7d97 3e 38  > 8 
+    ld a,TEXT_COLOR                  ;7d97 3e 38  > 8 
     ex af,af'                  ;7d99 08  . 
     ; access line color
     ld a,HIGHLIGHT_COLOR       ;7d9a 3e 30  > 0 
-    ld c,014h                  ;7d9c 0e 14  . . 
+    ld c,SYMBOL_TABLE_LINES_COUNT     ;7d9c 0e 14  . . 
 l7d9eh:
     ld b,CHARACTERS_PER_LINE   ;7d9e 06 20  .   
 l7da0h:
     ld (hl),a                  ;7da0 77  w 
     inc hl                     ;7da1 23  # 
     djnz l7da0h                ;7da2 10 fc  . . 
+    ; swap highling/normal oclor
     ex af,af'                  ;7da4 08  . 
     dec c                      ;7da5 0d  . 
     jr nz,l7d9eh               ;7da6 20 f6    . 
+    ; end of setting of color display
     ld hl,(varcSymbolTablePt+1)       ;7da8 2a 17 2a  * . * 
+    ; BC = number of symbol table entries
     ld c,(hl)                  ;7dab 4e  N 
     inc hl                     ;7dac 23  # 
     ld b,(hl)                  ;7dad 46  F 
     inc hl                     ;7dae 23  # 
+    ; hl = hl + 2*bc
     add hl,bc                  ;7daf 09  . 
     add hl,bc                  ;7db0 09  . 
-    ld (vr_l073dbh+1),hl       ;7db1 22 1c 16  " . . 
+    ld (varcEndOfSymbolTable+1),hl       ;7db1 22 1c 16  " . . 
 displaySymbolTablePage:
+    ; empty symbol table?
     ld a,b                     ;7db4 78  x 
     or c                       ;7db5 b1  . 
     jr z,l7dd6h                ;7db6 28 1e  ( . 
@@ -6877,8 +6900,8 @@ l8a8fh:
     push hl                    ;8a9a e5  .                         (flow from: 8164)  8166 push hl 
     call writeLabelWithSkippedSize  ;8a9b cd 53 23  . S #          (flow from: 8166)  8167 call 8113 
     pop hl                     ;8a9e e1  .                         (flow from: 8134)  816a pop hl 
-    ld b,009h                  ;8a9f 06 09  . .                    (flow from: 816a)  816b ld b,09 
-    call v_sub_82d4h           ;8aa1 cd 14 25  . . %               (flow from: 816b)  816d call 82d4 
+    ld b,LABEL_LENGTH          ;8a9f 06 09  . .                    (flow from: 816a)  816b ld b,09 
+    call printFromDEtoHLpaddedLeft           ;8aa1 cd 14 25  . . %               (flow from: 816b)  816d call 82d4 
 l8aa4h:
     push hl                    ;8aa4 e5  .                         (flow from: 8164 82e5)  8170 push hl 
     ld b,(ix+000h)             ;8aa5 dd 46 00  . F .               (flow from: 8170)  8171 ld b,(ix+00) 
@@ -6906,7 +6929,7 @@ l8ac8h:
     ld de,mnemonicsReferences  ;8ac9 11 b6 2e  . . .               (flow from: 8194)  8195 ld de,8c76 
     call getStringFromTableDE  ;8acc cd 09 25  . . %               (flow from: 8195)  8198 call 82c9 
     ld b,005h                  ;8acf 06 05  . .                    (flow from: 82d3)  819b ld b,05 
-    call v_sub_82d4h           ;8ad1 cd 14 25  . . %               (flow from: 819b)  819d call 82d4 
+    call printFromDEtoHLpaddedLeft           ;8ad1 cd 14 25  . . %               (flow from: 819b)  819d call 82d4 
     pop de                     ;8ad4 d1  .                         (flow from: 82e5)  81a0 pop de 
     ld (hl),001h               ;8ad5 36 01  6 .                    (flow from: 81a0)  81a1 ld (hl),01 
     inc hl                     ;8ad7 23  #                         (flow from: 81a1)  81a3 inc hl 
@@ -6933,8 +6956,11 @@ v_sub_81bah:
     call getStringFromTableDE   ;8af7 cd 09 25  . . %              (flow from: 81c0)  81c3 call 82c9 
 v_sub_81c6h:
     ld b,009h                  ;8afa 06 09  . .                    (flow from: 8223 82d3)  81c6 ld b,09 
-l8afch:
+printFromDEtoHLwithDecB:
+    ; From (de) print at (hl) and decrease B meanwhile. 
+    ; Report source error if you end before the expected string end 
     ld a,(de)                  ;8afc 1a  .                         (flow from: 81c6 81db 82d4)  81c8 ld a,(de) 
+    ; character without line end-of-string mark
     and 07fh                   ;8afd e6 7f  .                      (flow from: 81c8)  81c9 and 7f 
     ld (hl),a                  ;8aff 77  w                         (flow from: 81c9)  81cb ld (hl),a 
     dec b                      ;8b00 05  .                         (flow from: 81cb)  81cc dec b 
@@ -6948,8 +6974,9 @@ l8b0ah:
     and 080h                   ;8b0b e6 80  . .                    (flow from: 81d6)  81d7 and 80 
     inc hl                     ;8b0d 23  #                         (flow from: 81d7)  81d9 inc hl 
     inc de                     ;8b0e 13  .                         (flow from: 81d9)  81da inc de 
-    jr z,l8afch                ;8b0f 28 eb  ( .                    (flow from: 81da)  81db jr z,81c8 
+    jr z,printFromDEtoHLwithDecB     ;8b0f 28 eb  ( .              (flow from: 81da)  81db jr z,81c8 
     ret                        ;8b11 c9  .                         (flow from: 81db)  81dd ret 
+
 l8b12h:
     push af                    ;8b12 f5  .                         (flow from: 81be)  81de push af 
     cp 02dh                    ;8b13 fe 2d  . -                    (flow from: 81de)  81df cp 2d 
@@ -7185,11 +7212,14 @@ getStringFromTableDE:
     ret                        ;8c07 c9  .                         (flow from: 82d2)  82d3 ret 
 
 
-v_sub_82d4h:
-    call l8afch                ;8c08 cd 08 24  . . $               (flow from: 816d 819d)  82d4 call 81c8 
+printFromDEtoHLpaddedLeft:
+    ; write string from (de) to (hl) on space given by B, padded left. 
+    ; report source error if you end before the expected string end
+    call printFromDEtoHLwithDecB    ;8c08 cd 08 24  . . $          (flow from: 816d 819d)  82d4 call 81c8 
 fillHLWithBSpaces:
-    ld c,020h                  ;8c0b 0e 20  .                      (flow from: 8161 81dd)  82d7 ld c,20 
+    ld c," "                   ;8c0b 0e 20  .                      (flow from: 8161 81dd)  82d7 ld c,20 
     jr atHLrepeatBTimesC       ;8c0d 18 06  . .                    (flow from: 82d7)  82d9 jr 82e1 
+
 clearStringBuffers:
     ; clearBuffers from numberStringBuffer to inputBuffers
     ld bc,03700h               ;8c0f 01 00 37  . . 7               (flow from: 775a)  82db ld bc,3700 
@@ -8605,13 +8635,14 @@ v_sub_8a12h:
     call displaySpaceSafely    ;9346 cd 7d 29  . } )               (flow from: 8a0c 8a0f)  8a12 call 873d 
     call printNumberToStringBuffer  ;9349 cd 42 2b  . B +          (flow from: 8749)  8a15 call 8902 
     ld hl,numberStringBuffer   ;934c 21 07 2d  ! . -               (flow from: 8961)  8a18 ld hl,8ac7 
-v_sub_8a1bh:
+
+displayCharactersAtHLUntil0Character:
     ld a,(hl)                  ;934f 7e  ~                         (flow from: 8a18 8a22)  8a1b ld a,(hl) 
     or a                       ;9350 b7  .                         (flow from: 8a1b)  8a1c or a 
     ret z                      ;9351 c8  .                         (flow from: 8a1c)  8a1d ret z 
     call displayCaracterAtHL   ;9352 cd 81 29  . . )               (flow from: 8a1d)  8a1e call 8741 
     inc hl                     ;9355 23  #                         (flow from: 8749)  8a21 inc hl 
-    jr v_sub_8a1bh             ;9356 18 f7  . .                    (flow from: 8a21)  8a22 jr 8a1b 
+    jr displayCharactersAtHLUntil0Character    ;9356 18 f7  . .    (flow from: 8a21)  8a22 jr 8a1b 
 
 
 v_sub_8a24h:
