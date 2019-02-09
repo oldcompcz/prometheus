@@ -2268,12 +2268,12 @@ l6fa9h:
     jp z,startMonitor          ;6fb5 ca b4 01  . . . 
     cp 003h                    ;6fb8 fe 03  . . 
     jr nz,l6fc4h               ;6fba 20 08    . 
-    ld hl,(v_sub_7e3bh+1)      ;6fbc 2a 7c 20  * |   
+    ld hl,(varcInputBufferPosition+1)      ;6fbc 2a 7c 20  * |   
     dec hl                     ;6fbf 2b  + 
     bit 7,(hl)                 ;6fc0 cb 7e  . ~ 
     jr nz,l6fa9h               ;6fc2 20 e5    . 
 l6fc4h:
-    call v_sub_7e3bh           ;6fc4 cd 7b 20  . {   
+    call updateInputBuffer     ;6fc4 cd 7b 20  . {   
     jr nz,l6fa9h               ;6fc7 20 e0    . 
     call v_sub_6113h           ;6fc9 cd 53 03  . S . 
     jp v_sub_85f8h             ;6fcc c3 38 28  . 8 ( 
@@ -6148,7 +6148,7 @@ prometheusWarmStartWithCurrentBuffers:
     ; reinitialize stack
     ld sp,internalStackTop     ;8622 31 e1 2d  1 . -               (flow from: 7c7c 7cec 7d36 7d43)  7cee ld sp,8ba1
     call writeVisibleCode      ;8625 cd ac 24  . . $                (flow from: 7cee)  7cf1 call 826c 
-l8628h:
+readInputLineLoop:
     call repaintEditLine       ;8628 cd fe 27  . . '               (flow from: 7d71 828e)  7cf4 call 85be 
     call setBorderColor        ;862b cd 40 1a  . @ .               (flow from: 85db)  7cf7 call 7800 
     call processKey            ;862e cd 79 28  . y (               (flow from: 7804)  7cfa call 8639 
@@ -6221,8 +6221,8 @@ l8699h:
     ; test key "6", DOWN, see http://www.breakintoprogram.co.uk/computers/zx-spectrum/keyboard
     bit 4,a                    ;86a1 cb 67  . g 
     jr z,l867dh                ;86a3 28 d8  ( . 
-l86a5h:
-    jr l8628h                  ;86a5 18 81  . .                    (flow from: 7daa)  7d71 jr 7cf4 
+repeatInputLineLoop:
+    jr readInputLineLoop                  ;86a5 18 81  . .                    (flow from: 7daa)  7d71 jr 7cf4 
 l86a7h:
     ; CS + 4 - page up
     cp 007h                    ;86a7 fe 07  . .                    (flow from: 7d47)  7d73 cp 07 
@@ -6256,8 +6256,8 @@ l86d2h:
     ; test key "7", UP, see http://www.breakintoprogram.co.uk/computers/zx-spectrum/keyboard
     bit 3,a                    ;86da cb 5f  . _ 
     jr z,l86b6h                ;86dc 28 d8  ( . 
-l86deh:
-    jr l86a5h                  ;86de 18 c5  . .                    (flow from: 7ddb)  7daa jr 7d71 
+repeatInputLineLoopFar:
+    jr repeatInputLineLoop    ;86de 18 c5  . .                (flow from: 7ddb)  7daa jr 7d71 
 l86e0h:
     ; CS + 9 - clear current line and return one line back
     cp 00ch                    ;86e0 fe 0c  . .                    (flow from: 7d80)  7dac cp 0c 
@@ -6281,8 +6281,8 @@ l86fah:
     ld (varcSelectedBlockEnd+1),hl       ;8707 22 2b 23  " + # 
     jr l86f8h                  ;870a 18 ec  . . 
 l870ch:
-    call v_sub_7e3bh           ;870c cd 7b 20  . {                 (flow from: 7dc8)  7dd8 call 7e3b 
-    jr nz,l86deh               ;870f 20 cd    .                    (flow from: 7e40 7e73)  7ddb jr nz,7daa 
+    call updateInputBuffer     ;870c cd 7b 20  . {             (flow from: 7dc8)  7dd8 call 7e3b 
+    jr nz,repeatInputLineLoopFar  ;870f 20 cd    .                    (flow from: 7e40 7e73)  7ddb jr nz,7daa 
 v_l7dddh:
     ld hl,LEFT_BOTTOM_ATTRIBUTE_ADDRESS  ;8711 21 e0 5a  ! . Z     (flow from: 775d 7ddb)  7ddd ld hl,5ae0 
     ; color for hiding of the edit line (0x3f)
@@ -6338,10 +6338,15 @@ v_l7e34h:
     ld (varcInsertMode+1),a    ;8769 32 5f 20  2 _                 (flow from: 7e34)  7e35 ld (7e1f),a 
 vr_l07e38h:
     jp prometheusWarmStart                ;876c c3 0f 1f  . . .               (flow from: 7e35)  7e38 jp 7ccf 
-v_sub_7e3bh:
+
+
+updateInputBuffer:
+varcInputBufferPosition:
     ld hl,inputBufferStart+1   ;876f 21 40 2d  ! @ -               (flow from: 7dd8)  7e3b ld hl,8b00 
+    ; ENTER key pressed?
     cp 00dh                    ;8772 fe 0d  . .                    (flow from: 7e3b)  7e3e cp 0d 
     ret z                      ;8774 c8  .                         (flow from: 7e3e)  7e40 ret z 
+    ; CS + 5 - left arrow
     cp 008h                    ;8775 fe 08  . .                    (flow from: 7e40)  7e41 cp 08 
     jr nz,l8785h               ;8777 20 0c    .                    (flow from: 7e41)  7e43 jr nz,7e51 
     ld b,(hl)                  ;8779 46  F 
@@ -6367,6 +6372,7 @@ l8785h:
     ld (hl),a                  ;8791 77  w 
     ret                        ;8792 c9  . 
 l8793h:
+    ; backspace
     cp 003h                    ;8793 fe 03  . .                    (flow from: 7e53)  7e5f cp 03 
     jr nz,l87a8h               ;8795 20 11    .                    (flow from: 7e5f)  7e61 jr nz,7e74 
     ld d,h                     ;8797 54  T                         (flow from: 7e61)  7e63 ld d,h 
@@ -6386,6 +6392,7 @@ incAAndRet:
     inc a                      ;87a6 3c  <                         (flow from: 7e70 7e7f 7ec7)  7e72 inc a 
     ret                        ;87a7 c9  .                         (flow from: 7e72)  7e73 ret 
 l87a8h:
+    ; CS + 2 - Caps Lock
     cp 005h                    ;87a8 fe 05  . .                    (flow from: 7e61)  7e74 cp 05 
     jr nz,l87b5h               ;87aa 20 09    .                    (flow from: 7e74)  7e76 jr nz,7e81 
     ld hl,varc_l08fa1h+1            ;87ac 21 ae 28  ! . (               (flow from: 7e76)  7e78 ld hl,866e 
@@ -6394,13 +6401,15 @@ l87a8h:
     ld (hl),a                  ;87b2 77  w                         (flow from: 7e7d)  7e7e ld (hl),a 
     jr incAAndRet              ;87b3 18 f1  . .                    (flow from: 7e7e)  7e7f jr 7e72 
 l87b5h:
-    cp 020h                    ;87b5 fe 20  .                      (flow from: 7e76)  7e81 cp 20 
+    ; <= 0x20
+    cp " "                     ;87b5 fe 20  .                      (flow from: 7e76)  7e81 cp 20 
     ret c                      ;87b7 d8  .                         (flow from: 7e81)  7e83 ret c 
     ld b,a                     ;87b8 47  G                         (flow from: 7e83)  7e84 ld b,a 
     jr nz,l87e0h               ;87b9 20 25    %                    (flow from: 7e84)  7e85 jr nz,7eac 
     ld de,inputBufferStart     ;87bb 11 3f 2d  . ? - 
     ld a,(de)                  ;87be 1a  . 
-    cp 03bh                    ;87bf fe 3b  . ; 
+    ; does the input buffer contain a comment
+    cp ";"                     ;87bf fe 3b  . ; 
     jr z,l87e0h                ;87c1 28 1d  ( . 
     rlca                       ;87c3 07  . 
     jr c,l87e0h                ;87c4 38 1a  8 . 
@@ -6421,6 +6430,7 @@ l87d5h:
     ld (hl),001h               ;87dc 36 01  6 . 
     jr incAAndRet              ;87de 18 c6  . . 
 l87e0h:
+varcl87e0h:
     ld a,007h                  ;87e0 3e 07  > .                    (flow from: 7e85)  7eac ld a,01 
     or a                       ;87e2 b7  .                         (flow from: 7eac)  7eae or a 
     jr z,incAAndRet            ;87e3 28 c1  ( .                    (flow from: 7eae)  7eaf jr z,7e72 
@@ -7810,7 +7820,7 @@ l8f01h:
     inc hl                     ;8f01 23  #                         (flow from: 85ca 85df 85ee)  85cd inc hl 
     ld a,(varcPrintingPosition+1)        ;8f02 3a c8 29  : . )     (flow from: 85cd)  85ce ld a,(8788) 
     and 01fh                   ;8f05 e6 1f  . .                    (flow from: 85ce)  85d1 and 1f 
-    ld (l87e0h+1),a            ;8f07 32 ed 20  2 .                 (flow from: 85d1)  85d3 ld (7ead),a 
+    ld (varcl87e0h+1),a        ;8f07 32 ed 20  2 .                 (flow from: 85d1)  85d3 ld (7ead),a 
     ld a,(hl)                  ;8f0a 7e  ~                         (flow from: 85d3)  85d6 ld a,(hl) 
     dec a                      ;8f0b 3d  =                         (flow from: 85d6)  85d7 dec a 
     jr z,l8f15h                ;8f0c 28 07  ( .                    (flow from: 85d7)  85d8 jr z,85e1 
@@ -7819,9 +7829,9 @@ l8f01h:
     call v_sub_874ah           ;8f10 cd 8a 29  . . )               (flow from: 85db)  85dc call 874a 
     jr l8f01h                  ;8f13 18 ec  . .                    (flow from: 877e)  85df jr 85cd 
 l8f15h:
-    ld (v_sub_7e3bh+1),hl      ;8f15 22 7c 20  " |                 (flow from: 85d8)  85e1 ld (7e3c),hl 
+    ld (varcInputBufferPosition+1),hl    ;8f15 22 7c 20  " |                 (flow from: 85d8)  85e1 ld (7e3c),hl 
     push hl                    ;8f18 e5  .                         (flow from: 85e1)  85e4 push hl 
-    ld a,(varc_l08fa1h+1)           ;8f19 3a ae 28  : . (               (flow from: 85e4)  85e5 ld a,(866e) 
+    ld a,(varc_l08fa1h+1)       ;8f19 3a ae 28  : . (               (flow from: 85e4)  85e5 ld a,(866e) 
     add a,0cch                 ;8f1c c6 cc  . .                    (flow from: 85e5)  85e8 add a,cc 
     call displayNormalCharacter;8f1e cd a9 29  . . )               (flow from: 85e8)  85ea call 8769 
     pop hl                     ;8f21 e1  .                         (flow from: 877e)  85ed pop hl 
@@ -7906,7 +7916,7 @@ processKey:
     ; space
     cp 020h                    ;8f83 fe 20  .                      (flow from: 864e)  864f cp 20 
     ld b,a                     ;8f85 47  G                         (flow from: 864f)  8651 ld b,a 
-    jr c,l8fafh                ;8f86 38 27  8 '                    (flow from: 8651)  8652 jr c,867b 
+    jr c,compareLastPressedKey ;8f86 38 27  8 '                    (flow from: 8651)  8652 jr c,867b 
     ld a,d                     ;8f88 7a  z                         (flow from: 8652)  8654 ld a,d 
     ; CS + something
     cp 028h                    ;8f89 fe 28  . (                    (flow from: 8654)  8655 cp 28 
@@ -7914,10 +7924,10 @@ processKey:
     ; lowercase
     set 5,a                    ;8f8c cb ef  . .                    (flow from: 8657)  8658 set 5,a 
     jr nz,l8fa0h               ;8f8e 20 10    .                    (flow from: 8658)  865a jr nz,866c 
-    call isNumber             ;8f90 cd 66 29  . f )                (flow from: 865a)  865c call 8726 
+    call isNumber              ;8f90 cd 66 29  . f )                (flow from: 865a)  865c call 8726 
     jr nz,l8f99h               ;8f93 20 04    .                    (flow from: 872d)  865f jr nz,8665 
     sub 02dh                   ;8f95 d6 2d  . -                    (flow from: 865f)  8661 sub 2d 
-    jr l8fafh                  ;8f97 18 16  . .                    (flow from: 8661)  8663 jr 867b 
+    jr compareLastPressedKey   ;8f97 18 16  . .                    (flow from: 8661)  8663 jr 867b 
 l8f99h:
     call isLetter              ;8f99 cd 6e 29  . n ) 
     jr nz,l8fa0h               ;8f9c 20 02    . 
@@ -7929,12 +7939,12 @@ varc_l08fa1h:
     ld a,000h                  ;8fa1 3e 00  > .                    (flow from: 866c)  866d ld a,f7 
     or a                       ;8fa3 b7  .                         (flow from: 866d)  866f or a 
     ld a,b                     ;8fa4 78  x                         (flow from: 866f)  8670 ld a,b 
-    jr z,l8fafh                ;8fa5 28 08  ( .                    (flow from: 8670)  8671 jr z,867b 
+    jr z,compareLastPressedKey ;8fa5 28 08  ( .                    (flow from: 8670)  8671 jr z,867b 
     call isLetter              ;8fa7 cd 6e 29  . n )               (flow from: 8671)  8673 call 872e 
-    jr nz,l8fafh               ;8faa 20 03    .                    (flow from: 873c)  8676 jr nz,867b 
+    jr nz,compareLastPressedKey  ;8faa 20 03    .                    (flow from: 873c)  8676 jr nz,867b 
     ld a," "                   ;8fac 3e 20  >                      (flow from: 8676)  8678 ld a,20 
     xor b                      ;8fae a8  .                         (flow from: 8678)  867a xor b 
-l8fafh:
+compareLastPressedKey:
     ld b,a                     ;8faf 47  G                         (flow from: 8652 8663 8671 867a 86de 86e5)  867b ld b,a 
     or a                       ;8fb0 b7  .                         (flow from: 867b)  867c or a 
     jr z,processKey            ;8fb1 28 ba  ( .                    (flow from: 867c)  867d jr z,8639 
@@ -8019,12 +8029,12 @@ keyCombinationWithSS:
     call isLetter              ;900b cd 6e 29  . n )               (flow from: 86d6)  86d7 call 872e 
     jr nz,standardKeyPlusSSPressed  ;900e 20 04    .               (flow from: 873c)  86da jr nz,86e0 
     set 7,a                    ;9010 cb ff  . .                    (flow from: 86da)  86dc set 7,a 
-    jr l8fafh                  ;9012 18 9b  . .                    (flow from: 86dc)  86de jr 867b 
+    jr compareLastPressedKey   ;9012 18 9b  . .                    (flow from: 86dc)  86de jr 867b 
 standardKeyPlusSSPressed:
     ld hl,symbolCharacters-1   ;9014 21 26 29  ! & )               (flow from: 86ce)  86e0 ld hl,86e6 
     add hl,bc                  ;9017 09  .                         (flow from: 86e0)  86e3 add hl,bc 
     ld a,(hl)                  ;9018 7e  ~                         (flow from: 86e3)  86e4 ld a,(hl) 
-    jr l8fafh                  ;9019 18 94  . .                    (flow from: 86e4)  86e5 jr 867b 
+    jr compareLastPressedKey   ;9019 18 94  . .                    (flow from: 86e4)  86e5 jr 867b 
 
 symbolCharacters:
      defb "*", "^", "[", "&", "%", ">", "}", "/", ",", "-"
