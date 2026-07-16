@@ -1,0 +1,34 @@
+{
+  "baseline": {
+    "distributed_length": 18356,
+    "installer_prefix": 2356,
+    "origin_zero_payload": 16000,
+    "sha256": "940f793ad99351507d857b1d96a79bfcf3395d2e1577d633595ab7eaa67edce8"
+  },
+  "full": {
+    "distributed_length": 20124,
+    "installer": 3324,
+    "driver": 800,
+    "driver_base": "7918",
+    "payload_origin": "7C38",
+    "payload": 16000,
+    "relocation_words": 1293,
+    "non_relocation_changed_bytes": 17,
+    "sha256": "e0617fadc3ac124ed0963741e32c51a2c4caaab0f6949d0e25f1f5cfb2d24e90"
+  },
+  "assembler_only": {
+    "distributed_length": 13700,
+    "installer": 2100,
+    "driver": 606,
+    "driver_base": "7918",
+    "effective_payload_origin": "67EE",
+    "retained_payload_start": "1388",
+    "retained_payload_end_exclusive": "3E7A",
+    "retained_payload": 10994,
+    "relocation_words": 722,
+    "ordinary_relocations": 720,
+    "overrides": 2,
+    "non_relocation_changed_bytes": 18,
+    "sha256": "2fcad91c25e95afaa8b6c2d0c40b4d6536ffc534dc42120f180e9bbf16af6cdc"
+  }
+}

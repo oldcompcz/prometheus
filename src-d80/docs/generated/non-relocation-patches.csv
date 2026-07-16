@@ -1,0 +1,21 @@
+variant,payload_offset,source_location,purpose,baseline_bytes,variant_bytes,interpretation
+full,0F04,configurationPatchTarget14MonitorAccessLineAttribute,monitor access-line attribute,28,30,$28 -> $30
+full,1B72,emitByteAtAssemblyOutput+1,resident lower-bound test,00 00,18 79,payload start -> disk driver base $7918
+full,2950,configurationPatchTarget03KeypressBeepDuration,keypress beep duration,1e,0a,$1E -> $0A
+full,2959,configurationPatchTarget10KeypressBeepBorderColor,keypress beep phase/border seed,17,07,$17 -> $07
+full,2991,varcTokenExpansionTableBase+1,initial assembler token-expansion table pointer,6f 8d,e7 ab,manual absolute word rebased symbolically
+full,2DD3,internal stack snapshot word 1,preserved internal-stack image,6d 87,e5 a5,manual absolute word rebased
+full,2DD9,internal stack snapshot word 2,preserved internal-stack image,48 87,c0 a5,manual absolute word rebased
+full,2DDB,internal stack snapshot word 3,preserved internal-stack image,21 8a,99 a8,manual absolute word rebased
+full,2DDD,internal stack snapshot word 4,preserved internal-stack image,03 7d,7b 9b,manual absolute word rebased
+full,2DDF,internal stack snapshot word 5,preserved internal-stack image,cf 7c,47 9b,manual absolute word rebased
+assembler-only,1B72,emitByteAtAssemblyOutput+1,resident lower-bound test,00 00,18 79,payload start -> disk driver base $7918
+assembler-only,1E13,assemblerOnlyMonitorFallbackAddress,MONITOR fallback in assembler-only build,b4 01,76 7b,startMonitor -> assembler entry $7B76
+assembler-only,2950,configurationPatchTarget03KeypressBeepDuration,keypress beep duration,1e,0a,$1E -> $0A
+assembler-only,2959,configurationPatchTarget10KeypressBeepBorderColor,keypress beep phase/border seed,17,07,$17 -> $07
+assembler-only,2991,varcTokenExpansionTableBase+1,initial assembler token-expansion table pointer,6f 8d,9d 97,manual absolute word rebased symbolically
+assembler-only,2DD3,internal stack snapshot word 1,preserved internal-stack image,6d 87,9b 91,manual absolute word rebased
+assembler-only,2DD9,internal stack snapshot word 2,preserved internal-stack image,48 87,76 91,manual absolute word rebased
+assembler-only,2DDB,internal stack snapshot word 3,preserved internal-stack image,21 8a,4f 94,manual absolute word rebased
+assembler-only,2DDD,internal stack snapshot word 4,preserved internal-stack image,03 7d,31 87,manual absolute word rebased
+assembler-only,2DDF,internal stack snapshot word 5,preserved internal-stack image,cf 7c,fd 86,manual absolute word rebased
